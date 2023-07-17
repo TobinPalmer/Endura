@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02352F932A6595B200BB68AF /* GoogleService-Info.plist */; };
 		026042BD2A62E27900F4AF88 /* EnduraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026042BC2A62E27900F4AF88 /* EnduraApp.swift */; };
 		026042BF2A62E27900F4AF88 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026042BE2A62E27900F4AF88 /* ContentView.swift */; };
 		026042C12A62E27C00F4AF88 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026042C02A62E27C00F4AF88 /* Assets.xcassets */; };
@@ -24,12 +25,12 @@
 		026042F62A62E36300F4AF88 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F52A62E36300F4AF88 /* FirebaseFunctions */; };
 		026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */; };
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
-		026042FC2A62E52700F4AF88 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 026042FB2A62E52700F4AF88 /* GoogleService-Info.plist */; };
 		696983C807BF764F750FB09D /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989B3ACC5846606EE527B /* Auth.swift */; };
 		696984F1B1F8F623157F875A /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982663142A11EE8E111D5 /* Users.swift */; };
 		69698ABD6831384C8A8992BA /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969874664193C94C38D7676 /* Navigation.swift */; };
 		69698C7897FE8F624876FE76 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D02516F70CDB3E69B2C /* LoginView.swift */; };
 		69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986EDB3F87EE749147042 /* AppViewModel.swift */; };
+		69698FAA873BB6E235CB0685 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		02352F932A6595B200BB68AF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		026042B92A62E27900F4AF88 /* Endura.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Endura.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		026042BC2A62E27900F4AF88 /* EnduraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraApp.swift; sourceTree = "<group>"; };
 		026042BE2A62E27900F4AF88 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,8 +62,8 @@
 		026042D32A62E27C00F4AF88 /* EnduraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EnduraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		026042D72A62E27C00F4AF88 /* EnduraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITests.swift; sourceTree = "<group>"; };
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		026042FB2A62E52700F4AF88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		696982663142A11EE8E111D5 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		696984C1906C8DA101564F11 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		696986EDB3F87EE749147042 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6969874664193C94C38D7676 /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		696989B3ACC5846606EE527B /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
@@ -126,7 +128,7 @@
 		026042BB2A62E27900F4AF88 /* Endura */ = {
 			isa = PBXGroup;
 			children = (
-				026042FB2A62E52700F4AF88 /* GoogleService-Info.plist */,
+				02352F932A6595B200BB68AF /* GoogleService-Info.plist */,
 				026042BC2A62E27900F4AF88 /* EnduraApp.swift */,
 				026042BE2A62E27900F4AF88 /* ContentView.swift */,
 				026042C02A62E27C00F4AF88 /* Assets.xcassets */,
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				69698D02516F70CDB3E69B2C /* LoginView.swift */,
+				696984C1906C8DA101564F11 /* HomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -318,7 +321,7 @@
 			files = (
 				026042C42A62E27C00F4AF88 /* Preview Assets.xcassets in Resources */,
 				026042C12A62E27C00F4AF88 /* Assets.xcassets in Resources */,
-				026042FC2A62E52700F4AF88 /* GoogleService-Info.plist in Resources */,
+				02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +353,7 @@
 				696984F1B1F8F623157F875A /* Users.swift in Sources */,
 				69698ABD6831384C8A8992BA /* Navigation.swift in Sources */,
 				69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */,
+				69698FAA873BB6E235CB0685 /* HomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,7 +531,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.endura.EnduraApp.Endura;
+				PRODUCT_BUNDLE_IDENTIFIER = com.endura.EnduraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -557,7 +561,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.endura.EnduraApp.Endura;
+				PRODUCT_BUNDLE_IDENTIFIER = com.endura.EnduraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

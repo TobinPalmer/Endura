@@ -14,12 +14,13 @@ struct AuthUtils {
 
     public static func initAuth() {
         if (Auth.auth().currentUser !== nil) {
-            //go to home
-//            NavigationUtils.goToHome()
+            NavigationModel.instance.currentView = .HOME
         }
+
         Auth.auth().addStateDidChangeListener { (auth, user) in
             if let user = user {
                 print(user)
+                NavigationModel.instance.currentView = .HOME
                 //go to home
             } else {
                 //go to login

@@ -11,16 +11,18 @@ class Info: ObservableObject {
 }
 
 struct LoginView: View {
+    @EnvironmentObject var navigation: NavigationModel;
     @ObservedObject var info = Info()
 
     private func login() {
         AuthUtils.loginWithEmail(info.email, info.password)
+        navigation.currentView = .HOME
     }
 
     var body: some View {
         ZStack {
             Color.white
-                .edgesIgnoringSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
             VStack {
                 Text("Login Form")
                 TextField("Email", text: $info.email)
@@ -31,7 +33,7 @@ struct LoginView: View {
                     Text("Login")
                 }
             }
-                .frame(width: 300, height: 300)
+                    .frame(width: 300, height: 300)
         }
     }
 }
