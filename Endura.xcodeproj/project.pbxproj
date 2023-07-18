@@ -25,12 +25,13 @@
 		026042F62A62E36300F4AF88 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F52A62E36300F4AF88 /* FirebaseFunctions */; };
 		026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */; };
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
+		6969806A4CC90CB13D38ABAE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696981801C5068A4710C0DA2 /* Database.swift */; };
 		696983C807BF764F750FB09D /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989B3ACC5846606EE527B /* Auth.swift */; };
 		696984F1B1F8F623157F875A /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982663142A11EE8E111D5 /* Users.swift */; };
 		69698ABD6831384C8A8992BA /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969874664193C94C38D7676 /* Navigation.swift */; };
 		69698C7897FE8F624876FE76 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D02516F70CDB3E69B2C /* LoginView.swift */; };
 		69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986EDB3F87EE749147042 /* AppViewModel.swift */; };
-		69698FAA873BB6E235CB0685 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* HomeView.swift */; };
+		69698FAA873BB6E235CB0685 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* Dashboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,8 +63,9 @@
 		026042D32A62E27C00F4AF88 /* EnduraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EnduraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		026042D72A62E27C00F4AF88 /* EnduraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITests.swift; sourceTree = "<group>"; };
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		696981801C5068A4710C0DA2 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		696982663142A11EE8E111D5 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
-		696984C1906C8DA101564F11 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		696984C1906C8DA101564F11 /* Dashboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 		696986EDB3F87EE749147042 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6969874664193C94C38D7676 /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		696989B3ACC5846606EE527B /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
@@ -186,7 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				69698D02516F70CDB3E69B2C /* LoginView.swift */,
-				696984C1906C8DA101564F11 /* HomeView.swift */,
+				696984C1906C8DA101564F11 /* Dashboard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -196,6 +198,7 @@
 			children = (
 				696989B3ACC5846606EE527B /* Auth.swift */,
 				696982663142A11EE8E111D5 /* Users.swift */,
+				696981801C5068A4710C0DA2 /* Database.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -353,7 +356,8 @@
 				696984F1B1F8F623157F875A /* Users.swift in Sources */,
 				69698ABD6831384C8A8992BA /* Navigation.swift in Sources */,
 				69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */,
-				69698FAA873BB6E235CB0685 /* HomeView.swift in Sources */,
+				69698FAA873BB6E235CB0685 /* Dashboard.swift in Sources */,
+				6969806A4CC90CB13D38ABAE /* Database.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +432,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				"EXCLUDED_ARCHS[sdk=*]" = x86_64;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -523,8 +528,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -553,8 +557,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -655,7 +658,7 @@
 				026042DC2A62E27C00F4AF88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		026042DD2A62E27C00F4AF88 /* Build configuration list for PBXNativeTarget "Endura" */ = {
 			isa = XCConfigurationList;
@@ -664,7 +667,7 @@
 				026042DF2A62E27C00F4AF88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		026042E02A62E27C00F4AF88 /* Build configuration list for PBXNativeTarget "EnduraTests" */ = {
 			isa = XCConfigurationList;
@@ -673,7 +676,7 @@
 				026042E22A62E27C00F4AF88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		026042E32A62E27C00F4AF88 /* Build configuration list for PBXNativeTarget "EnduraUITests" */ = {
 			isa = XCConfigurationList;
@@ -682,7 +685,7 @@
 				026042E52A62E27C00F4AF88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

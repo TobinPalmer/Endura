@@ -9,13 +9,16 @@ enum PageView {
     case LOGIN
 }
 
-class NavigationModel: ObservableObject {
+final class NavigationModel: ObservableObject {
     class var instance: NavigationModel {
         struct Singleton {
             static let instance = NavigationModel()
         }
 
         return Singleton.instance
+    }
+
+    private init() {
     }
 
     @Published var currentView: PageView = .LOGIN

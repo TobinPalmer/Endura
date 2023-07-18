@@ -6,19 +6,30 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-public protocol ActiveUserData: UserData {
-    var email: String { get }
-    var birthDate: String { get }
+//public protocol ActiveUserData: UserData {
+//    var email: String { get }
+//    var birthDate: String { get }
+//}
+
+struct UserData {
+    var id: String
+    var name: String
+    var firstName: String
+    var lastName: String
+    var profilePicture: String
+    var friends: [String]
 }
 
-public protocol UserData {
-    var id: String { get }
-    var name: String { get }
-    var firstName: String { get }
-    var lastName: String { get }
-    var profilePicture: String { get }
-    var profilePage: String { get }
-    var friends: [String] { get }
+struct UserDocument: Codable {
+    var firstName: String
+    var lastName: String
+    var friends: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case firstName
+        case lastName
+        case friends
+    }
 }
 
 struct UsersUtil {

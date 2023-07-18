@@ -6,7 +6,7 @@ import Foundation
 import FirebaseAuth
 
 struct AuthUtils {
-    private var currentUser: User? {
+    public var currentUser: User? {
         get {
             Auth.auth().currentUser
         }
@@ -31,10 +31,20 @@ struct AuthUtils {
     public static func loginWithEmail(_ email: String, _ password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let user = user {
-                // Redirect to home page
+                print(user)
+                NavigationModel.instance.currentView = .HOME
             } else {
                 print("Error logging in: \(String(describing: error))")
             }
+        }
+    }
+
+    public static func logout() {
+        do {
+            try Auth.auth().signOut()
+            NavigationModel.instance.currentView = .LOGIN
+        } catch {
+            print("Error logging out: \(error)")
         }
     }
 }
