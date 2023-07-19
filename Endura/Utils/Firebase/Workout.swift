@@ -13,7 +13,7 @@ public struct WorkoutUtils {
     public static func getActivity(limitTo: Int = 5) async throws -> [Activity] {
         var activities: [Activity] = []
 
-        let querySnapshot = try await Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: 5).getDocuments()
+        let querySnapshot = try await Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: limitTo).getDocuments()
 
         for document in querySnapshot.documents {
             do {
