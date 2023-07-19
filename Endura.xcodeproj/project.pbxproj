@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0202FC532A677EA700D28518 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0202FC522A677EA700D28518 /* Workout.swift */; };
 		02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02352F932A6595B200BB68AF /* GoogleService-Info.plist */; };
 		026042BD2A62E27900F4AF88 /* EnduraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026042BC2A62E27900F4AF88 /* EnduraApp.swift */; };
 		026042BF2A62E27900F4AF88 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026042BE2A62E27900F4AF88 /* ContentView.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0202FC522A677EA700D28518 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
 		02352F932A6595B200BB68AF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		026042B92A62E27900F4AF88 /* Endura.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Endura.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		026042BC2A62E27900F4AF88 /* EnduraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraApp.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				696989B3ACC5846606EE527B /* Auth.swift */,
 				696982663142A11EE8E111D5 /* Users.swift */,
 				696981801C5068A4710C0DA2 /* Database.swift */,
+				0202FC522A677EA700D28518 /* Workout.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */,
 				69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */,
 				6969806A4CC90CB13D38ABAE /* Database.swift in Sources */,
+				0202FC532A677EA700D28518 /* Workout.swift in Sources */,
 				6969869F3EB16BBBEE6D126E /* HomeView.swift in Sources */,
 				696983C2448098B242747B5C /* ProfileView.swift in Sources */,
 				69698E351EF5E934C5440F86 /* TrainingView.swift in Sources */,

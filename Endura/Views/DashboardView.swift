@@ -17,25 +17,16 @@ struct DashboardView: View {
                 Text("\(activity.distance)")
             }
         })
-            .onAppear {
-                getActivities()
+            .task {
+                await getActivities()
             }
     }
 
-    func getActivities() {
-        Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: 5).getDocuments { (querySnapshot, error) in
-            if let snapshotDocuments = querySnapshot?.documents {
-                for document in snapshotDocuments {
-                    do {
-                        let activityDocument = try document.data(as: ActivityDocument.self)
-                        let activity = Activity(
-                            userId: activityDocument.userId, time: activityDocument.time, duration: activityDocument.duration, distance: activityDocument.distance, location: activityDocument.location, likes: [], comments: [])
-                        activities.append(activity)
-                    } catch let error as NSError {
-                        print("error: \(error.localizedDescription)")
-                    }
-                }
-            }
+    func getActivities() async {
+        do {
+            self.activities = try await WorkoutUtils.getActivity()
+        } catch {
+            print("Activity error: \(error)")
         }
     }
 }
