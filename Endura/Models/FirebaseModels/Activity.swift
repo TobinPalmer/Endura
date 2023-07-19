@@ -28,7 +28,7 @@ public struct Activity: Hashable {
     let comments: [ActivityComment]
 }
 
-struct ActivityDocument: Codable {
+public struct ActivityDocument: Codable {
     var userId: String
     var time: Date
     var duration: Double
