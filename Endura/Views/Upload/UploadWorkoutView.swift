@@ -6,9 +6,16 @@ import Foundation
 import SwiftUI
 import HealthKit
 
-class UploadsViewModel: ObservableObject {
+@MainActor class UploadsViewModel: ObservableObject {
     @Published var uploads: [HKWorkout?] = []
+
+    public func setWorkouts(workouts: [HKWorkout?]) {
+        DispatchQueue.main.async {
+            self.uploads = workouts
+        }
+    }
 }
+
 
 struct UploadWorkoutView: View {
     @EnvironmentObject var navigation: NavigationModel
@@ -17,23 +24,15 @@ struct UploadWorkoutView: View {
     @StateObject var uploadsViewModel = UploadsViewModel()
 
     var body: some View {
-//        NavigationLink(destination: UploadCustomWorkoutView()) {
-//            HStack {
-//                Image(systemName: "pencil")
-//                Text("Manual Workout")
-//            }
-//        }
-//            .frame(maxHeight: 30)
-
         List(uploadsViewModel.uploads, id: \.self) { activity in
             let formatter = DateFormatter()
             if let activity = activity {
-                let workoutDate = activity.startDate.formatted()
-                let workoutTime = formatter.string(from: activity.startDate)
+//                let workoutDate = activity.startDate.formatted()
+//                let workoutTime = formatter.string(from: activity.startDate)
                 let workoutDuration = activity.duration
                 let workoutDistance = activity.totalDistance?.doubleValue(for: .meter())
                 let workoutDurationFormatted = TimeUtils.secondsToFormattedTime(seconds: Int(workoutDuration))
-                let workoutType = activity.workoutActivityType.name
+//                let workoutType = activity.workoutActivityType.name
 //                var values: [[Date: (Double, Double)]?] = []
 
                 Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")
@@ -70,7 +69,8 @@ struct UploadWorkoutView: View {
                 print("NOT Using cached workouts")
                 switch result {
                 case .success(let workouts):
-                    uploadsViewModel.uploads = workouts
+                    uploadsViewModel.setWorkouts(workouts: workouts)
+//                    uploadsViewModel.uploads = workouts
                     print("cool", uploadsViewModel.uploads)
                 case .failure(let error):
                     print("Error: \(error)")
