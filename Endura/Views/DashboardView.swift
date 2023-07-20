@@ -10,47 +10,43 @@ import FirebaseAuth
 import HealthKit
 
 struct DashboardView: View {
+    @EnvironmentObject var navigation: NavigationModel
     @State private var activities: [Activity] = []
     @State private var uploads: [HKWorkout?] = []
 
     var body: some View {
-        VStack(content: {
-//            List(activities, id: \.self) { activity in
-//                Text("\(activity.distance)")
-//            }
-//            Text(String(describing: uploads))
-            List($uploads, id: \.self) { activity in
-                Text(String(describing: activity))
-            }
-        })
-            .onAppear {
-                getActivities()
-            }
-    }
-
-    func getActivities() {
-        HealthKitUtils.getListOfWorkouts(limitTo: 100) { result in
-            switch result {
-            case .success(let workouts):
-                print("success")
-                self.uploads = workouts
-            case .failure(let error):
-                print("Error: \(error)")
-            }
+        VStack {
+            Text("Content")
         }
-    }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink(destination: UploadWorkoutView()) {
+                        Image(systemName: "plus")
+                            .font(.title)
+                            .foregroundColor(.orange)
+                    }
+                        .buttonStyle(PlainButtonStyle())
+                }
+            }
 
-    func getListOfWorkouts() async {
-        do {
-            self.activities = try await WorkoutUtils.getActivity()
-        } catch {
-            print("Activity error: \(error)")
-        }
+        //        VStack {
+        //            HStack {
+        //                NavigationLink(destination: UploadWorkoutView()) {
+        //                    Image(systemName: "plus")
+        //                        .font(.title)
+        //                        .fontWeight(.bold)
+        //                }
+        //                    .padding(.trailing, 20);
+        //            }
+        //                .frame(height: 50)
+        //            Text("content")
+        //            Spacer()
+        //        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(NavigationModel.instance)
     }
 }

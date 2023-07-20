@@ -8,7 +8,9 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         TabView {
-            DashboardView()
+            NavigationView {
+                DashboardView()
+            }
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
@@ -19,7 +21,7 @@ struct HomeView: View {
                     Image(systemName: "calendar")
                     Text("Training")
                 }
-            
+
             ProfileView()
                 .tabItem {
                     Image(systemName: "person.fill")

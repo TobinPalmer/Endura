@@ -13,13 +13,11 @@ struct ContentView: View {
     @EnvironmentObject var navigation: NavigationModel;
 
     var body: some View {
-        NavigationView {
-            switch (navigation.currentView) {
-            case .LOGIN:
-                LoginView()
-            case .HOME:
-                HomeView()
-            }
+        switch (navigation.currentView) {
+        case .LOGIN:
+            LoginView()
+        case .HOME:
+            HomeView()
         }
     }
 }

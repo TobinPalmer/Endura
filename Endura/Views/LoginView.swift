@@ -24,7 +24,7 @@ struct LoginView: View {
             Color.white
                     .edgesIgnoringSafeArea(.all)
             VStack {
-                Text("Login Form")
+                Text("Login Form 123")
                 TextField("Email", text: $info.email)
                 TextField("Password", text: $info.password)
                 Button {
