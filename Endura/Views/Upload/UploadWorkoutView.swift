@@ -16,8 +16,16 @@ struct UploadWorkoutView: View {
     @ObservedObject var uploadsViewModel = UploadsViewModel()
 
     var body: some View {
-        Text("Upload Workout")
-            .padding(.horizontal, 15)
+//        Text("Upload Workout")
+//            .padding(.horizontal, 15)
+
+
+        NavigationLink(destination: UploadCustomWorkoutView()) {
+            HStack {
+                Image(systemName: "pencil")
+                Text("Manual Workout")
+            }
+        }
 
         List(uploadsViewModel.uploads, id: \.self) { activity in
             let formatter = DateFormatter()
@@ -30,6 +38,9 @@ struct UploadWorkoutView: View {
                 let workoutType = activity.workoutActivityType.name ?? ""
 //                var values: [[Date: (Double, Double)]?] = []
                 Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")
+                NavigationLink(destination: Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")) {
+                    Text(String(describing: workoutDistance))
+                }
             } else {
                 Text("No activity")
             }
