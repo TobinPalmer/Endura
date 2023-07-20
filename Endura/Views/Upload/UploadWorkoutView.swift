@@ -16,12 +16,11 @@ import HealthKit
     }
 }
 
-
 struct UploadWorkoutView: View {
     @EnvironmentObject var navigation: NavigationModel
     @State private var activities: [Activity] = []
 
-    @StateObject var uploadsViewModel = UploadsViewModel()
+    @ObservedObject var uploadsViewModel = UploadsViewModel()
 
     var body: some View {
         List(uploadsViewModel.uploads, id: \.self) { activity in
