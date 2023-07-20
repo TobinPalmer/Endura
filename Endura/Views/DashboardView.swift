@@ -23,9 +23,9 @@ struct DashboardView: View {
                     NavigationLink(destination: UploadWorkoutView()) {
                         Image(systemName: "plus")
                             .font(.title)
-                            .foregroundColor(.orange)
+//                            .foregroundColor(.orange)
                     }
-                        .buttonStyle(PlainButtonStyle())
+//                        .buttonStyle(PlainButtonStyle())
                 }
             }
 
