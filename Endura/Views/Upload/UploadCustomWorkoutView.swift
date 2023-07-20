@@ -11,11 +11,16 @@ struct UploadCustomWorkoutView: View {
     @State private var activities: [Activity] = []
 
     var body: some View {
-        NavigationLink(destination: UploadWorkoutView()) {
-            HStack {
-                Image(systemName: "applewatch")
-                Text("Normal Workout")
-            }
-        }
+        Text("Manual Upload")
+//        NavigationLink(destination: UploadWorkoutView()) {
+//            VStack(alignment: .center) {
+//                HStack {
+//                    Image(systemName: "pencil")
+//                    Text("Upload from health")
+//                }
+//            }
+//                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .top)
+//        }
     }
+
 }

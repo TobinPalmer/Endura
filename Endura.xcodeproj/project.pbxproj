@@ -37,6 +37,7 @@
 		696989667077D098FD05A1C6 /* HealthKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698B315EDC140451CA74A5 /* HealthKitUtils.swift */; };
 		69698A7D9AF715CD1B7108FD /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969809898A0099B126A1596 /* TimeUtils.swift */; };
 		69698ABD6831384C8A8992BA /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969874664193C94C38D7676 /* Navigation.swift */; };
+		69698AFD558796F80D1A9385 /* UploadWorkoutsFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982A720404C6B50029098 /* UploadWorkoutsFrameView.swift */; };
 		69698B2BDA9046D639E2A0E6 /* UploadWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969849C3C4EA502A9EE3634 /* UploadWorkoutView.swift */; };
 		69698C7897FE8F624876FE76 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D02516F70CDB3E69B2C /* LoginView.swift */; };
 		69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986EDB3F87EE749147042 /* AppViewModel.swift */; };
@@ -80,6 +81,7 @@
 		696981801C5068A4710C0DA2 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6969824200418FF34705EE6A /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = Endura/HomeView.swift; sourceTree = SOURCE_ROOT; };
 		696982663142A11EE8E111D5 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		696982A720404C6B50029098 /* UploadWorkoutsFrameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutsFrameView.swift; sourceTree = "<group>"; };
 		696984366AC3E4F224C26D34 /* UploadCustomWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadCustomWorkoutView.swift; sourceTree = "<group>"; };
 		6969849C3C4EA502A9EE3634 /* UploadWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView.swift; sourceTree = "<group>"; };
 		696984C1906C8DA101564F11 /* DashboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 			children = (
 				6969849C3C4EA502A9EE3634 /* UploadWorkoutView.swift */,
 				696984366AC3E4F224C26D34 /* UploadCustomWorkoutView.swift */,
+				696982A720404C6B50029098 /* UploadWorkoutsFrameView.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				69698A7D9AF715CD1B7108FD /* TimeUtils.swift in Sources */,
 				69698B2BDA9046D639E2A0E6 /* UploadWorkoutView.swift in Sources */,
 				69698671DBDF2B136019BAA8 /* UploadCustomWorkoutView.swift in Sources */,
+				69698AFD558796F80D1A9385 /* UploadWorkoutsFrameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

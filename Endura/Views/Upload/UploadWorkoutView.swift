@@ -13,30 +13,29 @@ class UploadsViewModel: ObservableObject {
 struct UploadWorkoutView: View {
     @EnvironmentObject var navigation: NavigationModel
     @State private var activities: [Activity] = []
-    @ObservedObject var uploadsViewModel = UploadsViewModel()
+
+    @StateObject var uploadsViewModel = UploadsViewModel()
 
     var body: some View {
-//        Text("Upload Workout")
-//            .padding(.horizontal, 15)
-
-
-        NavigationLink(destination: UploadCustomWorkoutView()) {
-            HStack {
-                Image(systemName: "pencil")
-                Text("Manual Workout")
-            }
-        }
+//        NavigationLink(destination: UploadCustomWorkoutView()) {
+//            HStack {
+//                Image(systemName: "pencil")
+//                Text("Manual Workout")
+//            }
+//        }
+//            .frame(maxHeight: 30)
 
         List(uploadsViewModel.uploads, id: \.self) { activity in
             let formatter = DateFormatter()
             if let activity = activity {
-                let workoutDate = activity.startDate.formatted() ?? ""
-                let workoutTime = formatter.string(from: activity.startDate ?? Date())
-                let workoutDuration = activity.duration ?? 0.0
+                let workoutDate = activity.startDate.formatted()
+                let workoutTime = formatter.string(from: activity.startDate)
+                let workoutDuration = activity.duration
                 let workoutDistance = activity.totalDistance?.doubleValue(for: .meter())
                 let workoutDurationFormatted = TimeUtils.secondsToFormattedTime(seconds: Int(workoutDuration))
-                let workoutType = activity.workoutActivityType.name ?? ""
+                let workoutType = activity.workoutActivityType.name
 //                var values: [[Date: (Double, Double)]?] = []
+
                 Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")
                 NavigationLink(destination: Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")) {
                     Text(String(describing: workoutDistance))

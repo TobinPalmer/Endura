@@ -20,7 +20,7 @@ struct DashboardView: View {
         }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    NavigationLink(destination: UploadWorkoutView()) {
+                    NavigationLink(destination: UploadWorkoutsFrameView()) {
                         Image(systemName: "plus")
                             .font(.title)
 //                            .foregroundColor(.orange)
