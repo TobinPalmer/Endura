@@ -20,7 +20,7 @@ public struct WorkoutUtils {
             do {
                 let activityDocument = try document.data(as: ActivityDocument.self)
                 let activity = ActivityData(
-                        userId: activityDocument.userId, time: activityDocument.time, duration: activityDocument.duration, distance: activityDocument.distance, location: activityDocument.location, likes: [], comments: [])
+                        uid: activityDocument.userId, time: activityDocument.time, duration: activityDocument.duration, distance: activityDocument.distance, location: activityDocument.location, likes: [], comments: [])
                 activities.append(activity)
             } catch let error as NSError {
                 print("error: \(error.localizedDescription)")

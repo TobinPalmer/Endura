@@ -6,7 +6,7 @@ import Foundation
 import FirebaseFirestore
 
 public struct ActivityComment: Codable {
-    let userId: String
+    let uid: String
     let time: Date
     let message: String
 }
@@ -17,7 +17,7 @@ public struct Location: Codable {
 }
 
 public struct ActivityData {
-    let userId: String
+    let uid: String
     let time: Date
     let duration: Double
     let distance: Double

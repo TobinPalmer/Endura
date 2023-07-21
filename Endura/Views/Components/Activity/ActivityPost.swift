@@ -14,6 +14,7 @@ struct ActivityPost: View {
 
     var body: some View {
         VStack {
+            ProfileImage(uid: activity.uid)
             Text("\(activity.distance)")
         }
     }

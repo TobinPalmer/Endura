@@ -24,7 +24,7 @@ final class DashboardViewModel: ObservableObject {
                     do {
                         let data = try diff.document.data(as: ActivityDocument.self)
                         let activity = ActivityData(
-                                userId: data.userId,
+                                uid: data.userId,
                                 time: data.time,
                                 duration: data.duration,
                                 distance: data.distance,
