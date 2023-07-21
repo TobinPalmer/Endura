@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import CoreLocation
 import HealthKit
 
 public struct HealthKitUtils {
@@ -23,7 +24,69 @@ public struct HealthKitUtils {
         }
     }
 
-    public static func getHeartRateGraph(for workout: HKWorkout, completion: @escaping (Result<[[Date: (Double, Double)]?], Error>) -> Void) {
+    public static func getLocationData(for route: HKWorkoutRoute) async -> [CLLocation] {
+        let locations = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
+            var allLocations: [CLLocation] = []
+            // Create the route query.
+            let query = HKWorkoutRouteQuery(route: route) { (query, locationsOrNil, done, errorOrNil) in
+                if let error = errorOrNil {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                guard let currentLocationBatch = locationsOrNil else {
+                    fatalError("*** Invalid State: This can only fail if there was an error. ***")
+                }
+                allLocations.append(contentsOf: currentLocationBatch)
+                if done {
+                    continuation.resume(returning: allLocations)
+                }
+            }
+            healthStore.execute(query)
+        }
+        return locations
+    }
+
+//    public static func calculatePace(for route: HKWorkoutRoute) async -> [Double] {
+//        let locations = await getLocationData(for: route)
+//        var paces = [Double]()
+//        for i in 1..<locations.count {
+//            let previousLocation = locations[i - 1]
+//            let currentLocation = locations[i]
+//            let timeDifference = currentLocation.timestamp.timeIntervalSince(previousLocation.timestamp)
+//            let distance = currentLocation.distance(from: previousLocation)
+//            let distanceMiles = distance * 0.000621371
+//            let pace = (timeDifference / 60) / distanceMiles
+//            paces.append(pace)
+//        }
+//
+//        return paces
+//    }
+
+
+    public static func getWorkoutRoute(workout: HKWorkout, completion: @escaping ([HKWorkoutRoute]?, Error?) -> Void) {
+        let predicate = HKQuery.predicateForObjects(from: workout)
+        let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+
+            guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
+                completion(nil, nil)
+                return
+            }
+
+            completion(workoutRoutes, nil)
+        }
+
+        healthStore.execute(query)
+    }
+
+
+    public static func getHeartRateGraph(
+        for workout: HKWorkout,
+        completion: @escaping (Result<[[Date: (Double, Double)]?], Error>) -> Void
+    ) {
         let interval = DateComponents(second: Int(workout.duration) / 2)
 
         let quantityType = HKObjectType.quantityType(
@@ -74,7 +137,9 @@ public struct HealthKitUtils {
         healthStore.execute(query)
     }
 
-    public static func getListOfWorkouts(limitTo: Int = 1, completion: @escaping (Result<[HKWorkout?], Error>) -> Void) {
+    public static func getListOfWorkouts(
+        limitTo: Int = 1, completion: @escaping (Result<[HKWorkout?], Error>) -> Void
+    ) {
         let workoutType = HKObjectType.workoutType()
         let query = HKSampleQuery(
             sampleType: workoutType,

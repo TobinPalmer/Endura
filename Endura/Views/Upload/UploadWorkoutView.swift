@@ -34,6 +34,35 @@ struct UploadWorkoutView: View {
 //                let workoutType = activity.workoutActivityType.name
 //                var values: [[Date: (Double, Double)]?] = []
 
+                let route = HealthKitUtils.getWorkoutRoute(workout: activity) { routes, error in
+                    guard error == nil else {
+                        print("Error getting route", error)
+                        return
+                    }
+
+                    guard let routes = routes else {
+                        print("No routes")
+                        return
+                    }
+
+                    print("Getting locations")
+                    Task {
+                        routes.forEach({ route in
+                            Task {
+                                let locations = await HealthKitUtils.getLocationData(for: route)
+                                locations.forEach({ location in
+                                    print(TimeUtils.convertMpsToMpm(metersPerSec: location.speed))
+                                })
+                            }
+                        })
+
+//                        let locations = await HealthKitUtils.getLocationData(for: routes[0])
+//                        let pace = await HealthKitUtils.calculatePace(for: routes[0])
+//                        let firstLocation = timeutils.convertmpstompm(meterspersec: locations[0].speed)
+//                        print("Locations: \(firstLocation)")
+                    }
+                }
+
                 Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")
                 NavigationLink(destination: Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")) {
                     Text(String(describing: workoutDistance))
@@ -64,7 +93,7 @@ struct UploadWorkoutView: View {
         print("Testing", uploadsViewModel.uploads)
 
         guard uploadsViewModel.uploads.isEmpty == false else {
-            HealthKitUtils.getListOfWorkouts(limitTo: 10000) { result in
+            HealthKitUtils.getListOfWorkouts(limitTo: 1) { result in
                 print("NOT Using cached workouts")
                 switch result {
                 case .success(let workouts):
