@@ -8,6 +8,10 @@ import HealthKit
 import MapKit
 import Charts
 
+fileprivate enum Errors: Error {
+    case noWorkout
+}
+
 fileprivate final class PreviewWorkoutModel: ObservableObject {
     @Published final private var locations: [CLLocation] = []
     @Published final fileprivate var heartRateGraph: [HeartRateGraph] = []
@@ -15,13 +19,9 @@ fileprivate final class PreviewWorkoutModel: ObservableObject {
     final fileprivate func getHeartRateGraph(for workout: HKWorkout) async throws -> () {
         do {
             let graph = try await HealthKitUtils.getHeartRateGraph(for: workout)
-//            self.heartRateGraph = graph.compactMap({ $0 })
-//            return graph.compactMap({ $0 })
-            print("got graph \(graph)")
             heartRateGraph = graph
         } catch {
-            throw error
-//            print("Error getting heart rate graph")
+            throw Errors.noWorkout
         }
     }
 }
@@ -66,24 +66,15 @@ public struct PreviewWorkoutView: View {
                 )
             }
 
-
-//            let values = array.map {
-//                $0.1
-//            }
-
-//            List(flattened, id: \.0) { item in
-//                Text("\(item.0) \(String(describing: item.1))")
-//            }
         }
             .task {
                 do {
                     try await previewWorkoutModel.getHeartRateGraph(for: workout)
+                } catch Errors.noWorkout {
+                    print("No workout to get heart rate graph")
                 } catch {
                     print("Error getting heart rate graph")
                 }
             }
-//            .task {
-//                await getLocations()
-//            }
     }
 }
