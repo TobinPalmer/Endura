@@ -34,9 +34,20 @@ struct UploadWorkoutView: View {
 //                let workoutType = activity.workoutActivityType.name
 //                var values: [[Date: (Double, Double)]?] = []
 
-                let route = HealthKitUtils.getWorkoutRoute(workout: activity) { routes, error in
+                let _ = Task {
+                    do {
+                        let graph = try await HealthKitUtils.getHeartRateGraph(for: activity)
+                        graph.flatMap({ $0 }).forEach({ (date, value) in
+                            print(date, value)
+                        })
+                    } catch {
+                        print("Error getting heart rate graph")
+                    }
+                }
+
+                let _ = HealthKitUtils.getWorkoutRoute(workout: activity) { routes, error in
                     guard error == nil else {
-                        print("Error getting route", error)
+                        print("Error getting route", String(describing: error))
                         return
                     }
 
@@ -55,11 +66,6 @@ struct UploadWorkoutView: View {
                                 })
                             }
                         })
-
-//                        let locations = await HealthKitUtils.getLocationData(for: routes[0])
-//                        let pace = await HealthKitUtils.calculatePace(for: routes[0])
-//                        let firstLocation = timeutils.convertmpstompm(meterspersec: locations[0].speed)
-//                        print("Locations: \(firstLocation)")
                     }
                 }
 
@@ -70,39 +76,21 @@ struct UploadWorkoutView: View {
             } else {
                 Text("No activity")
             }
-
-//            let _ = HealthKitUtils.getHeartRateGraph(for: activity.wrappedValue!) { result in
-//                switch result {
-//                case .success(let graph):
-//                    print("It worked")
-//                    values = graph
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//
-//            Text(String(describing: values))
-//            Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")
         }
-            .onAppear {
-                getActivities()
+            .task {
+                await getActivities()
             }
     }
 
-    func getActivities() {
+    func getActivities() async {
         print("Testing", uploadsViewModel.uploads)
 
         guard uploadsViewModel.uploads.isEmpty == false else {
-            HealthKitUtils.getListOfWorkouts(limitTo: 1) { result in
-                print("NOT Using cached workouts")
-                switch result {
-                case .success(let workouts):
-                    uploadsViewModel.setWorkouts(workouts: workouts)
-//                    uploadsViewModel.uploads = workouts
-                    print("cool", uploadsViewModel.uploads)
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
+            do {
+                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 1)
+                uploadsViewModel.setWorkouts(workouts: workouts)
+            } catch {
+                print("Error: \(error)")
             }
             return
         }

@@ -27,7 +27,6 @@ public struct HealthKitUtils {
     public static func getLocationData(for route: HKWorkoutRoute) async -> [CLLocation] {
         let locations = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
             var allLocations: [CLLocation] = []
-            // Create the route query.
             let query = HKWorkoutRouteQuery(route: route) { (query, locationsOrNil, done, errorOrNil) in
                 if let error = errorOrNil {
                     continuation.resume(throwing: error)
@@ -45,23 +44,6 @@ public struct HealthKitUtils {
         }
         return locations
     }
-
-//    public static func calculatePace(for route: HKWorkoutRoute) async -> [Double] {
-//        let locations = await getLocationData(for: route)
-//        var paces = [Double]()
-//        for i in 1..<locations.count {
-//            let previousLocation = locations[i - 1]
-//            let currentLocation = locations[i]
-//            let timeDifference = currentLocation.timestamp.timeIntervalSince(previousLocation.timestamp)
-//            let distance = currentLocation.distance(from: previousLocation)
-//            let distanceMiles = distance * 0.000621371
-//            let pace = (timeDifference / 60) / distanceMiles
-//            paces.append(pace)
-//        }
-//
-//        return paces
-//    }
-
 
     public static func getWorkoutRoute(workout: HKWorkout, completion: @escaping ([HKWorkoutRoute]?, Error?) -> Void) {
         let predicate = HKQuery.predicateForObjects(from: workout)
@@ -82,81 +64,98 @@ public struct HealthKitUtils {
         healthStore.execute(query)
     }
 
+    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [[(Date, (Double, Double))]] {
+        let interval = createIntervalForWorkout(workout)
+        let query = try await createQueryForWorkout(workout, interval: interval)
 
-    public static func getHeartRateGraph(
-        for workout: HKWorkout,
-        completion: @escaping (Result<[[Date: (Double, Double)]?], Error>) -> Void
-    ) {
-        let interval = DateComponents(second: Int(workout.duration) / 2)
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[[(Date, (Double, Double))]], Error>) in
+            query.initialResultsHandler = { query, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compileDataFromResults(results, workout: workout)
+                    continuation.resume(returning: [data])
+                } else {
+                    continuation.resume(throwing: NSError(domain: "", code: -1, userInfo: nil)) // replace with a meaningful error
+                }
+            }
+            healthStore.execute(query)
+        }
+        return results
+    }
 
+    private static func createIntervalForWorkout(_ workout: HKWorkout) -> DateComponents {
+        DateComponents(second: Int(workout.duration) / 200)
+    }
+
+    private static func createQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async throws -> HKStatisticsCollectionQuery {
         let quantityType = HKObjectType.quantityType(
             forIdentifier: .heartRate
         )!
 
-        let query = HKStatisticsCollectionQuery(
+        return HKStatisticsCollectionQuery(
             quantityType: quantityType,
             quantitySamplePredicate: nil,
             options: [.discreteMax, .discreteMin],
             anchorDate: workout.startDate,
             intervalComponents: interval
         )
+    }
 
-        print("query", query)
+    private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [(Date, (Double, Double))] {
+        var weeklyData: [Date: (Double, Double)] = [:]
 
-        query.initialResultsHandler = { _, results, error in
-            var weeklyData: [Date: (Double, Double)] = [:]
-
-            guard let results = results else {
-                completion(.failure(error!))
-                return
+        results.enumerateStatistics(
+            from: workout.startDate,
+            to: workout.endDate
+        ) { statistics, _ in
+            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min")) {
+                weeklyData[statistics.startDate] = (minValue, maxValue)
             }
+        }
 
-            results.enumerateStatistics(
-                from: workout.startDate,
-                to: workout.endDate
-            ) { statistics, _ in
-                if let minValue = statistics.minimumQuantity() {
-                    if let maxValue = statistics.maximumQuantity() {
-                        let minHeartRate = minValue.doubleValue(
-                            for: HKUnit(from: "count/min")
-                        )
-                        let maxHeartRate = maxValue.doubleValue(
-                            for: HKUnit(from: "count/min")
-                        )
+        let data = [weeklyData]
 
-                        weeklyData[statistics.startDate] = (
-                            minHeartRate, maxHeartRate
-                        )
-                    }
+        let flattened = data.compactMap {
+            $0
+        }
+        let converted = flattened.map {
+            $0.map {
+                ($0.key, $0.value)
+            }
+        }
+
+        let combined = converted.flatMap {
+            $0
+        }
+
+        let sorted = combined.sorted {
+            $0.0 < $1.0
+        }
+
+        return sorted
+    }
+
+    public static func getListOfWorkouts(limitTo: Int = 1) async throws -> [HKWorkout?] {
+        let workoutType = HKObjectType.workoutType()
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: workoutType,
+                predicate: nil,
+                limit: limitTo,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
+            ) { (query, samples, error) in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let workouts = samples as? [HKWorkout?] {
+                    continuation.resume(returning: workouts)
+                } else {
+                    continuation.resume(returning: [])
                 }
             }
-
-            completion(.success([weeklyData]))
+            healthStore.execute(query)
         }
-
-        healthStore.execute(query)
     }
-
-    public static func getListOfWorkouts(
-        limitTo: Int = 1, completion: @escaping (Result<[HKWorkout?], Error>) -> Void
-    ) {
-        let workoutType = HKObjectType.workoutType()
-        let query = HKSampleQuery(
-            sampleType: workoutType,
-            predicate: nil,
-            limit: limitTo,
-            sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
-        ) { (query, samples, error) in
-            if let error = error {
-                completion(.failure(error))
-            } else if let workouts = samples as? [HKWorkout?] {
-                completion(.success(workouts))
-            } else {
-                completion(.success([]))
-            }
-        }
-
-        healthStore.execute(query)
-    }
-
 }

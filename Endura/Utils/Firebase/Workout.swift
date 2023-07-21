@@ -9,6 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+// Endura workouts, not HealthKit workouts
 public struct WorkoutUtils {
     public static func getActivity(limitTo: Int = 5) async throws -> [Activity] {
         var activities: [Activity] = []
