@@ -111,7 +111,7 @@ public struct UploadWorkoutView: View {
     func getActivities() async {
         guard uploadsViewModel.uploads.isEmpty == false else {
             do {
-                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 1)
+                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 100)
                 uploadsViewModel.setWorkouts(workouts: workouts)
             } catch {
                 print("Error: \(error)")
