@@ -6,9 +6,9 @@ import Foundation
 import SwiftUI
 
 struct ActivityPost: View {
-    private var activity: Activity
+    private var activity: ActivityData
 
-    init(activity: Activity) {
+    init(activity: ActivityData) {
         self.activity = activity
     }
 

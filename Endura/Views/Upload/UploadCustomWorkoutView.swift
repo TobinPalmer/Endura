@@ -8,7 +8,7 @@ import HealthKit
 
 public struct UploadCustomWorkoutView: View {
     @EnvironmentObject private var navigation: NavigationModel
-    @State private var activities: [Activity] = []
+    @State private var activities: [ActivityData] = []
 
     public var body: some View {
         Text("Manual Upload")

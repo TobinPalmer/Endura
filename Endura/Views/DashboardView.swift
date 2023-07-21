@@ -10,7 +10,7 @@ import FirebaseAuth
 import HealthKit
 
 final class DashboardViewModel: ObservableObject {
-    @Published var activities: [String: Activity] = [:]
+    @Published var activities: [String: ActivityData] = [:]
 
     init() {
         Firestore.firestore().collection("activities").order(by: "time").limit(to: 5).addSnapshotListener { querySnapshot, error in
@@ -23,8 +23,7 @@ final class DashboardViewModel: ObservableObject {
                 if (diff.type == .added || diff.type == .modified) {
                     do {
                         let data = try diff.document.data(as: ActivityDocument.self)
-
-                        let activity = Activity(
+                        let activity = ActivityData(
                                 userId: data.userId,
                                 time: data.time,
                                 duration: data.duration,
@@ -51,7 +50,6 @@ struct DashboardView: View {
     var body: some View {
         VStack {
             ScrollView(.vertical) {
-                Text("Activities \(viewModel.activities.count)")
                 if (!viewModel.activities.isEmpty) {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
                         ForEach(viewModel.activities.keys.sorted(by: >), id: \.self) { key in

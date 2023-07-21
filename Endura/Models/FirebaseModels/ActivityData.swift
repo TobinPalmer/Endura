@@ -2,23 +2,21 @@
 // Created by Tobin Palmer on 7/17/23.
 //
 
-typealias HashCode = Codable & Hashable
-
 import Foundation
 import FirebaseFirestore
 
-public struct ActivityComment: HashCode {
+public struct ActivityComment: Codable {
     let userId: String
     let time: Date
     let message: String
 }
 
-public struct Location: HashCode {
+public struct Location: Codable {
     let latitude: Double
     let longitude: Double
 }
 
-public struct Activity {
+public struct ActivityData {
     let userId: String
     let time: Date
     let duration: Double
