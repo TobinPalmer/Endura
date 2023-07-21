@@ -27,6 +27,7 @@
 		026042F62A62E36300F4AF88 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F52A62E36300F4AF88 /* FirebaseFunctions */; };
 		026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */; };
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
+		17CC668261B0BC82E6EEDDBA /* ActivityPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69F5F51AE211727A3343 /* ActivityPost.swift */; };
 		6969806A4CC90CB13D38ABAE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696981801C5068A4710C0DA2 /* Database.swift */; };
 		6969826CF3BCDFA16EC0B2C2 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969870866179CC66A7558FB /* Activity.swift */; };
 		696983C2448098B242747B5C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985A05E4D25C066BD24F3 /* ProfileView.swift */; };
@@ -79,6 +80,7 @@
 		026042D32A62E27C00F4AF88 /* EnduraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EnduraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		026042D72A62E27C00F4AF88 /* EnduraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITests.swift; sourceTree = "<group>"; };
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		17CC69F5F51AE211727A3343 /* ActivityPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPost.swift; sourceTree = "<group>"; };
 		6969809898A0099B126A1596 /* TimeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		696981801C5068A4710C0DA2 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6969824200418FF34705EE6A /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = Endura/HomeView.swift; sourceTree = SOURCE_ROOT; };
@@ -204,6 +206,22 @@
 			path = EnduraUITests;
 			sourceTree = "<group>";
 		};
+		17CC6751CEA8F4205A39FCF7 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				17CC6C78A4FBDBC025182646 /* Activity */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		17CC6C78A4FBDBC025182646 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				17CC69F5F51AE211727A3343 /* ActivityPost.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
 		69698295434F07B0A3B70B02 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,6 +260,7 @@
 				696985A05E4D25C066BD24F3 /* ProfileView.swift */,
 				69698F375B8431109FFB3F98 /* TrainingView.swift */,
 				69698E57D522B9890EAC81D4 /* Upload */,
+				17CC6751CEA8F4205A39FCF7 /* Components */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -444,6 +463,7 @@
 				69698AFD558796F80D1A9385 /* UploadWorkoutsFrameView.swift in Sources */,
 				6969893318E9C58859CCA2A0 /* EnduraWorkout.swift in Sources */,
 				6969874C7C01175EDE8DC3F7 /* PreviewWorkoutView.swift in Sources */,
+				17CC668261B0BC82E6EEDDBA /* ActivityPost.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

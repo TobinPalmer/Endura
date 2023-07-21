@@ -9,44 +9,52 @@ import FirebaseFirestoreSwift
 import FirebaseAuth
 import HealthKit
 
-struct DashboardView: View {
-    @EnvironmentObject var navigation: NavigationModel
-    @State private var activities: [Activity] = []
-    @State private var uploads: [HKWorkout?] = []
+final class DashboardViewModel: ObservableObject {
+    @Published var activities: [String: String] = [:]
 
-    var body: some View {
-        VStack {
-            Text("Content")
-        }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    NavigationLink(destination: UploadWorkoutsFrameView()) {
-                        Image(systemName: "plus")
-                            .font(.title)
-//                            .foregroundColor(.orange)
-                    }
-//                        .buttonStyle(PlainButtonStyle())
+    init() {
+        Firestore.firestore().collection("activities").order(by: "time").limit(to: 5).addSnapshotListener { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error fetching documents: \(error!)")
+                return
+            }
+            snapshot.documentChanges.forEach { diff in
+                if (diff.type == .added || diff.type == .modified) {
+                    print("New/Updated activity: \(diff.document.data())")
+                    self.activities[diff.document.documentID] = diff.document.data()["activity"] as? String
+                } else if (diff.type == .removed) {
+                    print("Removed city: \(diff.document.data())")
+                    self.activities.removeValue(forKey: diff.document.documentID)
                 }
             }
-
-        //        VStack {
-        //            HStack {
-        //                NavigationLink(destination: UploadWorkoutView()) {
-        //                    Image(systemName: "plus")
-        //                        .font(.title)
-        //                        .fontWeight(.bold)
-        //                }
-        //                    .padding(.trailing, 20);
-        //            }
-        //                .frame(height: 50)
-        //            Text("content")
-        //            Spacer()
-        //        }
+        }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView().environmentObject(NavigationModel.instance)
+struct DashboardView: View {
+    @StateObject var viewModel = DashboardViewModel()
+
+    var body: some View {
+        VStack {
+            ScrollView(.vertical) {
+                if (!viewModel.activities.isEmpty) {
+                    LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
+                        ForEach(viewModel.activities.keys.sorted(by: >), id: \.self) { key in
+                            ActivityPost(activity: viewModel.activities[key] ?? "Fail")
+                        }
+                    }
+                } else {
+                    Text("No activities")
+                }
+            }
+        }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        NavigationLink(destination: UploadWorkoutsFrameView()) {
+                            Image(systemName: "plus")
+                                    .font(.title)
+                        }
+                    }
+                }
     }
 }
