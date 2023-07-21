@@ -66,26 +66,7 @@ public struct HealthKitUtils {
         }
     }
 
-//    public static func getWorkoutRoute(workout: HKWorkout, completion: @escaping ([HKWorkoutRoute]?, Error?) -> Void) {
-//        let predicate = HKQuery.predicateForObjects(from: workout)
-//        let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
-//            if let error = error {
-//                completion(nil, error)
-//                return
-//            }
-//
-//            guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
-//                completion(nil, nil)
-//                return
-//            }
-//
-//            completion(workoutRoutes, nil)
-//        }
-//
-//        healthStore.execute(query)
-//    }
-
-    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [[(Date, (Double, Double))]] {
+    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateGraph] {
         let interval = DateComponents(second: Int(workout.duration) / 10)
         let query = try await createQueryForWorkout(workout, interval: interval)
 
@@ -106,18 +87,19 @@ public struct HealthKitUtils {
     }
 
     private static func createQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async throws -> HKStatisticsCollectionQuery {
-        let quantityType = HKObjectType.quantityType(
-            forIdentifier: .heartRate
-        )!
+        let quantityType = HKObjectType.quantityType(forIdentifier: .heartRate)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
 
         return HKStatisticsCollectionQuery(
             quantityType: quantityType,
-            quantitySamplePredicate: nil,
+            quantitySamplePredicate: predicate,
             options: [.discreteMax, .discreteMin],
             anchorDate: workout.startDate,
             intervalComponents: interval
         )
     }
+
 
     private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [(Date, (Double, Double))] {
         var weeklyData: [Date: (Double, Double)] = [:]
