@@ -6,11 +6,11 @@ import Foundation
 import SwiftUI
 import HealthKit
 
-struct UploadCustomWorkoutView: View {
+public struct UploadCustomWorkoutView: View {
     @EnvironmentObject var navigation: NavigationModel
     @State private var activities: [Activity] = []
 
-    var body: some View {
+    public var body: some View {
         Text("Manual Upload")
 //        NavigationLink(destination: UploadWorkoutView()) {
 //            VStack(alignment: .center) {

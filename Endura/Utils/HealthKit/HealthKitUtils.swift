@@ -24,8 +24,8 @@ public struct HealthKitUtils {
         }
     }
 
-    public static func getLocationData(for route: HKWorkoutRoute) async -> [CLLocation] {
-        let locations = try! await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
+    public static func getLocationData(for route: HKWorkoutRoute) async throws -> [CLLocation] {
+        let locations = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
             var allLocations: [CLLocation] = []
             let query = HKWorkoutRouteQuery(route: route) { (query, locationsOrNil, done, errorOrNil) in
                 if let error = errorOrNil {
@@ -33,7 +33,7 @@ public struct HealthKitUtils {
                     return
                 }
                 guard let currentLocationBatch = locationsOrNil else {
-                    fatalError("*** Invalid State: This can only fail if there was an error. ***")
+                    fatalError("Failed to get locations")
                 }
                 allLocations.append(contentsOf: currentLocationBatch)
                 if done {
@@ -45,27 +45,48 @@ public struct HealthKitUtils {
         return locations
     }
 
-    public static func getWorkoutRoute(workout: HKWorkout, completion: @escaping ([HKWorkoutRoute]?, Error?) -> Void) {
+    public static func getWorkoutRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
         let predicate = HKQuery.predicateForObjects(from: workout)
-        let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
 
-            guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
-                completion(nil, nil)
-                return
-            }
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
 
-            completion(workoutRoutes, nil)
+                guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
+                    continuation.resume(returning: [])
+                    return
+                }
+
+                continuation.resume(returning: workoutRoutes)
+            }
+            healthStore.execute(query)
         }
-
-        healthStore.execute(query)
     }
 
+//    public static func getWorkoutRoute(workout: HKWorkout, completion: @escaping ([HKWorkoutRoute]?, Error?) -> Void) {
+//        let predicate = HKQuery.predicateForObjects(from: workout)
+//        let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
+//            if let error = error {
+//                completion(nil, error)
+//                return
+//            }
+//
+//            guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
+//                completion(nil, nil)
+//                return
+//            }
+//
+//            completion(workoutRoutes, nil)
+//        }
+//
+//        healthStore.execute(query)
+//    }
+
     public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [[(Date, (Double, Double))]] {
-        let interval = createIntervalForWorkout(workout)
+        let interval = DateComponents(second: Int(workout.duration) / 10)
         let query = try await createQueryForWorkout(workout, interval: interval)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[[(Date, (Double, Double))]], Error>) in
@@ -76,16 +97,12 @@ public struct HealthKitUtils {
                     let data = compileDataFromResults(results, workout: workout)
                     continuation.resume(returning: [data])
                 } else {
-                    continuation.resume(throwing: NSError(domain: "", code: -1, userInfo: nil)) // replace with a meaningful error
+                    continuation.resume(throwing: NSError(domain: "Something went wrong", code: -1, userInfo: nil))
                 }
             }
             healthStore.execute(query)
         }
         return results
-    }
-
-    private static func createIntervalForWorkout(_ workout: HKWorkout) -> DateComponents {
-        DateComponents(second: Int(workout.duration) / 200)
     }
 
     private static func createQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async throws -> HKStatisticsCollectionQuery {
@@ -120,6 +137,7 @@ public struct HealthKitUtils {
         let flattened = data.compactMap {
             $0
         }
+
         let converted = flattened.map {
             $0.map {
                 ($0.key, $0.value)

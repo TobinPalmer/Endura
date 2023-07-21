@@ -4,17 +4,19 @@
 
 import Foundation
 
-struct commentsInfo {
+public typealias HeartRateGraph = [(Date, (Double, Double))]
+
+public struct commentsInfo {
     var message: String
     var userId: String
     var time: Date
 }
 
-struct comments {
+public struct comments {
     var id: String
 }
 
-struct EnduraWorkout {
+public struct EnduraWorkout {
     var comments: [comments]
     var distance: Int
     var duration: Int
