@@ -18,7 +18,7 @@ public struct Location: HashCode {
     let longitude: Double
 }
 
-public struct Activity: Hashable {
+public struct Activity {
     let userId: String
     let time: Date
     let duration: Double

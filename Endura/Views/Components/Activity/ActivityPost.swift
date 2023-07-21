@@ -6,15 +6,15 @@ import Foundation
 import SwiftUI
 
 struct ActivityPost: View {
-    @State var activity: String
+    private var activity: Activity
 
-    init(activity: String) {
+    init(activity: Activity) {
         self.activity = activity
     }
 
     var body: some View {
         VStack {
-            Text(activity)
+            Text("\(activity.distance)")
         }
     }
 }

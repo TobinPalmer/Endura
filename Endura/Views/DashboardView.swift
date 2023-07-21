@@ -10,7 +10,7 @@ import FirebaseAuth
 import HealthKit
 
 final class DashboardViewModel: ObservableObject {
-    @Published var activities: [String: String] = [:]
+    @Published var activities: [String: Activity] = [:]
 
     init() {
         Firestore.firestore().collection("activities").order(by: "time").limit(to: 5).addSnapshotListener { querySnapshot, error in
@@ -19,11 +19,25 @@ final class DashboardViewModel: ObservableObject {
                 return
             }
             snapshot.documentChanges.forEach { diff in
+                print(diff)
                 if (diff.type == .added || diff.type == .modified) {
-                    print("New/Updated activity: \(diff.document.data())")
-                    self.activities[diff.document.documentID] = diff.document.data()["activity"] as? String
+                    do {
+                        let data = try diff.document.data(as: ActivityDocument.self)
+
+                        let activity = Activity(
+                                userId: data.userId,
+                                time: data.time,
+                                duration: data.duration,
+                                distance: data.distance,
+                                location: data.location,
+                                likes: [],
+                                comments: []
+                        )
+                        self.activities.updateValue(activity, forKey: diff.document.documentID)
+                    } catch {
+                        print("Error decoding activity: \(error)")
+                    }
                 } else if (diff.type == .removed) {
-                    print("Removed city: \(diff.document.data())")
                     self.activities.removeValue(forKey: diff.document.documentID)
                 }
             }
@@ -37,10 +51,13 @@ struct DashboardView: View {
     var body: some View {
         VStack {
             ScrollView(.vertical) {
+                Text("Activities \(viewModel.activities.count)")
                 if (!viewModel.activities.isEmpty) {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
                         ForEach(viewModel.activities.keys.sorted(by: >), id: \.self) { key in
-                            ActivityPost(activity: viewModel.activities[key] ?? "Fail")
+                            if let activity = viewModel.activities[key] {
+                                ActivityPost(activity: activity)
+                            }
                         }
                     }
                 } else {
