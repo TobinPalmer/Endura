@@ -14,6 +14,7 @@ fileprivate enum WorkoutErrors: Error {
     case noWorkout
 }
 
+@MainActor
 fileprivate final class PreviewWorkoutModel: ObservableObject {
     @Published final private var locations: [CLLocation] = []
     @Published final fileprivate var heartRateGraph: [HeartRateGraph] = []
@@ -93,13 +94,14 @@ public struct PreviewWorkoutView: View {
                 (index, value.rounded(toPlaces: 2))
             }
 
+            ActivityMap(workout: workout)
+
             Chart(smoothPaceGraph, id: \.0) { tuple in
                 LineMark(
                     x: .value("X values", tuple.0),
                     y: .value("Y values", tuple.1)
                 )
             }
-
 
             Chart(heartRateData, id: \.0) { tuple in
                 LineMark(

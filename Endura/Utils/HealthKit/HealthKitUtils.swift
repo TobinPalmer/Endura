@@ -47,24 +47,48 @@ public struct HealthKitUtils {
 
     public static func getWorkoutRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
         let predicate = HKQuery.predicateForObjects(from: workout)
-
-        return try await withCheckedThrowingContinuation { continuation in
-            let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-
-                guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
-                    continuation.resume(returning: [])
-                    return
-                }
-
-                continuation.resume(returning: workoutRoutes)
+        do {
+            let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKSample], Error>) in
+                healthStore.execute(HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit, resultsHandler: { (query, samples, deletedObjects, anchor, error) in
+                    if let hasError = error {
+                        continuation.resume(throwing: hasError)
+                        return
+                    }
+                    guard let samples = samples else {
+                        return
+                    }
+                    continuation.resume(returning: samples)
+                }))
             }
-            healthStore.execute(query)
+            guard let workouts = samples as? [HKWorkoutRoute] else {
+                throw NSError(domain: "com.endura", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get workout routes"])
+            }
+            return workouts
+        } catch {
+            throw error
         }
     }
+
+//    public static func getWorkoutRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
+//        let predicate = HKQuery.predicateForObjects(from: workout)
+//
+//        return try await withCheckedThrowingContinuation { continuation in
+//            let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
+//                if let error = error {
+//                    continuation.resume(throwing: error)
+//                    return
+//                }
+////
+////                guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
+////                    continuation.resume(returning: [HKWorkoutRoute]())
+////                    return
+////                }
+//
+//                continuation.resume(returning: workoutRoutes)
+//            }
+//            healthStore.execute(query)
+//        }
+//    }
 
     public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateGraph] {
         let interval = DateComponents(second: Int(workout.duration) / 10)
