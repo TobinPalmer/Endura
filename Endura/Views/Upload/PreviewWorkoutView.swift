@@ -15,12 +15,27 @@ fileprivate enum Errors: Error {
 fileprivate final class PreviewWorkoutModel: ObservableObject {
     @Published final private var locations: [CLLocation] = []
     @Published final fileprivate var heartRateGraph: [HeartRateGraph] = []
+    @Published final fileprivate var paceGraph: [CLLocation] = []
+
+    final fileprivate func getPaceGraph(for workout: HKWorkout) async throws -> () {
+        do {
+            let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
+            for route in routes {
+                let graph = try await HealthKitUtils.getLocationData(for: route)
+                paceGraph.append(contentsOf: graph)
+            }
+        } catch {
+            heartRateGraph = []
+            throw Errors.noWorkout
+        }
+    }
 
     final fileprivate func getHeartRateGraph(for workout: HKWorkout) async throws -> () {
         do {
             let graph = try await HealthKitUtils.getHeartRateGraph(for: workout)
             heartRateGraph = graph
         } catch {
+            heartRateGraph = []
             throw Errors.noWorkout
         }
     }
@@ -47,6 +62,7 @@ public struct PreviewWorkoutView: View {
             let flattenedArry = array.flatMap {
                 $0
             }
+
             let dates = flattenedArry.map {
                 $0.0
             }
@@ -55,21 +71,42 @@ public struct PreviewWorkoutView: View {
                 $0.1
             }
 
-            let data = Array(zip(dates, values.map {
+            let heartRateData = Array(zip(dates, values.map {
                 $0.0
             }))
 
-            Chart(data, id: \.0) { tuple in
+            let rawPaceData = previewWorkoutModel.paceGraph
+            let paceData = rawPaceData.map {
+                $0.speed
+            }
+
+            var paceGraph: [(Int, Double)] {
+                Array(zip(Array(0..<paceData.count), paceData))
+            }
+
+            let smoothPaceGraph: [(Int, Double)] = paceGraph.map { (index, value) in
+                (index, value.rounded(toPlaces: 2))
+            }
+
+            Chart(smoothPaceGraph, id: \.0) { tuple in
                 LineMark(
                     x: .value("X values", tuple.0),
                     y: .value("Y values", tuple.1)
                 )
             }
 
+
+            Chart(heartRateData, id: \.0) { tuple in
+                LineMark(
+                    x: .value("X values", tuple.0),
+                    y: .value("Y values", tuple.1)
+                )
+            }
         }
             .task {
                 do {
-                    try await previewWorkoutModel.getHeartRateGraph(for: workout)
+                    async let _: () = try previewWorkoutModel.getHeartRateGraph(for: workout)
+                    async let _: () = try previewWorkoutModel.getPaceGraph(for: workout)
                 } catch Errors.noWorkout {
                     print("No workout to get heart rate graph")
                 } catch {
