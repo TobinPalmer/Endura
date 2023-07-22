@@ -66,10 +66,6 @@ public struct PreviewWorkoutView: View {
     }
 
     public var body: some View {
-//        let workoutDuration = workout.duration
-//        let workoutDistance = workout.totalDistance?.doubleValue(for: .meter())
-//        let workoutDurationFormatted = TimeUtils.secondsToFormattedTime(seconds: Int(workoutDuration))
-
         VStack {
             Text("Preview")
             if let enduraWorkout = enduraWorkout {
@@ -81,78 +77,42 @@ public struct PreviewWorkoutView: View {
                     (val.index, val.speed)
                 }
 
-                Chart(heartRateTuple, id: \.0) { tuple in
-                    LineMark(
-                        x: .value("X values", tuple.0),
-                        y: .value("Y values", tuple.1)
-                    )
+                if !heartRateTuple.isEmpty {
+                    Chart(heartRateTuple, id: \.0) { tuple in
+                        LineMark(
+                            x: .value("X values", tuple.0),
+                            y: .value("Y values", tuple.1)
+                        )
+                    }
+                } else {
+                    Text("No heart rate data available")
                 }
 
-                Chart(paceTuple, id: \.0) { tuple in
-                    LineMark(
-                        x: .value("X values", tuple.0),
-                        y: .value("Y values", tuple.1)
-                    )
+                if !paceTuple.isEmpty {
+                    Chart(paceTuple, id: \.0) { tuple in
+                        LineMark(
+                            x: .value("X values", tuple.0),
+                            y: .value("Y values", tuple.1)
+                        )
+                    }
+                } else {
+                    Text("No pace data available")
                 }
 
-                ActivityMap(enduraWorkout)
+                if !enduraWorkout.location.isEmpty {
+                    ActivityMap(enduraWorkout)
+                } else {
+                    Text("No route data available")
+                }
             } else {
                 ProgressView {
                     Text("Loading...")
                 }
             }
-//            Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")
-//            let array = previewWorkoutModel.heartRateGraph
-//            let flattenedArry = array.flatMap {
-//                $0
-//            }
-//
-//            let dates = flattenedArry.map {
-//                $0.0
-//            }
-//
-//            let values = flattenedArry.map {
-//                $0.1
-//            }
-//
-//            let heartRateData: HeartRateGraphData = Array(zip(dates, values.map {
-//                $0.0
-//            }))
-//
-//            let rawPaceData = previewWorkoutModel.paceGraph
-//            let paceData = rawPaceData.map {
-//                $0.speed
-//            }
-//
-//            var paceGraph: PaceGraphData {
-//                Array(zip(Array(0..<paceData.count), paceData))
-//            }
-//
-//            let smoothPaceGraph: PaceGraphData = paceGraph.map { (index, value) in
-//                (index, value.rounded(toPlaces: 2))
-//            }
-//
-//            ActivityMap(workout: workout)
-//
-//            Chart(smoothPaceGraph, id: \.0) { tuple in
-//                LineMark(
-//                    x: .value("X values", tuple.0),
-//                    y: .value("Y values", tuple.1)
-//                )
-//            }
-//
-//            Chart(heartRateData, id: \.0) { tuple in
-//                LineMark(
-//                    x: .value("X values", tuple.0),
-//                    y: .value("Y values", tuple.1)
-//                )
-//            }
         }
             .task {
                 do {
                     enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-//                    async let _: () = try previewWorkoutModel.getHeartRateGraph(for: workout)
-//                    async let _: () = try previewWorkoutModel.getPaceGraph(for: workout)
                 } catch WorkoutErrors.noWorkout {
                     print("No workout to get heart rate graph")
                 } catch {

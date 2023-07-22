@@ -6,6 +6,13 @@ import Foundation
 import CoreLocation
 import HealthKit
 
+public enum HealthKitErrors: Error {
+    case noWorkout
+    case workoutFailedCast
+    case authFailed
+    case unknownError
+}
+
 public struct HealthKitUtils {
     private static let healthStore = HKHealthStore()
 
@@ -54,6 +61,7 @@ public struct HealthKitUtils {
                         continuation.resume(throwing: hasError)
                         return
                     }
+
                     guard let samples = samples else {
                         return
                     }
@@ -61,38 +69,18 @@ public struct HealthKitUtils {
                 }))
             }
             guard let workouts = samples as? [HKWorkoutRoute] else {
-                throw NSError(domain: "com.endura", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get workout routes"])
+                throw HealthKitErrors.workoutFailedCast
             }
+
             return workouts
         } catch {
-            throw error
+            throw HealthKitErrors.unknownError
         }
     }
 
-//    public static func getWorkoutRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
-//        let predicate = HKQuery.predicateForObjects(from: workout)
-//
-//        return try await withCheckedThrowingContinuation { continuation in
-//            let query = HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { (query, workoutRoutes, deletedObjects, anchor, error) in
-//                if let error = error {
-//                    continuation.resume(throwing: error)
-//                    return
-//                }
-////
-////                guard let workoutRoutes = workoutRoutes as? [HKWorkoutRoute] else {
-////                    continuation.resume(returning: [HKWorkoutRoute]())
-////                    return
-////                }
-//
-//                continuation.resume(returning: workoutRoutes)
-//            }
-//            healthStore.execute(query)
-//        }
-//    }
-
     public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateGraph] {
         let interval = DateComponents(second: Int(workout.duration) / 10)
-        let query = try await createQueryForWorkout(workout, interval: interval)
+        let query = await createQueryForWorkout(workout, interval: interval)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[[(Date, (Double, Double))]], Error>) in
             query.initialResultsHandler = { query, results, error in
@@ -110,7 +98,7 @@ public struct HealthKitUtils {
         return results
     }
 
-    private static func createQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async throws -> HKStatisticsCollectionQuery {
+    private static func createQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
         let quantityType = HKObjectType.quantityType(forIdentifier: .heartRate)!
 
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
@@ -123,7 +111,6 @@ public struct HealthKitUtils {
             intervalComponents: interval
         )
     }
-
 
     private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [(Date, (Double, Double))] {
         var weeklyData: [Date: (Double, Double)] = [:]

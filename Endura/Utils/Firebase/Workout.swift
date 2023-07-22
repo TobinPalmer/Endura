@@ -83,8 +83,8 @@ public struct WorkoutUtils {
 
             var routeArray: [CLLocation] = []
 
-            let routes2 = try await HealthKitUtils.getWorkoutRoute(workout: workout)
-            for route in routes2 {
+            let rawRoutes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
+            for route in rawRoutes {
                 let graph = try await HealthKitUtils.getLocationData(for: route)
                 routeArray.append(contentsOf: graph)
             }

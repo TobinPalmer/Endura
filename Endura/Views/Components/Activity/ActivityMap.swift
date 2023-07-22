@@ -30,7 +30,12 @@ public struct ActivityMap: View {
 
     public var body: some View {
         VStack {
-            MapView(locations: workout.route)
+            if !locations.isEmpty {
+                MapView(locations: locations)
+                    .frame(height: 300)
+            } else {
+                Text("No route data available")
+            }
         }
     }
 }
