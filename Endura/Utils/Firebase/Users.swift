@@ -11,7 +11,7 @@ import FirebaseFirestore
 //    var birthDate: String { get }
 //}
 
-struct UserData {
+public struct UserData {
     var id: String
     var name: String
     var firstName: String

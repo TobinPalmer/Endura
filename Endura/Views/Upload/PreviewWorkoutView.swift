@@ -7,6 +7,8 @@ import SwiftUI
 import HealthKit
 import MapKit
 import Charts
+import FirebaseFirestore
+import FirebaseCore
 
 fileprivate enum WorkoutErrors: Error {
     case noWorkout
@@ -47,6 +49,10 @@ public struct PreviewWorkoutView: View {
 
     init(workout: HKWorkout) {
         self.workout = workout
+        Task {
+            async let data = try WorkoutUtils.workoutToEnduraWorkout(workout)
+            let _ = try await Firestore.firestore().collection("activities").addDocument(from: data)
+        }
     }
 
     public var body: some View {
