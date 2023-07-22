@@ -50,8 +50,8 @@ public struct PreviewWorkoutView: View {
     init(workout: HKWorkout) {
         self.workout = workout
         Task {
-            async let data = try WorkoutUtils.workoutToEnduraWorkout(workout)
-            let _ = try await Firestore.firestore().collection("activities").addDocument(from: data)
+//            async let data = try WorkoutUtils.workoutToEnduraWorkout(workout)
+//            let _ = try await Firestore.firestore().collection("activities").addDocument(from: data)
         }
     }
 
