@@ -21,37 +21,22 @@ public final class ActivityMapModel: ObservableObject {
 public struct ActivityMap: View {
     @StateObject private var activityMapModel = ActivityMapModel()
     @State private var routes: [HKWorkoutRoute] = []
-    @State private var workout: HKWorkout
+    private var workout: EnduraWorkout
     @State private var locations: [CLLocation] = []
 
-    init(workout: HKWorkout) {
+    init(_ workout: EnduraWorkout) {
         self.workout = workout
     }
 
     public var body: some View {
         VStack {
-            Text("Map")
-//            Text(locations.debugDescription)
-            MapView(locations: $locations)
+            MapView(locations: workout.route)
         }
-            .task {
-                do {
-                    routes = try await activityMapModel.workoutToRoute(workout: workout)
-                    for route in routes {
-                        let locations = try await HealthKitUtils.getLocationData(for: route)
-                        for location in locations {
-                            self.locations.append(location)
-                        }
-                    }
-                } catch {
-                    print("error: \(error.localizedDescription)")
-                }
-            }
     }
 }
 
 fileprivate struct MapView: UIViewRepresentable {
-    @Binding var locations: [CLLocation]
+    var locations: [CLLocation]
 
     fileprivate func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -78,14 +63,14 @@ fileprivate struct MapView: UIViewRepresentable {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: MapView
+    fileprivate class Coordinator: NSObject, MKMapViewDelegate {
+        private final let parent: MapView
 
         init(_ parent: MapView) {
             self.parent = parent
         }
 
-        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        fileprivate final func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let polyline = overlay as? MKPolyline {
                 let renderer = MKPolylineRenderer(polyline: polyline)
                 renderer.strokeColor = .orange

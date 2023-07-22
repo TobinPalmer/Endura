@@ -5,7 +5,7 @@
 import Foundation
 import MapKit
 
-public extension CLLocation: Identifiable {
+extension CLLocation: Identifiable {
     public var id: String {
         UUID().uuidString
     }

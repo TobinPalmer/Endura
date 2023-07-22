@@ -81,7 +81,15 @@ public struct WorkoutUtils {
                 HeartRateGraphDataEncodable(tuple: $0)
             }
 
-            let workoutData = EnduraWorkout(comments: [], distance: workoutDistance, duration: workoutDuration, likes: [], location: finalPaceGraph, heartRate: finalHeartRateGraph, time: startTime, userId: "123")
+            var routeArray: [CLLocation] = []
+
+            let routes2 = try await HealthKitUtils.getWorkoutRoute(workout: workout)
+            for route in routes2 {
+                let graph = try await HealthKitUtils.getLocationData(for: route)
+                routeArray.append(contentsOf: graph)
+            }
+
+            let workoutData = EnduraWorkout(comments: [], distance: workoutDistance, duration: workoutDuration, likes: [], location: finalPaceGraph, heartRate: finalHeartRateGraph, time: startTime, route: routeArray, userId: "123")
             return workoutData
         } catch (let error) {
             print("Error occured", error)
