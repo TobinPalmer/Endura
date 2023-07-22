@@ -8,14 +8,14 @@ import HealthKit
 import MapKit
 import Charts
 
-fileprivate enum Errors: Error {
+fileprivate enum WorkoutErrors: Error {
     case noWorkout
 }
 
 fileprivate final class PreviewWorkoutModel: ObservableObject {
     @Published final private var locations: [CLLocation] = []
     @Published final fileprivate var heartRateGraph: [HeartRateGraph] = []
-    @Published final fileprivate var paceGraph: [CLLocation] = []
+    @Published final fileprivate var paceGraph: PaceGraph = []
 
     final fileprivate func getPaceGraph(for workout: HKWorkout) async throws -> () {
         do {
@@ -26,7 +26,7 @@ fileprivate final class PreviewWorkoutModel: ObservableObject {
             }
         } catch {
             heartRateGraph = []
-            throw Errors.noWorkout
+            throw WorkoutErrors.noWorkout
         }
     }
 
@@ -36,7 +36,7 @@ fileprivate final class PreviewWorkoutModel: ObservableObject {
             heartRateGraph = graph
         } catch {
             heartRateGraph = []
-            throw Errors.noWorkout
+            throw WorkoutErrors.noWorkout
         }
     }
 }
@@ -58,7 +58,6 @@ public struct PreviewWorkoutView: View {
             Text("Preview Workout")
             Text("\(workoutDurationFormatted) \(workoutDistance ?? 0.0)")
             let array = previewWorkoutModel.heartRateGraph
-            let _ = print(array)
             let flattenedArry = array.flatMap {
                 $0
             }
@@ -71,7 +70,7 @@ public struct PreviewWorkoutView: View {
                 $0.1
             }
 
-            let heartRateData = Array(zip(dates, values.map {
+            let heartRateData: HeartRateGraphData = Array(zip(dates, values.map {
                 $0.0
             }))
 
@@ -80,11 +79,11 @@ public struct PreviewWorkoutView: View {
                 $0.speed
             }
 
-            var paceGraph: [(Int, Double)] {
+            var paceGraph: PaceGraphData {
                 Array(zip(Array(0..<paceData.count), paceData))
             }
 
-            let smoothPaceGraph: [(Int, Double)] = paceGraph.map { (index, value) in
+            let smoothPaceGraph: PaceGraphData = paceGraph.map { (index, value) in
                 (index, value.rounded(toPlaces: 2))
             }
 
@@ -107,7 +106,7 @@ public struct PreviewWorkoutView: View {
                 do {
                     async let _: () = try previewWorkoutModel.getHeartRateGraph(for: workout)
                     async let _: () = try previewWorkoutModel.getPaceGraph(for: workout)
-                } catch Errors.noWorkout {
+                } catch WorkoutErrors.noWorkout {
                     print("No workout to get heart rate graph")
                 } catch {
                     print("Error getting heart rate graph")

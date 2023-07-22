@@ -3,8 +3,16 @@
 //
 
 import Foundation
+import MapKit
 
 public typealias HeartRateGraph = [(Date, (Double, Double))]
+public typealias PaceGraph = [CLLocation]
+public typealias HeartRateGraphData = [(Date, Double)]
+public typealias PaceGraphData = [(Int, Double)]
+
+public struct heartRateGraph {
+
+}
 
 public struct commentsInfo {
     var message: String
