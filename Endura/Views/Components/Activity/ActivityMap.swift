@@ -50,16 +50,16 @@ public struct ActivityMap: View {
     }
 }
 
-struct MapView: UIViewRepresentable {
+fileprivate struct MapView: UIViewRepresentable {
     @Binding var locations: [CLLocation]
 
-    func makeUIView(context: Context) -> MKMapView {
+    fileprivate func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         return mapView
     }
 
-    func updateUIView(_ uiView: MKMapView, context: Context) {
+    fileprivate func updateUIView(_ uiView: MKMapView, context: Context) {
         uiView.removeOverlays(uiView.overlays)
 
         if !locations.isEmpty {
@@ -70,11 +70,11 @@ struct MapView: UIViewRepresentable {
             uiView.addOverlay(polyline)
 
             let region = MKCoordinateRegion(coordinates: coordinates)
-            uiView.setRegion(region, animated: true)
+            uiView.setRegion(region, animated: false)
         }
     }
 
-    func makeCoordinator() -> Coordinator {
+    fileprivate func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
@@ -88,45 +88,11 @@ struct MapView: UIViewRepresentable {
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let polyline = overlay as? MKPolyline {
                 let renderer = MKPolylineRenderer(polyline: polyline)
-                renderer.strokeColor = .blue
+                renderer.strokeColor = .orange
                 renderer.lineWidth = 3
                 return renderer
             }
             return MKOverlayRenderer()
         }
-    }
-}
-
-extension MKCoordinateRegion {
-    init(coordinates: [CLLocationCoordinate2D]) {
-        var minLat = coordinates.first?.latitude ?? 0
-        var maxLat = coordinates.first?.latitude ?? 0
-        var minLon = coordinates.first?.longitude ?? 0
-        var maxLon = coordinates.first?.longitude ?? 0
-
-        for coordinate in coordinates {
-            minLat = min(minLat, coordinate.latitude)
-            maxLat = max(maxLat, coordinate.latitude)
-            minLon = min(minLon, coordinate.longitude)
-            maxLon = max(maxLon, coordinate.longitude)
-        }
-
-        let center = CLLocationCoordinate2D(
-            latitude: (minLat + maxLat) / 2,
-            longitude: (minLon + maxLon) / 2
-        )
-
-        let span = MKCoordinateSpan(
-            latitudeDelta: (maxLat - minLat) * 1.2,
-            longitudeDelta: (maxLon - minLon) * 1.2
-        )
-
-        self.init(center: center, span: span)
-    }
-}
-
-extension CLLocation: Identifiable {
-    public var id: String {
-        UUID().uuidString
     }
 }
