@@ -80,9 +80,14 @@ public struct HealthKitUtils {
 
     public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateGraph] {
         let interval = DateComponents(second: Int(workout.duration) / 10)
+        guard interval.second! > 0 else {
+            print("To low interval")
+            return []
+        }
+
         let query = await createQueryForWorkout(workout, interval: interval)
 
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[[(Date, (Double, Double))]], Error>) in
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateGraph], Error>) in
             query.initialResultsHandler = { query, results, error in
                 if let error = error {
                     continuation.resume(throwing: error)

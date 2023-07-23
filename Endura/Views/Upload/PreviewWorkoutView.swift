@@ -20,34 +20,11 @@ fileprivate final class PreviewWorkoutModel: ObservableObject {
     @Published final fileprivate var heartRateGraph: [HeartRateGraph] = []
     @Published final fileprivate var paceGraph: PaceGraph = []
 
-    final fileprivate func getPaceGraph(for workout: HKWorkout) async throws -> () {
-        do {
-            let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
-            for route in routes {
-                let graph = try await HealthKitUtils.getLocationData(for: route)
-                paceGraph.append(contentsOf: graph)
-            }
-        } catch {
-            heartRateGraph = []
-            throw WorkoutErrors.noWorkout
-        }
-    }
-
     final fileprivate func getEnduraWorkout(_ workout: HKWorkout) async throws -> EnduraWorkout {
         do {
             return try await WorkoutUtils.workoutToEnduraWorkout(workout)
         } catch {
             throw error
-        }
-    }
-
-    final fileprivate func getHeartRateGraph(for workout: HKWorkout) async throws -> () {
-        do {
-            let graph = try await HealthKitUtils.getHeartRateGraph(for: workout)
-            heartRateGraph = graph
-        } catch {
-            heartRateGraph = []
-            throw WorkoutErrors.noWorkout
         }
     }
 }

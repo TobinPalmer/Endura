@@ -54,43 +54,48 @@ public struct WorkoutUtils {
                 (index, value.rounded(toPlaces: 2))
             }
 
-            async let heartRate = try HealthKitUtils.getHeartRateGraph(for: workout)
-            let flattenedArry = try await heartRate.flatMap {
-                $0
+            do {
+                async let heartRate = try HealthKitUtils.getHeartRateGraph(for: workout)
+                let flattenedArry = try await heartRate.flatMap {
+                    $0
+                }
+
+                let dates = flattenedArry.map {
+                    $0.0
+                }
+
+                let values = flattenedArry.map {
+                    $0.1
+                }
+
+                let heartRateGraph: HeartRateGraphData = Array(zip(dates, values.map {
+                    $0.0
+                }))
+
+                let startTime = workout.startDate
+
+                let finalPaceGraph: [PaceGraphDataEncodable] = smoothPaceGraph.map {
+                    PaceGraphDataEncodable(tuple: $0)
+                }
+
+                let finalHeartRateGraph: [HeartRateGraphDataEncodable] = heartRateGraph.map {
+                    HeartRateGraphDataEncodable(tuple: $0)
+                }
+
+                var routeArray: [CLLocation] = []
+
+                let rawRoutes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
+                for route in rawRoutes {
+                    let graph = try await HealthKitUtils.getLocationData(for: route)
+                    routeArray.append(contentsOf: graph)
+                }
+
+                let workoutData = EnduraWorkout(comments: [], distance: workoutDistance, duration: workoutDuration, likes: [], location: finalPaceGraph, heartRate: finalHeartRateGraph, time: startTime, route: routeArray, userId: "123")
+                return workoutData
+            } catch {
+                print("Error getting heart rate graph")
             }
-
-            let dates = flattenedArry.map {
-                $0.0
-            }
-
-            let values = flattenedArry.map {
-                $0.1
-            }
-
-            let heartRateGraph: HeartRateGraphData = Array(zip(dates, values.map {
-                $0.0
-            }))
-
-            let startTime = workout.startDate
-
-            let finalPaceGraph: [PaceGraphDataEncodable] = smoothPaceGraph.map {
-                PaceGraphDataEncodable(tuple: $0)
-            }
-
-            let finalHeartRateGraph: [HeartRateGraphDataEncodable] = heartRateGraph.map {
-                HeartRateGraphDataEncodable(tuple: $0)
-            }
-
-            var routeArray: [CLLocation] = []
-
-            let rawRoutes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
-            for route in rawRoutes {
-                let graph = try await HealthKitUtils.getLocationData(for: route)
-                routeArray.append(contentsOf: graph)
-            }
-
-            let workoutData = EnduraWorkout(comments: [], distance: workoutDistance, duration: workoutDuration, likes: [], location: finalPaceGraph, heartRate: finalHeartRateGraph, time: startTime, route: routeArray, userId: "123")
-            return workoutData
+            throw HealthKitErrors.unknownError
         } catch (let error) {
             print("Error occured", error)
             throw error
