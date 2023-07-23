@@ -22,17 +22,17 @@ final class DashboardViewModel: ObservableObject {
                 print(diff)
                 if (diff.type == .added || diff.type == .modified) {
                     do {
-//                        let data = try diff.document.data(as: ActivityData.self)
-//                        let activity = ActivityData(
-//                                uid: data.uid,
-//                                time: data.time,
-//                                duration: data.duration,
-//                                distance: data.distance,
-//                                routeData: [],
-//                                likes: [],
-//                                comments: []
-//                        )
-//                        self.activities.updateValue(activity, forKey: diff.document.documentID)
+                        let data = try diff.document.data(as: ActivityData.self)
+                        let activity = ActivityData(
+                                uid: data.uid,
+                                time: data.time,
+                                distance: data.distance,
+                                duration: data.duration,
+                                routeData: [],
+                                comments: [],
+                                likes: []
+                        )
+                        self.activities.updateValue(activity, forKey: diff.document.documentID)
                     } catch {
                         print("Error decoding activity: \(error)")
                     }

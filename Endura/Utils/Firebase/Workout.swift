@@ -43,27 +43,27 @@ public struct WorkoutUtils {
                 }
 
                 let routePoint = RouteData(
-                    timestamp: point.timestamp,
-                    location: LocationData(
-                        latitude: point.coordinate.latitude,
-                        longitude: point.coordinate.longitude
-                    ),
-                    altitude: point.altitude,
-                    heartRate: heartRateAtPoint ?? 0.0,
-                    pace: point.speed
+                        timestamp: point.timestamp,
+                        location: LocationData(
+                                latitude: point.coordinate.latitude,
+                                longitude: point.coordinate.longitude
+                        ),
+                        altitude: point.altitude,
+                        heartRate: heartRateAtPoint ?? 0.0,
+                        pace: point.speed
                 )
                 routeData.append(routePoint)
             }
         }
 
         let workoutData = ActivityData(
-            uid: "test",
-            time: workout.startDate,
-            distance: workoutDistance,
-            duration: workoutDuration,
-            comments: [],
-            likes: [],
-            routeData: routeData
+                uid: "test",
+                time: workout.startDate,
+                distance: workoutDistance,
+                duration: workoutDuration,
+                routeData: routeData,
+                comments: [],
+                likes: []
         )
 
         return workoutData

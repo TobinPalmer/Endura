@@ -40,7 +40,7 @@ public struct ActivityData: Codable {
     var time: Date
     var distance: Double
     var duration: TimeInterval
+    var routeData: [RouteData]
     var comments: [ActivityComment]
     var likes: [String]
-    var routeData: [RouteData]
 }
