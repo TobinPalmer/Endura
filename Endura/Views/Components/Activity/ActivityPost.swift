@@ -6,6 +6,7 @@ import Foundation
 import SwiftUI
 
 struct ActivityPost: View {
+    @StateObject var userDataModel = UserDataModel();
     private var activity: ActivityData
 
     init(activity: ActivityData) {
@@ -15,7 +16,11 @@ struct ActivityPost: View {
     var body: some View {
         VStack {
             ProfileImage(uid: activity.uid)
+            Text("\(userDataModel.userData?.name ?? "Loading...")")
             Text("\(activity.distance)")
         }
+                .task {
+                    await userDataModel.getData(uid: activity.uid)
+                }
     }
 }

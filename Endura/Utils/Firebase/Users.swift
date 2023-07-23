@@ -6,33 +6,21 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-//public protocol ActiveUserData: UserData {
-//    var email: String { get }
-//    var birthDate: String { get }
-//}
+public final class UserDataModel: ObservableObject {
+    @Published final var userData: UserData?
 
-public struct UserData {
-    var id: String
-    var name: String
-    var firstName: String
-    var lastName: String
-    var profilePicture: String
-    var friends: [String]
-}
-
-struct UserDocument: Codable {
-    var firstName: String
-    var lastName: String
-    var friends: [String]
-
-    enum CodingKeys: String, CodingKey {
-        case firstName
-        case lastName
-        case friends
+    public final func getData(uid: String) async {
+        do {
+            self.userData = try await UsersUtil.getUserData(uid: uid)
+        } catch {
+            print("Error getting user data: \(error)")
+        }
     }
 }
 
 struct UsersUtil {
+    private static var usersCache: [String: UserData] = [:]
+
     public static func getActiveUserData(_ user: User) {
         let docRef = Firestore.firestore().collection("users").document(user.uid)
         docRef.getDocument { (document, error) in
@@ -41,6 +29,34 @@ struct UsersUtil {
                 print("Document data: \(String(describing: data))")
             } else {
                 print("Document does not exist")
+            }
+        }
+    }
+
+    public static func getUserData(uid: String) async throws -> UserData? {
+        try await withCheckedThrowingContinuation { continuation in
+            if let cachedUser = usersCache[uid] {
+                continuation.resume(returning: cachedUser)
+            } else {
+                Firestore.firestore().collection("users").document(uid).getDocument(as: UserDocument.self) { (result) in
+                    switch result {
+                    case .success(let document):
+                        print("Successfully decoded user: \(document)")
+                        let userData = UserData(
+                                id: uid,
+                                name: "\(document.firstName) \(document.lastName)",
+                                firstName: document.firstName,
+                                lastName: document.lastName,
+                                profilePicture: "",
+                                friends: document.friends
+                        )
+                        usersCache.updateValue(userData, forKey: uid)
+                        continuation.resume(returning: userData)
+                    case .failure(let error):
+                        print("Error decoding user: \(error)")
+                        continuation.resume(throwing: error)
+                    }
+                }
             }
         }
     }
