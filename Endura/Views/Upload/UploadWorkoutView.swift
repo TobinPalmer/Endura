@@ -14,7 +14,7 @@ import HealthKit
     fileprivate func getActivities() async {
         guard uploads.isEmpty == false else {
             do {
-                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 100)
+                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 5)
                 uploads = workouts
             } catch {
                 print("Error: \(error)")
@@ -29,17 +29,31 @@ public struct UploadWorkoutView: View {
     @ObservedObject private var uploadsViewModel = UploadsViewModel()
 
     public var body: some View {
-        List(uploadsViewModel.uploads, id: \.self) { activity in
-            if let activity = activity {
-                let workoutDistance = activity.totalDistance?.doubleValue(for: .meter())
-
-                NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
-                    Text(String(describing: workoutDistance))
-                }
-            } else {
-                Text("No activity")
+        ForEach(["a", "b", "c"], id: \.self) { item in
+//            NavigationLink(destination: Text("\(item)")) {
+//                Text("workoutType \(item)")
+//            }
+            Button {
+                print("Clicked")
+            } label: {
+                Text("Cool \(item)")
             }
         }
+            //        List(uploadsViewModel.uploads, id: \.self) { activity in
+            //            if let activity = activity {
+            //                let workoutDistance = activity.totalDistance?.doubleValue(for: .meter())
+            //                let workoutType = activity.workoutActivityType.name
+            //
+            ////                NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
+            ////                    Text("workoutType \(workoutType) distance \(workoutDistance ?? 0)")
+            ////                }
+            //                NavigationLink(destination: Text("\(workoutType)")) {
+            //                    Text("workoutType \(workoutType) distance \(workoutDistance ?? 0)")
+            //                }
+            //            } else {
+            //                Text("No activity")
+            //            }
+            //        }
             .task {
                 await uploadsViewModel.getActivities()
             }

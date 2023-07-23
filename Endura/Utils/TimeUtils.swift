@@ -13,7 +13,7 @@ struct TimeUtils {
         return formattedString
     }
 
-    public static func convertMpsToMpm(metersPerSec: Double) -> String {
+    public static func convertMpsToMpm(_ metersPerSec: Double) -> String {
         let metersPerMile = 1609.34
         let secondsPerMinute = 60.0
 

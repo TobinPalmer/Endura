@@ -21,10 +21,10 @@ public final class ActivityMapModel: ObservableObject {
 public struct ActivityMap: View {
     @StateObject private var activityMapModel = ActivityMapModel()
     @State private var routes: [HKWorkoutRoute] = []
-    private var workout: EnduraWorkout
+    private var workout: ActivityData
     @State private var locations: [CLLocation] = []
 
-    init(_ workout: EnduraWorkout) {
+    init(_ workout: ActivityData) {
         self.workout = workout
     }
 

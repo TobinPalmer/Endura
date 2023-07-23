@@ -5,7 +5,7 @@
 import Foundation
 import MapKit
 
-public typealias HeartRateGraph = [(Date, (Double, Double))]
+public typealias HeartRateGraph = [(Date, Double)]
 public typealias PaceGraph = [CLLocation]
 public typealias HeartRateGraphData = [(Date, Double)]
 public typealias PaceGraphData = [(Int, Double)]
@@ -30,15 +30,16 @@ public struct HeartRateGraphDataEncodable: Encodable {
     }
 }
 
-public struct commentsInfo: Codable {
-    var message: String
-    var userId: String
-    var time: Date
-}
-
-public struct comments: Codable {
-    var id: String
-}
+//
+//public struct commentsInfo: Codable {
+//    var message: String
+//    var userId: String
+//    var time: Date
+//}
+//
+//public struct comments: Codable {
+//    var id: String
+//}
 
 extension CLLocation: Encodable {
     private enum CodingKeys: String, CodingKey {
@@ -65,15 +66,15 @@ extension CLLocation: Encodable {
     }
 }
 
-
-public struct EnduraWorkout: Encodable {
-    var comments: [comments]
-    var distance: Double
-    var duration: TimeInterval
-    var likes: [String]
-    var location: [PaceGraphDataEncodable]
-    var heartRate: [HeartRateGraphDataEncodable]
-    var time: Date
-    var route: [CLLocation]
-    var userId: String
-}
+//
+//public struct EnduraWorkout: Encodable {
+//    var comments: [comments]
+//    var distance: Double
+//    var duration: TimeInterval
+//    var likes: [String]
+//    var location: [PaceGraphDataEncodable]
+//    var heartRate: [HeartRateGraphDataEncodable]
+//    var time: Date
+//    var route: [CLLocation]
+//    var userId: String
+//}

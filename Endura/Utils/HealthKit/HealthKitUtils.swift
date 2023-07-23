@@ -6,12 +6,6 @@ import Foundation
 import CoreLocation
 import HealthKit
 
-public enum HealthKitErrors: Error {
-    case noWorkout
-    case workoutFailedCast
-    case authFailed
-    case unknownError
-}
 
 public struct HealthKitUtils {
     private static let healthStore = HKHealthStore()
@@ -32,6 +26,7 @@ public struct HealthKitUtils {
     }
 
     public static func getLocationData(for route: HKWorkoutRoute) async throws -> [CLLocation] {
+        print("calling location data")
         let locations = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
             var allLocations: [CLLocation] = []
             let query = HKWorkoutRouteQuery(route: route) { (query, locationsOrNil, done, errorOrNil) in
@@ -78,24 +73,23 @@ public struct HealthKitUtils {
         }
     }
 
-    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateGraph] {
-        let interval = DateComponents(second: Int(workout.duration) / 10)
-        guard interval.second! > 0 else {
-            print("To low interval")
-            return []
-        }
-
+    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> HeartRateGraph {
+        let interval = DateComponents(second: 1)
+//        guard interval.second! > 0 else {
+//            print("To low interval")
+////            return (Date(), [(Date(), (0, 0))])
+//        }
         let query = await createQueryForWorkout(workout, interval: interval)
 
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateGraph], Error>) in
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<HeartRateGraph, Error>) in
             query.initialResultsHandler = { query, results, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let results = results {
                     let data = compileDataFromResults(results, workout: workout)
-                    continuation.resume(returning: [data])
+                    continuation.resume(returning: data)
                 } else {
-                    continuation.resume(throwing: NSError(domain: "Something went wrong", code: -1, userInfo: nil))
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
                 }
             }
             healthStore.execute(query)
@@ -117,8 +111,8 @@ public struct HealthKitUtils {
         )
     }
 
-    private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [(Date, (Double, Double))] {
-        var weeklyData: [Date: (Double, Double)] = [:]
+    private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> HeartRateGraph {
+        var heartRateData = HeartRateGraph()
 
         results.enumerateStatistics(
             from: workout.startDate,
@@ -126,40 +120,48 @@ public struct HealthKitUtils {
         ) { statistics, _ in
             if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
                let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min")) {
-                weeklyData[statistics.startDate] = (minValue, maxValue)
+                let average = (minValue + maxValue) / 2
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1000000).rounded() / 1000000)
+
+                heartRateData.append((date, average))
             }
         }
 
-        let data = [weeklyData]
+        var filledArray = HeartRateGraph()
 
-        let flattened = data.compactMap {
-            $0
-        }
+        for i in 0..<heartRateData.count {
+            let currentTuple = heartRateData[i]
 
-        let converted = flattened.map {
-            $0.map {
-                ($0.key, $0.value)
+            if i > 0 {
+                let previousTuple = heartRateData[i - 1]
+
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.0, to: currentTuple.0).second, missingSeconds > 1 {
+                    let missingRange = stride(from: previousTuple.0.addingTimeInterval(1), to: currentTuple.0, by: 1)
+
+                    for missingSecond in missingRange {
+                        filledArray.append((missingSecond, previousTuple.1))
+                    }
+                }
             }
+
+            filledArray.append(currentTuple)
         }
 
-        let combined = converted.flatMap {
-            $0
-        }
-
-        let sorted = combined.sorted {
-            $0.0 < $1.0
-        }
-
-        return sorted
+        return filledArray
     }
 
     public static func getListOfWorkouts(limitTo: Int = 1) async throws -> [HKWorkout?] {
         let workoutType = HKObjectType.workoutType()
 
+        let walkingPredicate = HKQuery.predicateForWorkouts(with: .walking)
+        let runningPredicate = HKQuery.predicateForWorkouts(with: .running)
+
+        let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [walkingPredicate, runningPredicate])
+
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
                 sampleType: workoutType,
-                predicate: nil,
+                predicate: predicate,
                 limit: limitTo,
                 sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
             ) { (query, samples, error) in

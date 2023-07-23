@@ -11,7 +11,7 @@ public final class UserDataModel: ObservableObject {
 
     public final func getData(uid: String) async {
         do {
-            self.userData = try await UsersUtil.getUserData(uid: uid)
+            userData = try await UsersUtil.getUserData(uid: uid)
         } catch {
             print("Error getting user data: \(error)")
         }
@@ -43,12 +43,12 @@ struct UsersUtil {
                     case .success(let document):
                         print("Successfully decoded user: \(document)")
                         let userData = UserData(
-                                id: uid,
-                                name: "\(document.firstName) \(document.lastName)",
-                                firstName: document.firstName,
-                                lastName: document.lastName,
-                                profilePicture: "",
-                                friends: document.friends
+                            id: uid,
+                            name: "\(document.firstName) \(document.lastName)",
+                            firstName: document.firstName,
+                            lastName: document.lastName,
+                            profilePicture: "",
+                            friends: document.friends
                         )
                         usersCache.updateValue(userData, forKey: uid)
                         continuation.resume(returning: userData)

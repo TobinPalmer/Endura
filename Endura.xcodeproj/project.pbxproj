@@ -34,10 +34,12 @@
 		6969826CF3BCDFA16EC0B2C2 /* ActivityModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969870866179CC66A7558FB /* ActivityModels.swift */; };
 		696983C2448098B242747B5C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985A05E4D25C066BD24F3 /* ProfileView.swift */; };
 		696983C807BF764F750FB09D /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989B3ACC5846606EE527B /* Auth.swift */; };
+		696983D815E023C30549A7BB /* HealthKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984EE498475DB24E5E333 /* HealthKitErrors.swift */; };
 		696984F1B1F8F623157F875A /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982663142A11EE8E111D5 /* Users.swift */; };
 		69698671DBDF2B136019BAA8 /* UploadCustomWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984366AC3E4F224C26D34 /* UploadCustomWorkoutView.swift */; };
 		6969869F3EB16BBBEE6D126E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969824200418FF34705EE6A /* HomeView.swift */; };
 		696986BD803239CC2C5AE22A /* HKWorkoutActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969899BCE76C8EFC97E0F3B /* HKWorkoutActivityType.swift */; };
+		696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980A9493FB9C9A2291998 /* WorkoutErrors.swift */; };
 		6969874C7C01175EDE8DC3F7 /* PreviewWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982855FE478D8D2440495 /* PreviewWorkoutView.swift */; };
 		6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985F087A56B76C2C803F6 /* CLLocation.swift */; };
 		6969893318E9C58859CCA2A0 /* EnduraWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982A3F9BB39FD53CF90B5 /* EnduraWorkout.swift */; };
@@ -89,6 +91,7 @@
 		17CC66EA7C715C2776A564D2 /* ProfileImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		17CC69F5F51AE211727A3343 /* ActivityPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPost.swift; sourceTree = "<group>"; };
 		6969809898A0099B126A1596 /* TimeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
+		696980A9493FB9C9A2291998 /* WorkoutErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutErrors.swift; sourceTree = "<group>"; };
 		696981801C5068A4710C0DA2 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6969819A8C4285A3E148D771 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		6969824200418FF34705EE6A /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = Endura/HomeView.swift; sourceTree = SOURCE_ROOT; };
@@ -100,6 +103,7 @@
 		696984366AC3E4F224C26D34 /* UploadCustomWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadCustomWorkoutView.swift; sourceTree = "<group>"; };
 		6969849C3C4EA502A9EE3634 /* UploadWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView.swift; sourceTree = "<group>"; };
 		696984C1906C8DA101564F11 /* DashboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		696984EE498475DB24E5E333 /* HealthKitErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitErrors.swift; sourceTree = "<group>"; };
 		696985A05E4D25C066BD24F3 /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		696985F087A56B76C2C803F6 /* CLLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
 		696986EDB3F87EE749147042 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
@@ -191,6 +195,7 @@
 				696988E1CBEAB633692B2D14 /* Views */,
 				69698720350C74DC405F7DBA /* Utils */,
 				69698295434F07B0A3B70B02 /* Models */,
+				69698BED38E7BC5FB38B4BA0 /* Errors */,
 			);
 			path = Endura;
 			sourceTree = "<group>";
@@ -296,6 +301,15 @@
 				17CC6751CEA8F4205A39FCF7 /* Components */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		69698BED38E7BC5FB38B4BA0 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				696980A9493FB9C9A2291998 /* WorkoutErrors.swift */,
+				696984EE498475DB24E5E333 /* HealthKitErrors.swift */,
+			);
+			path = Errors;
 			sourceTree = "<group>";
 		};
 		69698CBA3932CFCCE2E09B8F /* HealthKit */ = {
@@ -512,6 +526,8 @@
 				6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */,
 				696986BD803239CC2C5AE22A /* HKWorkoutActivityType.swift in Sources */,
 				17CC6E57057675F816CE2456 /* UserModels.swift in Sources */,
+				696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */,
+				696983D815E023C30549A7BB /* HealthKitErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
