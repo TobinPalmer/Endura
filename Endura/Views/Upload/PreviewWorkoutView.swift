@@ -178,7 +178,7 @@ public struct PreviewWorkoutView: View {
                     Text("Loading...")
                 }
             }
-            Text("LOL")
+        }
                 .task {
                     do {
                         enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
@@ -188,7 +188,6 @@ public struct PreviewWorkoutView: View {
                         print("Error getting heart rate graph")
                     }
                 }
-        }
         //            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         //            .task {
         //                do {

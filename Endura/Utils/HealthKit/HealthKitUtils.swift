@@ -103,11 +103,11 @@ public struct HealthKitUtils {
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
 
         return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.discreteMax, .discreteMin],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
+                quantityType: quantityType,
+                quantitySamplePredicate: predicate,
+                options: [.discreteMax, .discreteMin],
+                anchorDate: workout.startDate,
+                intervalComponents: interval
         )
     }
 
@@ -115,8 +115,8 @@ public struct HealthKitUtils {
         var heartRateData = HeartRateGraph()
 
         results.enumerateStatistics(
-            from: workout.startDate,
-            to: workout.endDate
+                from: workout.startDate,
+                to: workout.endDate
         ) { statistics, _ in
             if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
                let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min")) {
@@ -136,8 +136,10 @@ public struct HealthKitUtils {
                 let previousTuple = heartRateData[i - 1]
 
                 if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.0, to: currentTuple.0).second, missingSeconds > 1 {
-                    let missingRange = stride(from: previousTuple.0.addingTimeInterval(1), to: currentTuple.0, by: 1)
+                    let missingRange = sequence(first: previousTuple.0.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.0 })
 
+//                        let missingRange = stride(from: previousTuple.0.addingTimeInterval(1), to: currentTuple.0, by: 1)
+//
                     for missingSecond in missingRange {
                         filledArray.append((missingSecond, previousTuple.1))
                     }
@@ -160,10 +162,10 @@ public struct HealthKitUtils {
 
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
-                sampleType: workoutType,
-                predicate: predicate,
-                limit: limitTo,
-                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
+                    sampleType: workoutType,
+                    predicate: predicate,
+                    limit: limitTo,
+                    sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
             ) { (query, samples, error) in
                 if let error = error {
                     continuation.resume(throwing: error)
