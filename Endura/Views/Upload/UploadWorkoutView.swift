@@ -14,13 +14,13 @@ import HealthKit
     final fileprivate func activityToIcon(activityName: String) -> String {
         switch activityName {
         case "Running":
-            return "running"
+            return "figure.run"
         case "Cycling":
-            return "bicycle"
+            return "figure.outdoor.cycle"
         case "Walking":
             return "figure.walk"
         case "Swimming":
-            return "figure.swim"
+            return "figure.pool.swim"
         case "Elliptical":
             return "figure.walk"
         case "Other":
