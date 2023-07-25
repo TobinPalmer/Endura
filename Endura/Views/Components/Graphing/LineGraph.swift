@@ -46,22 +46,24 @@ public struct LineGraph: View {
                 if let touchLocation = viewModel.touchLocationX {
                     let index = min(max(Int((touchLocation / stepWidth).rounded()), 0), data.count - 1)
                     if let value = data[safe: index] {
-                    let yPosition = stepHeight * CGFloat((value - minVal))
+                        let yPosition = stepHeight * CGFloat((value - minVal))
 
-                    Circle()
-                        .fill(Color.primary)
-                        .frame(width: 10, height: 10)
-                        .position(CGPoint(x: touchLocation, y: frame.height - yPosition))
+                        Circle()
+                            .fill(Color.primary)
+                            .frame(width: 10, height: 10)
+                            .position(CGPoint(x: touchLocation, y: frame.height - yPosition))
 
-                    Text("\(valueModifier(data[index]))")
-                        .position(CGPoint(x: touchLocation, y: frame.height - yPosition - 30))
+                        Text("\(valueModifier(data[index]))")
+                            .position(CGPoint(x: touchLocation, y: frame.height - yPosition - 30))
 
                     }
                 }
             }
         }
-            .background(Color.clear)
+            .padding(0)
             .frame(height: CGFloat(height))
+            .background(Color.clear)
+            .border(Color.blue, width: 1)
             .contentShape(Rectangle())
 //            .gesture(DragGesture(minimumDistance: 0)
 //                .onChanged({ value in

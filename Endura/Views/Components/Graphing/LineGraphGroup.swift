@@ -9,6 +9,7 @@ class LineGraphViewModel: ObservableObject {
     @Published var touchLocationX: CGFloat? = nil
 }
 
+
 public struct LineGraphGroup<Content: View>: View {
     private let graphs: Content
     @EnvironmentObject var viewModel: LineGraphViewModel
@@ -19,17 +20,23 @@ public struct LineGraphGroup<Content: View>: View {
 
     @ViewBuilder
     public var body: some View {
-        VStack {
-            graphs
+        GeometryReader { geometry in
+            VStack {
+                graphs
+            }
+                .border(Color.red, width: 1)
+                .gesture(DragGesture(minimumDistance: 0)
+                    .onChanged({ value in
+                        if 0...geometry.size.width ~= value.location.x {
+                            viewModel.touchLocationX = value.location.x
+                        } else {
+                            viewModel.touchLocationX = nil
+                        }
+                    })
+                    .onEnded({ _ in
+                        viewModel.touchLocationX = nil
+                    })
+                )
         }
-            .border(Color.red, width: 1)
-            .gesture(DragGesture(minimumDistance: 0)
-                .onChanged({ value in
-                    viewModel.touchLocationX = value.location.x
-                })
-                .onEnded({ _ in
-                    viewModel.touchLocationX = nil
-                })
-            )
     }
 }

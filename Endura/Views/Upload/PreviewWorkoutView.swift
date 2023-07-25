@@ -110,14 +110,20 @@ public struct PreviewWorkoutView: View {
                     pace.append(val.pace)
                 }
 
-                LineGraphGroup {
-                    LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
-                        .padding()
-
-                    LineGraph(data: heartRate, height: 200)
-                        .padding()
+                GeometryReader { geometry in
+                    VStack {
+                        VStack {
+                            LineGraphGroup {
+                                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                                LineGraph(data: heartRate, height: 200)
+                            }
+                                .environmentObject(LineGraphViewModel())
+                        }
+                            .frame(width: geometry.size.width - 50, height: geometry.size.height)
+                    }
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .border(Color.green)
                 }
-                    .environmentObject(LineGraphViewModel()) // remove this line
 //                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
 //                    .padding()
 //
@@ -202,7 +208,7 @@ public struct PreviewWorkoutView: View {
 //                if !enduraWorkout.location.isEmpty {
 //                    ActivityMap(enduraWorkout)
 //                } else {
-//                    Text("No route data available")
+//                    Text"No route data available")
 //                }
 
                 Button {
