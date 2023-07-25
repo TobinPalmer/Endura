@@ -73,15 +73,11 @@ public struct HealthKitUtils {
         }
     }
 
-    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> HeartRateGraph {
+    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateData] {
         let interval = DateComponents(second: 1)
-//        guard interval.second! > 0 else {
-//            print("To low interval")
-////            return (Date(), [(Date(), (0, 0))])
-//        }
         let query = await createQueryForWorkout(workout, interval: interval)
 
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<HeartRateGraph, Error>) in
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateData], Error>) in
             query.initialResultsHandler = { query, results, error in
                 if let error = error {
                     continuation.resume(throwing: error)
@@ -111,8 +107,8 @@ public struct HealthKitUtils {
         )
     }
 
-    private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> HeartRateGraph {
-        var heartRateData = HeartRateGraph()
+    private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [HeartRateData] {
+        var heartRateData = [HeartRateData]()
 
         results.enumerateStatistics(
                 from: workout.startDate,
@@ -123,11 +119,11 @@ public struct HealthKitUtils {
                 let average = (minValue + maxValue) / 2
                 let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1000000).rounded() / 1000000)
 
-                heartRateData.append((date, average))
+                heartRateData.append(HeartRateData(timestamp: date, heartRate: average))
             }
         }
 
-        var filledArray = HeartRateGraph()
+        var filledArray = [HeartRateData]()
 
         for i in 0..<heartRateData.count {
             let currentTuple = heartRateData[i]
@@ -135,13 +131,11 @@ public struct HealthKitUtils {
             if i > 0 {
                 let previousTuple = heartRateData[i - 1]
 
-                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.0, to: currentTuple.0).second, missingSeconds > 1 {
-                    let missingRange = sequence(first: previousTuple.0.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.0 })
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
+                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
 
-//                        let missingRange = stride(from: previousTuple.0.addingTimeInterval(1), to: currentTuple.0, by: 1)
-//
                     for missingSecond in missingRange {
-                        filledArray.append((missingSecond, previousTuple.1))
+                        filledArray.append(HeartRateData(timestamp: missingSecond, heartRate: previousTuple.heartRate))
                     }
                 }
             }
@@ -196,8 +190,8 @@ public struct HealthKitUtils {
                 var heartRateAtPoint: Double?;
 
                 for i in 0..<heartRate.count {
-                    if Int(heartRate[i].0.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
-                        heartRateAtPoint = heartRate[i].1
+                    if Int(heartRate[i].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
+                        heartRateAtPoint = heartRate[i].heartRate
                         heartRate.removeSubrange(0...i) // Remove all previous heart rate points since they are no longer needed
                         break;
                     }

@@ -43,7 +43,6 @@
 		696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980A9493FB9C9A2291998 /* WorkoutErrors.swift */; };
 		6969874C7C01175EDE8DC3F7 /* PreviewWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982855FE478D8D2440495 /* PreviewWorkoutView.swift */; };
 		6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985F087A56B76C2C803F6 /* CLLocation.swift */; };
-		6969893318E9C58859CCA2A0 /* EnduraWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982A3F9BB39FD53CF90B5 /* EnduraWorkout.swift */; };
 		696989667077D098FD05A1C6 /* HealthKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698B315EDC140451CA74A5 /* HealthKitUtils.swift */; };
 		69698AFD558796F80D1A9385 /* UploadWorkoutsFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982A720404C6B50029098 /* UploadWorkoutsFrameView.swift */; };
 		69698B2BDA9046D639E2A0E6 /* UploadWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969849C3C4EA502A9EE3634 /* UploadWorkoutView.swift */; };
@@ -97,7 +96,6 @@
 		6969824200418FF34705EE6A /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = Endura/HomeView.swift; sourceTree = SOURCE_ROOT; };
 		696982663142A11EE8E111D5 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		696982855FE478D8D2440495 /* PreviewWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewWorkoutView.swift; sourceTree = "<group>"; };
-		696982A3F9BB39FD53CF90B5 /* EnduraWorkout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnduraWorkout.swift; sourceTree = "<group>"; };
 		696982A720404C6B50029098 /* UploadWorkoutsFrameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutsFrameView.swift; sourceTree = "<group>"; };
 		696982EE94EC856245965FFD /* ActivityMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMap.swift; sourceTree = "<group>"; };
 		696984366AC3E4F224C26D34 /* UploadCustomWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadCustomWorkoutView.swift; sourceTree = "<group>"; };
@@ -265,7 +263,6 @@
 			children = (
 				696986EDB3F87EE749147042 /* AppViewModel.swift */,
 				69698F66CFE1EDEA0C937BEE /* FirebaseModels */,
-				696982A3F9BB39FD53CF90B5 /* EnduraWorkout.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -521,7 +518,6 @@
 				69698B2BDA9046D639E2A0E6 /* UploadWorkoutView.swift in Sources */,
 				69698671DBDF2B136019BAA8 /* UploadCustomWorkoutView.swift in Sources */,
 				69698AFD558796F80D1A9385 /* UploadWorkoutsFrameView.swift in Sources */,
-				6969893318E9C58859CCA2A0 /* EnduraWorkout.swift in Sources */,
 				6969874C7C01175EDE8DC3F7 /* PreviewWorkoutView.swift in Sources */,
 				17CC668261B0BC82E6EEDDBA /* ActivityPost.swift in Sources */,
 				17CC6D07ACB8C238CFDC9CC6 /* ProfileImage.swift in Sources */,

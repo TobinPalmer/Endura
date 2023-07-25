@@ -52,35 +52,35 @@ import SwiftUICharts
 //        return filteredData
 //    }
 
-    final fileprivate func cleanPaceData(_ data: HeartRateGraph) -> HeartRateGraph {
-        let sortedData = data.sorted {
-            $0.1 < $1.1
-        }
+//    final fileprivate func cleanPaceData(_ data: HeartRateGraph) -> HeartRateGraph {
+//        let sortedData = data.sorted {
+//            $0.1 < $1.1
+//        }
+//
+//        var smoothedData: HeartRateGraph = [sortedData.first!]
+//
+//        for tuple in sortedData.dropFirst() {
+//            let lastAddedTuple = smoothedData.last!
+//
+//            if abs((tuple.1 - lastAddedTuple.1)) <= 0.25 {
+//                smoothedData.append(tuple)
+//            } else {
+//                let newTuple = (lastAddedTuple.0, tuple.1)
+//                smoothedData.append(newTuple)
+//            }
+//        }
+//
+//        return smoothedData
+//    }
 
-        var smoothedData: HeartRateGraph = [sortedData.first!]
 
-        for tuple in sortedData.dropFirst() {
-            let lastAddedTuple = smoothedData.last!
-
-            if abs((tuple.1 - lastAddedTuple.1)) <= 0.25 {
-                smoothedData.append(tuple)
-            } else {
-                let newTuple = (lastAddedTuple.0, tuple.1)
-                smoothedData.append(newTuple)
-            }
-        }
-
-        return smoothedData
-    }
-
-
-    final fileprivate func cleanHeartRateData(_ data: HeartRateGraph) -> HeartRateGraph {
-        let filteredData = data.compactMap {
-            $0.1 != 0.0 ? $0 : nil
-        }
-
-        return filteredData
-    }
+//    final fileprivate func cleanHeartRateData(_ data: HeartRateGraph) -> HeartRateGraph {
+//        let filteredData = data.compactMap {
+//            $0.1 != 0.0 ? $0 : nil
+//        }
+//
+//        return filteredData
+//    }
 }
 
 public struct PreviewWorkoutView: View {

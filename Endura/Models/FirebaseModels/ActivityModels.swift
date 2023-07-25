@@ -17,14 +17,9 @@ public struct LocationData: Codable {
     let longitude: Double
 }
 
-struct HeartRateData: Codable {
+public struct HeartRateData: Codable {
     var timestamp: Date
-    var heartRate: HeartRateDataPoints
-}
-
-struct HeartRateDataPoints: Codable {
-    var min: Double
-    var max: Double
+    var heartRate: Double
 }
 
 public struct RouteData: Codable {

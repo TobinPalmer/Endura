@@ -7,9 +7,7 @@ import SwiftUI
 import HealthKit
 
 @MainActor final class UploadsViewModel: ObservableObject {
-    internal typealias Activity = HKWorkout?
-    @Published fileprivate final var uploads: [Activity] = []
-    @Published private var heartRateGraph: [HeartRateGraph] = []
+    @Published fileprivate final var uploads: [HKWorkout?] = []
 
     final fileprivate func activityToIcon(activityName: String) -> String {
         switch activityName {
@@ -66,9 +64,9 @@ public struct UploadWorkoutView: View {
                 }
             }
         }
-            .task {
-                await uploadsViewModel.getActivities()
-            }
+                .task {
+                    await uploadsViewModel.getActivities()
+                }
     }
 
 }
