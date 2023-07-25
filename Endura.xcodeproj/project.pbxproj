@@ -54,6 +54,7 @@
 		69698E351EF5E934C5440F86 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698F375B8431109FFB3F98 /* TrainingView.swift */; };
 		69698F967DFA9D0303BE96FF /* MKCoordinateRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */; };
 		69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* DashboardView.swift */; };
+		E955630C2A6F4F2800AC74DE /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = E955630B2A6F4F2800AC74DE /* SwiftUICharts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +130,7 @@
 				026042F62A62E36300F4AF88 /* FirebaseFunctions in Frameworks */,
 				026042F42A62E36300F4AF88 /* FirebaseFirestoreSwift in Frameworks */,
 				026042EE2A62E36300F4AF88 /* FirebaseDatabase in Frameworks */,
+				E955630C2A6F4F2800AC74DE /* SwiftUICharts in Frameworks */,
 				026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */,
 				026042E82A62E36300F4AF88 /* FirebaseAnalytics in Frameworks */,
 				026042F22A62E36300F4AF88 /* FirebaseFirestore in Frameworks */,
@@ -378,6 +380,7 @@
 				026042F52A62E36300F4AF88 /* FirebaseFunctions */,
 				026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */,
 				026042F92A62E36300F4AF88 /* FirebaseStorage */,
+				E955630B2A6F4F2800AC74DE /* SwiftUICharts */,
 			);
 			productName = Endura;
 			productReference = 026042B92A62E27900F4AF88 /* Endura.app */;
@@ -453,6 +456,7 @@
 			mainGroup = 026042B02A62E27900F4AF88;
 			packageReferences = (
 				026042E62A62E36300F4AF88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E955630A2A6F4F2800AC74DE /* XCRemoteSwiftPackageReference "ChartView" */,
 			);
 			productRefGroup = 026042BA2A62E27900F4AF88 /* Products */;
 			projectDirPath = "";
@@ -871,6 +875,14 @@
 				minimumVersion = 10.12.0;
 			};
 		};
+		E955630A2A6F4F2800AC74DE /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -923,6 +935,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 026042E62A62E36300F4AF88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		E955630B2A6F4F2800AC74DE /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E955630A2A6F4F2800AC74DE /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

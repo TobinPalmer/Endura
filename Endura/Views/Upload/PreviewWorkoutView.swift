@@ -9,6 +9,7 @@ import MapKit
 import Charts
 import FirebaseFirestore
 import FirebaseCore
+import SwiftUICharts
 
 @MainActor fileprivate final class PreviewWorkoutModel: ObservableObject {
     final fileprivate func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityData {
@@ -100,6 +101,19 @@ public struct PreviewWorkoutView: View {
             Text("Afternoon Run").font(.title)
             if let enduraWorkout = enduraWorkout {
                 Text("\(enduraWorkout.duration) \(enduraWorkout.distance)")
+
+                let heartRate = enduraWorkout.routeData.map { val in
+                    val.heartRate
+                }
+
+                LineChartView(data: heartRate, title: "Heart Rate", legend: "BPM", form: ChartForm.extraLarge, dropShadow: false)
+                        .padding()
+
+
+//
+//                BarChart()
+//                        .data(heartRate)
+
 //                let heartRate = enduraWorkout.routeData.map { val in
 //                    (val.timestamp, val.heartRate)
 //                }
