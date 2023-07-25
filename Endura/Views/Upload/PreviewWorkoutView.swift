@@ -102,17 +102,23 @@ public struct PreviewWorkoutView: View {
             if let enduraWorkout = enduraWorkout {
                 Text("\(enduraWorkout.duration) \(enduraWorkout.distance)")
 
-                let heartRate = enduraWorkout.routeData.map { val in
-                    val.heartRate
+                var heartRate = [Double]()
+                var pace = [Double]()
+
+                let _ = enduraWorkout.routeData.forEach { val in
+                    heartRate.append(val.heartRate)
+                    pace.append(val.pace)
                 }
 
-                LineChartView(data: heartRate, title: "Heart Rate", legend: "BPM", form: ChartForm.extraLarge, dropShadow: false)
-                        .padding()
+                LineGraph(data: heartRate)
+                    .padding()
 
-
+//                LineChartView(data: heartRate, title: "Heart Rate", legend: "BPM", form: ChartForm.extraLarge, dropShadow: false)
+//                    .padding()
 //
-//                BarChart()
-//                        .data(heartRate)
+//                LineChartView(data: pace, title: "Pace", legend: "Min/Mile", form: ChartForm.extraLarge, dropShadow: false, valueSpecifier: "%.2f")
+//                    .padding()
+
 
 //                let heartRate = enduraWorkout.routeData.map { val in
 //                    (val.timestamp, val.heartRate)
@@ -199,15 +205,15 @@ public struct PreviewWorkoutView: View {
                 }
             }
         }
-                .task {
-                    do {
-                        enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-                    } catch WorkoutErrors.noWorkout {
-                        print("No workout to get heart rate graph")
-                    } catch {
-                        print("Error getting heart rate graph")
-                    }
+            .task {
+                do {
+                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+                } catch WorkoutErrors.noWorkout {
+                    print("No workout to get heart rate graph")
+                } catch {
+                    print("Error getting heart rate graph")
                 }
+            }
         //            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         //            .task {
         //                do {
