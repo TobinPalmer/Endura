@@ -122,7 +122,6 @@ public struct PreviewWorkoutView: View {
                             .frame(width: geometry.size.width - 50, height: geometry.size.height)
                     }
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                        .border(Color.green)
                 }
 //                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
 //                    .padding()

@@ -24,7 +24,6 @@ public struct LineGraphGroup<Content: View>: View {
             VStack {
                 graphs
             }
-                .border(Color.red, width: 1)
                 .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ value in
                         if 0...geometry.size.width ~= value.location.x {

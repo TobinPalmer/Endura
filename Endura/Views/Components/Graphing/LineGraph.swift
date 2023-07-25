@@ -2,7 +2,6 @@ import SwiftUI
 
 public struct LineGraph: View {
     @EnvironmentObject var viewModel: LineGraphViewModel
-//    @State private var touchLocation: CGFloat? = nil
 
     private let data: [Double]
     private let height: Int
@@ -21,7 +20,7 @@ public struct LineGraph: View {
         let minVal = data.min() ?? 0
         let range = maxVal - minVal
 
-        VStack {
+        ZStack {
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .local)
                 let stepWidth = frame.width / CGFloat(data.count - 1)
@@ -59,19 +58,27 @@ public struct LineGraph: View {
                     }
                 }
             }
+            Text("\(valueModifier(maxVal))")
+                .font(.footnote)
+                .fontWeight(.bold)
+                .foregroundColor(.black)
+                .position(x: 10, y: 20)
+
+            Text("\(valueModifier((maxVal + minVal) / 2))")
+                .font(.footnote)
+                .fontWeight(.bold)
+                .foregroundColor(.black)
+                .position(x: 10, y: CGFloat(height) / 2)
+
+            Text("\(valueModifier(minVal))")
+                .font(.footnote)
+                .fontWeight(.bold)
+                .foregroundColor(.black)
+                .position(x: 10, y: CGFloat(height) - 20)
         }
             .padding(0)
             .frame(height: CGFloat(height))
             .background(Color.clear)
-            .border(Color.blue, width: 1)
             .contentShape(Rectangle())
-//            .gesture(DragGesture(minimumDistance: 0)
-//                .onChanged({ value in
-//                    self.touchLocation = value.location.x
-//                })
-//                .onEnded({ _ in
-//                    self.touchLocation = nil
-//                })
-//            )
     }
 }
