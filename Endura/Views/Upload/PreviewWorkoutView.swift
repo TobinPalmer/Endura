@@ -14,7 +14,7 @@ import SwiftUICharts
 @MainActor fileprivate final class PreviewWorkoutModel: ObservableObject {
     final fileprivate func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityData {
         do {
-            return try await WorkoutUtils.workoutToActivityData(workout)
+            return try await HealthKitUtils.workoutToActivityData(workout)
         } catch {
             throw error
         }
@@ -187,6 +187,12 @@ public struct PreviewWorkoutView: View {
 //                } else {
 //                    Text("No route data available")
 //                }
+
+                Button {
+                } label: {
+                    Text("Upload")
+                }
+
             } else {
                 ProgressView {
                     Text("Loading...")

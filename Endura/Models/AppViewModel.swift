@@ -9,8 +9,8 @@ enum PageView {
     case LOGIN
 }
 
-final class NavigationModel: ObservableObject {
-    class var instance: NavigationModel {
+public final class NavigationModel: ObservableObject {
+    public final class var instance: NavigationModel {
         struct Singleton {
             static let instance = NavigationModel()
         }

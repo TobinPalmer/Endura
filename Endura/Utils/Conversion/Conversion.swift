@@ -1,18 +1,10 @@
 //
-// Created by Tobin Palmer on 7/19/23.
+// Created by Brandon Kirbyson on 7/24/23.
 //
 
 import Foundation
 
-struct TimeUtils {
-    public static func secondsToFormattedTime(seconds: Int) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.unitsStyle = .abbreviated
-        let formattedString = formatter.string(from: TimeInterval(seconds))!
-        return formattedString
-    }
-
+public struct ConversionUtils {
     public static func convertMpsToMpm(_ metersPerSec: Double) -> String {
         let metersPerMile = 1609.34
         let secondsPerMinute = 60.0
