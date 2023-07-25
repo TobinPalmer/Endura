@@ -11,6 +11,10 @@ public struct ConversionUtils {
 
         let minutesPerMile = 1 / (metersPerSec / (metersPerMile / secondsPerMinute))
 
+        guard !minutesPerMile.isNaN || !minutesPerMile.isInfinite else {
+            return "0:00"
+        }
+
         let minutes = Int(minutesPerMile)
         let seconds = Int((minutesPerMile - Double(minutes)) * secondsPerMinute)
 
