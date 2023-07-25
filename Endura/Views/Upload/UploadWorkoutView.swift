@@ -31,7 +31,7 @@ import HealthKit
     final fileprivate func getActivities() async {
         guard uploads.isEmpty == false else {
             do {
-                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 5)
+                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 500)
                 uploads = workouts
             } catch {
                 print("Error: \(error)")
@@ -47,26 +47,28 @@ public struct UploadWorkoutView: View {
 
     public var body: some View {
         VStack {
-            ForEach(uploadsViewModel.uploads, id: \.self) { activity in
-                Button(action: {}) {
-                    if let activity = activity {
-                        let workoutType = activity.workoutActivityType.name
+            ScrollView {
+                ForEach(uploadsViewModel.uploads, id: \.self) { activity in
+                    Button(action: {}) {
+                        if let activity = activity {
+                            let workoutType = activity.workoutActivityType.name
 
-                        NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
-                            HStack {
-                                Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
-                                Text(workoutType)
+                            NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
+                                HStack {
+                                    Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
+                                    Text(workoutType)
+                                }
                             }
+                        } else {
+                            Text("No Activities")
                         }
-                    } else {
-                        Text("No Activities")
                     }
                 }
             }
         }
-                .task {
-                    await uploadsViewModel.getActivities()
-                }
+            .task {
+                await uploadsViewModel.getActivities()
+            }
     }
 
 }

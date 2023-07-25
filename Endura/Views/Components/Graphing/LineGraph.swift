@@ -45,7 +45,7 @@ public struct LineGraph: View {
 
                 if let touchLocation = viewModel.touchLocationX {
                     let index = min(max(Int((touchLocation / stepWidth).rounded()), 0), data.count - 1)
-                    let value = data[index]
+                    if let value = data[safe: index] {
                     let yPosition = stepHeight * CGFloat((value - minVal))
 
                     Circle()
@@ -55,6 +55,8 @@ public struct LineGraph: View {
 
                     Text("\(valueModifier(data[index]))")
                         .position(CGPoint(x: touchLocation, y: frame.height - yPosition - 30))
+
+                    }
                 }
             }
         }

@@ -7,7 +7,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 public struct ActivityUtils {
-    public static func getActivity(limitTo: Int = 5) async throws -> [ActivityData] {
+    public static func getActivity(limitTo: Int = 500) async throws -> [ActivityData] {
         var activities: [ActivityData] = []
 
         let querySnapshot = try await Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: 5).getDocuments()
@@ -16,7 +16,7 @@ public struct ActivityUtils {
             do {
                 let activityDocument = try document.data(as: ActivityDocument.self)
                 let activity = ActivityData(
-                        uid: activityDocument.userId, time: activityDocument.time, duration: activityDocument.duration, distance: activityDocument.distance, location: activityDocument.location, likes: [], comments: [])
+                    uid: activityDocument.userId, time: activityDocument.time, duration: activityDocument.duration, distance: activityDocument.distance, location: activityDocument.location, likes: [], comments: [])
                 activities.append(activity)
             } catch let error as NSError {
                 print("error: \(error.localizedDescription)")
