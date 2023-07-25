@@ -48,6 +48,7 @@
 		69698AFD558796F80D1A9385 /* UploadWorkoutsFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982A720404C6B50029098 /* UploadWorkoutsFrameView.swift */; };
 		69698B2BDA9046D639E2A0E6 /* UploadWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969849C3C4EA502A9EE3634 /* UploadWorkoutView.swift */; };
 		69698BABDCAEC0A369C6A3FA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969819A8C4285A3E148D771 /* Double.swift */; };
+		69698C0893CEF415B63F0B30 /* LineGraphGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969811976FAB3D841B531A2 /* LineGraphGroup.swift */; };
 		69698C7897FE8F624876FE76 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D02516F70CDB3E69B2C /* LoginView.swift */; };
 		69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986EDB3F87EE749147042 /* AppViewModel.swift */; };
 		69698E351EF5E934C5440F86 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698F375B8431109FFB3F98 /* TrainingView.swift */; };
@@ -93,6 +94,7 @@
 		17CC6E3C3259ED54F0BF31D1 /* Activities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activities.swift; sourceTree = "<group>"; };
 		17CC6FAD8A0AC457723ACD1F /* Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversion.swift; sourceTree = "<group>"; };
 		696980A9493FB9C9A2291998 /* WorkoutErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutErrors.swift; sourceTree = "<group>"; };
+		6969811976FAB3D841B531A2 /* LineGraphGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineGraphGroup.swift; sourceTree = "<group>"; };
 		6969819A8C4285A3E148D771 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		6969824200418FF34705EE6A /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = Endura/HomeView.swift; sourceTree = SOURCE_ROOT; };
 		696982663142A11EE8E111D5 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			isa = PBXGroup;
 			children = (
 				69698520E2FC8C1BAC104A60 /* LineGraph.swift */,
+				6969811976FAB3D841B531A2 /* LineGraphGroup.swift */,
 			);
 			path = Graphing;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				17CC6BD8CFCA13C8952D4534 /* Formatting.swift in Sources */,
 				17CC621F59B1D4C332521571 /* Activities.swift in Sources */,
 				696982ECE6296AF00DAFE721 /* LineGraph.swift in Sources */,
+				69698C0893CEF415B63F0B30 /* LineGraphGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

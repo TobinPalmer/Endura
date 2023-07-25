@@ -110,11 +110,19 @@ public struct PreviewWorkoutView: View {
                     pace.append(val.pace)
                 }
 
-                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
-                    .padding()
+                LineGraphGroup {
+                    LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                        .padding()
 
-                LineGraph(data: heartRate, height: 200)
-                    .padding()
+                    LineGraph(data: heartRate, height: 200)
+                        .padding()
+                }
+                    .environmentObject(LineGraphViewModel()) // remove this line
+//                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+//                    .padding()
+//
+//                LineGraph(data: heartRate, height: 200)
+//                    .padding()
 
 //                LineChartView(data: heartRate, title: "Heart Rate", legend: "BPM", form: ChartForm.extraLarge, dropShadow: false)
 //                    .padding()

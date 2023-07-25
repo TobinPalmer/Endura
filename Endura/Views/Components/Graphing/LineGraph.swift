@@ -1,7 +1,8 @@
 import SwiftUI
 
 public struct LineGraph: View {
-    @State private var touchLocation: CGFloat? = nil
+    @EnvironmentObject var viewModel: LineGraphViewModel
+//    @State private var touchLocation: CGFloat? = nil
 
     private let data: [Double]
     private let height: Int
@@ -42,7 +43,7 @@ public struct LineGraph: View {
                 }
                     .stroke(Color.primary, lineWidth: 2)
 
-                if let touchLocation = touchLocation {
+                if let touchLocation = viewModel.touchLocationX {
                     let index = min(max(Int((touchLocation / stepWidth).rounded()), 0), data.count - 1)
                     let value = data[index]
                     let yPosition = stepHeight * CGFloat((value - minVal))
@@ -60,13 +61,13 @@ public struct LineGraph: View {
             .background(Color.clear)
             .frame(height: CGFloat(height))
             .contentShape(Rectangle())
-            .gesture(DragGesture(minimumDistance: 0)
-                .onChanged({ value in
-                    self.touchLocation = value.location.x
-                })
-                .onEnded({ _ in
-                    self.touchLocation = nil
-                })
-            )
+//            .gesture(DragGesture(minimumDistance: 0)
+//                .onChanged({ value in
+//                    self.touchLocation = value.location.x
+//                })
+//                .onEnded({ _ in
+//                    self.touchLocation = nil
+//                })
+//            )
     }
 }
