@@ -4,15 +4,15 @@ public struct LineGraph: View {
     @State private var touchLocation: CGFloat? = nil
 
     private let data: [Double]
+    private let height: Int
+    private let valueModifier: (Double) -> String
 
-    public init(data: [Double]) {
+    public init(data: [Double], height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
+        String(i)
+    }) {
         self.data = data
-    }
-
-    public init(data: [Int]) {
-        self.data = data.map {
-            Double($0)
-        }
+        self.height = height
+        self.valueModifier = valueModifier
     }
 
     public var body: some View {
@@ -52,14 +52,13 @@ public struct LineGraph: View {
                         .frame(width: 10, height: 10)
                         .position(CGPoint(x: touchLocation, y: frame.height - yPosition))
 
-                    Text("\(data[index])")
+                    Text("\(valueModifier(data[index]))")
                         .position(CGPoint(x: touchLocation, y: frame.height - yPosition - 30))
                 }
             }
         }
             .background(Color.clear)
-            .frame(height: 200)
-            .border(Color.red)
+            .frame(height: CGFloat(height))
             .contentShape(Rectangle())
             .gesture(DragGesture(minimumDistance: 0)
                 .onChanged({ value in
