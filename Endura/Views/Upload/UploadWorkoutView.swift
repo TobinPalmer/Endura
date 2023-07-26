@@ -52,10 +52,15 @@ public struct UploadWorkoutView: View {
                     Button(action: {}) {
                         if let activity = activity {
                             let workoutType = activity.workoutActivityType.name
-
+                            let workoutDistance = activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0
                             NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
                                 HStack {
                                     Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
+                                    Text(activity.startDate, style: .date)
+                                    if let distance = activity.totalDistance {
+                                        Text(String(describing: distance.doubleValue(for: .mile()) ?? 0.0))
+                                    }
+
                                     Text(workoutType)
                                 }
                             }
@@ -66,9 +71,9 @@ public struct UploadWorkoutView: View {
                 }
             }
         }
-            .task {
-                await uploadsViewModel.getActivities()
-            }
+                .task {
+                    await uploadsViewModel.getActivities()
+                }
     }
 
 }
