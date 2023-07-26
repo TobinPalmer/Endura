@@ -19,8 +19,6 @@ public struct ConversionUtils {
             return "0:00"
         }
 
-        print(minutesPerMile)
-
         let minutes = Int(minutesPerMile)
         let seconds = Int((minutesPerMile - Double(minutes)) * secondsPerMinute)
 

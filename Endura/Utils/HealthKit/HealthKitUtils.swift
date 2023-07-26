@@ -99,11 +99,11 @@ public struct HealthKitUtils {
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
 
         return HKStatisticsCollectionQuery(
-                quantityType: quantityType,
-                quantitySamplePredicate: predicate,
-                options: [.discreteMax, .discreteMin],
-                anchorDate: workout.startDate,
-                intervalComponents: interval
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
         )
     }
 
@@ -111,8 +111,8 @@ public struct HealthKitUtils {
         var heartRateData = [HeartRateData]()
 
         results.enumerateStatistics(
-                from: workout.startDate,
-                to: workout.endDate
+            from: workout.startDate,
+            to: workout.endDate
         ) { statistics, _ in
             if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
                let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min")) {
@@ -156,10 +156,10 @@ public struct HealthKitUtils {
 
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
-                    sampleType: workoutType,
-                    predicate: predicate,
-                    limit: limitTo,
-                    sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
+                sampleType: workoutType,
+                predicate: predicate,
+                limit: limitTo,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
             ) { (query, samples, error) in
                 if let error = error {
                     continuation.resume(throwing: error)
@@ -187,8 +187,14 @@ public struct HealthKitUtils {
             var data = try await HealthKitUtils.getLocationData(for: route)
 
             var graphSectionData = (0, data[0].timestamp, [GraphData]())
+            var dataRate = 1
+            let maxPoints = 100
 
-            print(data.count)
+            print("Data count", data.count)
+            if (data.count > maxPoints) {
+                dataRate = data.count / maxPoints
+            }
+            print(dataRate)
             data.removeSubrange(0...5)
             for i in 0..<data.count {
                 var heartRateAtPoint: Double?;
@@ -203,35 +209,35 @@ public struct HealthKitUtils {
                 }
 
                 let routePoint = RouteData(
-                        timestamp: point.timestamp,
-                        location: LocationData(
-                                latitude: point.coordinate.latitude,
-                                longitude: point.coordinate.longitude
-                        ),
-                        altitude: point.altitude,
-                        heartRate: heartRateAtPoint ?? 0.0,
-                        pace: point.speed
+                    timestamp: point.timestamp,
+                    location: LocationData(
+                        latitude: point.coordinate.latitude,
+                        longitude: point.coordinate.longitude
+                    ),
+                    altitude: point.altitude,
+                    heartRate: heartRateAtPoint ?? 0.0,
+                    pace: point.speed
                 )
 
                 routeData.append(routePoint)
 
                 let graphPoint = GraphData(
-                        timestamp: point.timestamp,
-                        altitude: point.altitude,
-                        heartRate: heartRateAtPoint ?? 0.0,
-                        pace: point.speed
+                    timestamp: point.timestamp,
+                    altitude: point.altitude,
+                    heartRate: heartRateAtPoint ?? 0.0,
+                    pace: point.speed
                 )
 
-                if i % 1 == 0 {
+                if i % dataRate == 0 {
                     if (i > 0) {
                         let filteredHeartRateArray = graphSectionData.2.filter({ $0.heartRate != 0.0 })
                         let filteredPaceArray = graphSectionData.2.filter({ $0.pace != 0.0 })
 
                         let graphSectionPoint = GraphData(
-                                timestamp: graphSectionData.1,
-                                altitude: graphSectionData.2.reduce(0, { $0 + $1.altitude }) / Double(graphSectionData.2.count),
-                                heartRate: filteredHeartRateArray.reduce(0, { $0 + $1.heartRate }) / Double(filteredHeartRateArray.count),
-                                pace: filteredPaceArray.reduce(0, { $0 + $1.pace }) / Double(filteredPaceArray.count)
+                            timestamp: graphSectionData.1,
+                            altitude: graphSectionData.2.reduce(0, { $0 + $1.altitude }) / Double(graphSectionData.2.count),
+                            heartRate: filteredHeartRateArray.reduce(0, { $0 + $1.heartRate }) / Double(filteredHeartRateArray.count),
+                            pace: filteredPaceArray.reduce(0, { $0 + $1.pace }) / Double(filteredPaceArray.count)
                         )
 
                         graphData.append(graphSectionPoint)
@@ -244,17 +250,15 @@ public struct HealthKitUtils {
             }
         }
 
-        print(graphData)
-
         let workoutData = ActivityData(
-                uid: "test",
-                time: workout.startDate,
-                distance: workoutDistance,
-                duration: workoutDuration,
-                routeData: routeData,
-                graphData: graphData,
-                comments: [],
-                likes: []
+            uid: "test",
+            time: workout.startDate,
+            distance: workoutDistance,
+            duration: workoutDuration,
+            routeData: routeData,
+            graphData: graphData,
+            comments: [],
+            likes: []
         )
 
         return workoutData

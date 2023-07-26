@@ -19,7 +19,6 @@ final class DashboardViewModel: ObservableObject {
                 return
             }
             snapshot.documentChanges.forEach { diff in
-                print(diff)
                 if (diff.type == .added || diff.type == .modified) {
                     do {
                         let data = try diff.document.data(as: ActivityData.self)
