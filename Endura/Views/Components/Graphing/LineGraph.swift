@@ -29,8 +29,6 @@ public struct LineGraph: View {
         ZStack {
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .local)
-//                let stepWidth = frame.width / CGFloat(data.count - 1)
-                let stepWidth = frame.width / CGFloat(timestampRange)
                 let stepHeight = frame.height / CGFloat(range)
 
                 Path { path in
@@ -64,21 +62,26 @@ public struct LineGraph: View {
                     let yPosition = stepHeight * CGFloat((closestDate.1 - minVal))
 
 
-                    Circle()
-                            .fill(Color.primary)
-                            .frame(width: 10, height: 10)
-                            .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition))
+                    if abs(closestDate.0.timeIntervalSince1970 - touchTimestamp) > Double(step * 2) {
+                        Circle()
+                                .fill(Color.primary)
+                                .frame(width: 10, height: 10)
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height))
 
-                    Text("\(valueModifier(closestDate.1))")
-                            .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition - 30))
+                        Text("Paused")
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height - 30))
+                    } else {
+                        Circle()
+                                .fill(Color.primary)
+                                .frame(width: 10, height: 10)
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition))
+
+                        Text("\(valueModifier(closestDate.1))")
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition - 30))
+                    }
                 }
 
             }
-            Text("\(valueModifier(maxVal))")
-                    .font(.footnote)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .position(x: 10, y: 20)
 
             Text("\(valueModifier((maxVal + minVal) / 2))")
                     .font(.footnote)
