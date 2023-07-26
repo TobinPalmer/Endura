@@ -6,6 +6,10 @@ import Foundation
 
 public struct ConversionUtils {
     public static func convertMpsToMpm(_ metersPerSec: Double) -> String {
+        if metersPerSec <= 0 {
+            return "0:00"
+        }
+
         let metersPerMile = 1609.34
         let secondsPerMinute = 60.0
 

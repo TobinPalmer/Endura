@@ -105,7 +105,12 @@ public struct PreviewWorkoutView: View {
                 var heartRate = [Double]()
                 var pace = [Double]()
 
-                let _ = enduraWorkout.routeData.forEach { val in
+//                let _ = enduraWorkout.routeData.forEach { val in
+//                    heartRate.append(val.heartRate)
+//                    pace.append(val.pace)
+//                }
+
+                let _ = enduraWorkout.graphData.forEach { val in
                     heartRate.append(val.heartRate)
                     pace.append(val.pace)
                 }

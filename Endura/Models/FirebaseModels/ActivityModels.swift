@@ -30,12 +30,21 @@ public struct RouteData: Codable {
     var pace: Double
 }
 
+// The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
+public struct GraphData: Codable {
+    var timestamp: Date
+    var altitude: Double
+    var heartRate: Double
+    var pace: Double
+}
+
 public struct ActivityData: Codable {
     var uid: String
     var time: Date
     var distance: Double
     var duration: TimeInterval
     var routeData: [RouteData]
+    var graphData: [GraphData]
     var comments: [ActivityComment]
     var likes: [String]
 }

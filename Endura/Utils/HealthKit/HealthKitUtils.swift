@@ -99,11 +99,11 @@ public struct HealthKitUtils {
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
 
         return HKStatisticsCollectionQuery(
-                quantityType: quantityType,
-                quantitySamplePredicate: predicate,
-                options: [.discreteMax, .discreteMin],
-                anchorDate: workout.startDate,
-                intervalComponents: interval
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
         )
     }
 
@@ -111,8 +111,8 @@ public struct HealthKitUtils {
         var heartRateData = [HeartRateData]()
 
         results.enumerateStatistics(
-                from: workout.startDate,
-                to: workout.endDate
+            from: workout.startDate,
+            to: workout.endDate
         ) { statistics, _ in
             if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
                let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min")) {
@@ -156,10 +156,10 @@ public struct HealthKitUtils {
 
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
-                    sampleType: workoutType,
-                    predicate: predicate,
-                    limit: limitTo,
-                    sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
+                sampleType: workoutType,
+                predicate: predicate,
+                limit: limitTo,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
             ) { (query, samples, error) in
                 if let error = error {
                     continuation.resume(throwing: error)
@@ -177,6 +177,7 @@ public struct HealthKitUtils {
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
         let workoutDuration = workout.duration
         var routeData = [RouteData]()
+        var graphData = [GraphData]()
 
         let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
 
@@ -185,98 +186,58 @@ public struct HealthKitUtils {
         for route in routes {
             let data = try await HealthKitUtils.getLocationData(for: route)
 
-            print(heartRate.count, data.count)
-            for point in data {
+            print(data.count)
+            for i in 0..<data.count {
                 var heartRateAtPoint: Double?;
+                let point = data[i]
 
-                for i in 0..<heartRate.count {
-                    if Int(heartRate[i].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
-                        heartRateAtPoint = heartRate[i].heartRate
-                        heartRate.removeSubrange(0...i) // Remove all previous heart rate points since they are no longer needed
+                for j in 0..<heartRate.count {
+                    if Int(heartRate[j].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
+                        heartRateAtPoint = heartRate[j].heartRate
+                        heartRate.removeSubrange(0...j) // Remove all previous heart rate points since they are no longer needed
                         break;
                     }
                 }
 
                 let routePoint = RouteData(
-                        timestamp: point.timestamp,
-                        location: LocationData(
-                                latitude: point.coordinate.latitude,
-                                longitude: point.coordinate.longitude
-                        ),
-                        altitude: point.altitude,
-                        heartRate: heartRateAtPoint ?? 0.0,
-                        pace: point.speed
+                    timestamp: point.timestamp,
+                    location: LocationData(
+                        latitude: point.coordinate.latitude,
+                        longitude: point.coordinate.longitude
+                    ),
+                    altitude: point.altitude,
+                    heartRate: heartRateAtPoint ?? 0.0,
+                    pace: point.speed
                 )
+
                 routeData.append(routePoint)
+
+                if i % 10 == 0 {
+                    let point = data[i]
+                }
+
+                let graphPoint = GraphData(
+                    timestamp: point.timestamp,
+                    altitude: point.altitude,
+                    heartRate: heartRateAtPoint ?? 0.0,
+                    pace: point.speed
+                )
+
+                graphData.append(graphPoint)
             }
         }
 
         let workoutData = ActivityData(
-                uid: "test",
-                time: workout.startDate,
-                distance: workoutDistance,
-                duration: workoutDuration,
-                routeData: routeData,
-                comments: [],
-                likes: []
+            uid: "test",
+            time: workout.startDate,
+            distance: workoutDistance,
+            duration: workoutDuration,
+            routeData: routeData,
+            graphData: graphData,
+            comments: [],
+            likes: []
         )
 
         return workoutData
-
-//            var rawPaceData: PaceGraph = []
-//            let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
-//            for route in routes {
-//                let graph = try await HealthKitUtils.getLocationData(for: route)
-//                rawPaceData.append(contentsOf: graph)
-//            }
-//            let paceData = rawPaceData.map {
-//                $0.speed
-//            }
-//
-//            var paceGraph: PaceGraphData {
-//                Array(zip(Array(0..<paceData.count), paceData))
-//            }
-//
-//            let smoothPaceGraph: PaceGraphData = paceGraph.map { (index, value) in
-//                (index, value.rounded(toPlaces: 2))
-//            }
-//
-//            do {
-//                async let heartRate = try HealthKitUtils.getHeartRateGraph(for: workout)
-//                let flattenedArry = try await heartRate.flatMap {
-//                    $0
-//                }
-//
-//                let dates = flattenedArry.map {
-//                    $0.0
-//                }
-//
-//                let values = flattenedArry.map {
-//                    $0.1
-//                }
-//
-//                let heartRateGraph: HeartRateGraphData = Array(zip(dates, values.map {
-//                    $0.0
-//                }))
-//
-//                let startTime = workout.startDate
-//
-//                let finalPaceGraph: [PaceGraphDataEncodable] = smoothPaceGraph.map {
-//                    PaceGraphDataEncodable(tuple: $0)
-//                }
-//
-//                let finalHeartRateGraph: [HeartRateGraphDataEncodable] = heartRateGraph.map {
-//                    HeartRateGraphDataEncodable(tuple: $0)
-//                }
-//
-//                var routeArray: [CLLocation] = []
-//
-//                let rawRoutes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
-//                for route in rawRoutes {
-//                    let graph = try await HealthKitUtils.getLocationData(for: route)
-//                    routeArray.append(contentsOf: graph)
-//                }
-//        }
-
     }
 }
