@@ -102,8 +102,8 @@ public struct PreviewWorkoutView: View {
             if let enduraWorkout = enduraWorkout {
                 Text("\(enduraWorkout.duration) \(enduraWorkout.distance)")
 
-                var heartRate = [Double]()
-                var pace = [Double]()
+                var heartRate = [(Date, Double)]()
+                var pace = [(Date, Double)]()
 
 //                let _ = enduraWorkout.routeData.forEach { val in
 //                    heartRate.append(val.heartRate)
@@ -112,10 +112,10 @@ public struct PreviewWorkoutView: View {
 
                 let _ = enduraWorkout.graphData.compactMap { val in
                     if (!val.heartRate.isNaN) {
-                        heartRate.append(val.heartRate)
+                        heartRate.append((val.timestamp, val.heartRate))
                     }
                     if (!val.pace.isNaN) {
-                        pace.append(val.pace)
+                        pace.append(((val.timestamp, val.pace)))
                     }
                 }
 

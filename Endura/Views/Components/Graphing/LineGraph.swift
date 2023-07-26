@@ -3,11 +3,11 @@ import SwiftUI
 public struct LineGraph: View {
     @EnvironmentObject var viewModel: LineGraphViewModel
 
-    private let data: [Double]
+    private let data: [(Date, Double)]
     private let height: Int
     private let valueModifier: (Double) -> String
 
-    public init(data: [Double], height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
+    public init(data: [(Date, Double)], height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
         String(i)
     }) {
         self.data = data
@@ -16,69 +16,84 @@ public struct LineGraph: View {
     }
 
     public var body: some View {
-        let maxVal = data.max() ?? 0
-        let minVal = data.min() ?? 0
+        let maxVal = data.max(by: { $0.1 < $1.1 })?.1 ?? 0
+        let minVal = data.min(by: { $0.1 < $1.1 })?.1 ?? 0
         let range = maxVal - minVal
+
+        let minTimestamp = data.min(by: { $0.0 < $1.0 })?.0 ?? Date()
+        let maxTimestamp = data.max(by: { $0.0 < $1.0 })?.0 ?? Date()
+        let timestampRange = maxTimestamp.timeIntervalSince(minTimestamp)
 
         ZStack {
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .local)
-                let stepWidth = frame.width / CGFloat(data.count - 1)
+//                let stepWidth = frame.width / CGFloat(data.count - 1)
+                let stepWidth = frame.width / CGFloat(timestampRange)
                 let stepHeight = frame.height / CGFloat(range)
 
                 Path { path in
+                    var previousDate: Date?
                     for index in data.indices {
-                        let xPosition = stepWidth * CGFloat(index)
-                        let yPosition = stepHeight * CGFloat((data[index] - minVal))
+                        let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
+                        let xPosition = frame.width * CGFloat(proportionOfTimestampInRange)
+                        let yPosition = stepHeight * CGFloat((data[index].1 - minVal))
 
                         let point = CGPoint(x: xPosition, y: frame.height - yPosition)
 
-                        if index == 0 {
+
+                        if let previousDate = previousDate, data[index].0.timeIntervalSince(previousDate) > 5 {
+                            path.move(to: point)
+                        } else if index == 0 {
                             path.move(to: point)
                         } else {
                             path.addLine(to: point)
                         }
+
+                        previousDate = data[index].0
                     }
                 }
-                    .stroke(Color.primary, lineWidth: 2)
+                        .stroke(Color.primary, lineWidth: 2)
+
+                let minTimestampInterval: Double = minTimestamp.timeIntervalSince1970
 
                 if let touchLocation = viewModel.touchLocationX {
-                    let index = min(max(Int((touchLocation / stepWidth).rounded()), 0), data.count - 1)
-                    if let value = data[safe: index] {
-                        let yPosition = stepHeight * CGFloat((value - minVal))
+                    let touchTimestamp = minTimestampInterval + Double(touchLocation / geometry.size.width) * timestampRange
+                    let closestDate = data.min(by: { abs($0.0.timeIntervalSince1970 - touchTimestamp) < abs($1.0.timeIntervalSince1970 - touchTimestamp) }) ?? data.last!
+                    let yPosition = stepHeight * CGFloat((closestDate.1 - minVal))
 
-                        Circle()
+
+                    Circle()
                             .fill(Color.primary)
                             .frame(width: 10, height: 10)
-                            .position(CGPoint(x: touchLocation, y: frame.height - yPosition))
+                            .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition))
 
-                        Text("\(valueModifier(data[index]))")
-                            .position(CGPoint(x: touchLocation, y: frame.height - yPosition - 30))
-
-                    }
+                    Text("\(valueModifier(closestDate.1))")
+                            .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition - 30))
                 }
+
+            
             }
             Text("\(valueModifier(maxVal))")
-                .font(.footnote)
-                .fontWeight(.bold)
-                .foregroundColor(.black)
-                .position(x: 10, y: 20)
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .position(x: 10, y: 20)
 
             Text("\(valueModifier((maxVal + minVal) / 2))")
-                .font(.footnote)
-                .fontWeight(.bold)
-                .foregroundColor(.black)
-                .position(x: 10, y: CGFloat(height) / 2)
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .position(x: 10, y: CGFloat(height) / 2)
 
             Text("\(valueModifier(minVal))")
-                .font(.footnote)
-                .fontWeight(.bold)
-                .foregroundColor(.black)
-                .position(x: 10, y: CGFloat(height) - 20)
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .position(x: 10, y: CGFloat(height) - 20)
         }
-            .padding(0)
-            .frame(height: CGFloat(height))
-            .background(Color.clear)
-            .contentShape(Rectangle())
+                .padding(0)
+                .frame(height: CGFloat(height))
+                .background(Color.clear)
+                .contentShape(Rectangle())
     }
 }
