@@ -110,9 +110,13 @@ public struct PreviewWorkoutView: View {
 //                    pace.append(val.pace)
 //                }
 
-                let _ = enduraWorkout.graphData.forEach { val in
-                    heartRate.append(val.heartRate)
-                    pace.append(val.pace)
+                let _ = enduraWorkout.graphData.compactMap { val in
+                    if (!val.heartRate.isNaN) {
+                        heartRate.append(val.heartRate)
+                    }
+                    if (!val.pace.isNaN) {
+                        pace.append(val.pace)
+                    }
                 }
 
                 GeometryReader { geometry in
@@ -122,11 +126,11 @@ public struct PreviewWorkoutView: View {
                                 LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
                                 LineGraph(data: heartRate, height: 200)
                             }
-                                .environmentObject(LineGraphViewModel())
+                                    .environmentObject(LineGraphViewModel())
                         }
-                            .frame(width: geometry.size.width - 50, height: geometry.size.height)
+                                .frame(width: geometry.size.width - 50, height: geometry.size.height)
                     }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
                 }
 //                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
 //                    .padding()
@@ -226,15 +230,15 @@ public struct PreviewWorkoutView: View {
                 }
             }
         }
-            .task {
-                do {
-                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-                } catch WorkoutErrors.noWorkout {
-                    print("No workout to get heart rate graph")
-                } catch {
-                    print("Error getting heart rate graph")
+                .task {
+                    do {
+                        enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+                    } catch WorkoutErrors.noWorkout {
+                        print("No workout to get heart rate graph")
+                    } catch {
+                        print("Error getting heart rate graph")
+                    }
                 }
-            }
         //            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         //            .task {
         //                do {
