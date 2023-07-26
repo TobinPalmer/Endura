@@ -45,6 +45,7 @@ public struct ActivityData: Codable {
     var duration: TimeInterval
     var routeData: [RouteData]
     var graphData: [GraphData]
+    var graphInterval: Int
     var comments: [ActivityComment]
     var likes: [String]
 }

@@ -29,6 +29,7 @@ final class DashboardViewModel: ObservableObject {
                             duration: data.duration,
                             routeData: [],
                             graphData: [],
+                            graphInterval: 1,
                             comments: [],
                             likes: []
                         )

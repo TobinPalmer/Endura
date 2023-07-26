@@ -4,13 +4,15 @@ public struct LineGraph: View {
     @EnvironmentObject var viewModel: LineGraphViewModel
 
     private let data: [(Date, Double)]
+    private let step: Int
     private let height: Int
     private let valueModifier: (Double) -> String
 
-    public init(data: [(Date, Double)], height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
+    public init(data: [(Date, Double)], step: Int, height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
         String(i)
     }) {
         self.data = data
+        self.step = step
         self.height = height
         self.valueModifier = valueModifier
     }
@@ -41,7 +43,7 @@ public struct LineGraph: View {
                         let point = CGPoint(x: xPosition, y: frame.height - yPosition)
 
 
-                        if let previousDate = previousDate, data[index].0.timeIntervalSince(previousDate) > 5 {
+                        if let previousDate = previousDate, data[index].0.timeIntervalSince(previousDate) > Double(step * 2) {
                             path.move(to: point)
                         } else if index == 0 {
                             path.move(to: point)
@@ -71,7 +73,6 @@ public struct LineGraph: View {
                             .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition - 30))
                 }
 
-            
             }
             Text("\(valueModifier(maxVal))")
                     .font(.footnote)

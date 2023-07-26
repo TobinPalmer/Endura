@@ -99,11 +99,11 @@ public struct HealthKitUtils {
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
 
         return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.discreteMax, .discreteMin],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
+                quantityType: quantityType,
+                quantitySamplePredicate: predicate,
+                options: [.discreteMax, .discreteMin],
+                anchorDate: workout.startDate,
+                intervalComponents: interval
         )
     }
 
@@ -111,8 +111,8 @@ public struct HealthKitUtils {
         var heartRateData = [HeartRateData]()
 
         results.enumerateStatistics(
-            from: workout.startDate,
-            to: workout.endDate
+                from: workout.startDate,
+                to: workout.endDate
         ) { statistics, _ in
             if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
                let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min")) {
@@ -156,10 +156,10 @@ public struct HealthKitUtils {
 
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
-                sampleType: workoutType,
-                predicate: predicate,
-                limit: limitTo,
-                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
+                    sampleType: workoutType,
+                    predicate: predicate,
+                    limit: limitTo,
+                    sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
             ) { (query, samples, error) in
                 if let error = error {
                     continuation.resume(throwing: error)
@@ -180,93 +180,96 @@ public struct HealthKitUtils {
         var graphData = [GraphData]()
 
         let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
+        var data = [CLLocation]()
+        for route in routes {
+            let routeData = try await HealthKitUtils.getLocationData(for: route)
+            data.append(contentsOf: routeData)
+        }
 
         var heartRate = try await HealthKitUtils.getHeartRateGraph(for: workout)
 
-        for route in routes {
-            var data = try await HealthKitUtils.getLocationData(for: route)
 
-            var graphSectionData = (0, data[0].timestamp, [GraphData]())
-            var dataRate = 1
-            let maxPoints = 200
+        var graphSectionData = (0, data[0].timestamp, [GraphData]())
+        var dataRate = 1
+        let maxPoints = 200
 
-            print("Data count", data.count)
-            let workoutEvents = workout.workoutEvents ?? []
-            let workoutPausesArray = workoutEvents.filter {
+        print("Data count", data.count)
+        let workoutEvents = workout.workoutEvents ?? []
+        let workoutPausesArray = workoutEvents.filter {
                     $0.type == .pause || $0.type == .resume
                 }
                 .map({
                     $0.dateInterval
                 })
-            print("Pause", workoutPausesArray)
-            if (data.count > maxPoints) {
-                dataRate = data.count / maxPoints
-            }
-            print(dataRate)
-            data.removeSubrange(0...5)
-            for i in 0..<data.count {
-                var heartRateAtPoint: Double?;
-                let point = data[i]
+        print("Pause", workoutPausesArray)
+        if (data.count > maxPoints) {
+            dataRate = data.count / maxPoints
+        }
+        print(dataRate)
+        data.removeSubrange(0...5)
+        for i in 0..<data.count {
+            var heartRateAtPoint: Double?;
+            let point = data[i]
 
-                for j in 0..<heartRate.count {
-                    if Int(heartRate[j].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
-                        heartRateAtPoint = heartRate[j].heartRate
-                        heartRate.removeSubrange(0...j) // Remove all previous heart rate points since they are no longer needed
-                        break;
-                    }
+            for j in 0..<heartRate.count {
+                if Int(heartRate[j].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
+                    heartRateAtPoint = heartRate[j].heartRate
+                    heartRate.removeSubrange(0...j) // Remove all previous heart rate points since they are no longer needed
+                    break;
                 }
+            }
 
-                let routePoint = RouteData(
+            let routePoint = RouteData(
                     timestamp: point.timestamp,
                     location: LocationData(
-                        latitude: point.coordinate.latitude,
-                        longitude: point.coordinate.longitude
+                            latitude: point.coordinate.latitude,
+                            longitude: point.coordinate.longitude
                     ),
                     altitude: point.altitude,
                     heartRate: heartRateAtPoint ?? 0.0,
                     pace: point.speed
-                )
+            )
 
-                routeData.append(routePoint)
+            routeData.append(routePoint)
 
-                let graphPoint = GraphData(
+            let graphPoint = GraphData(
                     timestamp: point.timestamp,
                     altitude: point.altitude,
                     heartRate: heartRateAtPoint ?? 0.0,
                     pace: point.speed
-                )
+            )
 
-                if i % dataRate == 0 {
-                    if (i > 0) {
-                        let filteredHeartRateArray = graphSectionData.2.filter({ $0.heartRate != 0.0 })
-                        let filteredPaceArray = graphSectionData.2.filter({ $0.pace != 0.0 })
+            if i % dataRate == 0 {
+                if (i > 0) {
+                    let filteredHeartRateArray = graphSectionData.2.filter({ $0.heartRate != 0.0 })
+                    let filteredPaceArray = graphSectionData.2.filter({ $0.pace != 0.0 })
 
-                        let graphSectionPoint = GraphData(
+                    let graphSectionPoint = GraphData(
                             timestamp: graphSectionData.1,
                             altitude: graphSectionData.2.reduce(0, { $0 + $1.altitude }) / Double(graphSectionData.2.count),
                             heartRate: filteredHeartRateArray.reduce(0, { $0 + $1.heartRate }) / Double(filteredHeartRateArray.count),
                             pace: filteredPaceArray.reduce(0, { $0 + $1.pace }) / Double(filteredPaceArray.count)
-                        )
+                    )
 
-                        graphData.append(graphSectionPoint)
-                    }
-
-                    graphSectionData = (i, point.timestamp, [graphPoint])
-                } else {
-                    graphSectionData.2.append(graphPoint)
+                    graphData.append(graphSectionPoint)
                 }
+
+                graphSectionData = (i, point.timestamp, [graphPoint])
+            } else {
+                graphSectionData.2.append(graphPoint)
             }
         }
 
         let workoutData = ActivityData(
-            uid: "test",
-            time: workout.startDate,
-            distance: workoutDistance,
-            duration: workoutDuration,
-            routeData: routeData,
-            graphData: graphData,
-            comments: [],
-            likes: []
+                uid: "test",
+                time: workout.startDate,
+                distance: workoutDistance,
+                duration: workoutDuration,
+                routeData: routeData,
+                graphData: graphData,
+                graphInterval: dataRate,
+                comments: [],
+                likes: []
         )
 
         return workoutData

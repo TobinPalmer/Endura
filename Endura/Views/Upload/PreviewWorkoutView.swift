@@ -123,8 +123,8 @@ public struct PreviewWorkoutView: View {
                     VStack {
                         VStack {
                             LineGraphGroup {
-                                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
-                                LineGraph(data: heartRate, height: 200)
+                                LineGraph(data: pace, step: enduraWorkout.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                                LineGraph(data: heartRate, step: enduraWorkout.graphInterval, height: 200)
                             }
                                     .environmentObject(LineGraphViewModel())
                         }
