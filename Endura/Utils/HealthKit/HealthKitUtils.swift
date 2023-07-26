@@ -188,9 +188,17 @@ public struct HealthKitUtils {
 
             var graphSectionData = (0, data[0].timestamp, [GraphData]())
             var dataRate = 1
-            let maxPoints = 100
+            let maxPoints = 200
 
             print("Data count", data.count)
+            let workoutEvents = workout.workoutEvents ?? []
+            let workoutPausesArray = workoutEvents.filter {
+                    $0.type == .pause || $0.type == .resume
+                }
+                .map({
+                    $0.dateInterval
+                })
+            print("Pause", workoutPausesArray)
             if (data.count > maxPoints) {
                 dataRate = data.count / maxPoints
             }
