@@ -58,7 +58,7 @@ public struct LineGraph: View {
 
                 if let touchLocation = viewModel.touchLocationX {
                     let touchTimestamp = minTimestampInterval + Double(touchLocation / geometry.size.width) * timestampRange
-                    let closestDate = data.min(by: { abs($0.0.timeIntervalSince1970 - touchTimestamp) < abs($1.0.timeIntervalSince1970 - touchTimestamp) }) ?? data.last!
+                    let closestDate = data.min(by: { abs($0.0.timeIntervalSince1970 - touchTimestamp) < abs($1.0.timeIntervalSince1970 - touchTimestamp) }) ?? data.last ?? (Date(), 0)
                     let yPosition = stepHeight * CGFloat((closestDate.1 - minVal))
 
 

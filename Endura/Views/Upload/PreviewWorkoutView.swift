@@ -126,8 +126,16 @@ public struct PreviewWorkoutView: View {
                     VStack {
                         VStack {
                             LineGraphGroup {
-                                LineGraph(data: pace, step: enduraWorkout.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
-                                LineGraph(data: heartRate, step: enduraWorkout.graphInterval, height: 200)
+                                if (!pace.isEmpty) {
+                                    LineGraph(data: pace, step: enduraWorkout.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                                } else {
+                                    Text("No pace data available")
+                                }
+                                if (!heartRate.isEmpty) {
+                                    LineGraph(data: heartRate, step: enduraWorkout.graphInterval, height: 200)
+                                } else {
+                                    Text("No heart rate data available")
+                                }
                             }
                                     .environmentObject(LineGraphViewModel())
                         }

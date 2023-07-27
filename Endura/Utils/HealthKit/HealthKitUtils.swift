@@ -188,75 +188,74 @@ public struct HealthKitUtils {
 
         var heartRate = try await HealthKitUtils.getHeartRateGraph(for: workout)
 
-
-        var graphSectionData = (0, data[0].timestamp, [GraphData]())
         var dataRate = 1
-        let maxPoints = 200
 
-        print("Data count", data.count)
-        let workoutEvents = workout.workoutEvents ?? []
-        let workoutPausesArray = workoutEvents.filter {
-                    $0.type == .pause || $0.type == .resume
-                }
-                .map({
-                    $0.dateInterval
-                })
-        print("Pause", workoutPausesArray)
-        if (data.count > maxPoints) {
-            dataRate = data.count / maxPoints
-        }
-        print(dataRate)
-        data.removeSubrange(0...5)
-        for i in 0..<data.count {
-            var heartRateAtPoint: Double?;
-            let point = data[i]
+        if (!data.isEmpty) {
+            var graphSectionData = (0, data[0].timestamp, [GraphData]())
+            let maxPoints = 200
 
-            for j in 0..<heartRate.count {
-                if Int(heartRate[j].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
-                    heartRateAtPoint = heartRate[j].heartRate
-                    heartRate.removeSubrange(0...j) // Remove all previous heart rate points since they are no longer needed
-                    break;
-                }
+            let workoutEvents = workout.workoutEvents ?? []
+            let workoutPausesArray = workoutEvents.filter {
+                        $0.type == .pause || $0.type == .resume
+                    }
+                    .map({
+                        $0.dateInterval
+                    })
+            if (data.count > maxPoints) {
+                dataRate = data.count / maxPoints
             }
+            data.removeSubrange(0...5)
+            for i in 0..<data.count {
+                var heartRateAtPoint: Double?;
+                let point = data[i]
 
-            let routePoint = RouteData(
-                    timestamp: point.timestamp,
-                    location: LocationData(
-                            latitude: point.coordinate.latitude,
-                            longitude: point.coordinate.longitude
-                    ),
-                    altitude: point.altitude,
-                    heartRate: heartRateAtPoint ?? 0.0,
-                    pace: point.speed
-            )
-
-            routeData.append(routePoint)
-
-            let graphPoint = GraphData(
-                    timestamp: point.timestamp,
-                    altitude: point.altitude,
-                    heartRate: heartRateAtPoint ?? 0.0,
-                    pace: point.speed
-            )
-
-            if i % dataRate == 0 {
-                if (i > 0) {
-                    let filteredHeartRateArray = graphSectionData.2.filter({ $0.heartRate != 0.0 })
-                    let filteredPaceArray = graphSectionData.2.filter({ $0.pace != 0.0 })
-
-                    let graphSectionPoint = GraphData(
-                            timestamp: graphSectionData.1,
-                            altitude: graphSectionData.2.reduce(0, { $0 + $1.altitude }) / Double(graphSectionData.2.count),
-                            heartRate: filteredHeartRateArray.reduce(0, { $0 + $1.heartRate }) / Double(filteredHeartRateArray.count),
-                            pace: filteredPaceArray.reduce(0, { $0 + $1.pace }) / Double(filteredPaceArray.count)
-                    )
-
-                    graphData.append(graphSectionPoint)
+                for j in 0..<heartRate.count {
+                    if Int(heartRate[j].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
+                        heartRateAtPoint = heartRate[j].heartRate
+                        heartRate.removeSubrange(0...j) // Remove all previous heart rate points since they are no longer needed
+                        break;
+                    }
                 }
 
-                graphSectionData = (i, point.timestamp, [graphPoint])
-            } else {
-                graphSectionData.2.append(graphPoint)
+                let routePoint = RouteData(
+                        timestamp: point.timestamp,
+                        location: LocationData(
+                                latitude: point.coordinate.latitude,
+                                longitude: point.coordinate.longitude
+                        ),
+                        altitude: point.altitude,
+                        heartRate: heartRateAtPoint ?? 0.0,
+                        pace: point.speed
+                )
+
+                routeData.append(routePoint)
+
+                let graphPoint = GraphData(
+                        timestamp: point.timestamp,
+                        altitude: point.altitude,
+                        heartRate: heartRateAtPoint ?? 0.0,
+                        pace: point.speed
+                )
+
+                if i % dataRate == 0 {
+                    if (i > 0) {
+                        let filteredHeartRateArray = graphSectionData.2.filter({ $0.heartRate != 0.0 })
+                        let filteredPaceArray = graphSectionData.2.filter({ $0.pace != 0.0 })
+
+                        let graphSectionPoint = GraphData(
+                                timestamp: graphSectionData.1,
+                                altitude: graphSectionData.2.reduce(0, { $0 + $1.altitude }) / Double(graphSectionData.2.count),
+                                heartRate: filteredHeartRateArray.reduce(0, { $0 + $1.heartRate }) / Double(filteredHeartRateArray.count),
+                                pace: filteredPaceArray.reduce(0, { $0 + $1.pace }) / Double(filteredPaceArray.count)
+                        )
+
+                        graphData.append(graphSectionPoint)
+                    }
+
+                    graphSectionData = (i, point.timestamp, [graphPoint])
+                } else {
+                    graphSectionData.2.append(graphPoint)
+                }
             }
         }
 
