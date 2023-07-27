@@ -18,7 +18,7 @@ public struct ActivityMap: View {
         VStack {
             if !routeData.isEmpty {
                 MapView(routeData: $routeData)
-                        .frame(height: 300)
+                    .frame(height: 300)
             } else {
                 Text("No route data available")
             }
@@ -39,18 +39,14 @@ fileprivate struct MapView: UIViewRepresentable {
         uiView.removeOverlays(uiView.overlays)
 
         if !routeData.isEmpty {
-            var previousCoordinate: CLLocationCoordinate2D? = nil
+            var coordinates: [CLLocationCoordinate2D] = []
             for data in routeData {
                 let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
-
-                if let previous = previousCoordinate {
-                    let paceColor = colorForPace(data.pace)
-                    let segment = ColorPolyline(coordinates: [previous, currentCoordinate], count: 2, color: paceColor)
-                    uiView.addOverlay(segment)
-                }
-
-                previousCoordinate = currentCoordinate
+                coordinates.append(currentCoordinate)
             }
+
+            let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
+            uiView.addOverlay(polyline)
 
             if let first = routeData.first, let last = routeData.last {
                 let firstCordinate = CLLocationCoordinate2D(latitude: first.location.latitude, longitude: first.location.longitude)
@@ -64,34 +60,6 @@ fileprivate struct MapView: UIViewRepresentable {
     fileprivate func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-
-    fileprivate func colorForPace(_ pace: Double) -> UIColor {
-//        let clampedPace = min(max(pace, 0), 5)
-//        let ratio = clampedPace / 5
-//        let paceColor = UIColor(red: CGFloat(ratio), green: CGFloat(1 - ratio), blue: 0.0, alpha: 1.0)
-//        return paceColor
-        print(pace)
-        switch pace {
-        case let x where x < 2.0:
-            return UIColor.green
-        case let x where x < 2.5:
-            return UIColor.green
-        case let x where x < 3.0:
-            return UIColor.green
-        case let x where x < 3.5:
-            return UIColor.green
-        case let x where x < 3.7:
-            return UIColor.green
-        case let x where x < 4.0:
-            return UIColor.green
-        case let x where x < 4.25:
-            return UIColor.green
-        case let x where x < 4.5:
-            return UIColor.orange
-        default:
-            return UIColor.red
-        }
-    }
 }
 
 fileprivate class Coordinator: NSObject, MKMapViewDelegate {
@@ -102,21 +70,12 @@ fileprivate class Coordinator: NSObject, MKMapViewDelegate {
     }
 
     fileprivate final func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if let segment = overlay as? ColorPolyline {
-            let renderer = MKPolylineRenderer(polyline: segment)
-            renderer.strokeColor = segment.color
+        if let polyline = overlay as? MKPolyline {
+            let renderer = MKPolylineRenderer(polyline: polyline)
+            renderer.strokeColor = UIColor.red
             renderer.lineWidth = 3
             return renderer
         }
         return MKOverlayRenderer()
-    }
-}
-
-fileprivate class ColorPolyline: MKPolyline {
-    var color: UIColor?
-
-    convenience init(coordinates: [CLLocationCoordinate2D], count: Int, color: UIColor) {
-        self.init(coordinates: coordinates, count: count)
-        self.color = color
     }
 }
