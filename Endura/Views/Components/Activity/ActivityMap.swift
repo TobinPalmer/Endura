@@ -7,32 +7,32 @@ import MapKit
 import SwiftUI
 import HealthKit
 
-@MainActor
-public final class ActivityMapModel: ObservableObject {
-    fileprivate final func workoutToRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
-        do {
-            return try await HealthKitUtils.getWorkoutRoute(workout: workout)
-        } catch {
-            throw error
-        }
-    }
-}
+//@MainActor
+//public final class ActivityMapModel: ObservableObject {
+//    fileprivate final func workoutToRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
+//        do {
+//            return try await HealthKitUtils.getWorkoutRoute(workout: workout)
+//        } catch {
+//            throw error
+//        }
+//    }
+//}
 
 public struct ActivityMap: View {
-    @StateObject private var activityMapModel = ActivityMapModel()
-    @State private var routes: [HKWorkoutRoute] = []
-    private var workout: ActivityData
-    @State private var locations: [CLLocation] = []
+//    @StateObject private var activityMapModel = ActivityMapModel()
+//    @State private var routes: [HKWorkoutRoute] = []
+//    private var workout: ActivityData
+    @State private var routeData: [RouteData];
 
-    init(_ workout: ActivityData) {
-        self.workout = workout
+    public init(_ route: [RouteData]) {
+        self.routeData = route
     }
 
     public var body: some View {
         VStack {
-            if !locations.isEmpty {
-                MapView(locations: locations)
-                    .frame(height: 300)
+            if !routeData.isEmpty {
+                MapView(routeData: $routeData)
+                        .frame(height: 300)
             } else {
                 Text("No route data available")
             }
@@ -41,20 +41,22 @@ public struct ActivityMap: View {
 }
 
 fileprivate struct MapView: UIViewRepresentable {
-    var locations: [CLLocation]
+    @Binding var routeData: [RouteData]
 
     fileprivate func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
+
+
         return mapView
     }
 
     fileprivate func updateUIView(_ uiView: MKMapView, context: Context) {
         uiView.removeOverlays(uiView.overlays)
 
-        if !locations.isEmpty {
-            let coordinates = locations.map {
-                $0.coordinate
+        if !routeData.isEmpty {
+            let coordinates = routeData.map {
+                CLLocationCoordinate2D(latitude: $0.location.latitude, longitude: $0.location.longitude)
             }
             let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
             uiView.addOverlay(polyline)

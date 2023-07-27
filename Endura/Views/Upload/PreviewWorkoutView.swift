@@ -102,6 +102,9 @@ public struct PreviewWorkoutView: View {
             if let enduraWorkout = enduraWorkout {
                 Text("\(enduraWorkout.duration) \(enduraWorkout.distance)")
 
+                ActivityMap(enduraWorkout.routeData)
+                        .frame(height: 300)
+
                 var heartRate = [(Date, Double)]()
                 var pace = [(Date, Double)]()
 
