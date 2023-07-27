@@ -7,21 +7,7 @@ import MapKit
 import SwiftUI
 import HealthKit
 
-//@MainActor
-//public final class ActivityMapModel: ObservableObject {
-//    fileprivate final func workoutToRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
-//        do {
-//            return try await HealthKitUtils.getWorkoutRoute(workout: workout)
-//        } catch {
-//            throw error
-//        }
-//    }
-//}
-
 public struct ActivityMap: View {
-//    @StateObject private var activityMapModel = ActivityMapModel()
-//    @State private var routes: [HKWorkoutRoute] = []
-//    private var workout: ActivityData
     @State private var routeData: [RouteData];
 
     public init(_ route: [RouteData]) {
@@ -46,8 +32,6 @@ fileprivate struct MapView: UIViewRepresentable {
     fileprivate func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-
-
         return mapView
     }
 
@@ -55,14 +39,25 @@ fileprivate struct MapView: UIViewRepresentable {
         uiView.removeOverlays(uiView.overlays)
 
         if !routeData.isEmpty {
-            let coordinates = routeData.map {
-                CLLocationCoordinate2D(latitude: $0.location.latitude, longitude: $0.location.longitude)
-            }
-            let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-            uiView.addOverlay(polyline)
+            var previousCoordinate: CLLocationCoordinate2D? = nil
+            for data in routeData {
+                let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
 
-            let region = MKCoordinateRegion(coordinates: coordinates)
-            uiView.setRegion(region, animated: false)
+                if let previous = previousCoordinate {
+                    let paceColor = colorForPace(data.pace)
+                    let segment = ColorPolyline(coordinates: [previous, currentCoordinate], count: 2, color: paceColor)
+                    uiView.addOverlay(segment)
+                }
+
+                previousCoordinate = currentCoordinate
+            }
+
+            if let first = routeData.first, let last = routeData.last {
+                let firstCordinate = CLLocationCoordinate2D(latitude: first.location.latitude, longitude: first.location.longitude)
+                let lastCordinate = CLLocationCoordinate2D(latitude: last.location.latitude, longitude: last.location.longitude)
+                let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (firstCordinate.latitude + lastCordinate.latitude) / 2, longitude: (firstCordinate.longitude + lastCordinate.longitude) / 2), span: MKCoordinateSpan(latitudeDelta: abs(firstCordinate.latitude - lastCordinate.latitude), longitudeDelta: abs(firstCordinate.longitude - lastCordinate.longitude)))
+                uiView.setRegion(region, animated: false)
+            }
         }
     }
 
@@ -70,21 +65,46 @@ fileprivate struct MapView: UIViewRepresentable {
         Coordinator(self)
     }
 
-    fileprivate class Coordinator: NSObject, MKMapViewDelegate {
-        private final let parent: MapView
-
-        init(_ parent: MapView) {
-            self.parent = parent
+    fileprivate func colorForPace(_ pace: Double) -> UIColor {
+//        let clampedPace = min(max(pace, 0), 5)
+//        let ratio = clampedPace / 5
+//        let paceColor = UIColor(red: CGFloat(ratio), green: CGFloat(1 - ratio), blue: 0.0, alpha: 1.0)
+//        return paceColor
+        print(pace)
+        switch pace {
+        case let x where x < 3.7:
+            return UIColor.green
+        case let x where x < 4.5:
+            return UIColor.orange
+        default:
+            return UIColor.red
         }
+    }
+}
 
-        fileprivate final func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-            if let polyline = overlay as? MKPolyline {
-                let renderer = MKPolylineRenderer(polyline: polyline)
-                renderer.strokeColor = .orange
-                renderer.lineWidth = 3
-                return renderer
-            }
-            return MKOverlayRenderer()
+fileprivate class Coordinator: NSObject, MKMapViewDelegate {
+    private final let parent: MapView
+
+    init(_ parent: MapView) {
+        self.parent = parent
+    }
+
+    fileprivate final func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let segment = overlay as? ColorPolyline {
+            let renderer = MKPolylineRenderer(polyline: segment)
+            renderer.strokeColor = segment.color
+            renderer.lineWidth = 3
+            return renderer
         }
+        return MKOverlayRenderer()
+    }
+}
+
+fileprivate class ColorPolyline: MKPolyline {
+    var color: UIColor?
+
+    convenience init(coordinates: [CLLocationCoordinate2D], count: Int, color: UIColor) {
+        self.init(coordinates: coordinates, count: count)
+        self.color = color
     }
 }
