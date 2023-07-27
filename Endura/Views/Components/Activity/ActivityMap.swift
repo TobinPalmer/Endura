@@ -38,15 +38,37 @@ fileprivate struct MapView: UIViewRepresentable {
     fileprivate func updateUIView(_ uiView: MKMapView, context: Context) {
         uiView.removeOverlays(uiView.overlays)
 
+        var redPolylineCoordinates = [CLLocationCoordinate2D]()
+        var greenPolylineCoordinates = [CLLocationCoordinate2D]()
+        var yellowPolylineCoordinates = [CLLocationCoordinate2D]()
+
         if !routeData.isEmpty {
-            var coordinates: [CLLocationCoordinate2D] = []
             for data in routeData {
                 let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
-                coordinates.append(currentCoordinate)
+
+                let paceColor = colorForPace(data.pace)
+                if paceColor == .red {
+                    redPolylineCoordinates.append(currentCoordinate)
+                } else if paceColor == .green {
+                    greenPolylineCoordinates.append(currentCoordinate)
+                } else if paceColor == .yellow {
+                    yellowPolylineCoordinates.append(currentCoordinate)
+                }
             }
 
-            let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-            uiView.addOverlay(polyline)
+            let redPolyline = MKPolyline(coordinates: redPolylineCoordinates, count: redPolylineCoordinates.count)
+            redPolyline.color = .red
+            uiView.addOverlay(redPolyline)
+
+            let greenPolyline = MKPolyline(coordinates: greenPolylineCoordinates, count: greenPolylineCoordinates.count)
+            greenPolyline.color = .green
+            uiView.addOverlay(greenPolyline)
+
+            let yellowPolyline = MKPolyline(coordinates: yellowPolylineCoordinates, count: yellowPolylineCoordinates.count)
+            yellowPolyline.color = .yellow
+            uiView.addOverlay(yellowPolyline)
+
+            print("Total overlays: \(uiView.overlays.count)")
 
             if let first = routeData.first, let last = routeData.last {
                 let firstCordinate = CLLocationCoordinate2D(latitude: first.location.latitude, longitude: first.location.longitude)
@@ -56,6 +78,7 @@ fileprivate struct MapView: UIViewRepresentable {
             }
         }
     }
+
 
     fileprivate func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -72,10 +95,27 @@ fileprivate class Coordinator: NSObject, MKMapViewDelegate {
     fileprivate final func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let polyline = overlay as? MKPolyline {
             let renderer = MKPolylineRenderer(polyline: polyline)
-            renderer.strokeColor = UIColor.red
+            renderer.strokeColor = polyline.color
             renderer.lineWidth = 3
             return renderer
         }
         return MKOverlayRenderer()
+    }
+}
+
+fileprivate extension MKPolyline {
+    var color: UIColor {
+        get { objc_getAssociatedObject(self, &colorKey) as? UIColor ?? UIColor.black }
+        set { objc_setAssociatedObject(self, &colorKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+}
+
+private var colorKey: UInt8 = 0
+
+fileprivate func colorForPace(_ pace: Double) -> UIColor {
+    switch pace {
+    case let p where p < 3.0: return .green
+    case let p where p < 5.0: return .yellow
+    default: return .red
     }
 }
