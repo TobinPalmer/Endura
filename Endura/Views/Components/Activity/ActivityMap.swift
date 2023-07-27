@@ -72,7 +72,19 @@ fileprivate struct MapView: UIViewRepresentable {
 //        return paceColor
         print(pace)
         switch pace {
+        case let x where x < 2.0:
+            return UIColor.green
+        case let x where x < 2.5:
+            return UIColor.green
+        case let x where x < 3.0:
+            return UIColor.green
+        case let x where x < 3.5:
+            return UIColor.green
         case let x where x < 3.7:
+            return UIColor.green
+        case let x where x < 4.0:
+            return UIColor.green
+        case let x where x < 4.25:
             return UIColor.green
         case let x where x < 4.5:
             return UIColor.orange

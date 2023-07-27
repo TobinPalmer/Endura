@@ -7,6 +7,9 @@ import SwiftUI
 
 struct TrainingView: View {
     var body: some View {
-        Text("Training View")
+        VStack {
+            Text("Training View")
+            ActivitySchedule()
+        }
     }
 }
