@@ -10,6 +10,12 @@ import HealthKit
 let lightGreen = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0)
 let darkGreen = UIColor(red: 0.0, green: 0.3, blue: 0.0, alpha: 1.0)
 
+struct ColoredPolyline: Identifiable {
+    var id = UUID()
+    var color: UIColor
+    var polyline: MKPolyline
+}
+
 enum PaceColor {
     case red
     case lightGreen
@@ -51,7 +57,7 @@ fileprivate struct MapView: UIViewRepresentable {
     fileprivate func updateUIView(_ uiView: MKMapView, context: Context) {
         uiView.removeOverlays(uiView.overlays)
 
-        var overlaysToAdd = [MKPolyline]()
+        var overlaysToAdd = [ColoredPolyline]()
         var currentPolylineCoordinates = [CLLocationCoordinate2D]()
         var currentPaceColor: PaceColor = .none
 
@@ -65,7 +71,7 @@ fileprivate struct MapView: UIViewRepresentable {
                 if paceColor != currentPaceColor {
                     if !currentPolylineCoordinates.isEmpty {
                         let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
-                        overlaysToAdd.append(polyline)
+                        overlaysToAdd.append(ColoredPolyline(color: currentPaceColor == .none ? .black : paceColor == .red ? .red : paceColor == .lightGreen ? lightGreen : paceColor == .green ? .green : paceColor == .darkGreen ? darkGreen : .yellow, polyline: polyline))
                         currentPolylineCoordinates.removeAll()
                     }
                     currentPaceColor = paceColor
@@ -77,7 +83,7 @@ fileprivate struct MapView: UIViewRepresentable {
 
             if !currentPolylineCoordinates.isEmpty {
                 let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
-                overlaysToAdd.append(polyline)
+                overlaysToAdd.append(ColoredPolyline(color: currentPaceColor == .none ? .black : currentPaceColor == .red ? .red : currentPaceColor == .lightGreen ? lightGreen : currentPaceColor == .green ? .green : currentPaceColor == .darkGreen ? darkGreen : .yellow, polyline: polyline))
             }
 
             // add all prepared overlays
@@ -94,8 +100,8 @@ fileprivate struct MapView: UIViewRepresentable {
                     break
                 }
 
-                overlay.color = color
-                uiView.addOverlay(overlay)
+                overlay.polyline.color = color
+
             }
 
             print("Total overlays: \(uiView.overlays.count)")
@@ -143,7 +149,6 @@ fileprivate extension MKPolyline {
 private var colorKey: UInt8 = 0
 
 fileprivate func colorForPace(_ pace: Double) -> PaceColor {
-    print("p", pace)
     switch pace {
     case let p where p > 2.0: return .lightGreen
     case let p where p > 3.0: return .green
