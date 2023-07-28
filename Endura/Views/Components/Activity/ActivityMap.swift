@@ -101,7 +101,7 @@ fileprivate struct MapView: UIViewRepresentable {
                 }
 
                 overlay.polyline.color = color
-
+                uiView.addOverlay(overlay.polyline)
             }
 
             print("Total overlays: \(uiView.overlays.count)")
