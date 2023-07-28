@@ -7,11 +7,23 @@ import MapKit
 import SwiftUI
 import HealthKit
 
+let lightGreen = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0)
+let darkGreen = UIColor(red: 0.0, green: 0.3, blue: 0.0, alpha: 1.0)
+
+enum PaceColor {
+    case red
+    case lightGreen
+    case green
+    case darkGreen
+    case yellow
+    case none
+}
+
 public struct ActivityMap: View {
     @State private var routeData: [RouteData];
 
     public init(_ route: [RouteData]) {
-        self.routeData = route
+        routeData = route
     }
 
     public var body: some View {
@@ -35,38 +47,56 @@ fileprivate struct MapView: UIViewRepresentable {
         return mapView
     }
 
+
     fileprivate func updateUIView(_ uiView: MKMapView, context: Context) {
         uiView.removeOverlays(uiView.overlays)
 
-        var redPolylineCoordinates = [CLLocationCoordinate2D]()
-        var greenPolylineCoordinates = [CLLocationCoordinate2D]()
-        var yellowPolylineCoordinates = [CLLocationCoordinate2D]()
+        var overlaysToAdd = [MKPolyline]()
+        var currentPolylineCoordinates = [CLLocationCoordinate2D]()
+        var currentPaceColor: PaceColor = .none
 
         if !routeData.isEmpty {
+
             for data in routeData {
-                let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
 
                 let paceColor = colorForPace(data.pace)
-                if paceColor == .red {
-                    redPolylineCoordinates.append(currentCoordinate)
-                } else if paceColor == .green {
-                    greenPolylineCoordinates.append(currentCoordinate)
-                } else if paceColor == .yellow {
-                    yellowPolylineCoordinates.append(currentCoordinate)
+                let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
+
+                if paceColor != currentPaceColor {
+                    if !currentPolylineCoordinates.isEmpty {
+                        let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
+                        overlaysToAdd.append(polyline)
+                        currentPolylineCoordinates.removeAll()
+                    }
+                    currentPaceColor = paceColor
                 }
+
+                currentPolylineCoordinates.append(currentCoordinate)
+
             }
 
-            let redPolyline = MKPolyline(coordinates: redPolylineCoordinates, count: redPolylineCoordinates.count)
-            redPolyline.color = .red
-            uiView.addOverlay(redPolyline)
+            if !currentPolylineCoordinates.isEmpty {
+                let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
+                overlaysToAdd.append(polyline)
+            }
 
-            let greenPolyline = MKPolyline(coordinates: greenPolylineCoordinates, count: greenPolylineCoordinates.count)
-            greenPolyline.color = .green
-            uiView.addOverlay(greenPolyline)
+            // add all prepared overlays
+            for overlay in overlaysToAdd {
+                var color: UIColor = .black
+                print("overlay color", overlay)
+                switch overlay.color {
+                case .red: color = .red
+                case lightGreen: color = lightGreen
+                case .green: color = .green
+                case darkGreen: color = darkGreen
+                case .yellow: color = .yellow
+                default:
+                    break
+                }
 
-            let yellowPolyline = MKPolyline(coordinates: yellowPolylineCoordinates, count: yellowPolylineCoordinates.count)
-            yellowPolyline.color = .yellow
-            uiView.addOverlay(yellowPolyline)
+                overlay.color = color
+                uiView.addOverlay(overlay)
+            }
 
             print("Total overlays: \(uiView.overlays.count)")
 
@@ -112,10 +142,21 @@ fileprivate extension MKPolyline {
 
 private var colorKey: UInt8 = 0
 
-fileprivate func colorForPace(_ pace: Double) -> UIColor {
+fileprivate func colorForPace(_ pace: Double) -> PaceColor {
+    print("p", pace)
     switch pace {
-    case let p where p < 3.0: return .green
-    case let p where p < 5.0: return .yellow
+    case let p where p > 2.0: return .lightGreen
+    case let p where p > 3.0: return .green
+    case let p where p > 4.0: return .darkGreen
+    case let p where p > 5.0: return .yellow
     default: return .red
     }
 }
+
+//fileprivate func colorForPace(_ pace: Double) -> UIColor {
+//    switch pace {
+//    case let p where p < 3.0: return .green
+//    case let p where p < 5.0: return .yellow
+//    default: return .red
+//    }
+//}
