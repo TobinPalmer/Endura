@@ -41,7 +41,7 @@ import HealthKit
     }
 }
 
-public struct UploadWorkoutView: View {
+public struct NewActivityView: View {
     @EnvironmentObject private var navigation: NavigationModel
     @ObservedObject private var uploadsViewModel = UploadsViewModel()
 

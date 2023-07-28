@@ -17,7 +17,47 @@ struct ContentView: View {
         case .LOGIN:
             LoginView()
         case .HOME:
-            HomeView()
+            TabView {
+                NavigationView {
+                    DashboardView()
+                }
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Home")
+                        }
+
+                NavigationView {
+                    ActivitiesView()
+                }
+                        .tabItem {
+                            Image(systemName: "figure.run")
+                            Text("Activities")
+                        }
+
+                NavigationView {
+                    TrainingView()
+                }
+                        .tabItem {
+                            Image(systemName: "calendar")
+                            Text("Training")
+                        }
+
+                NavigationView {
+                    ProgressDashboardView()
+                }
+                        .tabItem {
+                            Image(systemName: "chart.bar")
+                            Text("Progress")
+                        }
+
+                NavigationView {
+                    ProfileView()
+                }
+                        .tabItem {
+                            Image(systemName: "person")
+                            Text("Profile")
+                        }
+            }
         }
     }
 }

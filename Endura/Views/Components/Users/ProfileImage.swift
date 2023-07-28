@@ -21,7 +21,7 @@ struct ProfileImage: View {
                     .frame(width: 50, height: 50)
                     .clipShape(Circle())
         } placeholder: {
-            ProgressView()
+            ProgressDashboardView()
         }
     }
 }

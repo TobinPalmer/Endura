@@ -23,15 +23,15 @@ final class DashboardViewModel: ObservableObject {
                     do {
                         let data = try diff.document.data(as: ActivityData.self)
                         let activity = ActivityData(
-                            uid: data.uid,
-                            time: data.time,
-                            distance: data.distance,
-                            duration: data.duration,
-                            routeData: [],
-                            graphData: [],
-                            graphInterval: 1,
-                            comments: [],
-                            likes: []
+                                uid: data.uid,
+                                time: data.time,
+                                distance: data.distance,
+                                duration: data.duration,
+                                routeData: [],
+                                graphData: [],
+                                graphInterval: 1,
+                                comments: [],
+                                likes: []
                         )
                         self.activities.updateValue(activity, forKey: diff.document.documentID)
                     } catch {
@@ -64,13 +64,13 @@ struct DashboardView: View {
                 }
             }
         }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination: UploadWorkoutsFrameView()) {
-                        Image(systemName: "plus")
-                            .font(.title)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        NavigationLink(destination: NewActivityView()) {
+                            Image(systemName: "plus")
+                                    .font(.title)
+                        }
                     }
                 }
-            }
     }
 }
