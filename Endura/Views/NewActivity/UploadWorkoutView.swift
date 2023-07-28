@@ -232,6 +232,13 @@ public struct PreviewWorkoutView: View {
 //                }
 
                 Button {
+                    Task {
+                        do {
+                            try Firestore.firestore().collection("activities").addDocument(from: enduraWorkout)
+                        } catch {
+                            print("Error uploading workout: \(error)")
+                        }
+                    }
                 } label: {
                     Text("Upload")
                 }
