@@ -63,15 +63,60 @@ fileprivate struct MapView: UIViewRepresentable {
 
         if !routeData.isEmpty {
 
-            for data in routeData {
+//            for data in routeData {
+//
+//                let paceColor = colorForPace(data.pace)
+//                let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
+//
+//                if paceColor != currentPaceColor {
+//                    if !currentPolylineCoordinates.isEmpty {
+//                        let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
+//                        var color = UIColor.black
+//                        switch currentPaceColor {
+//                        case .red: color = .red
+//                        case .lightGreen: color = lightGreen
+//                        case .green: color = .green
+//                        case .darkGreen: color = darkGreen
+//                        case .yellow: color = .yellow
+//                        default:
+//                            break
+//                        }
+//                        overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
+//                        currentPolylineCoordinates.removeAll()
+//                    }
+//                    currentPaceColor = paceColor
+//                }
+//
+//                currentPolylineCoordinates.append(currentCoordinate)
+//
+//            }
+//
+//            if !currentPolylineCoordinates.isEmpty {
+//                let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
+//                var color = UIColor.black
+//                switch currentPaceColor {
+//                case .red: color = .red
+//                case .lightGreen: color = lightGreen
+//                case .green: color = .green
+//                case .darkGreen: color = darkGreen
+//                case .yellow: color = .yellow
+//                default:
+//                    break
+//                }
+//                overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
+//            }
 
+            for data in routeData {
                 let paceColor = colorForPace(data.pace)
                 let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
 
                 if paceColor != currentPaceColor {
                     if !currentPolylineCoordinates.isEmpty {
+                        currentPolylineCoordinates.append(currentCoordinate) // Add the start point of the next polyline to the current one
+
                         let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
                         var color = UIColor.black
+
                         switch currentPaceColor {
                         case .red: color = .red
                         case .lightGreen: color = lightGreen
@@ -81,19 +126,20 @@ fileprivate struct MapView: UIViewRepresentable {
                         default:
                             break
                         }
+
                         overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
-                        currentPolylineCoordinates.removeAll()
+                        currentPolylineCoordinates = [currentCoordinate] // Start new polyline with the color changing point
                     }
                     currentPaceColor = paceColor
+                } else {
+                    currentPolylineCoordinates.append(currentCoordinate)
                 }
-
-                currentPolylineCoordinates.append(currentCoordinate)
-
             }
 
             if !currentPolylineCoordinates.isEmpty {
                 let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
                 var color = UIColor.black
+
                 switch currentPaceColor {
                 case .red: color = .red
                 case .lightGreen: color = lightGreen
@@ -103,8 +149,10 @@ fileprivate struct MapView: UIViewRepresentable {
                 default:
                     break
                 }
+
                 overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
             }
+
 
             // add all prepared overlays
             for overlay in overlaysToAdd {
@@ -169,11 +217,16 @@ fileprivate extension MKPolyline {
 private var colorKey: UInt8 = 0
 
 fileprivate func colorForPace(_ pace: Double) -> PaceColor {
+    // Convert pace to min/mile
+    let pace = 26.8224 / pace
+    print(pace)
     switch pace {
-//    case let p where p > 2.0: return .lightGreen
-    case let p where p > 3.0: return .green
-//    case let p where p > 4.0: return .darkGreen
-    case let p where p > 4.0: return .yellow
+    case let p where p < 5.0 && p > 0.0: return .red
+    case let p where p < 6.0 && p > 5.0: return .lightGreen
+    case let p where p < 7.0 && p > 6.0: return .green
+    case let p where p < 9.0 && p > 7.0: return .yellow
+    case let p where p < 10.0 && p > 9.0: return .red
+
     default: return .red
     }
 }
