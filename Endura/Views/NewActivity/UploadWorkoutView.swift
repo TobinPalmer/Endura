@@ -132,7 +132,7 @@ public struct PreviewWorkoutView: View {
                                     Text("No pace data available")
                                 }
                                 if (!heartRate.isEmpty) {
-                                    LineGraph(data: heartRate, step: enduraWorkout.graphInterval, height: 200)
+                                    LineGraph(data: heartRate, step: enduraWorkout.graphInterval, height: 200, valueModifier: ConversionUtils.round)
                                 } else {
                                     Text("No heart rate data available")
                                 }
