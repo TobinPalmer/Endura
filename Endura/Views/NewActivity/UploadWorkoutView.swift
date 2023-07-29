@@ -11,7 +11,14 @@ import FirebaseFirestore
 import FirebaseCore
 import SwiftUICharts
 
+//public class GraphPositionController: ObservableObject {
+//    @Published var positionX: CGFloat? = nil
+//    @Published var positionY: CGFloat? = nil
+//}
+
 @MainActor fileprivate final class PreviewWorkoutModel: ObservableObject {
+    @Published public var number = 2
+
     final fileprivate func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityData {
         do {
             return try await HealthKitUtils.workoutToActivityData(workout)
@@ -19,81 +26,16 @@ import SwiftUICharts
             throw error
         }
     }
-
-//    final fileprivate func cleanPaceData(_ data: [(Double, Date)]) -> [(Double, Date)] {
-//        let sortedData = data.sorted {
-//            $0.1 < $1.1
-//        }
-//
-//        var smoothedData = [sortedData.first!]
-//
-//        for tuple in sortedData.dropFirst() {
-//            let lastAddedTuple = smoothedData.last!
-//            if abs((tuple.0 - lastAddedTuple.0)) > 0.5 {
-//                smoothedData.append(tuple)
-//            }
-//
-//            if abs((tuple.0 - lastAddedTuple.0)) > 0.25 {
-//                smoothedData.append(tuple)
-//            }
-//        }
-//
-//        let filteredData = smoothedData.reduce([(Double, Date)](), { (result, tuple) -> [(Double, Date)] in
-//            guard let last = result.last else {
-//                return [tuple]
-//            }
-//            if abs(last.0 - tuple.0) <= 0.20 {
-//                return result + [tuple]
-//            } else {
-//                return result
-//            }
-//        })
-//
-//        return filteredData
-//    }
-
-//    final fileprivate func cleanPaceData(_ data: HeartRateGraph) -> HeartRateGraph {
-//        let sortedData = data.sorted {
-//            $0.1 < $1.1
-//        }
-//
-//        var smoothedData: HeartRateGraph = [sortedData.first!]
-//
-//        for tuple in sortedData.dropFirst() {
-//            let lastAddedTuple = smoothedData.last!
-//
-//            if abs((tuple.1 - lastAddedTuple.1)) <= 0.25 {
-//                smoothedData.append(tuple)
-//            } else {
-//                let newTuple = (lastAddedTuple.0, tuple.1)
-//                smoothedData.append(newTuple)
-//            }
-//        }
-//
-//        return smoothedData
-//    }
-
-
-//    final fileprivate func cleanHeartRateData(_ data: HeartRateGraph) -> HeartRateGraph {
-//        let filteredData = data.compactMap {
-//            $0.1 != 0.0 ? $0 : nil
-//        }
-//
-//        return filteredData
-//    }
 }
 
 public struct PreviewWorkoutView: View {
     private var workout: HKWorkout
     @State private var enduraWorkout: ActivityData?
     @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
+//    @ObservedObject fileprivate var graphPosition = GraphPositionController()
 
     init(workout: HKWorkout) {
         self.workout = workout
-        Task {
-            //            async let data = try WorkoutUtils.workoutToEnduraWorkout(workout)
-            //            let _ = try await Firestore.firestore().collection("activities").addDocument(from: data)
-        }
     }
 
     public var body: some View {
@@ -104,6 +46,8 @@ public struct PreviewWorkoutView: View {
 
                 ActivityMap(enduraWorkout.routeData)
                     .frame(height: 300)
+                    .environmentObject(LineGraphViewModel())
+//                    .environmentObject(graphPosition)
 
                 var heartRate = [(Date, Double)]()
                 var pace = [(Date, Double)]()
@@ -138,6 +82,7 @@ public struct PreviewWorkoutView: View {
                                 }
                             }
                                 .environmentObject(LineGraphViewModel())
+//                                .environmentObject(graphPosition)
                         }
                             .frame(width: geometry.size.width - 50, height: geometry.size.height)
                     }
@@ -233,7 +178,7 @@ public struct PreviewWorkoutView: View {
                 Button {
                     Task {
                         do {
-                            try Firestore.firestore().collection("activities").addDocument(from: enduraWorkout)
+//                            try Firestore.firestore().collection("activities").addDocument(data: enduraWorkout)
                         } catch {
                             print("Error uploading workout: \(error)")
                         }

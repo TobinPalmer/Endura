@@ -21,10 +21,7 @@ public struct LineGraph: View {
         let maxVal = data.max(by: { $0.1 < $1.1 })?.1 ?? 0
         let minVal = data.min(by: { $0.1 < $1.1 })?.1 ?? 0
         let range = maxVal - minVal
-
-        let _ = print("Finding mean", data.count)
         let mean = data.reduce(0, { $0 + $1.1 }) / Double(data.count)
-        let _ = print("mean", mean)
 
         let minTimestamp = data.min(by: { $0.0 < $1.0 })?.0 ?? Date()
         let maxTimestamp = data.max(by: { $0.0 < $1.0 })?.0 ?? Date()
@@ -64,7 +61,6 @@ public struct LineGraph: View {
                     let touchTimestamp = minTimestampInterval + Double(touchLocation / geometry.size.width) * timestampRange
                     let closestDate = data.min(by: { abs($0.0.timeIntervalSince1970 - touchTimestamp) < abs($1.0.timeIntervalSince1970 - touchTimestamp) }) ?? data.last ?? (Date(), 0)
                     let yPosition = stepHeight * CGFloat((closestDate.1 - minVal))
-
 
                     if abs(closestDate.0.timeIntervalSince1970 - touchTimestamp) > Double(step * 2) {
                         Circle()

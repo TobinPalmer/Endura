@@ -14,6 +14,7 @@ struct ColoredPolyline: Identifiable {
 }
 
 public struct ActivityMap: View {
+    @EnvironmentObject var graphPosition: LineGraphViewModel
     @State private var routeData: [RouteData];
 
     public init(_ route: [RouteData]) {
@@ -21,6 +22,7 @@ public struct ActivityMap: View {
     }
 
     public var body: some View {
+        let _ = print("graphPositionInActivityMap", graphPosition.touchLocationX)
         VStack {
             if !routeData.isEmpty {
                 MapView(routeData: $routeData)
@@ -29,6 +31,9 @@ public struct ActivityMap: View {
                 Text("No route data available")
             }
         }
+            .onChange(of: graphPosition.touchLocationX) { location in
+                print("graphPositionInActivityMap", location)
+            }
     }
 }
 
