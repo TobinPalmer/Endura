@@ -38,14 +38,31 @@ public struct GraphData: Codable {
     var pace: Double
 }
 
+public struct ActivityRouteData: Codable {
+    var routeData: [RouteData]
+    var graphData: [GraphData]
+    var graphInterval: Int
+}
+
 public struct ActivityData: Codable {
     var uid: String
     var time: Date
     var distance: Double
     var duration: TimeInterval
-    var routeData: [RouteData]
-    var graphData: [GraphData]
-    var graphInterval: Int
     var comments: [ActivityComment]
     var likes: [String]
+}
+
+public struct ActivityDataWithRoute {
+    var uid: String
+    var time: Date
+    var distance: Double
+    var duration: TimeInterval
+    var data: ActivityRouteData
+    var comments: [ActivityComment]
+    var likes: [String]
+
+    public func getDataWithoutRoute() -> ActivityData {
+        return ActivityData(uid: uid, time: time, distance: distance, duration: duration, comments: comments, likes: likes)
+    }
 }

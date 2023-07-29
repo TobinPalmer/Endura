@@ -173,7 +173,7 @@ public struct HealthKitUtils {
         }
     }
 
-    public static func workoutToActivityData(_ workout: HKWorkout) async throws -> ActivityData {
+    public static func workoutToActivityData(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
         let workoutDuration = workout.duration
         var routeData = [RouteData]()
@@ -259,14 +259,16 @@ public struct HealthKitUtils {
             }
         }
 
-        let workoutData = ActivityData(
+        let workoutData = ActivityDataWithRoute(
                 uid: "test",
                 time: workout.startDate,
                 distance: workoutDistance,
                 duration: workoutDuration,
-                routeData: routeData,
-                graphData: graphData,
-                graphInterval: dataRate,
+                data: ActivityRouteData(
+                        routeData: routeData,
+                        graphData: graphData,
+                        graphInterval: dataRate
+                ),
                 comments: [],
                 likes: []
         )

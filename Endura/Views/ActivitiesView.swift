@@ -21,7 +21,7 @@ final class ActivitiesViewModel: ObservableObject {
                 print("Error fetching documents: \(error!)")
                 return
             }
-            snapshot.documentChanges.forEach { diff in
+            snapshot.documentChanges.forEach { (diff: DocumentChange) in
                 if (diff.type == .added || diff.type == .modified) {
                     do {
                         let data = try diff.document.data(as: ActivityData.self)
@@ -30,9 +30,6 @@ final class ActivitiesViewModel: ObservableObject {
                                 time: data.time,
                                 distance: data.distance,
                                 duration: data.duration,
-                                routeData: [],
-                                graphData: [],
-                                graphInterval: 1,
                                 comments: [],
                                 likes: []
                         )
