@@ -7,22 +7,10 @@ import MapKit
 import SwiftUI
 import HealthKit
 
-let lightGreen = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0)
-let darkGreen = UIColor(red: 0.0, green: 0.3, blue: 0.0, alpha: 1.0)
-
 struct ColoredPolyline: Identifiable {
     var id = UUID()
     var color: UIColor
     var polyline: MKPolyline
-}
-
-enum PaceColor {
-    case red
-    case lightGreen
-    case green
-    case darkGreen
-    case yellow
-    case none
 }
 
 public struct ActivityMap: View {
@@ -59,53 +47,9 @@ fileprivate struct MapView: UIViewRepresentable {
 
         var overlaysToAdd = [ColoredPolyline]()
         var currentPolylineCoordinates = [CLLocationCoordinate2D]()
-        var currentPaceColor: PaceColor = .none
+        var currentPaceColor: UIColor = .green
 
         if !routeData.isEmpty {
-
-//            for data in routeData {
-//
-//                let paceColor = colorForPace(data.pace)
-//                let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
-//
-//                if paceColor != currentPaceColor {
-//                    if !currentPolylineCoordinates.isEmpty {
-//                        let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
-//                        var color = UIColor.black
-//                        switch currentPaceColor {
-//                        case .red: color = .red
-//                        case .lightGreen: color = lightGreen
-//                        case .green: color = .green
-//                        case .darkGreen: color = darkGreen
-//                        case .yellow: color = .yellow
-//                        default:
-//                            break
-//                        }
-//                        overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
-//                        currentPolylineCoordinates.removeAll()
-//                    }
-//                    currentPaceColor = paceColor
-//                }
-//
-//                currentPolylineCoordinates.append(currentCoordinate)
-//
-//            }
-//
-//            if !currentPolylineCoordinates.isEmpty {
-//                let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
-//                var color = UIColor.black
-//                switch currentPaceColor {
-//                case .red: color = .red
-//                case .lightGreen: color = lightGreen
-//                case .green: color = .green
-//                case .darkGreen: color = darkGreen
-//                case .yellow: color = .yellow
-//                default:
-//                    break
-//                }
-//                overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
-//            }
-
             for data in routeData {
                 let paceColor = colorForPace(data.pace)
                 let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
@@ -115,19 +59,8 @@ fileprivate struct MapView: UIViewRepresentable {
                         currentPolylineCoordinates.append(currentCoordinate) // Add the start point of the next polyline to the current one
 
                         let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
-                        var color = UIColor.black
 
-                        switch currentPaceColor {
-                        case .red: color = .red
-                        case .lightGreen: color = lightGreen
-                        case .green: color = .green
-                        case .darkGreen: color = darkGreen
-                        case .yellow: color = .yellow
-                        default:
-                            break
-                        }
-
-                        overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
+                        overlaysToAdd.append(ColoredPolyline(color: paceColor, polyline: polyline))
                         currentPolylineCoordinates = [currentCoordinate] // Start new polyline with the color changing point
                     }
                     currentPaceColor = paceColor
@@ -138,17 +71,9 @@ fileprivate struct MapView: UIViewRepresentable {
 
             if !currentPolylineCoordinates.isEmpty {
                 let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
-                var color = UIColor.black
+                var color = UIColor.yellow
 
-                switch currentPaceColor {
-                case .red: color = .red
-                case .lightGreen: color = lightGreen
-                case .green: color = .green
-                case .darkGreen: color = darkGreen
-                case .yellow: color = .yellow
-                default:
-                    break
-                }
+                color = currentPaceColor
 
                 overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
             }
@@ -156,19 +81,7 @@ fileprivate struct MapView: UIViewRepresentable {
 
             // add all prepared overlays
             for overlay in overlaysToAdd {
-                var color: UIColor = .black
-                print("overlay color", overlay)
-                switch overlay.color {
-                case .red: color = .red
-                case lightGreen: color = lightGreen
-                case .green: color = .green
-                case darkGreen: color = darkGreen
-                case .yellow: color = .yellow
-                default:
-                    break
-                }
-
-                overlay.polyline.color = color
+                overlay.polyline.color = overlay.color
                 uiView.addOverlay(overlay.polyline)
             }
 
@@ -216,25 +129,43 @@ fileprivate extension MKPolyline {
 
 private var colorKey: UInt8 = 0
 
-fileprivate func colorForPace(_ pace: Double) -> PaceColor {
-    // Convert pace to min/mile
-    let pace = 26.8224 / pace
-    print(pace)
-    switch pace {
-    case let p where p < 5.0 && p > 0.0: return .red
-    case let p where p < 6.0 && p > 5.0: return .lightGreen
-    case let p where p < 7.0 && p > 6.0: return .green
-    case let p where p < 9.0 && p > 7.0: return .yellow
-    case let p where p < 10.0 && p > 9.0: return .red
-
-    default: return .red
+fileprivate func colorForPace(_ pace: Double) -> UIColor {
+    var pace = 26.8224 / pace
+    let maxPace = 10.0
+    let minPace = 0.0
+    let maxHue = 0.7
+    pace = max(min(pace, maxPace), minPace)
+    var roundedPace: Double = 0.0
+    if pace > 7.0 {
+        roundedPace = (pace).rounded()
+    } else {
+        roundedPace = (pace * 2).rounded() / 2
     }
+    //Take the rounded pace and convert it to a percentage of the max pace in the hue format which is 0...1
+    let hue = maxHue - (roundedPace * (maxHue / (maxPace)))
+    if (hue > 1 || hue < 0) {
+        return UIColor(hue: 0.0, saturation: 1.0, lightness: 0.5, alpha: 1.0)
+    }
+    return UIColor(hue: CGFloat(hue), saturation: 1.0, lightness: 0.5, alpha: 1.0)
 }
 
-//fileprivate func colorForPace(_ pace: Double) -> UIColor {
-//    switch pace {
-//    case let p where p < 3.0: return .green
-//    case let p where p < 5.0: return .yellow
-//    default: return .red
-//    }
-//}
+extension UIColor {
+    convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
+        precondition(0...1 ~= hue &&
+            0...1 ~= saturation &&
+            0...1 ~= lightness &&
+            0...1 ~= alpha, "input range is out of range 0...1")
+
+        var newSaturation: CGFloat = 0.0
+
+        let brightness = lightness + saturation * min(lightness, 1 - lightness)
+
+        if brightness == 0 {
+            newSaturation = 0.0
+        } else {
+            newSaturation = 2 * (1 - lightness / brightness)
+        }
+
+        self.init(hue: hue, saturation: newSaturation, brightness: brightness, alpha: alpha)
+    }
+}
