@@ -16,14 +16,15 @@ struct ColoredPolyline: Identifiable {
 class MapViewContainer: ObservableObject {
     @Published var mapView: MKMapView = MKMapView()
 
-    func updateAnnotation(position: CLLocationCoordinate2D?) {
-        guard let position = position else {
-            return
-        }
+    func updateAnnotation(position: CLLocationCoordinate2D) {
         mapView.removeAnnotations(mapView.annotations)
         let annotation = MKPointAnnotation()
         annotation.coordinate = position
         mapView.addAnnotation(annotation)
+    }
+
+    func removeAnnotation() {
+        mapView.removeAnnotations(mapView.annotations)
     }
 }
 
@@ -48,8 +49,9 @@ public struct ActivityMap: View {
                             }) {
                                 mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
                             }
+                        } else {
+                            mapViewContainer.removeAnnotation()
                         }
-                        mapViewContainer.updateAnnotation(position: nil)
                     }
             } else {
                 Text("No route data available")
