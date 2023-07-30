@@ -18,7 +18,8 @@ public class LineGraphViewModel: ObservableObject {
 
 public struct LineGraphGroup<Content: View>: View {
     private let graphs: Content
-    @EnvironmentObject var viewModel: LineGraphViewModel
+    @EnvironmentObject var viewModel: ActivityViewModel
+//    @EnvironmentObject var viewModel: LineGraphViewModel
 
     public init(@ViewBuilder graphs: () -> Content) {
         self.graphs = graphs()
@@ -30,20 +31,20 @@ public struct LineGraphGroup<Content: View>: View {
             VStack {
                 graphs
             }
-                .gesture(DragGesture(minimumDistance: 0)
-                    .onChanged({ value in
-                        if 0...geometry.size.width ~= value.location.x {
-                            let x = value.location.x
+                    .gesture(DragGesture(minimumDistance: 0)
+                            .onChanged({ value in
+                                if 0...geometry.size.width ~= value.location.x {
+                                    let x = value.location.x
 //                                    print("Here")
 //                                    viewModel.touchLocationX = x
-                        } else {
+                                } else {
 //                                    viewModel.touchLocationX = nil
-                        }
-                    })
-                    .onEnded({ _ in
+                                }
+                            })
+                            .onEnded({ _ in
 //                                viewModel.touchLocationX = nil
-                    })
-                )
+                            })
+                    )
         }
     }
 }
