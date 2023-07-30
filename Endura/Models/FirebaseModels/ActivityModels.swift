@@ -6,6 +6,8 @@ import Foundation
 import FirebaseFirestore
 import MapKit
 
+public typealias LineGraphData = [(Date, Double)]
+
 public struct ActivityComment: Codable {
     let uid: String
     let time: Date
@@ -70,5 +72,17 @@ public struct ActivityDataWithRoute {
 
     public func getDataWithoutRoute() -> ActivityData {
         return ActivityData(uid: uid, time: time, distance: distance, duration: duration, comments: comments, likes: likes)
+    }
+
+    public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {
+        var pace = LineGraphData()
+        var heartRate = LineGraphData()
+
+        let _ = data.graphData.forEach { val in
+            pace.append((val.timestamp, val.pace))
+            heartRate.append((val.timestamp, val.heartRate))
+        }
+
+        return (pace, heartRate)
     }
 }

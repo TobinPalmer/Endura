@@ -14,7 +14,7 @@ struct ColoredPolyline: Identifiable {
 }
 
 public struct ActivityMap: View {
-    @EnvironmentObject var graphPosition: LineGraphViewModel
+    @EnvironmentObject var activityModel: ActivityViewModel
     @State private var routeData: [RouteData];
 
     public init(_ route: [RouteData]) {
@@ -22,18 +22,18 @@ public struct ActivityMap: View {
     }
 
     public var body: some View {
-        let _ = print("graphPositionInActivityMap", graphPosition.touchLocationX)
+//        let _ = print("graphPositionInActivityMap", activityModel.analysisPosition)
         VStack {
             if !routeData.isEmpty {
                 MapView(routeData: $routeData)
-                    .frame(height: 300)
+                        .frame(height: 300)
             } else {
                 Text("No route data available")
             }
         }
-            .onChange(of: graphPosition.touchLocationX) { location in
-                print("graphPositionInActivityMap", location)
-            }
+                .onChange(of: activityModel.analysisPosition) { location in
+                    print("graphPositionInActivityMap", location)
+                }
     }
 }
 
@@ -127,8 +127,12 @@ fileprivate class Coordinator: NSObject, MKMapViewDelegate {
 
 fileprivate extension MKPolyline {
     var color: UIColor {
-        get { objc_getAssociatedObject(self, &colorKey) as? UIColor ?? UIColor.black }
-        set { objc_setAssociatedObject(self, &colorKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+        get {
+            objc_getAssociatedObject(self, &colorKey) as? UIColor ?? UIColor.black
+        }
+        set {
+            objc_setAssociatedObject(self, &colorKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
     }
 }
 
@@ -157,9 +161,9 @@ fileprivate func colorForPace(_ pace: Double) -> UIColor {
 extension UIColor {
     convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
         precondition(0...1 ~= hue &&
-            0...1 ~= saturation &&
-            0...1 ~= lightness &&
-            0...1 ~= alpha, "input range is out of range 0...1")
+                0...1 ~= saturation &&
+                0...1 ~= lightness &&
+                0...1 ~= alpha, "input range is out of range 0...1")
 
         var newSaturation: CGFloat = 0.0
 

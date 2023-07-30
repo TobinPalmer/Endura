@@ -19,7 +19,7 @@ struct ActivityPost: View {
         NavigationLink(destination: ActivityView(id: id, activity: activity)) {
             HStack {
                 Text("\(ConversionUtils.metersToMiles(activity.distance))")
-                Text("\(FormattingUtils.secondsToFormattedTime(seconds: activity.duration))")
+                Text("\(FormattingUtils.secondsToFormattedTime(activity.duration))")
             }
         }
         //        VStack {
