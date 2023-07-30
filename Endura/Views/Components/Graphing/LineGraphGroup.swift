@@ -5,14 +5,21 @@
 import Foundation
 import SwiftUI
 
-class LineGraphViewModel: ObservableObject {
-    @Published var touchLocationX: CGFloat? = nil
-}
+public class LineGraphViewModel: ObservableObject {
+    @Published var touchLocationX: CGFloat? = nil {
 
+        didSet(oldValue) {
+            if (touchLocationX != oldValue) {
+                print("touchLocationX", touchLocationX)
+            }
+        }
+    }
+}
 
 public struct LineGraphGroup<Content: View>: View {
     private let graphs: Content
     @EnvironmentObject var viewModel: LineGraphViewModel
+//    @EnvironmentObject var graphPosition: GraphPositionController
 
     public init(@ViewBuilder graphs: () -> Content) {
         self.graphs = graphs()
@@ -27,7 +34,8 @@ public struct LineGraphGroup<Content: View>: View {
                 .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ value in
                         if 0...geometry.size.width ~= value.location.x {
-                            viewModel.touchLocationX = value.location.x
+                            let x = value.location.x
+                            viewModel.touchLocationX = x
                         } else {
                             viewModel.touchLocationX = nil
                         }

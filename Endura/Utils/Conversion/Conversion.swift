@@ -5,6 +5,10 @@
 import Foundation
 
 public struct ConversionUtils {
+    public static func round(_ metersPerSec: Double) -> String {
+        String(metersPerSec.rounded())
+    }
+
     public static func convertMpsToMpm(_ metersPerSec: Double) -> String {
         if metersPerSec <= 0 {
             return "0:00"
