@@ -55,7 +55,7 @@ struct ActivitiesView: View {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
                         ForEach(viewModel.activities.keys.sorted(by: >), id: \.self) { key in
                             if let activity = viewModel.activities[key] {
-                                ActivityPost(activity: activity)
+                                ActivityPost(id: key, activity: activity)
                             }
                         }
                     }

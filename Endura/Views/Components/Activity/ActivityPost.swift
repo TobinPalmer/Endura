@@ -8,13 +8,17 @@ import SwiftUI
 struct ActivityPost: View {
     @StateObject var userDataModel = UserDataModel();
     private var activity: ActivityData
-    
-    init(activity: ActivityData) {
+    private var id: String
+
+    init(id: String, activity: ActivityData) {
         self.activity = activity
+        self.id = id
     }
-    
+
     var body: some View {
-        Text("Cool")
+        NavigationLink(destination: ActivityView(id: id, activity: activity)) {
+            Text("\(activity.distance)")
+        }
         //        VStack {
         //            ProfileImage(uid: activity.uid)
         //            Text("\(userDataModel.userData?.name ?? "Loading...")")
