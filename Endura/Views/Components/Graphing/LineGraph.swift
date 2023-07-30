@@ -1,7 +1,7 @@
 import SwiftUI
 
 public struct LineGraph: View {
-    @EnvironmentObject var viewModel: ActivityViewModel
+    @EnvironmentObject var activityViewModel: ActivityViewModel
 
     private let data: [(Date, Double)]
     private let step: Int
@@ -55,10 +55,9 @@ public struct LineGraph: View {
                             previousDate = data[index].0
                         }
                     }
-                            .stroke(Color.primary, lineWidth: 2)
+                        .stroke(Color.primary, lineWidth: 2)
 
-
-                    if let analysisPosition = viewModel.analysisPosition {
+                    if let analysisPosition = activityViewModel.analysisPosition {
                         let touchTimestamp = analysisPosition.timeIntervalSince1970
                         let touchLocation = CGFloat((touchTimestamp - minTimestampInterval) / timestampRange) * geometry.size.width
                         let closestDate = data.min(by: { abs($0.0.timeIntervalSince1970 - touchTimestamp) < abs($1.0.timeIntervalSince1970 - touchTimestamp) }) ?? data.last ?? (Date(), 0)
@@ -66,55 +65,55 @@ public struct LineGraph: View {
 
                         if abs(closestDate.0.timeIntervalSince1970 - touchTimestamp) > Double(step * 2) {
                             Circle()
-                                    .fill(Color.primary)
-                                    .frame(width: 10, height: 10)
-                                    .position(CGPoint(x: touchLocation, y: geometry.size.height))
+                                .fill(Color.primary)
+                                .frame(width: 10, height: 10)
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height))
 
                             Text("Paused")
-                                    .position(CGPoint(x: touchLocation, y: geometry.size.height - 30))
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height - 30))
                         } else {
                             Circle()
-                                    .fill(Color.primary)
-                                    .frame(width: 10, height: 10)
-                                    .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition))
+                                .fill(Color.primary)
+                                .frame(width: 10, height: 10)
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition))
 
                             Text("\(valueModifier(closestDate.1))")
-                                    .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition - 30))
+                                .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition - 30))
                         }
                     }
                 }
 
                 Text("\(valueModifier(mean))")
-                        .font(.footnote)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .position(x: 10, y: CGFloat(height) / 2)
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .position(x: 10, y: CGFloat(height) / 2)
 
                 Text("\(valueModifier(minVal))")
-                        .font(.footnote)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .position(x: 10, y: CGFloat(height) - 20)
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .position(x: 10, y: CGFloat(height) - 20)
             }
-                    .padding(0)
-                    .frame(height: CGFloat(height))
-                    .background(Color.clear)
-                    .contentShape(Rectangle())
-                    .gesture(DragGesture(minimumDistance: 0)
-                            .onChanged({ value in
-                                let x = value.location.x
-                                if let hitPoint = data.first(where: { point in
-                                    let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
-                                    let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                                    return abs(xPosition - x) < 1
-                                }) {
-                                    viewModel.analysisPosition = hitPoint.0
-                                }
-                            })
-                            .onEnded({ _ in
-                                viewModel.analysisPosition = nil
-                            })
-                    )
+                .padding(0)
+                .frame(height: CGFloat(height))
+                .background(Color.clear)
+                .contentShape(Rectangle())
+                .gesture(DragGesture(minimumDistance: 0)
+                    .onChanged({ value in
+                        let x = value.location.x
+                        if let hitPoint = data.first(where: { point in
+                            let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
+                            let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                            return abs(xPosition - x) < 1
+                        }) {
+                            activityViewModel.analysisPosition = hitPoint.0
+                        }
+                    })
+                    .onEnded({ _ in
+                        activityViewModel.analysisPosition = nil
+                    })
+                )
         }
     }
 }

@@ -5,12 +5,8 @@
 import Foundation
 import SwiftUI
 
-public class ActivityViewModel: ObservableObject {
-    @Published var analysisPosition: Date? = nil
-}
-
 public struct ActivityView: View {
-    @StateObject var viewModel = ActivityViewModel()
+    @StateObject var activityViewModel = ActivityViewModel()
 
     private var id: String
     private var activity: ActivityData
@@ -31,28 +27,28 @@ public struct ActivityView: View {
                     }
 
                     ActivityMap(activityData.data.routeData)
-                            .frame(height: 300)
-                            .environmentObject(viewModel)
+                        .frame(height: 300)
+                        .environmentObject(activityViewModel)
 
                     let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
                     if (!paceGraph.isEmpty) {
                         LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
-                                .environmentObject(viewModel)
+                            .environmentObject(activityViewModel)
                     } else {
                         Text("No pace data available")
                     }
                     if (!heartRateGraph.isEmpty) {
                         LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round)
-                                .environmentObject(viewModel)
+                            .environmentObject(activityViewModel)
                     } else {
                         Text("No heart rate data available")
                     }
                 }
             }
         }
-                .task {
-                    activityData = await activity.withRouteData(id: id)
-                }
+            .task {
+                activityData = await activity.withRouteData(id: id)
+            }
     }
 
 }

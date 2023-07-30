@@ -46,15 +46,15 @@ final class ActivitiesViewModel: ObservableObject {
 }
 
 struct ActivitiesView: View {
-    @StateObject var viewModel = ActivitiesViewModel()
+    @StateObject var activityViewModel = ActivitiesViewModel()
 
     var body: some View {
         VStack {
             ScrollView(.vertical) {
-                if (!viewModel.activities.isEmpty) {
+                if (!activityViewModel.activities.isEmpty) {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
-                        ForEach(viewModel.activities.keys.sorted(by: >), id: \.self) { key in
-                            if let activity = viewModel.activities[key] {
+                        ForEach(activityViewModel.activities.keys.sorted(by: >), id: \.self) { key in
+                            if let activity = activityViewModel.activities[key] {
                                 ActivityPost(id: key, activity: activity)
                             }
                         }

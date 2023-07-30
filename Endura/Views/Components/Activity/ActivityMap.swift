@@ -28,7 +28,7 @@ class MapViewContainer: ObservableObject {
 }
 
 public struct ActivityMap: View {
-    @EnvironmentObject var activityModel: ActivityViewModel
+    @EnvironmentObject var activityViewModel: ActivityViewModel
     @State private var routeData: [RouteData]
     @State private var mapViewContainer = MapViewContainer()
 
@@ -40,17 +40,17 @@ public struct ActivityMap: View {
         VStack {
             if !routeData.isEmpty {
                 MapView(mapViewContainer: mapViewContainer, routeData: $routeData)
-                        .frame(height: 300)
-                        .onChange(of: activityModel.analysisPosition) { timePosition in
-                            if let timePosition = timePosition {
-                                if let position = routeData.first { data in
-                                    data.timestamp > timePosition
-                                } {
-                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
-                                }
+                    .frame(height: 300)
+                    .onChange(of: activityViewModel.analysisPosition) { timePosition in
+                        if let timePosition = timePosition {
+                            if let position = routeData.first(where: { data in
+                                data.timestamp > timePosition
+                            }) {
+                                mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
                             }
-                            mapViewContainer.updateAnnotation(position: nil)
                         }
+                        mapViewContainer.updateAnnotation(position: nil)
+                    }
             } else {
                 Text("No route data available")
             }
@@ -61,7 +61,6 @@ public struct ActivityMap: View {
 fileprivate struct MapView: UIViewRepresentable {
     @ObservedObject var mapViewContainer: MapViewContainer
     @Binding var routeData: [RouteData]
-    // Rest of your properties...
 
     fileprivate func makeUIView(context: Context) -> MKMapView {
         mapViewContainer.mapView.delegate = context.coordinator
@@ -113,29 +112,10 @@ fileprivate struct MapView: UIViewRepresentable {
 
             print("Total overlays: \(uiView.overlays.count)")
 
-
-//        if let analysisPosition = viewModel.analysisPosition {
-//            let annotation = MKPointAnnotation()
-//            let dataPoint = routeData.first { data in
-//                data.timestamp > analysisPosition
-//            }
-//            if let dataPoint = dataPoint {
-//                annotation.coordinate = CLLocationCoordinate2D(latitude: dataPoint.location.latitude, longitude: dataPoint.location.longitude)
-//                uiView.addAnnotation(annotation)
-//            }
-//        }
-//
-//            let annotation = MKPointAnnotation()
-//            let dataPoint = routeData.first
-//            if let dataPoint = dataPoint {
-//                annotation.coordinate = CLLocationCoordinate2D(latitude: dataPoint.location.latitude, longitude: dataPoint.location.longitude)
-//                uiView.addAnnotation(annotation)
-//            }
-
             if let first = routeData.first, let last = routeData.last {
-                let firstCordinate = CLLocationCoordinate2D(latitude: first.location.latitude, longitude: first.location.longitude)
-                let lastCordinate = CLLocationCoordinate2D(latitude: last.location.latitude, longitude: last.location.longitude)
-                let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (firstCordinate.latitude + lastCordinate.latitude) / 2, longitude: (firstCordinate.longitude + lastCordinate.longitude) / 2), span: MKCoordinateSpan(latitudeDelta: abs(firstCordinate.latitude - lastCordinate.latitude), longitudeDelta: abs(firstCordinate.longitude - lastCordinate.longitude)))
+                let firstCoordinate = CLLocationCoordinate2D(latitude: first.location.latitude, longitude: first.location.longitude)
+                let lastCoordinate = CLLocationCoordinate2D(latitude: last.location.latitude, longitude: last.location.longitude)
+                let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (firstCoordinate.latitude + lastCoordinate.latitude) / 2, longitude: (firstCoordinate.longitude + lastCoordinate.longitude) / 2), span: MKCoordinateSpan(latitudeDelta: abs(firstCoordinate.latitude - lastCoordinate.latitude), longitudeDelta: abs(firstCoordinate.longitude - lastCoordinate.longitude)))
                 uiView.setRegion(region, animated: false)
             }
         }
