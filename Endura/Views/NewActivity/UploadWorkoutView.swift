@@ -32,7 +32,7 @@ public struct PreviewWorkoutView: View {
     private var workout: HKWorkout
     @State private var enduraWorkout: ActivityDataWithRoute?
     @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
-//    @ObservedObject fileprivate var graphPosition = GraphPositionController()
+    @StateObject private var viewModel = LineGraphViewModel()
 
     init(workout: HKWorkout) {
         self.workout = workout
@@ -45,17 +45,11 @@ public struct PreviewWorkoutView: View {
                 Text("\(enduraWorkout.duration) \(enduraWorkout.distance)")
 
                 ActivityMap(enduraWorkout.data.routeData)
-                        .frame(height: 300)
-                        .environmentObject(LineGraphViewModel())
-//                    .environmentObject(graphPosition)
+                    .frame(height: 300)
+                    .environmentObject(viewModel)
 
                 var heartRate = [(Date, Double)]()
                 var pace = [(Date, Double)]()
-
-//                let _ = enduraWorkout.routeData.forEach { val in
-//                    heartRate.append(val.heartRate)
-//                    pace.append(val.pace)
-//                }
 
                 let _ = enduraWorkout.data.graphData.compactMap { val in
                     if (!val.heartRate.isNaN) {
@@ -72,21 +66,23 @@ public struct PreviewWorkoutView: View {
                             LineGraphGroup {
                                 if (!pace.isEmpty) {
                                     LineGraph(data: pace, step: enduraWorkout.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                                        .environmentObject(viewModel)
                                 } else {
                                     Text("No pace data available")
                                 }
                                 if (!heartRate.isEmpty) {
                                     LineGraph(data: heartRate, step: enduraWorkout.data.graphInterval, height: 200, valueModifier: ConversionUtils.round)
+                                        .environmentObject(viewModel)
                                 } else {
                                     Text("No heart rate data available")
                                 }
                             }
-                                    .environmentObject(LineGraphViewModel())
+                                .environmentObject(LineGraphViewModel())
 //                                .environmentObject(graphPosition)
                         }
-                                .frame(width: geometry.size.width - 50, height: geometry.size.height)
+                            .frame(width: geometry.size.width - 50, height: geometry.size.height)
                     }
-                            .frame(width: geometry.size.width, height: geometry.size.height)
+                        .frame(width: geometry.size.width, height: geometry.size.height)
                 }
 //                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
 //                    .padding()
@@ -193,15 +189,15 @@ public struct PreviewWorkoutView: View {
                 }
             }
         }
-                .task {
-                    do {
-                        enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-                    } catch WorkoutErrors.noWorkout {
-                        print("No workout to get heart rate graph")
-                    } catch {
-                        print("Error getting heart rate graph")
-                    }
+            .task {
+                do {
+                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+                } catch WorkoutErrors.noWorkout {
+                    print("No workout to get heart rate graph")
+                } catch {
+                    print("Error getting heart rate graph")
                 }
+            }
         //            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         //            .task {
         //                do {

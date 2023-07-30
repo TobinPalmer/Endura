@@ -7,13 +7,13 @@ import MapKit
 import SwiftUI
 import HealthKit
 
-struct ColoredPolyline: Identifiable {
+fileprivate struct ColoredPolyline: Identifiable {
     var id = UUID()
     var color: UIColor
     var polyline: MKPolyline
 }
 
-class MapViewContainer: ObservableObject {
+fileprivate final class MapViewContainer: ObservableObject {
     @Published var mapView: MKMapView = MKMapView()
 
     func updateAnnotation(position: CLLocationCoordinate2D?) {
@@ -28,7 +28,7 @@ class MapViewContainer: ObservableObject {
 }
 
 public struct ActivityMap: View {
-    @EnvironmentObject var activityModel: ActivityViewModel
+    @EnvironmentObject var activityModel: GraphViewModel
     @State private var routeData: [RouteData]
     @State private var mapViewContainer = MapViewContainer()
 
@@ -40,17 +40,17 @@ public struct ActivityMap: View {
         VStack {
             if !routeData.isEmpty {
                 MapView(mapViewContainer: mapViewContainer, routeData: $routeData)
-                        .frame(height: 300)
-                        .onChange(of: activityModel.analysisPosition) { timePosition in
-                            if let timePosition = timePosition {
-                                if let position = routeData.first { data in
-                                    data.timestamp > timePosition
-                                } {
-                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
-                                }
+                    .frame(height: 300)
+                    .onChange(of: activityModel.analysisPosition) { timePosition in
+                        if let timePosition = timePosition {
+                            if let position = routeData.first(where: { data in
+                                data.timestamp > timePosition
+                            }) {
+                                mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
                             }
-                            mapViewContainer.updateAnnotation(position: nil)
                         }
+                        mapViewContainer.updateAnnotation(position: nil)
+                    }
             } else {
                 Text("No route data available")
             }
@@ -61,7 +61,6 @@ public struct ActivityMap: View {
 fileprivate struct MapView: UIViewRepresentable {
     @ObservedObject var mapViewContainer: MapViewContainer
     @Binding var routeData: [RouteData]
-    // Rest of your properties...
 
     fileprivate func makeUIView(context: Context) -> MKMapView {
         mapViewContainer.mapView.delegate = context.coordinator
@@ -82,12 +81,12 @@ fileprivate struct MapView: UIViewRepresentable {
 
                 if paceColor != currentPaceColor {
                     if !currentPolylineCoordinates.isEmpty {
-                        currentPolylineCoordinates.append(currentCoordinate) // Add the start point of the next polyline to the current one
+                        currentPolylineCoordinates.append(currentCoordinate)
 
                         let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
 
                         overlaysToAdd.append(ColoredPolyline(color: paceColor, polyline: polyline))
-                        currentPolylineCoordinates = [currentCoordinate] // Start new polyline with the color changing point
+                        currentPolylineCoordinates = [currentCoordinate]
                     }
                     currentPaceColor = paceColor
                 } else {
@@ -105,32 +104,12 @@ fileprivate struct MapView: UIViewRepresentable {
             }
 
 
-            // add all prepared overlays
             for overlay in overlaysToAdd {
                 overlay.polyline.color = overlay.color
                 uiView.addOverlay(overlay.polyline)
             }
 
             print("Total overlays: \(uiView.overlays.count)")
-
-
-//        if let analysisPosition = viewModel.analysisPosition {
-//            let annotation = MKPointAnnotation()
-//            let dataPoint = routeData.first { data in
-//                data.timestamp > analysisPosition
-//            }
-//            if let dataPoint = dataPoint {
-//                annotation.coordinate = CLLocationCoordinate2D(latitude: dataPoint.location.latitude, longitude: dataPoint.location.longitude)
-//                uiView.addAnnotation(annotation)
-//            }
-//        }
-//
-//            let annotation = MKPointAnnotation()
-//            let dataPoint = routeData.first
-//            if let dataPoint = dataPoint {
-//                annotation.coordinate = CLLocationCoordinate2D(latitude: dataPoint.location.latitude, longitude: dataPoint.location.longitude)
-//                uiView.addAnnotation(annotation)
-//            }
 
             if let first = routeData.first, let last = routeData.last {
                 let firstCordinate = CLLocationCoordinate2D(latitude: first.location.latitude, longitude: first.location.longitude)
@@ -140,7 +119,6 @@ fileprivate struct MapView: UIViewRepresentable {
             }
         }
     }
-
 
     fileprivate func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -201,9 +179,9 @@ fileprivate func colorForPace(_ pace: Double) -> UIColor {
 extension UIColor {
     convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
         precondition(0...1 ~= hue &&
-                0...1 ~= saturation &&
-                0...1 ~= lightness &&
-                0...1 ~= alpha, "input range is out of range 0...1")
+            0...1 ~= saturation &&
+            0...1 ~= lightness &&
+            0...1 ~= alpha, "input range is out of range 0...1")
 
         var newSaturation: CGFloat = 0.0
 
@@ -214,7 +192,6 @@ extension UIColor {
         } else {
             newSaturation = 2 * (1 - lightness / brightness)
         }
-
         self.init(hue: hue, saturation: newSaturation, brightness: brightness, alpha: alpha)
     }
 }

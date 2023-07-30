@@ -52,6 +52,7 @@
 		696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980A9493FB9C9A2291998 /* WorkoutErrors.swift */; };
 		6969874C7C01175EDE8DC3F7 /* UploadWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982855FE478D8D2440495 /* UploadWorkoutView.swift */; };
 		6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985F087A56B76C2C803F6 /* CLLocation.swift */; };
+		6969886BD1E5AF0E24D646DD /* LineGraphViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980A80541A94E608A24C1 /* LineGraphViewModel.swift */; };
 		696989667077D098FD05A1C6 /* HealthKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698B315EDC140451CA74A5 /* HealthKitUtils.swift */; };
 		69698B2BDA9046D639E2A0E6 /* NewActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969849C3C4EA502A9EE3634 /* NewActivityView.swift */; };
 		69698BABDCAEC0A369C6A3FA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969819A8C4285A3E148D771 /* Double.swift */; };
@@ -108,6 +109,7 @@
 		17CC6C296596DA475D462B36 /* ActivitiesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
 		17CC6E3C3259ED54F0BF31D1 /* Activities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activities.swift; sourceTree = "<group>"; };
 		17CC6FAD8A0AC457723ACD1F /* Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversion.swift; sourceTree = "<group>"; };
+		696980A80541A94E608A24C1 /* LineGraphViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineGraphViewModel.swift; sourceTree = "<group>"; };
 		696980A9493FB9C9A2291998 /* WorkoutErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutErrors.swift; sourceTree = "<group>"; };
 		6969811976FAB3D841B531A2 /* LineGraphGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineGraphGroup.swift; sourceTree = "<group>"; };
 		6969819A8C4285A3E148D771 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				69698720350C74DC405F7DBA /* Utils */,
 				69698295434F07B0A3B70B02 /* Models */,
 				69698BED38E7BC5FB38B4BA0 /* Errors */,
+				69698F0B7DC4E77ECE6AEDA3 /* ViewModels */,
 			);
 			path = Endura;
 			sourceTree = "<group>";
@@ -410,6 +413,22 @@
 			path = NewActivity;
 			sourceTree = "<group>";
 		};
+		69698F0B7DC4E77ECE6AEDA3 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				69698F2905BA25C9BB92FDFA /* Activity */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		69698F2905BA25C9BB92FDFA /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				696980A80541A94E608A24C1 /* LineGraphViewModel.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
 		69698F66CFE1EDEA0C937BEE /* FirebaseModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -604,6 +623,7 @@
 				17CC6E2D815670C3A2DBDFBF /* ActivitiesView.swift in Sources */,
 				17CC62FFC55BCB9A6AEA355C /* ProgressView.swift in Sources */,
 				17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */,
+				6969886BD1E5AF0E24D646DD /* LineGraphViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
