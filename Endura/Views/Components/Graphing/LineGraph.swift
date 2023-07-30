@@ -1,20 +1,35 @@
 import SwiftUI
 
-public struct LineGraph: View {
+public protocol LineGraphStyle {
+    var color: Color { get }
+}
+
+public struct PaceLineGraphStyle: LineGraphStyle {
+    public let color: Color = .blue
+}
+
+public struct HeartRateLineGraphStyle: LineGraphStyle {
+    public let color: Color = .red
+}
+
+public struct LineGraph<Style>: View where Style: LineGraphStyle {
     @EnvironmentObject var activityViewModel: ActivityViewModel
+
+    private let style: Style
 
     private let data: [(Date, Double)]
     private let step: Int
     private let height: Int
     private let valueModifier: (Double) -> String
 
-    public init(data: [(Date, Double)], step: Int, height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
+    public init(data: LineGraphData, step: Int, height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
         String(i)
-    }) {
+    }, style: Style) {
         self.data = data
         self.step = step
         self.height = height
         self.valueModifier = valueModifier
+        self.style = style
     }
 
     public var body: some View {
@@ -55,7 +70,7 @@ public struct LineGraph: View {
                             previousDate = data[index].0
                         }
                     }
-                        .stroke(Color.primary, lineWidth: 2)
+                        .stroke(style.color, lineWidth: 2)
 
                     if let analysisPosition = activityViewModel.analysisPosition {
                         let touchTimestamp = analysisPosition.timeIntervalSince1970
@@ -95,7 +110,7 @@ public struct LineGraph: View {
                     .foregroundColor(.black)
                     .position(x: 10, y: CGFloat(height) - 20)
             }
-                .padding(0)
+                .padding(10)
                 .frame(height: CGFloat(height))
                 .background(Color.clear)
                 .contentShape(Rectangle())
@@ -115,5 +130,6 @@ public struct LineGraph: View {
                     })
                 )
         }
+
     }
 }

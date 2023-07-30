@@ -51,13 +51,13 @@ public struct PreviewWorkoutView: View {
 
                     let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
                     if (!paceGraph.isEmpty) {
-                        LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                        LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                             .environmentObject(activityViewModel)
                     } else {
                         Text("No pace data available")
                     }
                     if (!heartRateGraph.isEmpty) {
-                        LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round)
+                        LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                             .environmentObject(activityViewModel)
                     } else {
                         Text("No heart rate data available")

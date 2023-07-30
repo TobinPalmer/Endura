@@ -5,6 +5,7 @@
 import Foundation
 import SwiftUI
 
+
 public struct ActivityView: View {
     @StateObject var activityViewModel = ActivityViewModel()
 
@@ -20,7 +21,7 @@ public struct ActivityView: View {
     public var body: some View {
         VStack {
             if let activityData = activityData {
-                VStack {
+                ScrollView(.vertical) {
                     HStack {
                         Text("\(ConversionUtils.metersToMiles(activityData.distance))")
                         Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
@@ -30,15 +31,18 @@ public struct ActivityView: View {
                         .frame(height: 300)
                         .environmentObject(activityViewModel)
 
+
                     let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
                     if (!paceGraph.isEmpty) {
-                        LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                        LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
+                                //                            .lineGraphStyle(PaceLineGraphStyle())
                             .environmentObject(activityViewModel)
                     } else {
                         Text("No pace data available")
                     }
                     if (!heartRateGraph.isEmpty) {
-                        LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round)
+                        LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
+                                //                            .lineGraphStyle(HeartRateLineGraphStyle())
                             .environmentObject(activityViewModel)
                     } else {
                         Text("No heart rate data available")
