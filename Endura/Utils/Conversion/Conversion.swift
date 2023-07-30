@@ -30,4 +30,8 @@ public struct ConversionUtils {
 
         return formattedSpeed
     }
+
+    public static func metersToMiles(_ meters: Double) -> Double {
+        meters / 1609.34
+    }
 }

@@ -18,7 +18,12 @@ public struct ActivityView: View {
     public var body: some View {
         VStack {
             if let activityData = activityData {
-                Text("\(activityData.data.graphInterval)")
+                VStack {
+                    HStack {
+                        Text("\(ConversionUtils.metersToMiles(activityData.distance))")
+                        Text("\(FormattingUtils.secondsToFormattedTime(seconds: activityData.duration))")
+                    }
+                }
             }
         }
                 .task {

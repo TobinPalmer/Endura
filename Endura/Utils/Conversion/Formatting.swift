@@ -5,7 +5,7 @@
 import Foundation
 
 public struct FormattingUtils {
-    public static func secondsToFormattedTime(seconds: Int) -> String {
+    public static func secondsToFormattedTime(seconds: Double) -> String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated

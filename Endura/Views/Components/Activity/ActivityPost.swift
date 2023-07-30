@@ -17,7 +17,10 @@ struct ActivityPost: View {
 
     var body: some View {
         NavigationLink(destination: ActivityView(id: id, activity: activity)) {
-            Text("\(activity.distance)")
+            HStack {
+                Text("\(ConversionUtils.metersToMiles(activity.distance))")
+                Text("\(FormattingUtils.secondsToFormattedTime(seconds: activity.duration))")
+            }
         }
         //        VStack {
         //            ProfileImage(uid: activity.uid)
