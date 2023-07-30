@@ -19,7 +19,7 @@ import SwiftUICharts
 @MainActor fileprivate final class PreviewWorkoutModel: ObservableObject {
     @Published public var number = 2
 
-    final fileprivate func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityData {
+    final fileprivate func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
             return try await HealthKitUtils.workoutToActivityData(workout)
         } catch {
@@ -30,7 +30,7 @@ import SwiftUICharts
 
 public struct PreviewWorkoutView: View {
     private var workout: HKWorkout
-    @State private var enduraWorkout: ActivityData?
+    @State private var enduraWorkout: ActivityDataWithRoute?
     @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
 //    @ObservedObject fileprivate var graphPosition = GraphPositionController()
 
@@ -44,9 +44,9 @@ public struct PreviewWorkoutView: View {
             if let enduraWorkout = enduraWorkout {
                 Text("\(enduraWorkout.duration) \(enduraWorkout.distance)")
 
-                ActivityMap(enduraWorkout.routeData)
-                    .frame(height: 300)
-                    .environmentObject(LineGraphViewModel())
+                ActivityMap(enduraWorkout.data.routeData)
+                        .frame(height: 300)
+                        .environmentObject(LineGraphViewModel())
 //                    .environmentObject(graphPosition)
 
                 var heartRate = [(Date, Double)]()
@@ -57,7 +57,7 @@ public struct PreviewWorkoutView: View {
 //                    pace.append(val.pace)
 //                }
 
-                let _ = enduraWorkout.graphData.compactMap { val in
+                let _ = enduraWorkout.data.graphData.compactMap { val in
                     if (!val.heartRate.isNaN) {
                         heartRate.append((val.timestamp, val.heartRate))
                     }
@@ -71,22 +71,22 @@ public struct PreviewWorkoutView: View {
                         VStack {
                             LineGraphGroup {
                                 if (!pace.isEmpty) {
-                                    LineGraph(data: pace, step: enduraWorkout.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
+                                    LineGraph(data: pace, step: enduraWorkout.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
                                 } else {
                                     Text("No pace data available")
                                 }
                                 if (!heartRate.isEmpty) {
-                                    LineGraph(data: heartRate, step: enduraWorkout.graphInterval, height: 200, valueModifier: ConversionUtils.round)
+                                    LineGraph(data: heartRate, step: enduraWorkout.data.graphInterval, height: 200, valueModifier: ConversionUtils.round)
                                 } else {
                                     Text("No heart rate data available")
                                 }
                             }
-                                .environmentObject(LineGraphViewModel())
+                                    .environmentObject(LineGraphViewModel())
 //                                .environmentObject(graphPosition)
                         }
-                            .frame(width: geometry.size.width - 50, height: geometry.size.height)
+                                .frame(width: geometry.size.width - 50, height: geometry.size.height)
                     }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
                 }
 //                LineGraph(data: pace, height: 200, valueModifier: ConversionUtils.convertMpsToMpm)
 //                    .padding()
@@ -193,15 +193,15 @@ public struct PreviewWorkoutView: View {
                 }
             }
         }
-            .task {
-                do {
-                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-                } catch WorkoutErrors.noWorkout {
-                    print("No workout to get heart rate graph")
-                } catch {
-                    print("Error getting heart rate graph")
+                .task {
+                    do {
+                        enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+                    } catch WorkoutErrors.noWorkout {
+                        print("No workout to get heart rate graph")
+                    } catch {
+                        print("Error getting heart rate graph")
+                    }
                 }
-            }
         //            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         //            .task {
         //                do {
