@@ -6,6 +6,7 @@ import Foundation
 import MapKit
 import SwiftUI
 import HealthKit
+import Combine
 
 struct ColoredPolyline: Identifiable {
     var id = UUID()
@@ -28,6 +29,24 @@ class MapViewContainer: ObservableObject {
     }
 }
 
+extension View {
+    func snapshot() -> UIImage {
+        let controller = UIHostingController(rootView: self)
+        let view = controller.view
+
+        let targetSize = controller.view.intrinsicContentSize
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+
+        return renderer.image { _ in
+            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
+}
+
+
 public struct ActivityMap: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
     @State private var routeData: [RouteData]
@@ -38,23 +57,42 @@ public struct ActivityMap: View {
     }
 
     public var body: some View {
-        VStack {
-            if !routeData.isEmpty {
-                MapView(mapViewContainer: mapViewContainer, routeData: $routeData)
-                    .frame(height: 300)
-                    .onChange(of: activityViewModel.analysisPosition) { timePosition in
-                        if let timePosition = timePosition {
-                            if let position = routeData.first(where: { data in
-                                data.timestamp > timePosition
-                            }) {
-                                mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
+        GeometryReader { geometry in
+            VStack {
+                if !routeData.isEmpty {
+                    let map = MapView(mapViewContainer: mapViewContainer, routeData: $routeData)
+                        .frame(height: 300)
+                        .onChange(of: activityViewModel.analysisPosition) { timePosition in
+                            if let timePosition = timePosition {
+                                if let position = routeData.first(where: { data in
+                                    data.timestamp > timePosition
+                                }) {
+                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
+                                }
+                            } else {
+                                mapViewContainer.removeAnnotation()
                             }
-                        } else {
-                            mapViewContainer.removeAnnotation()
+                        }
+
+                    map
+
+                    Button("Take Snapshot") {
+                        let image = map
+                            .takeScreenshot(origin: geometry.frame(in: .global).origin, size: geometry.size)
+                        print(image)
+
+                        //save image to documents
+                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        let fileName = "image.png"
+                        let fileURL = documentsDirectory.appendingPathComponent(fileName)
+                        if let data = image.pngData() {
+                            try? data.write(to: fileURL)
+                            print("Saved", fileURL)
                         }
                     }
-            } else {
-                Text("No route data available")
+                } else {
+                    Text("No route data available")
+                }
             }
         }
     }
