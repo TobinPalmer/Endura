@@ -64,6 +64,26 @@ fileprivate struct MapView: UIViewRepresentable {
     @ObservedObject var mapViewContainer: MapViewContainer
     @Binding var routeData: [RouteData]
 
+    fileprivate func colorForPace(_ pace: Double) -> UIColor {
+        var pace = 26.8224 / pace
+        let maxPace = 10.0
+        let minPace = 0.0
+        let maxHue = 0.7
+        pace = max(min(pace, maxPace), minPace)
+        var roundedPace: Double = 0.0
+        if pace > 7.0 {
+            roundedPace = (pace).rounded()
+        } else {
+            roundedPace = (pace * 2).rounded() / 2
+        }
+        //Take the rounded pace and convert it to a percentage of the max pace in the hue format which is 0...1
+        let hue = maxHue - (roundedPace * (maxHue / (maxPace)))
+        if (hue > 1 || hue < 0) {
+            return UIColor(hue: 0.0, saturation: 1.0, lightness: 0.5, alpha: 1.0)
+        }
+        return UIColor(hue: CGFloat(hue), saturation: 1.0, lightness: 0.5, alpha: 1.0)
+    }
+
     fileprivate func makeUIView(context: Context) -> MKMapView {
         mapViewContainer.mapView.delegate = context.coordinator
         return mapViewContainer.mapView
@@ -114,12 +134,11 @@ fileprivate struct MapView: UIViewRepresentable {
 
             print("Total overlays: \(uiView.overlays.count)")
 
-            if let first = routeData.first, let last = routeData.last {
-                let firstCoordinate = CLLocationCoordinate2D(latitude: first.location.latitude, longitude: first.location.longitude)
-                let lastCoordinate = CLLocationCoordinate2D(latitude: last.location.latitude, longitude: last.location.longitude)
-                let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (firstCoordinate.latitude + lastCoordinate.latitude) / 2, longitude: (firstCoordinate.longitude + lastCoordinate.longitude) / 2), span: MKCoordinateSpan(latitudeDelta: abs(firstCoordinate.latitude - lastCoordinate.latitude), longitudeDelta: abs(firstCoordinate.longitude - lastCoordinate.longitude)))
-                uiView.setRegion(region, animated: false)
+            let coordinates = routeData.map { data in
+                CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
             }
+            let region = MKCoordinateRegion(coordinates: coordinates)
+            uiView.setRegion(region, animated: false)
         }
     }
 
@@ -144,59 +163,5 @@ fileprivate class Coordinator: NSObject, MKMapViewDelegate {
             return renderer
         }
         return MKOverlayRenderer()
-    }
-}
-
-fileprivate extension MKPolyline {
-    var color: UIColor {
-        get {
-            objc_getAssociatedObject(self, &colorKey) as? UIColor ?? UIColor.black
-        }
-        set {
-            objc_setAssociatedObject(self, &colorKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-}
-
-private var colorKey: UInt8 = 0
-
-fileprivate func colorForPace(_ pace: Double) -> UIColor {
-    var pace = 26.8224 / pace
-    let maxPace = 10.0
-    let minPace = 0.0
-    let maxHue = 0.7
-    pace = max(min(pace, maxPace), minPace)
-    var roundedPace: Double = 0.0
-    if pace > 7.0 {
-        roundedPace = (pace).rounded()
-    } else {
-        roundedPace = (pace * 2).rounded() / 2
-    }
-    //Take the rounded pace and convert it to a percentage of the max pace in the hue format which is 0...1
-    let hue = maxHue - (roundedPace * (maxHue / (maxPace)))
-    if (hue > 1 || hue < 0) {
-        return UIColor(hue: 0.0, saturation: 1.0, lightness: 0.5, alpha: 1.0)
-    }
-    return UIColor(hue: CGFloat(hue), saturation: 1.0, lightness: 0.5, alpha: 1.0)
-}
-
-extension UIColor {
-    convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
-        precondition(0...1 ~= hue &&
-                0...1 ~= saturation &&
-                0...1 ~= lightness &&
-                0...1 ~= alpha, "input range is out of range 0...1")
-
-        var newSaturation: CGFloat = 0.0
-
-        let brightness = lightness + saturation * min(lightness, 1 - lightness)
-
-        if brightness == 0 {
-            newSaturation = 0.0
-        } else {
-            newSaturation = 2 * (1 - lightness / brightness)
-        }
-
-        self.init(hue: hue, saturation: newSaturation, brightness: brightness, alpha: alpha)
     }
 }
