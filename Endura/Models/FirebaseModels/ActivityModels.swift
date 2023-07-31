@@ -70,7 +70,7 @@ public struct ActivityDataWithRoute {
     var likes: [String]
 
     public func getDataWithoutRoute() -> ActivityData {
-        return ActivityData(uid: uid, time: time, distance: distance, duration: duration, comments: comments, likes: likes)
+        ActivityData(uid: uid, time: time, distance: distance, duration: duration, comments: comments, likes: likes)
     }
 
     public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {

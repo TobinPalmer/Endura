@@ -24,7 +24,6 @@ public struct ActivityUtils {
         do {
 //            Firestore.firestore().collection("activities").addDocument(from: activity)
 
-            //save image
             let storage = Storage.storage()
             let storageRef = storage.reference()
             let imageRef = storageRef.child("images/test.png")

@@ -4,6 +4,6 @@
 
 import Foundation
 
-public class ActivityViewModel: ObservableObject {
+public final class ActivityViewModel: ObservableObject {
     @Published var analysisPosition: Date? = nil
 }

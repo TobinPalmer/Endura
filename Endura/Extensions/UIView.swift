@@ -5,7 +5,7 @@
 import Foundation
 import SwiftUI
 
-extension UIView {
+public extension UIView {
     var renderedImage: UIImage {
         // rect of capure
         let rect = self.bounds

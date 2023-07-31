@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum PageView {
+public enum PageView {
     case HOME
     case LOGIN
 }
