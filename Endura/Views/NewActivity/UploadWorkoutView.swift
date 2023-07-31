@@ -39,15 +39,35 @@ public struct PreviewWorkoutView: View {
             Text("Afternoon Run").font(.title)
             if let activityData = enduraWorkout {
                 Text("\(activityData.duration) \(activityData.distance)")
-                VStack {
+                ScrollView(.vertical) {
                     HStack {
                         Text("\(ConversionUtils.metersToMiles(activityData.distance))")
                         Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
                     }
 
-                    ActivityMap(activityData.data.routeData)
-                        .frame(height: 300)
-                        .environmentObject(activityViewModel)
+                    GeometryReader { geometry in
+                        VStack {
+                            let map =
+                                    ActivityMap(activityData.data.routeData)
+                                        .frame(height: 300)
+                                        .environmentObject(activityViewModel)
+                            map
+
+                            Button {
+                                Task {
+                                    do {
+                                        try await ActivityUtils.uploadActivity(activity: activityData, image: map.takeScreenshot(origin: geometry.frame(in: .global).origin, size: geometry.size))
+                                    } catch {
+                                        print("Error uploading workout: \(error)")
+                                    }
+                                }
+                            } label: {
+                                Text("Upload")
+                            }
+                        }
+                    }
+
+                    Spacer(minLength: 30.0)
 
                     let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
                     if (!paceGraph.isEmpty) {
@@ -62,20 +82,9 @@ public struct PreviewWorkoutView: View {
                     } else {
                         Text("No heart rate data available")
                     }
-                }
 
-                Button {
-                    Task {
-                        do {
-//                            try Firestore.firestore().collection("activities").addDocument(data: enduraWorkout)
-                        } catch {
-                            print("Error uploading workout: \(error)")
-                        }
-                    }
-                } label: {
-                    Text("Upload")
-                }
 
+                }
             } else {
                 ProgressView {
                     Text("Loading...")

@@ -29,38 +29,39 @@ class MapViewContainer: ObservableObject {
     }
 }
 
-extension View {
-    func snapshot() -> UIImage {
-        let controller = UIHostingController(rootView: self)
-        let view = controller.view
-
-        let targetSize = controller.view.intrinsicContentSize
-        view?.bounds = CGRect(origin: .zero, size: targetSize)
-        view?.backgroundColor = .clear
-
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-
-        return renderer.image { _ in
-            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
-    }
-}
-
-
 public struct ActivityMap: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
-    @State private var routeData: [RouteData]
+    private var routeData: [RouteData]
     @State private var mapViewContainer = MapViewContainer()
+//    @State private var mapView: MapView?
+//    @State private var mapImageOptions: (origin: CGPoint, size: CGSize)?
 
     public init(_ route: [RouteData]) {
         routeData = route
     }
 
+//
+//    public func getMapImage() -> UIImage {
+////        guard let mapView = mapView else {
+////            print("no map view")
+////            return UIImage()
+////        }
+//        guard let mapImageOptions = mapImageOptions else {
+//            print("no options", mapImageOptions)
+//            return UIImage()
+//        }
+//        let image = mapView.takeScreenshot(origin: mapImageOptions.origin, size: mapImageOptions.size)
+//        print("Image", image, "data", image.pngData())
+//        return image
+//    }
+
     public var body: some View {
         GeometryReader { geometry in
             VStack {
                 if !routeData.isEmpty {
-                    let map = MapView(mapViewContainer: mapViewContainer, routeData: $routeData)
+//                    let mapView =
+                    MapView(mapViewContainer: mapViewContainer, routeData: routeData)
+                            //                    mapView
                         .frame(height: 300)
                         .onChange(of: activityViewModel.analysisPosition) { timePosition in
                             if let timePosition = timePosition {
@@ -73,23 +74,13 @@ public struct ActivityMap: View {
                                 mapViewContainer.removeAnnotation()
                             }
                         }
-
-                    map
-
-                    Button("Take Snapshot") {
-                        let image = map
-                            .takeScreenshot(origin: geometry.frame(in: .global).origin, size: geometry.size)
-                        print(image)
-
-                        //save image to documents
-                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                        let fileName = "image.png"
-                        let fileURL = documentsDirectory.appendingPathComponent(fileName)
-                        if let data = image.pngData() {
-                            try? data.write(to: fileURL)
-                            print("Saved", fileURL)
-                        }
-                    }
+//                        .onAppear() {
+//                            self.mapView = mapView
+//                            self.mapImageOptions = (origin: geometry.frame(in: .global).origin, size: geometry.size)
+//                            print("should work")
+//                            print(String(describing: self.mapView))
+////                            print("definitely should work", self.mapImageOptions)
+//                        }
                 } else {
                     Text("No route data available")
                 }
@@ -100,7 +91,7 @@ public struct ActivityMap: View {
 
 fileprivate struct MapView: UIViewRepresentable {
     @ObservedObject var mapViewContainer: MapViewContainer
-    @Binding var routeData: [RouteData]
+    public var routeData: [RouteData]
 
     fileprivate func colorForPace(_ pace: Double) -> UIColor {
         var pace = 26.8224 / pace

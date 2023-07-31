@@ -56,7 +56,6 @@ public struct ActivityData: Codable {
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
-        print(routeData)
         return ActivityDataWithRoute(uid: uid, time: time, distance: distance, duration: duration, data: routeData, comments: comments, likes: likes)
     }
 }
