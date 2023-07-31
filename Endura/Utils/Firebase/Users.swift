@@ -18,20 +18,37 @@ public final class UserDataModel: ObservableObject {
     }
 }
 
-struct UsersUtil {
-    private static var usersCache: [String: UserData] = [:]
 
-    public static func getActiveUserData(_ user: User) {
-        let docRef = Firestore.firestore().collection("users").document(user.uid)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let data = document.data()
-                print("Document data: \(String(describing: data))")
-            } else {
-                print("Document does not exist")
+public final class ActiveUserModel: ObservableObject {
+    @Published final var userData: UserData
+
+    init() {
+        userData = UserData(
+                uid: "",
+                name: "",
+                firstName: "",
+                lastName: "",
+                profilePicture: "",
+                friends: []
+        )
+    }
+
+    public final func getData() async {
+        if let uid = Auth.auth().currentUser?.uid {
+            do {
+                if let data = try await UsersUtil.getUserData(uid: uid) {
+                    userData = data
+                }
+            } catch {
+                print("Error getting active user data: \(error)")
             }
         }
     }
+}
+
+
+struct UsersUtil {
+    private static var usersCache: [String: UserData] = [:]
 
     public static func getUserData(uid: String) async throws -> UserData? {
         try await withCheckedThrowingContinuation { continuation in
@@ -43,12 +60,12 @@ struct UsersUtil {
                     case .success(let document):
                         print("Successfully decoded user: \(document)")
                         let userData = UserData(
-                            id: uid,
-                            name: "\(document.firstName) \(document.lastName)",
-                            firstName: document.firstName,
-                            lastName: document.lastName,
-                            profilePicture: "",
-                            friends: document.friends
+                                uid: uid,
+                                name: "\(document.firstName) \(document.lastName)",
+                                firstName: document.firstName,
+                                lastName: document.lastName,
+                                profilePicture: "",
+                                friends: document.friends
                         )
                         usersCache.updateValue(userData, forKey: uid)
                         continuation.resume(returning: userData)

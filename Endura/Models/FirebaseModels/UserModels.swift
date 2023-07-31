@@ -5,7 +5,7 @@
 import Foundation
 
 struct UserData {
-    var id: String
+    var uid: String
     var name: String
     var firstName: String
     var lastName: String

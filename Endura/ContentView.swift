@@ -11,6 +11,7 @@ import FirebaseAuth
 
 struct ContentView: View {
     @EnvironmentObject var navigation: NavigationModel;
+    @EnvironmentObject var activeUserModel: ActiveUserModel;
 
     var body: some View {
         switch (navigation.currentView) {
@@ -21,43 +22,46 @@ struct ContentView: View {
                 NavigationView {
                     DashboardView()
                 }
-                        .tabItem {
-                            Image(systemName: "house")
-                            Text("Home")
-                        }
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Home")
+                    }
 
                 NavigationView {
                     ActivitiesView()
                 }
-                        .tabItem {
-                            Image(systemName: "figure.run")
-                            Text("Activities")
-                        }
+                    .tabItem {
+                        Image(systemName: "figure.run")
+                        Text("Activities")
+                    }
 
                 NavigationView {
                     TrainingView()
                 }
-                        .tabItem {
-                            Image(systemName: "calendar")
-                            Text("Training")
-                        }
+                    .tabItem {
+                        Image(systemName: "calendar")
+                        Text("Training")
+                    }
 
                 NavigationView {
                     ProgressDashboardView()
                 }
-                        .tabItem {
-                            Image(systemName: "chart.bar")
-                            Text("Progress")
-                        }
+                    .tabItem {
+                        Image(systemName: "chart.bar")
+                        Text("Progress")
+                    }
 
                 NavigationView {
                     ProfileView()
                 }
-                        .tabItem {
-                            Image(systemName: "person")
-                            Text("Profile")
-                        }
+                    .tabItem {
+                        Image(systemName: "person")
+                        Text("Profile")
+                    }
             }
+                .task {
+                    await activeUserModel.getData()
+                }
         }
     }
 }

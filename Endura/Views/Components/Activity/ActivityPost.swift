@@ -6,7 +6,8 @@ import Foundation
 import SwiftUI
 
 struct ActivityPost: View {
-    @StateObject var userDataModel = UserDataModel();
+    @EnvironmentObject var activeUserModel: ActiveUserModel
+    @StateObject var userDataModel = UserDataModel()
     private var activity: ActivityData
     private var id: String
 
@@ -18,6 +19,7 @@ struct ActivityPost: View {
     var body: some View {
         VStack(spacing: 14) {
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
+                Text(activeUserModel.userData.name)
                 Text("Afternoon Run")
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)

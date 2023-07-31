@@ -6,12 +6,6 @@ import Foundation
 import FirebaseAuth
 
 struct AuthUtils {
-    public var currentUser: User? {
-        get {
-            Auth.auth().currentUser
-        }
-    }
-
     public static func initAuth() {
         if (Auth.auth().currentUser !== nil) {
             NavigationModel.instance.currentView = .HOME
