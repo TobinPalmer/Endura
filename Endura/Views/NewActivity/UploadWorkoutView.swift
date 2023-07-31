@@ -45,45 +45,48 @@ public struct PreviewWorkoutView: View {
                         Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
                     }
 
-                    GeometryReader { geometry in
-                        VStack {
-                            let map =
-                                    ActivityMap(activityData.data.routeData)
-                                        .frame(height: 300)
-                                        .environmentObject(activityViewModel)
-                            map
+                    VStack {
+                        GeometryReader { geometry in
+                            VStack {
+                                let map =
+                                        ActivityMap(activityData.data.routeData)
+                                            .frame(height: 300)
+                                            .environmentObject(activityViewModel)
+                                map
 
-                            Button {
-                                Task {
-                                    do {
-                                        try await ActivityUtils.uploadActivity(activity: activityData, image: map.takeScreenshot(origin: geometry.frame(in: .global).origin, size: geometry.size))
-                                    } catch {
-                                        print("Error uploading workout: \(error)")
+                                Button {
+                                    Task {
+                                        do {
+                                            try await ActivityUtils.uploadActivity(activity: activityData, image: map.takeScreenshot(origin: geometry.frame(in: .global).origin, size: geometry.size))
+                                        } catch {
+                                            print("Error uploading workout: \(error)")
+                                        }
                                     }
+                                } label: {
+                                    Text("Upload")
                                 }
-                            } label: {
-                                Text("Upload")
                             }
                         }
                     }
+                        .frame(height: 300)
 
-                    Spacer(minLength: 30.0)
+                    Spacer()
 
                     let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
-                    if (!paceGraph.isEmpty) {
-                        LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
-                            .environmentObject(activityViewModel)
-                    } else {
-                        Text("No pace data available")
+                    VStack {
+                        if (!paceGraph.isEmpty) {
+                            LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
+                                .environmentObject(activityViewModel)
+                        } else {
+                            Text("No pace data available")
+                        }
+                        if (!heartRateGraph.isEmpty) {
+                            LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
+                                .environmentObject(activityViewModel)
+                        } else {
+                            Text("No heart rate data available")
+                        }
                     }
-                    if (!heartRateGraph.isEmpty) {
-                        LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
-                            .environmentObject(activityViewModel)
-                    } else {
-                        Text("No heart rate data available")
-                    }
-
-
                 }
             } else {
                 ProgressView {
