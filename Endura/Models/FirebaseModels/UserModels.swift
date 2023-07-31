@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct UserData {
+public struct UserData {
     var uid: String
     var name: String
     var firstName: String
@@ -13,7 +13,7 @@ struct UserData {
     var friends: [String]
 }
 
-struct UserDocument: Codable {
+public struct UserDocument: Codable {
     var firstName: String
     var lastName: String
     var friends: [String]

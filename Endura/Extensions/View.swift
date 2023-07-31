@@ -5,7 +5,7 @@
 import Foundation
 import SwiftUI
 
-extension View {
+public extension View {
     func takeScreenshot(origin: CGPoint, size: CGSize) -> UIImage {
         let window = UIWindow(frame: CGRect(origin: origin, size: size))
         let hosting = UIHostingController(rootView: self)

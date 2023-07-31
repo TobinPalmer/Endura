@@ -19,7 +19,7 @@ public struct CalendarUtils {
 
         let startDayOfWeek = startDateOfMonth.dayOfWeek
         let startOffset = startDayOfWeek == 1 ? 0 : startDayOfWeek - 1 // adjusting start offset
-        var startOffsetDates = self.dates(for: startOffset, from: startDateOfMonth, in: calendar, isStartOffset: true)
+        let startOffsetDates = self.dates(for: startOffset, from: startDateOfMonth, in: calendar, isStartOffset: true)
 
         dates.append(contentsOf: startOffsetDates) // add offset dates to the start
 
