@@ -8,6 +8,7 @@ import HealthKit
 
 @MainActor final class UploadsViewModel: ObservableObject {
     @Published fileprivate final var uploads: [HKWorkout?] = []
+    private var offset: Int = 0
 
     final fileprivate func activityToIcon(activityName: String) -> String {
         switch activityName {
@@ -28,11 +29,16 @@ import HealthKit
         }
     }
 
-    final fileprivate func getActivities() async {
-        guard uploads.isEmpty == false else {
+    final fileprivate func getActivities(_ limitTo: Int) async {
+        guard limitTo > 0 else {
+            return
+        };
+
+        guard uploads.count > limitTo else {
             do {
-                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: 500)
-                uploads = workouts
+                let workouts = try await HealthKitUtils.getListOfWorkouts(limitTo: limitTo, offset: offset)
+                uploads.append(contentsOf: workouts)
+                offset += workouts.count
             } catch {
                 print("Error: \(error)")
             }
@@ -44,36 +50,45 @@ import HealthKit
 public struct NewActivityView: View {
     @EnvironmentObject private var navigation: NavigationModel
     @ObservedObject private var uploadsViewModel = UploadsViewModel()
+    @State private var totalItemsLoaded: Int = 0
+    @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
 
     public var body: some View {
-        VStack {
-            ScrollView {
-                ForEach(uploadsViewModel.uploads, id: \.self) { activity in
+        ScrollView {
+            LazyVStack {
+                ForEach(uploadsViewModel.uploads.compactMap {
+                    $0
+                }, id: \.self) { activity in
                     Button(action: {}) {
-                        if let activity = activity {
-                            let workoutType = activity.workoutActivityType.name
-                            let workoutDistance = activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0
-                            NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
-                                HStack {
-                                    Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
-                                    Text(activity.startDate, style: .date)
-                                    if let distance = activity.totalDistance {
-                                        Text(String(describing: distance.doubleValue(for: .mile()) ?? 0.0))
-                                    }
-
-                                    Text(workoutType)
+                        let workoutType = activity.workoutActivityType.name
+                        let workoutDistance = activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0
+                        NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
+                            HStack {
+                                Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
+                                Text(activity.startDate, style: .date)
+                                if let distance = activity.totalDistance {
+                                    Text(String(describing: distance.doubleValue(for: .mile())))
                                 }
+
+                                Text(workoutType)
                             }
-                        } else {
-                            Text("No Activities")
                         }
                     }
+                        .task {
+                            let earliestDate = activityEndDatesToUUIDs.keys.min() ?? Date()
+                            activityEndDatesToUUIDs[activity.startDate] = activity.uuid
+                            if activity.uuid == activityEndDatesToUUIDs[activity.startDate] {
+                                print("end")
+                                totalItemsLoaded += 10
+                                await uploadsViewModel.getActivities(10)
+                            }
+                        }
                 }
             }
         }
-                .task {
-                    await uploadsViewModel.getActivities()
-                }
+            .task {
+                await uploadsViewModel.getActivities(1000000)
+            }
     }
-
 }
+

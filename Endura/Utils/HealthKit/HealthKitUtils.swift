@@ -146,7 +146,7 @@ public struct HealthKitUtils {
         return filledArray
     }
 
-    public static func getListOfWorkouts(limitTo: Int = 1) async throws -> [HKWorkout?] {
+    public static func getListOfWorkouts(limitTo: Int = 1, offset: Int = 0) async throws -> [HKWorkout?] {
         let workoutType = HKObjectType.workoutType()
 
         let walkingPredicate = HKQuery.predicateForWorkouts(with: .walking)
@@ -158,13 +158,14 @@ public struct HealthKitUtils {
             let query = HKSampleQuery(
                     sampleType: workoutType,
                     predicate: predicate,
-                    limit: limitTo,
+                    limit: limitTo + offset,
                     sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
             ) { (query, samples, error) in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let workouts = samples as? [HKWorkout?] {
-                    continuation.resume(returning: workouts)
+                    let slicedWorkouts = Array(workouts.dropFirst(offset)) // Drop the first 'offset' workouts
+                    continuation.resume(returning: slicedWorkouts)
                 } else {
                     continuation.resume(returning: [])
                 }
@@ -172,6 +173,7 @@ public struct HealthKitUtils {
             healthStore.execute(query)
         }
     }
+
 
     public static func workoutToActivityData(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
@@ -196,11 +198,11 @@ public struct HealthKitUtils {
 
             let workoutEvents = workout.workoutEvents ?? []
             let workoutPausesArray = workoutEvents.filter {
-                        $0.type == .pause || $0.type == .resume
-                    }
-                    .map({
-                        $0.dateInterval
-                    })
+                    $0.type == .pause || $0.type == .resume
+                }
+                .map({
+                    $0.dateInterval
+                })
             if (data.count > maxPoints) {
                 dataRate = data.count / maxPoints
             }
