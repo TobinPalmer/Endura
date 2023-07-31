@@ -59,18 +59,20 @@ struct ActivitiesView: View {
                             }
                         }
                     }
+                        .padding(10)
                 } else {
                     Text("No activities")
                 }
             }
         }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        NavigationLink(destination: NewActivityView()) {
-                            Image(systemName: "plus")
-                                    .font(.title)
-                        }
+            .background(Color(.secondarySystemBackground))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: NewActivityView()) {
+                        Image(systemName: "plus")
+                            .font(.title)
                     }
                 }
+            }
     }
 }
