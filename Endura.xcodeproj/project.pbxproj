@@ -33,10 +33,12 @@
 		17CC655BAE51AD4BD72A7D49 /* MKPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6138F9F694BD479D8798 /* MKPolyline.swift */; };
 		17CC668261B0BC82E6EEDDBA /* ActivityPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69F5F51AE211727A3343 /* ActivityPost.swift */; };
 		17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC659A1576329D2B4CB4F2 /* ActivityView.swift */; };
+		17CC682E88A5BF7A13F60DB5 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */; };
 		17CC69010684FDD587AF79B9 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61A4C68A0172243AB286 /* View.swift */; };
 		17CC6AE0D9830AD933EA1A20 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC63E94C606A354A20582C /* UIView.swift */; };
 		17CC6BD8CFCA13C8952D4534 /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC68FD129A61DF48BD0D4F /* Formatting.swift */; };
 		17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC647C809BFAC3C20DA478 /* Date.swift */; };
+		17CC6CDF590381DF53B49F0D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D93D86A82B085AB91BD /* SettingsView.swift */; };
 		17CC6D07ACB8C238CFDC9CC6 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66EA7C715C2776A564D2 /* ProfileImage.swift */; };
 		17CC6D9F6CD30BAEA76ABF86 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6DC3F383D9D2D08F1EA2 /* UIColor.swift */; };
 		17CC6DA24BE685BF877EFD7C /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64AE21A3E68ABDCDA24C /* ActivityViewModel.swift */; };
@@ -112,8 +114,10 @@
 		17CC66EA7C715C2776A564D2 /* ProfileImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		17CC68FD129A61DF48BD0D4F /* Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatting.swift; sourceTree = "<group>"; };
 		17CC69B387F52E1CA55F3716 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		17CC69F5F51AE211727A3343 /* ActivityPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPost.swift; sourceTree = "<group>"; };
 		17CC6C296596DA475D462B36 /* ActivitiesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
+		17CC6D93D86A82B085AB91BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		17CC6DC3F383D9D2D08F1EA2 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		17CC6E3C3259ED54F0BF31D1 /* Activities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activities.swift; sourceTree = "<group>"; };
 		17CC6FAD8A0AC457723ACD1F /* Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversion.swift; sourceTree = "<group>"; };
@@ -270,6 +274,14 @@
 			path = Schedule;
 			sourceTree = "<group>";
 		};
+		17CC6582404E72DE489935A8 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		17CC66D92EE9B112C52C0C3B /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,6 +402,8 @@
 				17CC6C296596DA475D462B36 /* ActivitiesView.swift */,
 				17CC69B387F52E1CA55F3716 /* ProgressView.swift */,
 				17CC6910DEB2339D6994549E /* Login */,
+				17CC6582404E72DE489935A8 /* Settings */,
+				17CC6D93D86A82B085AB91BD /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -628,6 +642,8 @@
 				17CC6D9F6CD30BAEA76ABF86 /* UIColor.swift in Sources */,
 				17CC6AE0D9830AD933EA1A20 /* UIView.swift in Sources */,
 				17CC69010684FDD587AF79B9 /* View.swift in Sources */,
+				17CC6CDF590381DF53B49F0D /* SettingsView.swift in Sources */,
+				17CC682E88A5BF7A13F60DB5 /* AccountSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
