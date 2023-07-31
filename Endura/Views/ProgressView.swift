@@ -5,7 +5,34 @@
 import Foundation
 import SwiftUI
 
-import SwiftUI
+@MainActor class ProgressDashboardViewModel: ObservableObject {
+    @Published var items: [Int] = []
+    var currentCount = 0
+    let incrementAmount = 5
+    let maxIncrementCount = 10
+    var currentIncrementCount = 0
+
+    func setup() {
+        items = Array(0..<10)
+        currentCount = items.count
+    }
+
+    func loadMoreContent() async {
+        do {
+            try await Task.sleep(nanoseconds: 1_000_000_000)
+            let range = currentCount..<(currentCount + incrementAmount)
+            items.append(contentsOf: range)
+            currentCount += incrementAmount
+        } catch is CancellationError {
+            print("There was an error, trying to load more content still.")
+            let range = currentCount..<(currentCount + incrementAmount)
+            items.append(contentsOf: range)
+            currentCount += incrementAmount
+        } catch {
+            print("Unexpected error: \(error).")
+        }
+    }
+}
 
 struct ProgressDashboardView: View {
     @ObservedObject var viewModel = ProgressDashboardViewModel()
@@ -15,9 +42,13 @@ struct ProgressDashboardView: View {
             LazyVStack {
                 ForEach(viewModel.items.indices, id: \.self) { index in
                     Text("Item Number \(viewModel.items[index])")
-                        .onAppear {
+                        .task {
                             if index == viewModel.items.count - 5 {
-                                viewModel.loadMoreContent()
+                                do {
+                                    try await viewModel.loadMoreContent()
+                                } catch let error {
+                                    print("Failed to load more posts", error.localizedDescription)
+                                }
                             }
                         }
                         .frame(height: 250)
@@ -27,25 +58,5 @@ struct ProgressDashboardView: View {
             .onAppear {
                 viewModel.setup()
             }
-    }
-}
-
-class ProgressDashboardViewModel: ObservableObject {
-    @Published var items: [Int] = []
-    var currentCount = 0
-    let incrementAmount = 5
-    let maxIncrementCount = 10
-    var currentIncrementCount = 0
-
-    func setup() {
-        items = Array(0..<30)
-        currentCount = items.count
-    }
-
-    func loadMoreContent() {
-        print("Loading more context for \(currentCount)")
-        let range = currentCount..<(currentCount + incrementAmount)
-        items.append(contentsOf: range)
-        currentCount += incrementAmount
     }
 }
