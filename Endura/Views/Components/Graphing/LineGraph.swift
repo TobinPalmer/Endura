@@ -12,6 +12,47 @@ public struct HeartRateLineGraphStyle: LineGraphStyle {
     public let color: Color = .red
 }
 
+struct LineSegment: Shape {
+    var start, end: CGPoint
+
+    func path(in rect: CGRect) -> Path {
+        Path { path in
+            path.move(to: start)
+            path.addLine(to: end)
+        }
+    }
+}
+
+extension LineSegment {
+    var animatableData: AnimatablePair<CGPoint.AnimatableData, CGPoint.AnimatableData> {
+        get {
+            AnimatablePair(start.animatableData, end.animatableData)
+        }
+        set {
+            (start.animatableData, end.animatableData) = (newValue.first, newValue.second)
+        }
+    }
+}
+
+struct AnimatedPath: View {
+    @State private var drawPercent: CGFloat = 0
+    let path: Path
+    let color: Color
+    let duration: Double
+
+    var body: some View {
+        path.trim(from: 0, to: drawPercent)
+            .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            .foregroundColor(color)
+            .onAppear {
+                withAnimation(.linear(duration: self.duration)) {
+                    self.drawPercent = 1
+                }
+            }
+    }
+}
+
+
 public struct LineGraph<Style>: View where Style: LineGraphStyle {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
@@ -48,55 +89,11 @@ public struct LineGraph<Style>: View where Style: LineGraphStyle {
                 GeometryReader { geometry in
                     let frame = geometry.frame(in: .local)
                     let stepHeight = frame.height / CGFloat(range)
+                    let path = self.createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
 
-                    Path { path in
-                        var previousDate: Date?
-                        for index in data.indices {
-                            let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
-                            let xPosition = frame.width * CGFloat(proportionOfTimestampInRange)
-                            let yPosition = stepHeight * CGFloat((data[index].1 - minVal))
-
-                            let point = CGPoint(x: xPosition, y: frame.height - yPosition)
-
-
-                            if let previousDate = previousDate, data[index].0.timeIntervalSince(previousDate) > Double(step * 2) {
-                                path.move(to: point)
-                            } else if index == 0 {
-                                path.move(to: point)
-                            } else {
-                                path.addLine(to: point)
-                            }
-
-                            previousDate = data[index].0
-                        }
-                    }
-                        .stroke(style.color, lineWidth: 2)
-
-                    if let analysisPosition = activityViewModel.analysisPosition {
-                        let touchTimestamp = analysisPosition.timeIntervalSince1970
-                        let touchLocation = CGFloat((touchTimestamp - minTimestampInterval) / timestampRange) * geometry.size.width
-                        let closestDate = data.min(by: { abs($0.0.timeIntervalSince1970 - touchTimestamp) < abs($1.0.timeIntervalSince1970 - touchTimestamp) }) ?? data.last ?? (Date(), 0)
-                        let yPosition = stepHeight * CGFloat((closestDate.1 - minVal))
-
-                        if abs(closestDate.0.timeIntervalSince1970 - touchTimestamp) > Double(step * 2) {
-                            Circle()
-                                .fill(Color.primary)
-                                .frame(width: 10, height: 10)
-                                .position(CGPoint(x: touchLocation, y: geometry.size.height))
-
-                            Text("Paused")
-                                .position(CGPoint(x: touchLocation, y: geometry.size.height - 30))
-                        } else {
-                            Circle()
-                                .fill(Color.primary)
-                                .frame(width: 10, height: 10)
-                                .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition))
-
-                            Text("\(valueModifier(closestDate.1))")
-                                .position(CGPoint(x: touchLocation, y: geometry.size.height - yPosition - 30))
-                        }
-                    }
+                    AnimatedPath(path: path, color: style.color, duration: 2)
                 }
+
 
                 Text("\(valueModifier(mean))")
                     .font(.footnote)
@@ -112,15 +109,13 @@ public struct LineGraph<Style>: View where Style: LineGraphStyle {
             }
                 .padding(10)
                 .frame(height: CGFloat(height))
-                .background(Color.clear)
-                .contentShape(Rectangle())
                 .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ value in
                         let x = value.location.x
                         if let hitPoint = data.first(where: { point in
                             let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
                             let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                            return abs(xPosition - x) < 1
+                            return x < xPosition
                         }) {
                             activityViewModel.analysisPosition = hitPoint.0
                         }
@@ -130,6 +125,35 @@ public struct LineGraph<Style>: View where Style: LineGraphStyle {
                     })
                 )
         }
+            .frame(height: CGFloat(height))
 
     }
+
+    func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> Path {
+        var path = Path()
+        var previousDate: Date?
+        for index in data.indices {
+            let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
+            let xPosition = frame.width * CGFloat(proportionOfTimestampInRange)
+            let yPosition = frame.height * CGFloat((data[index].1 - minVal) / range)
+
+            let point = CGPoint(x: xPosition, y: frame.height - yPosition)
+
+            if let previousDate = previousDate, data[index].0.timeIntervalSince(previousDate) > Double(step * 2) {
+                path.move(to: point)
+            } else if index == 0 {
+                path.move(to: point)
+            } else {
+                path.addLine(to: point)
+            }
+            previousDate = data[index].0
+        }
+        // Close path at the bottom of the graph
+//        path.addLine(to: CGPoint(x: path.currentPoint!.x, y: frame.height))
+//        path.addLine(to: CGPoint(x: 0, y: frame.height))
+//        path.closeSubpath()
+        return path
+    }
+
+
 }
