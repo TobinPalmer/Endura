@@ -47,13 +47,13 @@ import HealthKit
     }
 }
 
-public struct NewActivityView: View {
+struct NewActivityView: View {
     @EnvironmentObject private var navigation: NavigationModel
     @ObservedObject private var uploadsViewModel = UploadsViewModel()
     @State private var totalItemsLoaded: Int = 0
     @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
 
-    public var body: some View {
+    var body: some View {
         ScrollView {
             LazyVStack {
                 ForEach(uploadsViewModel.uploads.compactMap {

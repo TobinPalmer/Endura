@@ -29,7 +29,7 @@ class MapViewContainer: ObservableObject {
     }
 }
 
-public struct ActivityMap: View {
+struct ActivityMap: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
     private var routeData: [RouteData]
     @State private var mapViewContainer = MapViewContainer()
@@ -55,7 +55,7 @@ public struct ActivityMap: View {
 //        return image
 //    }
 
-    public var body: some View {
+    var body: some View {
         GeometryReader { geometry in
             VStack {
                 if !routeData.isEmpty {

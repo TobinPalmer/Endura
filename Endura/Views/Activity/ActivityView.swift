@@ -5,7 +5,7 @@
 import Foundation
 import SwiftUI
 
-public struct ActivityView: View {
+struct ActivityView: View {
     @StateObject var activityViewModel = ActivityViewModel()
 
     private var id: String
@@ -17,7 +17,7 @@ public struct ActivityView: View {
         self.id = id
     }
 
-    public var body: some View {
+    var body: some View {
         VStack {
             if let activityData = activityData {
                 ScrollView(.vertical) {

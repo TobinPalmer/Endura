@@ -5,8 +5,8 @@
 import Foundation
 import SwiftUI
 
-public struct ProfileView: View {
-    public var body: some View {
+struct ProfileView: View {
+    var body: some View {
         VStack {
             Text("Profile View")
         }

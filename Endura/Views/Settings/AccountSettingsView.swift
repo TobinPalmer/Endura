@@ -5,9 +5,9 @@
 import Foundation
 import SwiftUI
 
-public struct AccountSettingsView: View {
+struct AccountSettingsView: View {
 
-    public var body: some View {
+    var body: some View {
         VStack {
             Text("Account")
         }

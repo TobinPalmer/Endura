@@ -27,12 +27,12 @@ fileprivate struct MonthView: View {
 }
 
 
-public struct CalendarView: View {
+struct CalendarView: View {
     let months: [[Date]]
     @State var selectedDate: Date? = nil
     let events: [Date: String]
 
-    public var body: some View {
+    var body: some View {
         ScrollView {
             LazyVStack {
                 ForEach(months, id: \.self) { month in
@@ -43,8 +43,8 @@ public struct CalendarView: View {
     }
 }
 
-public struct ActivitySchedule: View {
-    public var body: some View {
+struct ActivitySchedule: View {
+    var body: some View {
         VStack {
             let currentMonthDates = CalendarUtils.generateCurrentMonthDates()
             CalendarView(months: [currentMonthDates], events: [Date(): "Event"])

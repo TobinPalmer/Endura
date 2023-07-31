@@ -5,12 +5,12 @@
 import Foundation
 import SwiftUI
 
-public struct DayView: View {
+struct DayView: View {
     let date: Date
     let isSelected: Bool
     let event: String?
 
-    public var body: some View {
+    var body: some View {
         VStack {
             Text("\(getDate())")
             event.map(Text.init)

@@ -23,7 +23,7 @@ import SwiftUICharts
     }
 }
 
-public struct PreviewWorkoutView: View {
+struct PreviewWorkoutView: View {
     @StateObject var activityViewModel = ActivityViewModel()
 
     private var workout: HKWorkout
@@ -34,7 +34,7 @@ public struct PreviewWorkoutView: View {
         self.workout = workout
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Afternoon Run").font(.title)
             if let activityData = enduraWorkout {

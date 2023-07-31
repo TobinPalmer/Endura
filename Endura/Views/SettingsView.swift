@@ -5,8 +5,8 @@
 import Foundation
 import SwiftUI
 
-public struct SettingsView: View {
-    public var body: some View {
+struct SettingsView: View {
+    var body: some View {
         VStack {
             Text("Settings").font(.title)
 

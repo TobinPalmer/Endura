@@ -4,11 +4,11 @@ public protocol LineGraphStyle {
     var color: Color { get }
 }
 
-public struct PaceLineGraphStyle: LineGraphStyle {
+struct PaceLineGraphStyle: LineGraphStyle {
     public let color: Color = .blue
 }
 
-public struct HeartRateLineGraphStyle: LineGraphStyle {
+struct HeartRateLineGraphStyle: LineGraphStyle {
     public let color: Color = .red
 }
 
@@ -53,7 +53,7 @@ struct AnimatedPath: View {
 }
 
 
-public struct LineGraph<Style>: View where Style: LineGraphStyle {
+struct LineGraph<Style>: View where Style: LineGraphStyle {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
     private let style: Style
@@ -73,7 +73,7 @@ public struct LineGraph<Style>: View where Style: LineGraphStyle {
         self.style = style
     }
 
-    public var body: some View {
+    var body: some View {
         let maxVal = data.max(by: { $0.1 < $1.1 })?.1 ?? 0
         let minVal = data.min(by: { $0.1 < $1.1 })?.1 ?? 0
         let range = maxVal - minVal
