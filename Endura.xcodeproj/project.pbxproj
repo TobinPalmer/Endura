@@ -809,7 +809,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Endura/Preview Content\"";
-				DEVELOPMENT_TEAM = 4R4ZD9R2VX;
+				DEVELOPMENT_TEAM = 879YJUG243;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Needed to add workouts.";
