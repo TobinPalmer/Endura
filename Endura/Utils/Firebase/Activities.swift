@@ -22,25 +22,25 @@ public struct ActivityUtils {
 
     public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage) async throws {
         do {
-//            Firestore.firestore().collection("activities").addDocument(from: activity)
+            try Firestore.firestore().collection("activities").addDocument(from: activity.getDataWithoutRoute()).collection("data").document("data").setData(from: activity.data)
 
-            let storage = Storage.storage()
-            let storageRef = storage.reference()
-            let imageRef = storageRef.child("images/test.png")
-            let data = image.pngData()
-            let metadata = StorageMetadata()
-            metadata.contentType = "image/png"
-            guard let data = data else {
-                print("Error getting image data")
-                return
-            }
-            imageRef.putData(data, metadata: metadata) { (metadata, error) in
-                guard let metadata = metadata else {
-                    print("Error uploading image: \(error!)")
-                    return
-                }
-                print("Image uploaded successfully!")
-            }
+//            let storage = Storage.storage()
+//            let storageRef = storage.reference()
+//            let imageRef = storageRef.child("images/test.png")
+//            let data = image.pngData()
+//            let metadata = StorageMetadata()
+//            metadata.contentType = "image/png"
+//            guard let data = data else {
+//                print("Error getting image data")
+//                return
+//            }
+//            imageRef.putData(data, metadata: metadata) { (metadata, error) in
+//                guard let metadata = metadata else {
+//                    print("Error uploading image: \(error!)")
+//                    return
+//                }
+//                print("Image uploaded successfully!")
+//            }
         } catch {
             print("Error uploading workout: \(error)")
         }
