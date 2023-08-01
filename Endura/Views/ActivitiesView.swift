@@ -11,19 +11,14 @@ import HealthKit
 
 @MainActor fileprivate final class ActivitiesViewModel: ObservableObject {
     @Published fileprivate var activities: [String: ActivityData] = [:]
-    @Published var lastActivityDate: Date? = nil
+    @Published var lastDocument: DocumentSnapshot? = nil
 
-    @Published var loadIndex = 0
+    private static let loadAmount = 5
 
-    private static let loadAmount = 4
-
-    fileprivate func loadActivities() async {
-        loadIndex += 1
-
+    fileprivate func loadActivities() {
         let baseQuery = Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: ActivitiesViewModel.loadAmount)
 
-        let query = (loadIndex == 0 || lastActivityDate == nil) ? baseQuery : baseQuery.start(after: [lastActivityDate!])
-        print(loadIndex, lastActivityDate)
+        let query = (lastDocument == nil) ? baseQuery : baseQuery.start(afterDocument: lastDocument!)
 
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
@@ -31,45 +26,37 @@ import HealthKit
                 return
             }
 
-            snapshot.documentChanges.forEach {
-                (diff: DocumentChange) in
-                if (diff.type == .added || diff.type == .modified) {
-                    do {
-                        let data = try diff.document.data(as: ActivityData.self)
-                        let activity = ActivityData(
-                                uid: data.uid,
-                                time: data.time,
-                                distance: data.distance,
-                                duration: data.duration,
-                                comments: [],
-                                likes: []
-                        )
+            snapshot.documentChanges.forEach { diff in
+                do {
+                    let data = try diff.document.data(as: ActivityData.self)
+                    let activity = ActivityData(
+                            uid: data.uid,
+                            time: data.time,
+                            distance: data.distance,
+                            duration: data.duration,
+                            comments: [],
+                            likes: []
+                    )
 
-                        if (self.lastActivityDate == nil) {
-                            self.lastActivityDate = data.time
-                        } else if data.time < self.lastActivityDate! {
-                            self.lastActivityDate = data.time
-                        }
-
-                        print("id", diff.document.documentID)
+                    if diff.type == .added || diff.type == .modified {
                         self.activities.updateValue(activity, forKey: diff.document.documentID)
-                        self.activities = self.activities
-                        print("activity added", self.activities.count)
-                    } catch {
-                        print("Error decoding activity: \(error)")
+                    } else if diff.type == .removed {
+                        self.activities.removeValue(forKey: diff.document.documentID)
                     }
-                } else if (diff.type == .removed) {
-                    self.activities.removeValue(forKey: diff.document.documentID)
+                } catch {
+                    print("Error decoding activity: \(error)")
                 }
             }
+
+            self.lastDocument = snapshot.documents.last
         }
     }
 
-    func initActivity() async {
-        await loadActivities()
+    init() {
+        loadActivities()
     }
-
 }
+
 
 struct ActivitiesView: View {
     @StateObject fileprivate var activityViewModel = ActivitiesViewModel()
@@ -83,10 +70,9 @@ struct ActivitiesView: View {
                         ForEach(activityViewModel.activities.keys.sorted(by: >), id: \.self) { key in
                             if let activity = activityViewModel.activities[key] {
                                 ActivityPost(id: key, activity: activity)
-                                    .task {
-                                        if activity.time == activityViewModel.lastActivityDate {
-                                            print("Loading more posts from task")
-                                            await activityViewModel.loadActivities()
+                                    .onAppear {
+                                        if key == activityViewModel.activities.keys.sorted(by: >).last {
+                                            activityViewModel.loadActivities()
                                         }
                                     }
                             }
@@ -97,13 +83,7 @@ struct ActivitiesView: View {
                     Text("No activities")
                 }
             }
-//                .onAppear {
-//                    activityViewModel.getActivities(loadIndex: 1)
-//                }
         }
-            .task {
-                await activityViewModel.initActivity()
-            }
             .background(Color(.secondarySystemBackground))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
