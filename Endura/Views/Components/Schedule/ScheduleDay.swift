@@ -5,43 +5,6 @@
 import Foundation
 import SwiftUI
 
-//struct CalanderPopupSheetView: View {
-//    @Environment(\.dismiss) var dismiss
-//    private var date: Date
-//
-//    init(day: Date) {
-//        date = day
-//    }
-//
-//    var body: some View {
-//        Button("Press to dismiss") {
-//            dismiss()
-//        }
-//        let todayDate = Calendar.current.dateComponents([.day], from: date)
-//        let startOfWeek = CalendarUtils.startOfWeek(for: date)
-//        let datesOfWeek = (0..<7).compactMap {
-//            Calendar.current.date(byAdding: .day, value: $0, to: startOfWeek)
-//        }
-//        HStack {
-//            ForEach(datesOfWeek, id: \.self) { date in
-//                let day = Calendar.current.component(.day, from: date)
-//                if day == todayDate.day! {
-//                    Text("\(day)")
-//                        .font(.title3)
-//                        .padding()
-//                        .background(Color.yellow)
-//                } else {
-//                    Text("\(day)")
-//                        .font(.title3)
-//                        .padding()
-//                }
-//            }
-//        }
-//        Text("Current Date: \(date)")
-//        Spacer()
-//    }
-//}
-
 struct CalanderPopupSheetView: View {
     @Environment(\.dismiss) var dismiss
     @State private var date: Date
@@ -68,16 +31,16 @@ struct CalanderPopupSheetView: View {
                 label: {
                     if day == todayDate.day! {
                         Text("\(day)")
+                            .fixedSize(horizontal: true, vertical: false)
                             .padding()
                             .background(Color.yellow)
                     } else {
                         Text("\(day)")
+                            .fixedSize(horizontal: true, vertical: false)
                             .padding()
                             .background(isSameMonth(date1: date, date2: Date()) ? Color.white : Color.gray)
                     }
                 }
-                    .disabled(!isSameMonth(date1: date, date2: Date()))
-                    .frame(minWidth: 0, maxWidth: .infinity)
             }
         }
         Text("Current Date: \(date)")
