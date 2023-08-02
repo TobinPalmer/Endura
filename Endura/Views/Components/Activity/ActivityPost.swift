@@ -38,10 +38,7 @@ struct ActivityPost: View {
                 Text("\(FormattingUtils.secondsToFormattedTime(activity.duration))")
             }
 
-            Rectangle()
-                .frame(width: .infinity, height: 200)
-                .foregroundColor(Color(.cyan))
-                .cornerRadius(10)
+            ActivityMapImage(id)
 
             HStack {
                 Button(action: {
