@@ -10,6 +10,8 @@ struct ActivityPost: View {
     private var activity: ActivityData
     private var id: String
 
+    @State var message: String = ""
+
     init(id: String, activity: ActivityData) {
         self.activity = activity
         self.id = id
@@ -18,7 +20,7 @@ struct ActivityPost: View {
     var body: some View {
         VStack(spacing: 14) {
             HStack {
-                ProfileImage(activity.uid)
+                ProfileImage(activity.uid).frame(width: 50, height: 50)
                 if let user = databaseCache.getUserData(activity.uid) {
                     Text(user.name)
                         .font(.title)
@@ -55,15 +57,17 @@ struct ActivityPost: View {
             }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            VStack {
+            VStack(alignment: .leading) {
                 ForEach(activity.comments, id: \.self) { comment in
                     ActivityComment(comment)
                 }
                 HStack {
-                    TextField("Add a comment...", text: .constant(""))
+                    TextField("Add a comment...", text: $message)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Button(action: {
-                        print("Post")
+                        let comment = ActivityCommentData(uid: AuthUtils.getCurrentUID(), time: Date(), message: message)
+                        message = ""
+                        ActivityUtils.addComment(id: id, comment: comment)
                     }) {
                         Image(systemName: "paperplane")
                     }

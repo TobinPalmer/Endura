@@ -15,11 +15,11 @@ struct ActivityComment: View {
 
     var body: some View {
         HStack {
-            ProfileImage(comment.uid).frame(width: 50, height: 50)
+            ProfileImage(comment.uid).frame(width: 40, height: 40)
             VStack(alignment: .leading) {
                 if let user = databaseCache.getUserData(comment.uid) {
                     Text(user.name)
-                        .font(.title)
+                        .font(.title3)
                 } else {
                     Text("Loading...")
                 }

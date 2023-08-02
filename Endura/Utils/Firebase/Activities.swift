@@ -22,9 +22,19 @@ public struct ActivityUtils {
     }
 
     public static func toggleLike(id: String, activity: ActivityData) {
-        let uid = Auth.auth().currentUser!.uid
+        let uid = AuthUtils.getCurrentUID()
         Firestore.firestore().collection("activities").document(id).updateData([
             "likes": activity.likes.contains(uid) ? FieldValue.arrayRemove([uid]) : FieldValue.arrayUnion([uid])
+        ])
+    }
+
+    public static func addComment(id: String, comment: ActivityCommentData) {
+        Firestore.firestore().collection("activities").document(id).updateData([
+            "comments": FieldValue.arrayUnion([[
+                "uid": comment.uid,
+                "message": comment.message,
+                "time": comment.time
+            ] as [String: Any]])
         ])
     }
 

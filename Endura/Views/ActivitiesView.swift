@@ -34,7 +34,7 @@ import HealthKit
                             time: data.time,
                             distance: data.distance,
                             duration: data.duration,
-                            comments: [],
+                            comments: data.comments,
                             likes: data.likes
                     )
 
