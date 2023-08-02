@@ -13,17 +13,6 @@ struct SheetView: View {
         date = day
     }
 
-    struct DateUtils {
-        static func startOfWeek(for date: Date) -> Date {
-            var calendar = Calendar.current
-            calendar.firstWeekday = 2 // Start on Monday
-            guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else {
-                fatalError("Could not determine the start of the week")
-            }
-            return weekInterval.start
-        }
-    }
-
     var body: some View {
         Button("Press to dismiss") {
             dismiss()
@@ -55,11 +44,13 @@ struct DayView: View {
     private let date: Date
     private let isSelected: Bool
     private let event: String?
+    private let disabled: Bool
 
-    init(date: Date, isSelected: Bool, event: String?) {
+    init(date: Date, isSelected: Bool, event: String?, disabled: Bool = false) {
         self.date = date
         self.isSelected = isSelected
         self.event = event
+        self.disabled = disabled
     }
 
     @State private var showingSheet = false
@@ -70,15 +61,18 @@ struct DayView: View {
             event.map(Text.init)
         }
             .padding(8)
-            .background(isToday() ? Color.green : (isSelected ? Color.blue : Color.white))
+            .background(Color(disabled ? .gray : (isToday() ? .green : (isSelected ? .blue : .white))))
             .cornerRadius(10)
             .onTapGesture {
-                showingSheet = true
+                if !disabled {
+                    showingSheet = true
+                }
             }
             .sheet(isPresented: $showingSheet) {
                 SheetView(day: date)
             }
     }
+
 
     private func getDate() -> Int {
         let components = Calendar.current.dateComponents([.day], from: date)
