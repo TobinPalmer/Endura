@@ -20,7 +20,7 @@ struct ActivityPost: View {
     var body: some View {
         VStack(spacing: 14) {
             HStack {
-                ProfileImage(activity.uid).frame(width: 50, height: 50)
+                ProfileImage(activity.uid, size: 50)
                 if let user = databaseCache.getUserData(activity.uid) {
                     Text(user.name)
                         .font(.title)
@@ -51,8 +51,7 @@ struct ActivityPost: View {
                         .font(.title)
                 }
                 ForEach(activity.likes, id: \.self) { uid in
-                    ProfileImage(uid)
-                        .frame(width: 30, height: 30)
+                    ProfileImage(uid, size: 30)
                 }
             }
                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -7,10 +7,13 @@ import SwiftUI
 
 struct ProfileImage: View {
     @EnvironmentObject var databaseCache: DatabaseCacheModel
-    private var uid: String
 
-    init(_ uid: String) {
+    private let uid: String
+    private let size: Double
+
+    init(_ uid: String, size: Double = 32) {
         self.uid = uid
+        self.size = size
     }
 
     var body: some View {
@@ -20,11 +23,13 @@ struct ProfileImage: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .clipShape(Circle())
+                    .frame(width: size, height: size)
             } else {
                 Image(systemName: "person.crop.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .clipShape(Circle())
+                    .frame(width: 128, height: 128)
             }
         } else {
             Text("Loading...")
