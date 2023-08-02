@@ -11,7 +11,6 @@ import FirebaseAuth
 
 struct ContentView: View {
     @EnvironmentObject var navigation: NavigationModel;
-    @EnvironmentObject var activeUserModel: ActiveUserModel;
 
     var body: some View {
         switch (navigation.currentView) {
@@ -59,9 +58,6 @@ struct ContentView: View {
                         Text("Profile")
                     }
             }
-                .task {
-                    await activeUserModel.getData()
-                }
         }
     }
 }

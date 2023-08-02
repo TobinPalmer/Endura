@@ -26,6 +26,7 @@
 		026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */; };
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
+		17CC6078651983C541BA712F /* DatabaseCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */; };
 		17CC621F59B1D4C332521571 /* Activities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E3C3259ED54F0BF31D1 /* Activities.swift */; };
 		17CC62FFC55BCB9A6AEA355C /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69B387F52E1CA55F3716 /* ProgressView.swift */; };
 		17CC6375D0C9879B20E7B30B /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666B55C0D3EBEF97E9D3 /* Calendar.swift */; };
@@ -39,6 +40,7 @@
 		17CC69010684FDD587AF79B9 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61A4C68A0172243AB286 /* View.swift */; };
 		17CC6BD8CFCA13C8952D4534 /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC68FD129A61DF48BD0D4F /* Formatting.swift */; };
 		17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC647C809BFAC3C20DA478 /* Date.swift */; };
+		17CC6CD9C4420F087CDDE57A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC628804D8C77F0A81E50B /* UserInfo.swift */; };
 		17CC6CDF590381DF53B49F0D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D93D86A82B085AB91BD /* SettingsView.swift */; };
 		17CC6D07ACB8C238CFDC9CC6 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66EA7C715C2776A564D2 /* ProfileImage.swift */; };
 		17CC6DA24BE685BF877EFD7C /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64AE21A3E68ABDCDA24C /* ActivityViewModel.swift */; };
@@ -55,7 +57,6 @@
 		696983C2448098B242747B5C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985A05E4D25C066BD24F3 /* ProfileView.swift */; };
 		696983C807BF764F750FB09D /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989B3ACC5846606EE527B /* Auth.swift */; };
 		696983D815E023C30549A7BB /* HealthKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984EE498475DB24E5E333 /* HealthKitErrors.swift */; };
-		696984F1B1F8F623157F875A /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982663142A11EE8E111D5 /* Users.swift */; };
 		696986BD803239CC2C5AE22A /* HKWorkoutActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969899BCE76C8EFC97E0F3B /* HKWorkoutActivityType.swift */; };
 		696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980A9493FB9C9A2291998 /* WorkoutErrors.swift */; };
 		6969874C7C01175EDE8DC3F7 /* UploadWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982855FE478D8D2440495 /* UploadWorkoutView.swift */; };
@@ -103,6 +104,7 @@
 		17CC6138F9F694BD479D8798 /* MKPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolyline.swift; sourceTree = "<group>"; };
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		17CC61A4C68A0172243AB286 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		17CC628804D8C77F0A81E50B /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		17CC647C809BFAC3C20DA478 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		17CC64AE21A3E68ABDCDA24C /* ActivityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
 		17CC64CF9FA32EE591326705 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 		17CC69B387F52E1CA55F3716 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		17CC69F5F51AE211727A3343 /* ActivityPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPost.swift; sourceTree = "<group>"; };
+		17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseCacheModel.swift; sourceTree = "<group>"; };
 		17CC6C296596DA475D462B36 /* ActivitiesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
 		17CC6D870BA8F7FE33770E38 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		17CC6D93D86A82B085AB91BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -125,7 +128,6 @@
 		17CC6FAD8A0AC457723ACD1F /* Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversion.swift; sourceTree = "<group>"; };
 		696980A9493FB9C9A2291998 /* WorkoutErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutErrors.swift; sourceTree = "<group>"; };
 		6969819A8C4285A3E148D771 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
-		696982663142A11EE8E111D5 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		696982855FE478D8D2440495 /* UploadWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView.swift; sourceTree = "<group>"; };
 		696982EE94EC856245965FFD /* ActivityMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMap.swift; sourceTree = "<group>"; };
 		69698354833B838F454F85E8 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				17CC66EA7C715C2776A564D2 /* ProfileImage.swift */,
+				17CC628804D8C77F0A81E50B /* UserInfo.swift */,
 			);
 			path = Users;
 			sourceTree = "<group>";
@@ -440,8 +443,8 @@
 			isa = PBXGroup;
 			children = (
 				696989B3ACC5846606EE527B /* Auth.swift */,
-				696982663142A11EE8E111D5 /* Users.swift */,
 				17CC6E3C3259ED54F0BF31D1 /* Activities.swift */,
+				17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -615,7 +618,6 @@
 				026042BF2A62E27900F4AF88 /* ContentView.swift in Sources */,
 				026042BD2A62E27900F4AF88 /* EnduraApp.swift in Sources */,
 				696983C807BF764F750FB09D /* Auth.swift in Sources */,
-				696984F1B1F8F623157F875A /* Users.swift in Sources */,
 				69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */,
 				69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */,
 				696983C2448098B242747B5C /* ProfileView.swift in Sources */,
@@ -656,6 +658,8 @@
 				17CC644E71F8B897D238BF31 /* UIImage.swift in Sources */,
 				17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */,
 				17CC6ECAF92DDC8FB82BA9B0 /* UIView.swift in Sources */,
+				17CC6CD9C4420F087CDDE57A /* UserInfo.swift in Sources */,
+				17CC6078651983C541BA712F /* DatabaseCacheModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -835,7 +839,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.enduraapp.EnduraApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.endura.EnduraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

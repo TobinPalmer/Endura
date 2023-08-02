@@ -6,8 +6,6 @@ import Foundation
 import SwiftUI
 
 struct ActivityPost: View {
-    @EnvironmentObject var activeUserModel: ActiveUserModel
-    @StateObject var userDataModel = UserDataModel()
     private var activity: ActivityData
     private var id: String
 
@@ -18,8 +16,8 @@ struct ActivityPost: View {
 
     var body: some View {
         VStack(spacing: 14) {
+            UserInfo(uid: activity.uid)
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
-                Text(activeUserModel.userData.name)
                 Text("Afternoon Run")
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,14 +67,5 @@ struct ActivityPost: View {
             .background(Color(.systemBackground))
             .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
             .cornerRadius(10)
-        //        VStack {
-        //            ProfileImage(uid: activity.uid)
-        //            Text("\(userDataModel.userData?.name ?? "Loading...")")
-        //            Text("\(activity.distance)")
-        //        }
-        //                .task {
-        //                    await userDataModel.getData(uid: activity.uid)
-        //                }
-        //    }
     }
 }

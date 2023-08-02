@@ -26,7 +26,7 @@ struct EnduraApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(NavigationModel.instance).environmentObject(ActiveUserModel())
+            ContentView().environmentObject(NavigationModel.instance).environmentObject(DatabaseCacheModel())
         }
     }
 }
