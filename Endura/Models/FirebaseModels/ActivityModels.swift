@@ -8,7 +8,7 @@ import MapKit
 
 public typealias LineGraphData = [(Date, Double)]
 
-public struct ActivityComment: Codable {
+public struct ActivityCommentData: Codable, Hashable {
     let uid: String
     let time: Date
     let message: String
@@ -51,7 +51,7 @@ public struct ActivityData: Codable {
     var time: Date
     var distance: Double
     var duration: TimeInterval
-    var comments: [ActivityComment]
+    var comments: [ActivityCommentData]
     var likes: [String]
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
@@ -66,7 +66,7 @@ public struct ActivityDataWithRoute {
     var distance: Double
     var duration: TimeInterval
     var data: ActivityRouteData
-    var comments: [ActivityComment]
+    var comments: [ActivityCommentData]
     var likes: [String]
 
     public func getDataWithoutRoute() -> ActivityData {

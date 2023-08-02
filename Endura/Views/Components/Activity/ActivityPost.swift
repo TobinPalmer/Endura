@@ -43,28 +43,30 @@ struct ActivityPost: View {
 
             HStack {
                 Button(action: {
-                    print("Like")
+                    ActivityUtils.toggleLike(id: id, activity: activity)
                 }) {
                     Image(systemName: "hand.thumbsup")
                         .font(.title)
-
                 }
-                ForEach(0..<5) { i in
-                    Circle()
+                ForEach(activity.likes, id: \.self) { uid in
+                    ProfileImage(uid)
                         .frame(width: 30, height: 30)
-                        .foregroundColor(Color([.red, .blue, .green, .yellow, .orange, .purple, .magenta][i]))
-                        .offset(x: CGFloat(i) * -15)
                 }
             }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            HStack {
-                TextField("Add a comment...", text: .constant(""))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                Button(action: {
-                    print("Post")
-                }) {
-                    Image(systemName: "paperplane")
+            VStack {
+                ForEach(activity.comments, id: \.self) { comment in
+                    ActivityComment(comment)
+                }
+                HStack {
+                    TextField("Add a comment...", text: .constant(""))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Button(action: {
+                        print("Post")
+                    }) {
+                        Image(systemName: "paperplane")
+                    }
                 }
             }
         }

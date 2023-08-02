@@ -35,7 +35,7 @@ import HealthKit
                             distance: data.distance,
                             duration: data.duration,
                             comments: [],
-                            likes: []
+                            likes: data.likes
                     )
 
                     if diff.type == .added || diff.type == .modified {

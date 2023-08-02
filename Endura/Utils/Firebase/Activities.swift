@@ -6,6 +6,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
+import FirebaseAuth
 
 public struct ActivityUtils {
 
@@ -18,6 +19,13 @@ public struct ActivityUtils {
             print("Error getting activity route data: \(error)")
             return ActivityRouteData(routeData: [], graphData: [], graphInterval: 0)
         }
+    }
+
+    public static func toggleLike(id: String, activity: ActivityData) {
+        let uid = Auth.auth().currentUser!.uid
+        Firestore.firestore().collection("activities").document(id).updateData([
+            "likes": activity.likes.contains(uid) ? FieldValue.arrayRemove([uid]) : FieldValue.arrayUnion([uid])
+        ])
     }
 
     public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage) async throws {
