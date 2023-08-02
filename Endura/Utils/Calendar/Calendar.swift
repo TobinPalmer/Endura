@@ -7,7 +7,7 @@ import Foundation
 public struct CalendarUtils {
     static func startOfWeek(for date: Date) -> Date {
         var calendar = Calendar.current
-        calendar.firstWeekday = 2 // Start on Monday
+        calendar.firstWeekday = 1 // Start on Sunday
         guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else {
             fatalError("Could not determine the start of the week")
         }

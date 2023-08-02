@@ -24,35 +24,11 @@ struct SheetView: View {
         }
     }
 
-//    var body: some View {
-//        Button("Press to dismiss") {
-//            dismiss()
-//        }
-//        let _date = Calendar.current.dateComponents([.day], from: date)
-//        let startOfWeek = CalendarUtils.startOfWeek(for: date)
-//        let startDayOfWeek = Calendar.current.component(.day, from: startOfWeek)
-//        let rangeEnd = min(startDayOfWeek + 7, Calendar.current.range(of: .day, in: .month, for: date)!.upperBound)
-//        VStack {
-//            ForEach(startDayOfWeek..<rangeEnd, id: \.self) { day in
-//                if day == _date.day! {
-//                    Text("\(day)")
-//                        .font(.title)
-//                        .padding()
-//                        .background(Color.yellow)
-//                } else {
-//                    Text("\(day)")
-//                        .font(.title)
-//                        .padding()
-//                }
-//            }
-//        }
-//    }
-
     var body: some View {
         Button("Press to dismiss") {
             dismiss()
         }
-        let _date = Calendar.current.dateComponents([.day], from: date)
+        let todayDate = Calendar.current.dateComponents([.day], from: date)
         let startOfWeek = CalendarUtils.startOfWeek(for: date)
         let datesOfWeek = (0..<7).compactMap {
             Calendar.current.date(byAdding: .day, value: $0, to: startOfWeek)
@@ -60,7 +36,7 @@ struct SheetView: View {
         VStack {
             ForEach(datesOfWeek, id: \.self) { date in
                 let day = Calendar.current.component(.day, from: date)
-                if day == _date.day! {
+                if day == todayDate.day! {
                     Text("\(day)")
                         .font(.title)
                         .padding()
