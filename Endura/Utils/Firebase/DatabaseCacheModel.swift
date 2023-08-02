@@ -19,18 +19,25 @@ import FirebaseFirestoreSwift
     }
 
     private func fetchUserData(uid: String) async {
-        if let cachedUser = usersCache[uid] {
+        if usersCache[uid] != nil {
             return
         }
         do {
             usersCache.updateValue(nil, forKey: uid)
             let document = try await Firestore.firestore().collection("users").document(uid).getDocument(as: UserDocument.self)
+
+            //Try loading firebase profile picture
+            var image = UIImage(data: try await URLSession.shared.data(from: URL(string: "https://firebasestorage.googleapis.com/v0/b/runningapp-6ee99.appspot.com/o/users%2F\(uid)%2FprofilePicture?alt=media")!).0)
+            if image == nil { // If firebase profile picture fails, load ui-avatars profile picture
+                image = UIImage(data: try await URLSession.shared.data(from: URL(string: "https://ui-avatars.com/api/?name=\(document.firstName)+\(document.lastName)&background=0D8ABC&color=fff")!).0)
+            }
+
             let userData = UserData(
                     uid: uid,
                     name: "\(document.firstName) \(document.lastName)",
                     firstName: document.firstName,
                     lastName: document.lastName,
-                    profilePicture: "",
+                    profileImage: image,
                     friends: document.friends
             )
             usersCache.updateValue(userData, forKey: uid)

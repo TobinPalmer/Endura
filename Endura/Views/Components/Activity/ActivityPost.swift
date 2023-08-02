@@ -6,6 +6,7 @@ import Foundation
 import SwiftUI
 
 struct ActivityPost: View {
+    @EnvironmentObject var databaseCache: DatabaseCacheModel
     private var activity: ActivityData
     private var id: String
 
@@ -16,7 +17,15 @@ struct ActivityPost: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            UserInfo(uid: activity.uid)
+            HStack {
+                ProfileImage(activity.uid)
+                if let user = databaseCache.getUserData(activity.uid) {
+                    Text(user.name)
+                        .font(.title)
+                } else {
+                    Text("Loading...")
+                }
+            }
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 Text("Afternoon Run")
                     .font(.title)

@@ -3,13 +3,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 public struct UserData {
     var uid: String
     var name: String
     var firstName: String
     var lastName: String
-    var profilePicture: String
+    var profileImage: UIImage?
     var friends: [String]
 }
 

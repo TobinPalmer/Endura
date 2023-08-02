@@ -1,27 +1,33 @@
 //
-// Created by Brandon Kirbyson on 7/21/23.
+// Created by Brandon Kirbyson on 8/1/23.
 //
 
 import Foundation
 import SwiftUI
 
-
 struct ProfileImage: View {
+    @EnvironmentObject var databaseCache: DatabaseCacheModel
     private var uid: String
 
-    init(uid: String) {
+    init(_ uid: String) {
         self.uid = uid
     }
 
     var body: some View {
-        AsyncImage(url: URL(string: "https://ui-avatars.com/api/?name=\(uid)&size=256&background=0D8ABC&color=fff")) { image in
-            image
+        if let user = databaseCache.getUserData(uid) {
+            if let profileImage = user.profileImage {
+                Image(uiImage: profileImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 50, height: 50)
+                    .aspectRatio(contentMode: .fit)
                     .clipShape(Circle())
-        } placeholder: {
-            ProgressDashboardView()
+            } else {
+                Image(systemName: "person.crop.circle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .clipShape(Circle())
+            }
+        } else {
+            Text("Loading...")
         }
     }
 }
