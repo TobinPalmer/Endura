@@ -53,7 +53,7 @@ fileprivate final class AccountSettingsViewModel: ObservableObject {
     func uploadProfileImage(imageData: Data) {
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"
-        Storage.storage().reference().child("users/\(Auth.auth().currentUser!.uid)/profilePicture").putData(imageData, metadata: metadata) { (metadata, error) in
+        Storage.storage().reference().child("users/\(AuthUtils.getCurrentUID())/profilePicture").putData(imageData, metadata: metadata) { (metadata, error) in
             if let error = error {
                 print("Error uploading profile image: \(error)")
             }

@@ -8,7 +8,7 @@ import FirebaseAuth
 public struct AuthUtils {
 
     public static func getCurrentUID() -> String {
-        return Auth.auth().currentUser!.uid
+        Auth.auth().currentUser!.uid
     }
 
     public static func initAuth() {

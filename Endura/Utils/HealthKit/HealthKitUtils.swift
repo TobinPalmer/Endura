@@ -262,7 +262,7 @@ public struct HealthKitUtils {
         }
 
         let workoutData = ActivityDataWithRoute(
-                uid: Auth.auth().currentUser!.uid,
+                uid: AuthUtils.getCurrentUID(),
                 time: workout.startDate,
                 distance: workoutDistance,
                 duration: workoutDuration,
