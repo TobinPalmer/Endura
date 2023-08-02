@@ -28,6 +28,7 @@
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
 		17CC6078651983C541BA712F /* DatabaseCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
+		17CC61E11214EC55A4056D51 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC60E88FFC2E90C4041785 /* UserProfile.swift */; };
 		17CC621F59B1D4C332521571 /* Activities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E3C3259ED54F0BF31D1 /* Activities.swift */; };
 		17CC62FFC55BCB9A6AEA355C /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69B387F52E1CA55F3716 /* ProgressView.swift */; };
 		17CC6375D0C9879B20E7B30B /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666B55C0D3EBEF97E9D3 /* Calendar.swift */; };
@@ -75,6 +76,7 @@
 		69698F967DFA9D0303BE96FF /* MKCoordinateRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */; };
 		69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* DashboardView.swift */; };
 		E955630C2A6F4F2800AC74DE /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = E955630B2A6F4F2800AC74DE /* SwiftUICharts */; };
+		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +109,7 @@
 		026042D32A62E27C00F4AF88 /* EnduraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EnduraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		026042D72A62E27C00F4AF88 /* EnduraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITests.swift; sourceTree = "<group>"; };
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		17CC60E88FFC2E90C4041785 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		17CC6138F9F694BD479D8798 /* MKPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolyline.swift; sourceTree = "<group>"; };
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		17CC61A4C68A0172243AB286 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
@@ -156,6 +159,7 @@
 		69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegion.swift; sourceTree = "<group>"; };
 		69698F375B8431109FFB3F98 /* TrainingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
+		E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityMapImage.swift; path = Endura/Views/Components/Activity/ActivityMapImage.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				17CC66EA7C715C2776A564D2 /* ProfileImage.swift */,
+				17CC60E88FFC2E90C4041785 /* UserProfile.swift */,
 			);
 			path = Users;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 		17CC6C78A4FBDBC025182646 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */,
 				17CC69F5F51AE211727A3343 /* ActivityPost.swift */,
 				696982EE94EC856245965FFD /* ActivityMap.swift */,
 				17CC621472800F2D778E7D01 /* ActivityComment.swift */,
@@ -682,6 +688,7 @@
 				17CC6CDF590381DF53B49F0D /* SettingsView.swift in Sources */,
 				17CC682E88A5BF7A13F60DB5 /* AccountSettingsView.swift in Sources */,
 				17CC644E71F8B897D238BF31 /* UIImage.swift in Sources */,
+				E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */,
 				17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */,
 				17CC6ECAF92DDC8FB82BA9B0 /* UIView.swift in Sources */,
 				17CC6078651983C541BA712F /* DatabaseCacheModel.swift in Sources */,
@@ -692,6 +699,7 @@
 				6969862795DF6489B7776F59 /* FriendsSettingsView.swift in Sources */,
 				69698D9FF474040A16DC04C9 /* SignupView.swift in Sources */,
 				69698B8D0C9627C6B60FD712 /* InputField.swift in Sources */,
+				17CC61E11214EC55A4056D51 /* UserProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

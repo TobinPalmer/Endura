@@ -19,13 +19,15 @@ struct ActivityPost: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            HStack {
-                ProfileImage(activity.uid, size: 50)
-                if let user = databaseCache.getUserData(activity.uid) {
-                    Text(user.name)
-                        .font(.title)
-                } else {
-                    Text("Loading...")
+            UserProfileLink(activity.uid) {
+                HStack {
+                    ProfileImage(activity.uid, size: 50)
+                    if let user = databaseCache.getUserData(activity.uid) {
+                        Text(user.name)
+                            .font(.title)
+                    } else {
+                        Text("Loading...")
+                    }
                 }
             }
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
@@ -48,7 +50,9 @@ struct ActivityPost: View {
                         .font(.title)
                 }
                 ForEach(activity.likes, id: \.self) { uid in
-                    ProfileImage(uid, size: 30)
+                    UserProfileLink(uid) {
+                        ProfileImage(uid, size: 30)
+                    }
                 }
             }
                 .frame(maxWidth: .infinity, alignment: .leading)
