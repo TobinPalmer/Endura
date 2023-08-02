@@ -7,9 +7,37 @@ import SwiftUI
 
 struct SettingsView: View {
     var body: some View {
-        VStack {
-            Text("Settings").font(.title)
+//        VStack(spacing: 10) {
+//            Text("Settings").font(.title)
+//
+//            List {
+//                NavigationLink(destination: AccountSettingsView()) {
+//                    Label("Account", systemImage: "person")
+//                }
+//                NavigationLink(destination: FriendsSettingsView()) {
+//                    Label("Friends", systemImage: "person.2")
+//                }
+//                NavigationLink(destination: NotificationsSettingsView()) {
+//                    Label("Notifications", systemImage: "bell")
+//                }
+//                NavigationLink(destination: PrivacySettingsView()) {
+//                    Label("Privacy", systemImage: "lock")
+//                }
+//                NavigationLink(destination: AboutSettingsView()) {
+//                    Label("About", systemImage: "info.circle")
+//                }
+//
+//                Spacer()
+//
+//                Button {
+//                    AuthUtils.logout()
+//                } label: {
+//                    Text("Logout").foregroundColor(.red)
+//                }
+//            }
+//        }
 
+        VStack {
             List {
                 NavigationLink(destination: AccountSettingsView()) {
                     Label("Account", systemImage: "person")
@@ -27,6 +55,16 @@ struct SettingsView: View {
                     Label("About", systemImage: "info.circle")
                 }
             }
+
+            Spacer()
+
+            Button {
+                AuthUtils.logout()
+            } label: {
+                Text("Logout").foregroundColor(.red)
+            }
+                .padding(20)
         }
+
     }
 }

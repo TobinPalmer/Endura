@@ -20,9 +20,6 @@ public struct AuthUtils {
             if let user = user {
                 print(user)
                 NavigationModel.instance.currentView = .HOME
-                //go to home
-            } else {
-                //go to login
             }
         }
     }

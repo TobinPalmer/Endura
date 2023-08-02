@@ -1,26 +1,22 @@
 //
-// Created by Tobin Palmer on 7/16/23.
+// Created by Tobin Palmer on 8/2/23.
 //
 
 import Foundation
 import SwiftUI
 
-fileprivate final class LoginViewModel: ObservableObject {
+fileprivate final class SignupViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
 
     func login() {
-        if email.isEmpty || password.isEmpty {
-            return
-        }
-
         AuthUtils.loginWithEmail(email, password)
     }
 }
 
-struct LoginView: View {
+struct SignupView: View {
     @EnvironmentObject var navigation: NavigationModel;
-    @ObservedObject fileprivate var viewModel = LoginViewModel()
+    @ObservedObject fileprivate var viewModel = SignupViewModel()
 
     var body: some View {
         VStack {
@@ -31,8 +27,9 @@ struct LoginView: View {
 
             Button {
                 viewModel.login()
+                navigation.currentView = .HOME
             } label: {
-                Text("Login")
+                Text("Signup")
             }
         }
             .frame(width: 300, height: 300)
