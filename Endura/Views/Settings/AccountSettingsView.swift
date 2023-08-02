@@ -9,11 +9,16 @@ import FirebaseStorage
 import FirebaseAuth
 
 struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var selectedImage: UIImage?
+    @Binding private var selectedImage: UIImage?
+
+    init(selectedImage: Binding<UIImage?>) {
+        self._selectedImage = selectedImage
+    }
+
     @Environment(\.presentationMode) private var presentationMode
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        let parent: ImagePicker
+        private let parent: ImagePicker
 
         init(_ parent: ImagePicker) {
             self.parent = parent
@@ -45,7 +50,6 @@ struct ImagePicker: UIViewControllerRepresentable {
 }
 
 fileprivate final class AccountSettingsViewModel: ObservableObject {
-
     func uploadProfileImage(imageData: Data) {
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"

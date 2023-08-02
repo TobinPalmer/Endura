@@ -14,16 +14,16 @@ struct SettingsView: View {
                 NavigationLink(destination: AccountSettingsView()) {
                     Label("Account", systemImage: "person")
                 }
-                NavigationLink(destination: Text("Friends")) {
+                NavigationLink(destination: FriendsSettingsView()) {
                     Label("Friends", systemImage: "person.2")
                 }
-                NavigationLink(destination: Text("Notifications")) {
+                NavigationLink(destination: NotificationsSettingsView()) {
                     Label("Notifications", systemImage: "bell")
                 }
-                NavigationLink(destination: Text("Privacy")) {
+                NavigationLink(destination: PrivacySettingsView()) {
                     Label("Privacy", systemImage: "lock")
                 }
-                NavigationLink(destination: Text("About")) {
+                NavigationLink(destination: AboutSettingsView()) {
                     Label("About", systemImage: "info.circle")
                 }
             }
