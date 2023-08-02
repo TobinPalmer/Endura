@@ -5,6 +5,15 @@
 import Foundation
 
 public struct CalendarUtils {
+    static func startOfWeek(for date: Date) -> Date {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 1 // Start on Sunday
+        guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else {
+            fatalError("Could not determine the start of the week")
+        }
+        return weekInterval.start
+    }
+
     public static func generateCurrentMonthDates() -> [Date] {
         var dates: [Date] = []
         let calendar = Calendar.current

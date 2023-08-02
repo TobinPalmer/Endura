@@ -57,7 +57,6 @@ import HealthKit
     }
 }
 
-
 struct ActivitiesView: View {
     @StateObject fileprivate var activityViewModel = ActivitiesViewModel()
 
