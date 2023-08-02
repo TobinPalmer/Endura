@@ -5,7 +5,7 @@
 import Foundation
 import CoreLocation
 import HealthKit
-
+import FirebaseAuth
 
 public struct HealthKitUtils {
     private static let healthStore = HKHealthStore()
@@ -262,7 +262,7 @@ public struct HealthKitUtils {
         }
 
         let workoutData = ActivityDataWithRoute(
-                uid: "test",
+                uid: Auth.auth().currentUser!.uid,
                 time: workout.startDate,
                 distance: workoutDistance,
                 duration: workoutDuration,
