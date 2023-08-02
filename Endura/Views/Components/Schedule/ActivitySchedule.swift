@@ -26,7 +26,6 @@ fileprivate struct MonthView: View {
     }
 }
 
-
 struct CalendarView: View {
     let months: [[Date]]
     @State var selectedDate: Date? = nil
