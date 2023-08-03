@@ -109,6 +109,7 @@
 		026042D32A62E27C00F4AF88 /* EnduraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EnduraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		026042D72A62E27C00F4AF88 /* EnduraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITests.swift; sourceTree = "<group>"; };
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		026D06352A7B2A3200A91958 /* Endura.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Endura.entitlements; sourceTree = "<group>"; };
 		17CC60E88FFC2E90C4041785 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		17CC6138F9F694BD479D8798 /* MKPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolyline.swift; sourceTree = "<group>"; };
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -236,6 +237,7 @@
 		026042BB2A62E27900F4AF88 /* Endura */ = {
 			isa = PBXGroup;
 			children = (
+				026D06352A7B2A3200A91958 /* Endura.entitlements */,
 				0202FC552A67AB2700D28518 /* Extensions */,
 				0202FC542A67851500D28518 /* EnduraDebug.entitlements */,
 				02352F932A6595B200BB68AF /* GoogleService-Info.plist */,
@@ -892,6 +894,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Endura/Endura.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Endura/Preview Content\"";
@@ -909,7 +912,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.endura.EnduraApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.endurapp.EnduraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
