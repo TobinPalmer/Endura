@@ -63,7 +63,6 @@ struct ActivitiesView: View {
     var body: some View {
         VStack {
             ScrollView(.vertical) {
-                Text(String(activityViewModel.activities.count))
                 if (activityViewModel.activities.count > 0) {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
                         ForEach(activityViewModel.activities.keys.sorted(by: >), id: \.self) { key in
@@ -88,7 +87,18 @@ struct ActivitiesView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink(destination: NewActivityView()) {
                         Image(systemName: "plus")
-                            .font(.title)
+                    }
+
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: FindUsersView()) {
+                        Image(systemName: "person.2")
+                    }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    UserProfileLink(AuthUtils.getCurrentUID()) {
+                        ProfileImage(AuthUtils.getCurrentUID(), size: 30)
                     }
                 }
             }

@@ -29,18 +29,23 @@ struct ActivityPost: View {
                         Text("Loading...")
                     }
                 }
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 Text("Afternoon Run")
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+
             HStack {
                 Text("\(ConversionUtils.metersToMiles(activity.distance)) mi")
                 Text("\(FormattingUtils.secondsToFormattedTime(activity.duration))")
             }
 
-            ActivityMapImage(id)
+            NavigationLink(destination: ActivityView(id: id, activity: activity)) {
+                ActivityMapImage(id)
+            }
+                .buttonStyle(PlainButtonStyle())
 
             HStack {
                 Button(action: {
