@@ -47,7 +47,7 @@ public struct HealthKitUtils {
                 print("Error in observer query: \(error)")
                 return
             }
-            NotificationUtils.sendNotification(title: "New workout", body: "New workout, this is clean", date: Date().addingTimeInterval(5))
+//            NotificationUtils.sendNotification(title: "New workout", body: "New workout, this is clean", date: Date().addingTimeInterval(5))
             print("Received new workout")
             completionHandler()
         }

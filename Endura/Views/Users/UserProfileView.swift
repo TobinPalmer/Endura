@@ -9,7 +9,7 @@ struct UserProfileLink<Content: View>: View {
     private let uid: String
     private let content: Content
 
-    init(_ uid: String, @ViewBuilder content: () -> Content) {  // Use of @ViewBuilder
+    init(_ uid: String, @ViewBuilder content: () -> Content) {
         self.uid = uid
         self.content = content()
     }
@@ -18,6 +18,7 @@ struct UserProfileLink<Content: View>: View {
         NavigationLink(destination: UserProfileView(uid)) {
             content
         }
+            .buttonStyle(PlainButtonStyle())
     }
 }
 
