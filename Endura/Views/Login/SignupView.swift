@@ -19,19 +19,24 @@ struct SignupView: View {
     @ObservedObject fileprivate var viewModel = SignupViewModel()
 
     var body: some View {
-        VStack {
-            Text("Login")
-            LoginTextInput("Email", $viewModel.email)
-                .keyboardType(.emailAddress)
-            LoginTextInput("Password", $viewModel.password, secure: true)
-
-            Button {
-                viewModel.login()
-                navigation.currentView = .HOME
-            } label: {
-                Text("Signup")
-            }
-        }
-            .frame(width: 300, height: 300)
+//        VStack {
+//            Text("Login")
+//            LoginTextInput("Email", $viewModel.email)
+//                .keyboardType(.emailAddress)
+//            LoginTextInput("Password", $viewModel.password, secure: true)
+//
+//            Button {
+//                viewModel.login()
+//                navigation.currentView = .HOME
+//            } label: {
+//                Text("Signup")
+//            }
+//        }
+//            .frame(width: 300, height: 300)
+        MultiStepForm([
+            AnyView(Text("Step 1")),
+            AnyView(Text("Step 2")),
+            AnyView(Text("Step 3"))
+        ])
     }
 }

@@ -15,7 +15,9 @@ struct ContentView: View {
     var body: some View {
         switch (navigation.currentView) {
         case .LOGIN:
-            LoginView()
+            NavigationView {
+                LoginView()
+            }
         case .HOME:
             TabView {
                 NavigationView {

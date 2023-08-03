@@ -19,7 +19,7 @@ fileprivate final class LoginViewModel: ObservableObject {
 }
 
 struct LoginView: View {
-    @EnvironmentObject var navigation: NavigationModel;
+    @EnvironmentObject var navigation: NavigationModel
     @ObservedObject fileprivate var viewModel = LoginViewModel()
 
     var body: some View {
@@ -33,6 +33,10 @@ struct LoginView: View {
                 viewModel.login()
             } label: {
                 Text("Login")
+            }
+
+            NavigationLink(destination: SignupView()) {
+                Text("Signup")
             }
         }
             .frame(width: 300, height: 300)

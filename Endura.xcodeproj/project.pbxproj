@@ -35,6 +35,7 @@
 		17CC63D9EEB53484B6987842 /* ScheduleDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC669024974E7F58F1F1B6 /* ScheduleDay.swift */; };
 		17CC644E71F8B897D238BF31 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */; };
 		17CC655BAE51AD4BD72A7D49 /* MKPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6138F9F694BD479D8798 /* MKPolyline.swift */; };
+		17CC65FFF4C4939ED6E24B68 /* MultiStepForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */; };
 		17CC668261B0BC82E6EEDDBA /* ActivityPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69F5F51AE211727A3343 /* ActivityPost.swift */; };
 		17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64CF9FA32EE591326705 /* UIColor.swift */; };
 		17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC659A1576329D2B4CB4F2 /* ActivityView.swift */; };
@@ -115,6 +116,7 @@
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		17CC61A4C68A0172243AB286 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		17CC621472800F2D778E7D01 /* ActivityComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityComment.swift; sourceTree = "<group>"; };
+		17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStepForm.swift; sourceTree = "<group>"; };
 		17CC647C809BFAC3C20DA478 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		17CC64AE21A3E68ABDCDA24C /* ActivityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
 		17CC64CF9FA32EE591326705 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 			isa = PBXGroup;
 			children = (
 				696989B493A759E087F5F8FE /* InputField.swift */,
+				17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				69698D9FF474040A16DC04C9 /* SignupView.swift in Sources */,
 				69698B8D0C9627C6B60FD712 /* InputField.swift in Sources */,
 				17CC61E11214EC55A4056D51 /* UserProfile.swift in Sources */,
+				17CC65FFF4C4939ED6E24B68 /* MultiStepForm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
