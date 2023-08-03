@@ -13,7 +13,9 @@ public struct HealthKitUtils {
 
     public static func requestAuthorization() {
         let typesToRead: Set<HKObjectType> = [
-            HKObjectType.workoutType(), HKSeriesType.workoutRoute(),
+            HKObjectType.workoutType(),
+            HKSeriesType.workoutRoute(),
+            HKObjectType.quantityType(forIdentifier: .stepCount)!,
             HKObjectType.quantityType(forIdentifier: .heartRate)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
         ]
@@ -24,7 +26,7 @@ public struct HealthKitUtils {
                 return
             }
 
-            let sampleType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+            let sampleType = HKObjectType.workoutType()
 
             healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate) { (success, error) in
                 if let error = error {
@@ -37,22 +39,38 @@ public struct HealthKitUtils {
         }
     }
 
-
-    public static func subscribeToStepCountUpdates() {
-        print("Watching for step count updates")
-        let sampleType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+    public static func subscribeToNewWorkouts() {
+        let sampleType = HKObjectType.workoutType()
 
         let query = HKObserverQuery(sampleType: sampleType, predicate: nil) { (query, completionHandler, errorOrNil) in
             if let error = errorOrNil {
-                print("Error in observer query: \(error.localizedDescription)")
+                print("Error in observer query: \(error)")
                 return
             }
-            print("Received step count update")
+            NotificationUtils.sendNotification(title: "New workout", body: "New workout, this is clean", date: Date().addingTimeInterval(5))
+            print("Received new workout")
             completionHandler()
         }
 
         healthStore.execute(query)
     }
+
+//    public static func subscribeToStepCountUpdates() {
+//        print("Watching for step count updates")
+//        let sampleType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+//
+//        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) { (query, completionHandler, errorOrNil) in
+//            if let error = errorOrNil {
+//                print("Error in observer query: \(error)")
+//                return
+//            }
+//            NotificationUtils.sendNotification(title: "Step Count Update", body: "New step count update", date: Date().addingTimeInterval(5))
+//            print("Received step count update")
+//            completionHandler()
+//        }
+//
+//        healthStore.execute(query)
+//    }
 
     public static func getLocationData(for route: HKWorkoutRoute) async throws -> [CLLocation] {
         print("calling location data")

@@ -20,7 +20,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         HealthKitUtils.requestAuthorization()
         NotificationUtils.requestPermission()
 
-        HealthKitUtils.subscribeToStepCountUpdates()
+        HealthKitUtils.subscribeToNewWorkouts()
         return true
     }
 }
