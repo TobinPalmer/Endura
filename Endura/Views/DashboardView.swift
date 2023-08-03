@@ -11,6 +11,15 @@ import HealthKit
 
 struct DashboardView: View {
     var body: some View {
-        Text("Welcome!")
+        VStack {
+            Text("Welcome!")
+
+            Button {
+                NotificationUtils.sendNotification(title: "Test", body: "Test", date: Date().addingTimeInterval(5))
+            } label: {
+                Text("Send Notification")
+                    .foregroundColor(.red)
+            }
+        }
     }
 }

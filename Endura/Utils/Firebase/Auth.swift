@@ -27,7 +27,6 @@ public struct AuthUtils {
     public static func loginWithEmail(_ email: String, _ password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let user = user {
-                print(user)
                 NavigationModel.instance.currentView = .HOME
             } else {
                 print("Error logging in: \(String(describing: error))")

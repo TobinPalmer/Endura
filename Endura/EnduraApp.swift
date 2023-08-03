@@ -16,7 +16,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
 
         AuthUtils.initAuth()
+
         HealthKitUtils.requestAuthorization()
+        NotificationUtils.requestPermission()
+
+        HealthKitUtils.subscribeToStepCountUpdates()
         return true
     }
 }

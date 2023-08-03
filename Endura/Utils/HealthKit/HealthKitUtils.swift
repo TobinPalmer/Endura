@@ -6,6 +6,7 @@ import Foundation
 import CoreLocation
 import HealthKit
 import FirebaseAuth
+import UIKit
 
 public struct HealthKitUtils {
     private static let healthStore = HKHealthStore()
@@ -22,7 +23,35 @@ public struct HealthKitUtils {
                 print("Authorization request failed: \(error.localizedDescription)")
                 return
             }
+
+            let sampleType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+
+            healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate) { (success, error) in
+                if let error = error {
+                    print("Error enabling background delivery: \(error.localizedDescription)")
+                    return
+                } else {
+                    print("Enabled background delivery of \(sampleType.identifier)")
+                }
+            }
         }
+    }
+
+
+    public static func subscribeToStepCountUpdates() {
+        print("Watching for step count updates")
+        let sampleType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
+
+        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) { (query, completionHandler, errorOrNil) in
+            if let error = errorOrNil {
+                print("Error in observer query: \(error.localizedDescription)")
+                return
+            }
+            print("Received step count update")
+            completionHandler()
+        }
+
+        healthStore.execute(query)
     }
 
     public static func getLocationData(for route: HKWorkoutRoute) async throws -> [CLLocation] {
