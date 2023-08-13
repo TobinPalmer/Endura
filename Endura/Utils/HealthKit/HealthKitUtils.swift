@@ -55,23 +55,6 @@ public struct HealthKitUtils {
         healthStore.execute(query)
     }
 
-//    public static func subscribeToStepCountUpdates() {
-//        print("Watching for step count updates")
-//        let sampleType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount)!
-//
-//        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) { (query, completionHandler, errorOrNil) in
-//            if let error = errorOrNil {
-//                print("Error in observer query: \(error)")
-//                return
-//            }
-//            NotificationUtils.sendNotification(title: "Step Count Update", body: "New step count update", date: Date().addingTimeInterval(5))
-//            print("Received step count update")
-//            completionHandler()
-//        }
-//
-//        healthStore.execute(query)
-//    }
-
     public static func getLocationData(for route: HKWorkoutRoute) async throws -> [CLLocation] {
         print("calling location data")
         let locations = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
