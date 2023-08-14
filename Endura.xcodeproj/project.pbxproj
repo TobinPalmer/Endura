@@ -71,7 +71,6 @@
 		6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985F087A56B76C2C803F6 /* CLLocation.swift */; };
 		69698807D54F05B3A30EAF76 /* AboutSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969811C4405638F258AF4C5 /* AboutSettingsView.swift */; };
 		696988338532B62D457787E0 /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */; };
-		696989095CAC35361B8BA315 /* .pre-commit-hooks.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 69698E404667B9E86604437F /* .pre-commit-hooks.yaml */; };
 		696989667077D098FD05A1C6 /* HealthKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698B315EDC140451CA74A5 /* HealthKitUtils.swift */; };
 		69698A06168A177A0FD0E217 /* SignupStepTwoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698A52FFC5BD2B47BD4E5F /* SignupStepTwoView.swift */; };
 		69698AF727212452B3927F71 /* SignupStepThreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969823BD48F3E76801C7E59 /* SignupStepThreeView.swift */; };
@@ -175,7 +174,6 @@
 		69698B315EDC140451CA74A5 /* HealthKitUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitUtils.swift; sourceTree = "<group>"; };
 		69698C33876AF4895EBEE5F7 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
 		69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
-		69698E404667B9E86604437F /* .pre-commit-hooks.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = ".pre-commit-hooks.yaml"; sourceTree = "<group>"; };
 		69698E6CE08351083301EC53 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegion.swift; sourceTree = "<group>"; };
 		69698F375B8431109FFB3F98 /* TrainingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
@@ -242,7 +240,6 @@
 				026042D62A62E27C00F4AF88 /* EnduraUITests */,
 				026042BA2A62E27900F4AF88 /* Products */,
 				696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */,
-				69698E404667B9E86604437F /* .pre-commit-hooks.yaml */,
 			);
 			sourceTree = "<group>";
 		};
@@ -696,7 +693,6 @@
 				026042C12A62E27C00F4AF88 /* Assets.xcassets in Resources */,
 				02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */,
 				6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */,
-				696989095CAC35361B8BA315 /* .pre-commit-hooks.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

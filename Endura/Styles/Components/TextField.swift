@@ -16,14 +16,14 @@ struct EnduraTextFieldStyle: TextFieldStyle {
         ZStack {
             RoundedRectangle(cornerRadius: 5.0)
                 .stroke(
-                        LinearGradient(
-                                colors: [
-                                    .red,
-                                    .blue,
-                                ],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                        )
+                    LinearGradient(
+                        colors: [
+                            .red,
+                            .blue,
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
                 )
                 .frame(height: 40)
 
@@ -35,8 +35,8 @@ struct EnduraTextFieldStyle: TextFieldStyle {
 
                 configuration
             }
-                .padding(.leading)
-                .foregroundColor(.gray)
+            .padding(.leading)
+            .foregroundColor(.gray)
         }
     }
 }
