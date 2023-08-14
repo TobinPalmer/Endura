@@ -38,7 +38,7 @@ struct MultiStepForm: View {
             Spacer()
 
             HStack {
-                if currentStep > 0 {
+                if currentStep > 0 && currentStep < steps.count {
                     Button("Back") {
                         withAnimation {
                             currentStep -= 1
