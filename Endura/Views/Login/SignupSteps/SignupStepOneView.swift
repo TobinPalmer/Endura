@@ -29,6 +29,7 @@ struct SignupStepOneView: View {
                     currentStep += 1
                 }
             }
+            .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
         }
     }
 }

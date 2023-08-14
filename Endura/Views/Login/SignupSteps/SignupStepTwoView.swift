@@ -7,11 +7,11 @@ import Foundation
 import SwiftUI
 
 struct SignupStepTwoView: View {
-    @ObservedObject private var viewModel: SignupFormInfo
+    @StateObject private var viewModel: SignupFormInfo
     @Binding private var currentPage: Int
 
     init(viewModel: SignupFormInfo, currentStep: Binding<Int>) {
-        _viewModel = ObservedObject(initialValue: viewModel)
+        _viewModel = StateObject(wrappedValue: viewModel)
         _currentPage = currentStep
     }
 
@@ -37,6 +37,7 @@ struct SignupStepTwoView: View {
                         currentPage += 1
                     }
                 }
+                .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
             }
         }
     }

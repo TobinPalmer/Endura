@@ -12,10 +12,10 @@ private final class SignupViewModel: ObservableObject {
 }
 
 internal final class SignupFormInfo: ObservableObject {
-    var firstName: String = ""
-    var lastName: String = ""
-    var email: String = ""
-    var password: String = ""
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
+    @Published var email: String = ""
+    @Published var password: String = ""
 }
 
 struct SignupView: View {
