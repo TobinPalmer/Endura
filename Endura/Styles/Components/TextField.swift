@@ -6,30 +6,37 @@ import Foundation
 import SwiftUI
 
 struct EnduraTextFieldStyle: TextFieldStyle {
-    let systemImageString: String
+    private let systemImageString: String
+
+    init(_ systemImageString: String = "") {
+        self.systemImageString = systemImageString
+    }
 
     func _body(configuration: TextField<Self._Label>) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 5.0)
                 .stroke(
-                    LinearGradient(
-                        colors: [
-                            .red,
-                            .blue,
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
+                        LinearGradient(
+                                colors: [
+                                    .red,
+                                    .blue,
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                        )
                 )
                 .frame(height: 40)
 
             HStack {
-                Image(systemName: systemImageString)
-                // Reference the TextField here
+                if !systemImageString.isEmpty {
+                    Image(systemName: systemImageString)
+                        .foregroundColor(.gray)
+                }
+
                 configuration
             }
-            .padding(.leading)
-            .foregroundColor(.gray)
+                .padding(.leading)
+                .foregroundColor(.gray)
         }
     }
 }

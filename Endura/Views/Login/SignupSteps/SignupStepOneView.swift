@@ -16,11 +16,11 @@ struct SignupStepOneView: View {
     public var body: some View {
         VStack {
             TextField("First Name", text: $viewModel.firstName)
-                .textFieldStyle(EnduraTextFieldStyle(systemImageString: "lock"))
+                .textFieldStyle(EnduraTextFieldStyle())
                 .textFieldStyle(RoundedBorderTextFieldStyle())
 
             TextField("Last Name", text: $viewModel.lastName)
-                .textFieldStyle(EnduraTextFieldStyle(systemImageString: "lock"))
+                .textFieldStyle(EnduraTextFieldStyle())
         }
     }
 }

@@ -16,12 +16,12 @@ struct SignupStepTwoView: View {
     public var body: some View {
         VStack {
             TextField("Email", text: $viewModel.email)
-                .textFieldStyle(EnduraTextFieldStyle(systemImageString: "lock"))
+                .textFieldStyle(EnduraTextFieldStyle("lock"))
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.emailAddress)
 
             TextField("Password", text: $viewModel.password)
-                .textFieldStyle(EnduraTextFieldStyle(systemImageString: "lock"))
+                .textFieldStyle(EnduraTextFieldStyle("lock"))
         }
     }
 }
