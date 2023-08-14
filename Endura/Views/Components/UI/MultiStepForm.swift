@@ -25,13 +25,12 @@ struct MultiStepForm: View {
                 ForEach(0 ..< steps.count, id: \.self) { index in
                     if index == currentStep {
                         steps[index]
-                            //                            .environmentObject(formInfo)
                             .transition(.opacity)
                     }
                 }
                 if currentStep == steps.count {
-                    Text("Success!")
-                    Text("First Name: \(viewModel.firstName)")
+                    SignupFinishedView()
+                        .environmentObject(viewModel)
                 }
             }
 
