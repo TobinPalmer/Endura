@@ -54,6 +54,7 @@
 		17CC6F2D2274313C2825BE5B /* ActivitySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66D4EBE24BD79F3FA0F7 /* ActivitySchedule.swift */; };
 		17CC6F4B78384077758D0334 /* Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FAD8A0AC457723ACD1F /* Conversion.swift */; };
 		696980FB9DBE79E1EA36A768 /* ActivityMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982EE94EC856245965FFD /* ActivityMap.swift */; };
+		6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */; };
 		69698264AD04B1437CE58655 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698354833B838F454F85E8 /* Collection.swift */; };
 		69698267DFD577498FCE901F /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E6CE08351083301EC53 /* TextField.swift */; };
 		6969826CF3BCDFA16EC0B2C2 /* ActivityModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969870866179CC66A7558FB /* ActivityModels.swift */; };
@@ -149,6 +150,7 @@
 		696980A9493FB9C9A2291998 /* WorkoutErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutErrors.swift; sourceTree = "<group>"; };
 		6969811C4405638F258AF4C5 /* AboutSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutSettingsView.swift; sourceTree = "<group>"; };
 		6969819A8C4285A3E148D771 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = ".pre-commit-config.yaml"; sourceTree = "<group>"; };
 		6969823BD48F3E76801C7E59 /* SignupStepThreeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepThreeView.swift; sourceTree = "<group>"; };
 		696982855FE478D8D2440495 /* UploadWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView.swift; sourceTree = "<group>"; };
 		696982EE94EC856245965FFD /* ActivityMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMap.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				026042CC2A62E27C00F4AF88 /* EnduraTests */,
 				026042D62A62E27C00F4AF88 /* EnduraUITests */,
 				026042BA2A62E27900F4AF88 /* Products */,
+				696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */,
 			);
 			sourceTree = "<group>";
 		};
@@ -689,6 +692,7 @@
 				026042C42A62E27C00F4AF88 /* Preview Assets.xcassets in Resources */,
 				026042C12A62E27C00F4AF88 /* Assets.xcassets in Resources */,
 				02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */,
+				6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
