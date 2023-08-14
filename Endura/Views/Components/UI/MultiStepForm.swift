@@ -7,28 +7,29 @@ import SwiftUI
 
 struct MultiStepForm: View {
     @ObservedObject private var viewModel: SignupFormInfo
-    @State private var currentStep = 0
     private let steps: [AnyView]
+    @Binding private var currentPage: Int
 
-    init(_ steps: [AnyView], viewModel: SignupFormInfo) {
+    init(_ steps: [AnyView], viewModel: SignupFormInfo, currentPage: Binding<Int>) {
         self.steps = steps
         self.viewModel = viewModel
+        _currentPage = currentPage
     }
 
     var body: some View {
         VStack {
-            ProgressView(value: Double(currentStep), total: Double(steps.count))
+            ProgressView(value: Double(currentPage), total: Double(steps.count))
 
             Spacer()
 
             Group {
                 ForEach(0 ..< steps.count, id: \.self) { index in
-                    if index == currentStep {
+                    if index == currentPage {
                         steps[index]
                             .transition(.opacity)
                     }
                 }
-                if currentStep == steps.count {
+                if currentPage == steps.count {
                     SignupFinishedView()
                         .environmentObject(viewModel)
                 }
@@ -37,24 +38,20 @@ struct MultiStepForm: View {
             Spacer()
 
             HStack {
-                if currentStep > 0 && currentStep < steps.count {
+                if currentPage > 0 && currentPage < steps.count {
                     Button("Back") {
                         withAnimation {
-                            currentStep -= 1
+                            currentPage -= 1
                         }
                     }
                 }
                 Spacer()
-                if currentStep < steps.count - 1 {
-                    Button("Next") {
-                        withAnimation {
-                            currentStep += 1
-                        }
-                    }
+                if currentPage < steps.count - 1 {
+                    Text(String(describing: currentPage))
                 } else {
                     Button("Submit") {
                         withAnimation {
-                            currentStep += 1
+                            currentPage += 1
                         }
                     }
                 }

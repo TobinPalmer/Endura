@@ -23,11 +23,13 @@ struct SignupView: View {
     @ObservedObject fileprivate var viewModel = SignupViewModel()
     @ObservedObject fileprivate var signupFormInfo = SignupFormInfo()
 
+    @State private var currentStep: Int = 0
+
     var body: some View {
         MultiStepForm([
-            AnyView(SignupStepOneView(viewModel: signupFormInfo)),
-            AnyView(SignupStepTwoView(viewModel: signupFormInfo)),
-            AnyView(SignupStepThreeView(viewModel: signupFormInfo)),
-        ], viewModel: signupFormInfo)
+            AnyView(SignupStepOneView(viewModel: signupFormInfo, currentStep: $currentStep)),
+            AnyView(SignupStepTwoView(viewModel: signupFormInfo, currentStep: $currentStep)),
+            AnyView(SignupStepThreeView(viewModel: signupFormInfo, currentStep: $currentStep)),
+        ], viewModel: signupFormInfo, currentPage: $currentStep)
     }
 }

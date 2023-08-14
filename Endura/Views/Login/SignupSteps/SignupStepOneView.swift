@@ -8,9 +8,11 @@ import SwiftUI
 
 struct SignupStepOneView: View {
     @ObservedObject private var viewModel: SignupFormInfo
+    @Binding private var currentStep: Int
 
-    init(viewModel: SignupFormInfo) {
+    init(viewModel: SignupFormInfo, currentStep: Binding<Int>) {
         _viewModel = ObservedObject(initialValue: viewModel)
+        _currentStep = currentStep
     }
 
     public var body: some View {
@@ -21,6 +23,12 @@ struct SignupStepOneView: View {
 
             TextField("Last Name", text: $viewModel.lastName)
                 .textFieldStyle(EnduraTextFieldStyle())
+
+            Button("Next") {
+                withAnimation {
+                    currentStep += 1
+                }
+            }
         }
     }
 }
