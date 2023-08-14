@@ -5,7 +5,7 @@
 import Foundation
 import UserNotifications
 
-public struct NotificationUtils {
+public enum NotificationUtils {
     public static func requestPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
@@ -22,7 +22,7 @@ public struct NotificationUtils {
         content.body = body
         content.sound = UNNotificationSound.default
 
-        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second, ], from: date)
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)

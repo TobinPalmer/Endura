@@ -13,19 +13,19 @@ import SwiftUI
     var currentIncrementCount = 0
 
     func setup() {
-        items = Array(0..<10)
+        items = Array(0 ..< 10)
         currentCount = items.count
     }
 
     func loadMoreContent() async {
         do {
             try await Task.sleep(nanoseconds: 1_000_000_000)
-            let range = currentCount..<(currentCount + incrementAmount)
+            let range = currentCount ..< (currentCount + incrementAmount)
             items.append(contentsOf: range)
             currentCount += incrementAmount
         } catch is CancellationError {
             print("There was an error, trying to load more content still.")
-            let range = currentCount..<(currentCount + incrementAmount)
+            let range = currentCount ..< (currentCount + incrementAmount)
             items.append(contentsOf: range)
             currentCount += incrementAmount
         } catch {
@@ -46,7 +46,7 @@ struct ProgressDashboardView: View {
                             if index == viewModel.items.count - 5 {
                                 do {
                                     try await viewModel.loadMoreContent()
-                                } catch let error {
+                                } catch {
                                     print("Failed to load more posts", error.localizedDescription)
                                 }
                             }
@@ -55,8 +55,8 @@ struct ProgressDashboardView: View {
                 }
             }
         }
-            .onAppear {
-                viewModel.setup()
-            }
+        .onAppear {
+            viewModel.setup()
+        }
     }
 }

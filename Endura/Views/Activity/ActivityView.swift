@@ -32,13 +32,13 @@ struct ActivityView: View {
 
                     VStack {
                         let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
-                        if (!paceGraph.isEmpty) {
+                        if !paceGraph.isEmpty {
                             LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                                 .environmentObject(activityViewModel)
                         } else {
                             Text("No pace data available")
                         }
-                        if (!heartRateGraph.isEmpty) {
+                        if !heartRateGraph.isEmpty {
                             LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                                 .environmentObject(activityViewModel)
                         } else {
@@ -48,8 +48,8 @@ struct ActivityView: View {
                 }
             }
         }
-            .task {
-                activityData = await activity.withRouteData(id: id)
-            }
+        .task {
+            activityData = await activity.withRouteData(id: id)
+        }
     }
 }

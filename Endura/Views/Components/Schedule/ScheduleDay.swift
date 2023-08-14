@@ -19,7 +19,7 @@ struct CalanderPopupSheetView: View {
         }
         let todayDate = Calendar.current.dateComponents([.day], from: date)
         let startOfWeek = CalendarUtils.startOfWeek(for: date)
-        let datesOfWeek = (0..<7).compactMap {
+        let datesOfWeek = (0 ..< 7).compactMap {
             Calendar.current.date(byAdding: .day, value: $0, to: startOfWeek)
         }
         HStack {
@@ -55,7 +55,6 @@ struct CalanderPopupSheetView: View {
     }
 }
 
-
 struct DayView: View {
     private let date: Date
     private let isSelected: Bool
@@ -76,19 +75,18 @@ struct DayView: View {
             Text("\(getDate())")
             event.map(Text.init)
         }
-            .padding(8)
-            .background(Color(disabled ? .gray : (isToday() ? .green : (isSelected ? .blue : .white))))
-            .cornerRadius(10)
-            .onTapGesture {
-                if !disabled {
-                    showingSheet = true
-                }
+        .padding(8)
+        .background(Color(disabled ? .gray : (isToday() ? .green : (isSelected ? .blue : .white))))
+        .cornerRadius(10)
+        .onTapGesture {
+            if !disabled {
+                showingSheet = true
             }
-            .sheet(isPresented: $showingSheet) {
-                CalanderPopupSheetView(day: date)
-            }
+        }
+        .sheet(isPresented: $showingSheet) {
+            CalanderPopupSheetView(day: date)
+        }
     }
-
 
     private func getDate() -> Int {
         let components = Calendar.current.dateComponents([.day], from: date)

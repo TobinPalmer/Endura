@@ -2,14 +2,14 @@
 // Created by Brandon Kirbyson on 7/28/23.
 //
 
-import Foundation
-import SwiftUI
+import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import FirebaseAuth
+import Foundation
 import HealthKit
+import SwiftUI
 
-@MainActor fileprivate final class ActivitiesViewModel: ObservableObject {
+@MainActor private final class ActivitiesViewModel: ObservableObject {
     @Published fileprivate var activities: [String: ActivityData] = [:]
     @Published var lastDocument: DocumentSnapshot? = nil
 
@@ -30,12 +30,12 @@ import HealthKit
                 do {
                     let data = try diff.document.data(as: ActivityData.self)
                     let activity = ActivityData(
-                            uid: data.uid,
-                            time: data.time,
-                            distance: data.distance,
-                            duration: data.duration,
-                            comments: data.comments,
-                            likes: data.likes
+                        uid: data.uid,
+                        time: data.time,
+                        distance: data.distance,
+                        duration: data.duration,
+                        comments: data.comments,
+                        likes: data.likes
                     )
 
                     if diff.type == .added || diff.type == .modified {
@@ -63,7 +63,7 @@ struct ActivitiesView: View {
     var body: some View {
         VStack {
             ScrollView(.vertical) {
-                if (activityViewModel.activities.count > 0) {
+                if activityViewModel.activities.count > 0 {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
                         ForEach(activityViewModel.activities.keys.sorted(by: >), id: \.self) { key in
                             if let activity = activityViewModel.activities[key] {
@@ -76,31 +76,30 @@ struct ActivitiesView: View {
                             }
                         }
                     }
-                        .padding(10)
+                    .padding(10)
                 } else {
                     Text("No activities")
                 }
             }
         }
-            .background(Color(.secondarySystemBackground))
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination: NewActivityView()) {
-                        Image(systemName: "plus")
-                    }
-
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination: FindUsersView()) {
-                        Image(systemName: "person.2")
-                    }
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    UserProfileLink(AuthUtils.getCurrentUID()) {
-                        ProfileImage(AuthUtils.getCurrentUID(), size: 30)
-                    }
+        .background(Color(.secondarySystemBackground))
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationLink(destination: NewActivityView()) {
+                    Image(systemName: "plus")
                 }
             }
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationLink(destination: FindUsersView()) {
+                    Image(systemName: "person.2")
+                }
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                UserProfileLink(AuthUtils.getCurrentUID()) {
+                    ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                }
+            }
+        }
     }
 }

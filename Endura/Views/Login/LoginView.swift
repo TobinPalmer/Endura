@@ -5,7 +5,7 @@
 import Foundation
 import SwiftUI
 
-fileprivate final class LoginViewModel: ObservableObject {
+private final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
 
@@ -39,6 +39,6 @@ struct LoginView: View {
                 Text("Signup")
             }
         }
-            .frame(width: 300, height: 300)
+        .frame(width: 300, height: 300)
     }
 }

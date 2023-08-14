@@ -18,11 +18,11 @@ struct ActivityMapImage: View {
                 switch phase {
                 case .empty:
                     ProgressView()
-                case .success(let image):
+                case let .success(image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                case .failure(_):
+                case .failure:
                     Text("No Map Available")
                 @unknown default:
                     EmptyView()

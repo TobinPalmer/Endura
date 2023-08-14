@@ -2,17 +2,17 @@
 // Created by Brandon Kirbyson on 7/31/23.
 //
 
+import FirebaseAuth
+import FirebaseStorage
 import Foundation
 import SwiftUI
 import UIKit
-import FirebaseStorage
-import FirebaseAuth
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding private var selectedImage: UIImage?
 
     init(selectedImage: Binding<UIImage?>) {
-        self._selectedImage = selectedImage
+        _selectedImage = selectedImage
     }
 
     @Environment(\.presentationMode) private var presentationMode
@@ -24,14 +24,13 @@ struct ImagePicker: UIViewControllerRepresentable {
             self.parent = parent
         }
 
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.selectedImage = uiImage.crop(to: CGSize(width: 128, height: 128))
             }
 
             parent.presentationMode.wrappedValue.dismiss()
         }
-
     }
 
     func makeCoordinator() -> Coordinator {
@@ -44,16 +43,14 @@ struct ImagePicker: UIViewControllerRepresentable {
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
-
-    }
+    func updateUIViewController(_: UIImagePickerController, context _: UIViewControllerRepresentableContext<ImagePicker>) {}
 }
 
-fileprivate final class AccountSettingsViewModel: ObservableObject {
+private final class AccountSettingsViewModel: ObservableObject {
     func uploadProfileImage(imageData: Data) {
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"
-        Storage.storage().reference().child("users/\(AuthUtils.getCurrentUID())/profilePicture").putData(imageData, metadata: metadata) { (metadata, error) in
+        Storage.storage().reference().child("users/\(AuthUtils.getCurrentUID())/profilePicture").putData(imageData, metadata: metadata) { _, error in
             if let error = error {
                 print("Error uploading profile image: \(error)")
             }
@@ -83,9 +80,9 @@ struct AccountSettingsView: View {
             Button("Select Image") {
                 self.showingImagePicker = true
             }
-                .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
-                    ImagePicker(selectedImage: self.$inputImage)
-                }
+            .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
+                ImagePicker(selectedImage: self.$inputImage)
+            }
             Button("Save Changes") {
                 if let imageData = inputImage?.pngData() {
                     viewModel.uploadProfileImage(imageData: imageData)
@@ -101,4 +98,3 @@ struct AccountSettingsView: View {
         image = Image(uiImage: inputImage)
     }
 }
-

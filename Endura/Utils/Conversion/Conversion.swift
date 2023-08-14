@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct ConversionUtils {
+public enum ConversionUtils {
     public static func round(_ metersPerSec: Double) -> String {
         String(metersPerSec.rounded())
     }

@@ -2,8 +2,8 @@
 // Created by Tobin Palmer on 7/17/23.
 //
 
-import Foundation
 import FirebaseFirestore
+import Foundation
 import MapKit
 
 public typealias LineGraphData = [(Date, Double)]
@@ -77,7 +77,7 @@ public struct ActivityDataWithRoute {
         var pace = LineGraphData()
         var heartRate = LineGraphData()
 
-        let _ = data.graphData.forEach { val in
+        _ = data.graphData.forEach { val in
             pace.append((val.timestamp, val.pace))
             heartRate.append((val.timestamp, val.heartRate))
         }

@@ -2,13 +2,13 @@
 // Created by Tobin Palmer on 7/18/23.
 //
 
-import Foundation
 import CoreLocation
-import HealthKit
 import FirebaseAuth
+import Foundation
+import HealthKit
 import UIKit
 
-public struct HealthKitUtils {
+public enum HealthKitUtils {
     private static let healthStore = HKHealthStore()
 
     public static func requestAuthorization() {
@@ -20,7 +20,7 @@ public struct HealthKitUtils {
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
         ]
 
-        healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
+        healthStore.requestAuthorization(toShare: nil, read: typesToRead) { _, error in
             if let error = error {
                 print("Authorization request failed: \(error.localizedDescription)")
                 return
@@ -28,7 +28,7 @@ public struct HealthKitUtils {
 
             let sampleType = HKObjectType.workoutType()
 
-            healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate) { (success, error) in
+            healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate) { _, error in
                 if let error = error {
                     print("Error enabling background delivery: \(error.localizedDescription)")
                     return
@@ -42,7 +42,7 @@ public struct HealthKitUtils {
     public static func subscribeToNewWorkouts() {
         let sampleType = HKObjectType.workoutType()
 
-        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) { (query, completionHandler, errorOrNil) in
+        let query = HKObserverQuery(sampleType: sampleType, predicate: nil) { _, completionHandler, errorOrNil in
             if let error = errorOrNil {
                 print("Error in observer query: \(error)")
                 return
@@ -59,7 +59,7 @@ public struct HealthKitUtils {
         print("calling location data")
         let locations = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
             var allLocations: [CLLocation] = []
-            let query = HKWorkoutRouteQuery(route: route) { (query, locationsOrNil, done, errorOrNil) in
+            let query = HKWorkoutRouteQuery(route: route) { _, locationsOrNil, done, errorOrNil in
                 if let error = errorOrNil {
                     continuation.resume(throwing: error)
                     return
@@ -81,7 +81,7 @@ public struct HealthKitUtils {
         let predicate = HKQuery.predicateForObjects(from: workout)
         do {
             let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKSample], Error>) in
-                healthStore.execute(HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit, resultsHandler: { (query, samples, deletedObjects, anchor, error) in
+                healthStore.execute(HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit, resultsHandler: { _, samples, _, _, error in
                     if let hasError = error {
                         continuation.resume(throwing: hasError)
                         return
@@ -108,7 +108,7 @@ public struct HealthKitUtils {
         let query = await createQueryForWorkout(workout, interval: interval)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateData], Error>) in
-            query.initialResultsHandler = { query, results, error in
+            query.initialResultsHandler = { _, results, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let results = results {
@@ -129,11 +129,11 @@ public struct HealthKitUtils {
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
 
         return HKStatisticsCollectionQuery(
-                quantityType: quantityType,
-                quantitySamplePredicate: predicate,
-                options: [.discreteMax, .discreteMin],
-                anchorDate: workout.startDate,
-                intervalComponents: interval
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
         )
     }
 
@@ -141,13 +141,14 @@ public struct HealthKitUtils {
         var heartRateData = [HeartRateData]()
 
         results.enumerateStatistics(
-                from: workout.startDate,
-                to: workout.endDate
+            from: workout.startDate,
+            to: workout.endDate
         ) { statistics, _ in
             if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
-               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min")) {
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min"))
+            {
                 let average = (minValue + maxValue) / 2
-                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1000000).rounded() / 1000000)
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
 
                 heartRateData.append(HeartRateData(timestamp: date, heartRate: average))
             }
@@ -155,7 +156,7 @@ public struct HealthKitUtils {
 
         var filledArray = [HeartRateData]()
 
-        for i in 0..<heartRateData.count {
+        for i in 0 ..< heartRateData.count {
             let currentTuple = heartRateData[i]
 
             if i > 0 {
@@ -186,11 +187,11 @@ public struct HealthKitUtils {
 
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKSampleQuery(
-                    sampleType: workoutType,
-                    predicate: predicate,
-                    limit: limitTo + offset,
-                    sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
-            ) { (query, samples, error) in
+                sampleType: workoutType,
+                predicate: predicate,
+                limit: limitTo + offset,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)]
+            ) { _, samples, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let workouts = samples as? [HKWorkout?] {
@@ -203,7 +204,6 @@ public struct HealthKitUtils {
             healthStore.execute(query)
         }
     }
-
 
     public static func workoutToActivityData(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
@@ -222,63 +222,63 @@ public struct HealthKitUtils {
 
         var dataRate = 1
 
-        if (!data.isEmpty) {
+        if !data.isEmpty {
             var graphSectionData = (0, data[0].timestamp, [GraphData]())
             let maxPoints = 200
 
             let workoutEvents = workout.workoutEvents ?? []
             let workoutPausesArray = workoutEvents.filter {
-                    $0.type == .pause || $0.type == .resume
-                }
-                .map({
-                    $0.dateInterval
-                })
-            if (data.count > maxPoints) {
+                $0.type == .pause || $0.type == .resume
+            }
+            .map {
+                $0.dateInterval
+            }
+            if data.count > maxPoints {
                 dataRate = data.count / maxPoints
             }
-            data.removeSubrange(0...5)
-            for i in 0..<data.count {
-                var heartRateAtPoint: Double?;
+            data.removeSubrange(0 ... 5)
+            for i in 0 ..< data.count {
+                var heartRateAtPoint: Double?
                 let point = data[i]
 
-                for j in 0..<heartRate.count {
+                for j in 0 ..< heartRate.count {
                     if Int(heartRate[j].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
                         heartRateAtPoint = heartRate[j].heartRate
-                        heartRate.removeSubrange(0...j) // Remove all previous heart rate points since they are no longer needed
-                        break;
+                        heartRate.removeSubrange(0 ... j) // Remove all previous heart rate points since they are no longer needed
+                        break
                     }
                 }
 
                 let routePoint = RouteData(
-                        timestamp: point.timestamp,
-                        location: LocationData(
-                                latitude: point.coordinate.latitude,
-                                longitude: point.coordinate.longitude
-                        ),
-                        altitude: point.altitude,
-                        heartRate: heartRateAtPoint ?? 0.0,
-                        pace: point.speed
+                    timestamp: point.timestamp,
+                    location: LocationData(
+                        latitude: point.coordinate.latitude,
+                        longitude: point.coordinate.longitude
+                    ),
+                    altitude: point.altitude,
+                    heartRate: heartRateAtPoint ?? 0.0,
+                    pace: point.speed
                 )
 
                 routeData.append(routePoint)
 
                 let graphPoint = GraphData(
-                        timestamp: point.timestamp,
-                        altitude: point.altitude,
-                        heartRate: heartRateAtPoint ?? 0.0,
-                        pace: point.speed
+                    timestamp: point.timestamp,
+                    altitude: point.altitude,
+                    heartRate: heartRateAtPoint ?? 0.0,
+                    pace: point.speed
                 )
 
                 if i % dataRate == 0 {
-                    if (i > 0) {
-                        let filteredHeartRateArray = graphSectionData.2.filter({ $0.heartRate != 0.0 })
-                        let filteredPaceArray = graphSectionData.2.filter({ $0.pace != 0.0 })
+                    if i > 0 {
+                        let filteredHeartRateArray = graphSectionData.2.filter { $0.heartRate != 0.0 }
+                        let filteredPaceArray = graphSectionData.2.filter { $0.pace != 0.0 }
 
                         let graphSectionPoint = GraphData(
-                                timestamp: graphSectionData.1,
-                                altitude: graphSectionData.2.reduce(0, { $0 + $1.altitude }) / Double(graphSectionData.2.count),
-                                heartRate: filteredHeartRateArray.reduce(0, { $0 + $1.heartRate }) / Double(filteredHeartRateArray.count),
-                                pace: filteredPaceArray.reduce(0, { $0 + $1.pace }) / Double(filteredPaceArray.count)
+                            timestamp: graphSectionData.1,
+                            altitude: graphSectionData.2.reduce(0) { $0 + $1.altitude } / Double(graphSectionData.2.count),
+                            heartRate: filteredHeartRateArray.reduce(0) { $0 + $1.heartRate } / Double(filteredHeartRateArray.count),
+                            pace: filteredPaceArray.reduce(0) { $0 + $1.pace } / Double(filteredPaceArray.count)
                         )
 
                         graphData.append(graphSectionPoint)
@@ -292,17 +292,17 @@ public struct HealthKitUtils {
         }
 
         let workoutData = ActivityDataWithRoute(
-                uid: AuthUtils.getCurrentUID(),
-                time: workout.startDate,
-                distance: workoutDistance,
-                duration: workoutDuration,
-                data: ActivityRouteData(
-                        routeData: routeData,
-                        graphData: graphData,
-                        graphInterval: dataRate
-                ),
-                comments: [],
-                likes: []
+            uid: AuthUtils.getCurrentUID(),
+            time: workout.startDate,
+            distance: workoutDistance,
+            duration: workoutDuration,
+            data: ActivityRouteData(
+                routeData: routeData,
+                graphData: graphData,
+                graphInterval: dataRate
+            ),
+            comments: [],
+            likes: []
         )
 
         return workoutData

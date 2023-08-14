@@ -3,14 +3,14 @@
 //
 
 import Foundation
-import SwiftUI
 import HealthKit
+import SwiftUI
 
 @MainActor final class UploadsViewModel: ObservableObject {
     @Published fileprivate final var uploads: [HKWorkout?] = []
     private var offset: Int = 0
 
-    final fileprivate func activityToIcon(activityName: String) -> String {
+    fileprivate final func activityToIcon(activityName: String) -> String {
         switch activityName {
         case "Running":
             return "figure.run"
@@ -29,10 +29,10 @@ import HealthKit
         }
     }
 
-    final fileprivate func getActivities(_ limitTo: Int) async {
+    fileprivate final func getActivities(_ limitTo: Int) async {
         guard limitTo > 0 else {
             return
-        };
+        }
 
         guard uploads.count > limitTo else {
             do {
@@ -74,21 +74,20 @@ struct NewActivityView: View {
                             }
                         }
                     }
-                        .task {
-                            let earliestDate = activityEndDatesToUUIDs.keys.min() ?? Date()
-                            activityEndDatesToUUIDs[activity.startDate] = activity.uuid
-                            if activity.uuid == activityEndDatesToUUIDs[activity.startDate] {
-                                print("end")
-                                totalItemsLoaded += 10
-                                await uploadsViewModel.getActivities(10)
-                            }
+                    .task {
+                        let earliestDate = activityEndDatesToUUIDs.keys.min() ?? Date()
+                        activityEndDatesToUUIDs[activity.startDate] = activity.uuid
+                        if activity.uuid == activityEndDatesToUUIDs[activity.startDate] {
+                            print("end")
+                            totalItemsLoaded += 10
+                            await uploadsViewModel.getActivities(10)
                         }
+                    }
                 }
             }
         }
-            .task {
-                await uploadsViewModel.getActivities(1000000)
-            }
+        .task {
+            await uploadsViewModel.getActivities(1_000_000)
+        }
     }
 }
-

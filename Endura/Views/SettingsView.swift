@@ -63,8 +63,7 @@ struct SettingsView: View {
             } label: {
                 Text("Logout").foregroundColor(.red)
             }
-                .padding(20)
+            .padding(20)
         }
-
     }
 }

@@ -5,7 +5,7 @@
 import Foundation
 import SwiftUI
 
-fileprivate struct MonthView: View {
+private struct MonthView: View {
     let dates: [Date]
     @Binding var selectedDate: Date?
     let events: [Date: String]
@@ -13,7 +13,7 @@ fileprivate struct MonthView: View {
     var body: some View {
         VStack {
             LazyHGrid(rows: Array(repeating: .init(.flexible()), count: 1)) {
-                ForEach(0..<7, id: \.self) { index in
+                ForEach(0 ..< 7, id: \.self) { index in
                     Text(Calendar.current.shortWeekdaySymbols[index]).padding(8)
                 }
             }
@@ -35,7 +35,6 @@ fileprivate struct MonthView: View {
         return month1 == month2
     }
 }
-
 
 struct CalendarView: View {
     let months: [[Date]]
@@ -60,5 +59,4 @@ struct ActivitySchedule: View {
             CalendarView(months: [currentMonthDates], events: [Date(): "Event"])
         }
     }
-
 }

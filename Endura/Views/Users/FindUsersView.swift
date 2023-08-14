@@ -5,8 +5,7 @@
 import Foundation
 import SwiftUI
 
-fileprivate final class FindUsersViewModel: ObservableObject {
-}
+private final class FindUsersViewModel: ObservableObject {}
 
 struct FindUsersView: View {
     @StateObject private var viewModel = FindUsersViewModel()

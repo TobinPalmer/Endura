@@ -2,11 +2,11 @@
 // Created by Tobin Palmer on 7/22/23.
 //
 
+import Combine
 import Foundation
+import HealthKit
 import MapKit
 import SwiftUI
-import HealthKit
-import Combine
 
 struct ColoredPolyline: Identifiable {
     var id = UUID()
@@ -15,7 +15,7 @@ struct ColoredPolyline: Identifiable {
 }
 
 class MapViewContainer: ObservableObject {
-    @Published var mapView: MKMapView = MKMapView()
+    @Published var mapView: MKMapView = .init()
 
     func updateAnnotation(position: CLLocationCoordinate2D) {
         mapView.removeAnnotations(mapView.annotations)
@@ -42,10 +42,10 @@ struct ActivityMap: View {
 
 //
 //    public func getMapImage() -> UIImage {
-////        guard let mapView = mapView else {
-////            print("no map view")
-////            return UIImage()
-////        }
+    ////        guard let mapView = mapView else {
+    ////            print("no map view")
+    ////            return UIImage()
+    ////        }
 //        guard let mapImageOptions = mapImageOptions else {
 //            print("no options", mapImageOptions)
 //            return UIImage()
@@ -56,12 +56,12 @@ struct ActivityMap: View {
 //    }
 
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             VStack {
                 if !routeData.isEmpty {
 //                    let mapView =
                     MapView(mapViewContainer: mapViewContainer, routeData: routeData)
-                            //                    mapView
+                        //                    mapView
                         .frame(height: 300)
                         .onChange(of: activityViewModel.analysisPosition) { timePosition in
                             if let timePosition = timePosition {
@@ -79,7 +79,7 @@ struct ActivityMap: View {
 //                            self.mapImageOptions = (origin: geometry.frame(in: .global).origin, size: geometry.size)
 //                            print("should work")
 //                            print(String(describing: self.mapView))
-////                            print("definitely should work", self.mapImageOptions)
+                    ////                            print("definitely should work", self.mapImageOptions)
 //                        }
                 } else {
                     Text("No route data available")
@@ -89,7 +89,7 @@ struct ActivityMap: View {
     }
 }
 
-fileprivate struct MapView: UIViewRepresentable {
+private struct MapView: UIViewRepresentable {
     @ObservedObject var mapViewContainer: MapViewContainer
     public var routeData: [RouteData]
 
@@ -99,15 +99,15 @@ fileprivate struct MapView: UIViewRepresentable {
         let minPace = 0.0
         let maxHue = 0.7
         pace = max(min(pace, maxPace), minPace)
-        var roundedPace: Double = 0.0
+        var roundedPace = 0.0
         if pace > 7.0 {
-            roundedPace = (pace).rounded()
+            roundedPace = pace.rounded()
         } else {
             roundedPace = (pace * 2).rounded() / 2
         }
-        //Take the rounded pace and convert it to a percentage of the max pace in the hue format which is 0...1
-        let hue = maxHue - (roundedPace * (maxHue / (maxPace)))
-        if (hue > 1 || hue < 0) {
+        // Take the rounded pace and convert it to a percentage of the max pace in the hue format which is 0...1
+        let hue = maxHue - (roundedPace * (maxHue / maxPace))
+        if hue > 1 || hue < 0 {
             return UIColor(hue: 0.0, saturation: 1.0, lightness: 0.5, alpha: 1.0)
         }
         return UIColor(hue: CGFloat(hue), saturation: 1.0, lightness: 0.5, alpha: 1.0)
@@ -118,7 +118,7 @@ fileprivate struct MapView: UIViewRepresentable {
         return mapViewContainer.mapView
     }
 
-    fileprivate func updateUIView(_ uiView: MKMapView, context: Context) {
+    fileprivate func updateUIView(_ uiView: MKMapView, context _: Context) {
         uiView.removeOverlays(uiView.overlays)
 
         var overlaysToAdd = [ColoredPolyline]()
@@ -154,7 +154,6 @@ fileprivate struct MapView: UIViewRepresentable {
                 overlaysToAdd.append(ColoredPolyline(color: color, polyline: polyline))
             }
 
-
             // add all prepared overlays
             for overlay in overlaysToAdd {
                 overlay.polyline.color = overlay.color
@@ -171,20 +170,19 @@ fileprivate struct MapView: UIViewRepresentable {
         }
     }
 
-
     fileprivate func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 }
 
-fileprivate class Coordinator: NSObject, MKMapViewDelegate {
+private class Coordinator: NSObject, MKMapViewDelegate {
     private final let parent: MapView
 
     init(_ parent: MapView) {
         self.parent = parent
     }
 
-    fileprivate final func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+    fileprivate final func mapView(_: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let polyline = overlay as? MKPolyline {
             let renderer = MKPolylineRenderer(polyline: polyline)
             renderer.strokeColor = polyline.color

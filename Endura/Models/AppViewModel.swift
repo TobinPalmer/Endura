@@ -11,15 +11,14 @@ public enum PageView {
 
 public final class NavigationModel: ObservableObject {
     public final class var instance: NavigationModel {
-        struct Singleton {
+        enum Singleton {
             static let instance = NavigationModel()
         }
 
         return Singleton.instance
     }
 
-    private init() {
-    }
+    private init() {}
 
     @Published var currentView: PageView = .LOGIN
 }

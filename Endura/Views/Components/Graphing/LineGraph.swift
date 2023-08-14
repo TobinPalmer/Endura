@@ -15,7 +15,7 @@ struct HeartRateLineGraphStyle: LineGraphStyle {
 struct LineSegment: Shape {
     var start, end: CGPoint
 
-    func path(in rect: CGRect) -> Path {
+    func path(in _: CGRect) -> Path {
         Path { path in
             path.move(to: start)
             path.addLine(to: end)
@@ -52,7 +52,6 @@ struct AnimatedPath: View {
     }
 }
 
-
 struct LineGraph<Style>: View where Style: LineGraphStyle {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
@@ -77,7 +76,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         let maxVal = data.max(by: { $0.1 < $1.1 })?.1 ?? 0
         let minVal = data.min(by: { $0.1 < $1.1 })?.1 ?? 0
         let range = maxVal - minVal
-        let mean = data.reduce(0, { $0 + $1.1 }) / Double(data.count)
+        let mean = data.reduce(0) { $0 + $1.1 } / Double(data.count)
 
         let minTimestamp = data.min(by: { $0.0 < $1.0 })?.0 ?? Date()
         let minTimestampInterval: Double = minTimestamp.timeIntervalSince1970
@@ -94,7 +93,6 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                     AnimatedPath(path: path, color: style.color, duration: 2)
                 }
 
-
                 Text("\(valueModifier(mean))")
                     .font(.footnote)
                     .fontWeight(.bold)
@@ -107,26 +105,25 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                     .foregroundColor(.black)
                     .position(x: 10, y: CGFloat(height) - 20)
             }
-                .padding(10)
-                .frame(height: CGFloat(height))
-                .gesture(DragGesture(minimumDistance: 0)
-                    .onChanged({ value in
-                        let x = value.location.x
-                        if let hitPoint = data.first(where: { point in
-                            let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
-                            let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                            return x < xPosition
-                        }) {
-                            activityViewModel.analysisPosition = hitPoint.0
-                        }
-                    })
-                    .onEnded({ _ in
-                        activityViewModel.analysisPosition = nil
-                    })
-                )
-        }
+            .padding(10)
             .frame(height: CGFloat(height))
-
+            .gesture(DragGesture(minimumDistance: 0)
+                .onChanged { value in
+                    let x = value.location.x
+                    if let hitPoint = data.first(where: { point in
+                        let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
+                        let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                        return x < xPosition
+                    }) {
+                        activityViewModel.analysisPosition = hitPoint.0
+                    }
+                }
+                .onEnded { _ in
+                    activityViewModel.analysisPosition = nil
+                }
+            )
+        }
+        .frame(height: CGFloat(height))
     }
 
     func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> Path {
@@ -154,6 +151,4 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
 //        path.closeSubpath()
         return path
     }
-
-
 }

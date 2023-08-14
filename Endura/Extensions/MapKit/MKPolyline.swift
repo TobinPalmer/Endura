@@ -3,8 +3,8 @@
 //
 
 import Foundation
-import SwiftUI
 import MapKit
+import SwiftUI
 
 private var colorKey: UInt8 = 0
 

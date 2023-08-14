@@ -10,12 +10,12 @@ struct ProfileView: View {
         VStack {
             ProfileImage(AuthUtils.getCurrentUID(), size: 128)
         }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: SettingsView()) {
-                        Image(systemName: "gearshape")
-                    }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: SettingsView()) {
+                    Image(systemName: "gearshape")
                 }
             }
+        }
     }
 }

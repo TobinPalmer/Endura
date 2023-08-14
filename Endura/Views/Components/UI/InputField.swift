@@ -23,18 +23,16 @@ struct LoginTextInput: View {
             SecureField(placeholder, text: text)
                 .padding(20)
                 .overlay(
-                        RoundedRectangle(cornerRadius: 14)
-                            .stroke(.black, lineWidth: 2)
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(.black, lineWidth: 2)
                 )
         } else {
             TextField(placeholder, text: text)
                 .padding(20)
                 .overlay(
-                        RoundedRectangle(cornerRadius: 14)
-                            .stroke(.black, lineWidth: 2)
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(.black, lineWidth: 2)
                 )
         }
     }
 }
-
-

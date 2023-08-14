@@ -7,15 +7,13 @@ import Foundation
 import SwiftUI
 
 struct SignupStepThreeView: View {
-    @ObservedObject private var viewModel: SignupFormInfo;
+    @ObservedObject private var viewModel: SignupFormInfo
 
     init(viewModel: SignupFormInfo) {
-        self._viewModel = ObservedObject(initialValue: viewModel)
+        _viewModel = ObservedObject(initialValue: viewModel)
     }
 
     public var body: some View {
-        VStack {
-        }
+        VStack {}
     }
 }
-

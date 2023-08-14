@@ -32,7 +32,7 @@ public struct CalendarUtils {
 
         dates.append(contentsOf: startOffsetDates) // add offset dates to the start
 
-        for day in 1...range.count {
+        for day in 1 ... range.count {
             if let date = calendar.date(byAdding: .day, value: day - 1, to: startDateOfMonth) {
                 dates.append(date)
             }
@@ -49,12 +49,12 @@ public struct CalendarUtils {
 
     private static func dates(for offset: Int, from startDate: Date, in calendar: Calendar, isStartOffset: Bool) -> [Date] {
         var result: [Date] = []
-        for i in 1...offset {
+        for i in 1 ... offset {
             let dateComponents = DateComponents(day: isStartOffset ? -i : i)
             if let date = calendar.date(byAdding: dateComponents, to: startDate) {
                 result.append(date)
             }
         }
-        return isStartOffset ? result.reversed() : result  // reversing only for start offset dates
+        return isStartOffset ? result.reversed() : result // reversing only for start offset dates
     }
 }

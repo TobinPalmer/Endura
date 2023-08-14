@@ -5,7 +5,7 @@
 import Foundation
 import SwiftUI
 
-fileprivate final class SignupViewModel: ObservableObject {
+private final class SignupViewModel: ObservableObject {
 //    func login() {
 //        AuthUtils.loginWithEmail(email, password)
 //    }
@@ -19,7 +19,7 @@ internal final class SignupFormInfo: ObservableObject {
 }
 
 struct SignupView: View {
-    @EnvironmentObject var navigation: NavigationModel;
+    @EnvironmentObject var navigation: NavigationModel
     @ObservedObject fileprivate var viewModel = SignupViewModel()
     @ObservedObject fileprivate var signupFormInfo = SignupFormInfo()
 
@@ -27,7 +27,7 @@ struct SignupView: View {
         MultiStepForm([
             AnyView(SignupStepOneView(viewModel: signupFormInfo)),
             AnyView(SignupStepTwoView(viewModel: signupFormInfo)),
-            AnyView(SignupStepThreeView(viewModel: signupFormInfo))
+            AnyView(SignupStepThreeView(viewModel: signupFormInfo)),
         ], viewModel: signupFormInfo)
     }
 }

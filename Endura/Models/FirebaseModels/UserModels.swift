@@ -19,4 +19,3 @@ public struct UserDocument: Codable {
     var lastName: String
     var friends: [String]
 }
-

@@ -2,21 +2,20 @@
 // Created by Tobin Palmer on 7/16/23.
 //
 
-import Foundation
 import FirebaseAuth
+import Foundation
 
-public struct AuthUtils {
-
+public enum AuthUtils {
     public static func getCurrentUID() -> String {
         Auth.auth().currentUser!.uid
     }
 
     public static func initAuth() {
-        if (Auth.auth().currentUser !== nil) {
+        if Auth.auth().currentUser !== nil {
             NavigationModel.instance.currentView = .HOME
         }
 
-        Auth.auth().addStateDidChangeListener { (auth, user) in
+        Auth.auth().addStateDidChangeListener { _, user in
             if let user = user {
                 print(user)
                 NavigationModel.instance.currentView = .HOME
@@ -25,7 +24,7 @@ public struct AuthUtils {
     }
 
     public static func loginWithEmail(_ email: String, _ password: String) {
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+        Auth.auth().signIn(withEmail: email, password: password) { user, error in
             if let user = user {
                 NavigationModel.instance.currentView = .HOME
             } else {

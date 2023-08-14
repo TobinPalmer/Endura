@@ -2,19 +2,19 @@
 // Created by Tobin Palmer on 7/21/23.
 //
 
+import Charts
+import FirebaseCore
+import FirebaseFirestore
 import Foundation
-import SwiftUI
 import HealthKit
 import MapKit
-import Charts
-import FirebaseFirestore
-import FirebaseCore
+import SwiftUI
 import SwiftUICharts
 
-@MainActor fileprivate final class PreviewWorkoutModel: ObservableObject {
+@MainActor private final class PreviewWorkoutModel: ObservableObject {
     @Published public var number = 2
 
-    final fileprivate func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
+    fileprivate final func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
             return try await HealthKitUtils.workoutToActivityData(workout)
         } catch {
@@ -49,9 +49,9 @@ struct PreviewWorkoutView: View {
                         GeometryReader { geometry in
                             VStack {
                                 let map =
-                                        ActivityMap(activityData.data.routeData)
-                                            .frame(height: 300)
-                                            .environmentObject(activityViewModel)
+                                    ActivityMap(activityData.data.routeData)
+                                        .frame(height: 300)
+                                        .environmentObject(activityViewModel)
                                 map
 
                                 Button {
@@ -68,19 +68,19 @@ struct PreviewWorkoutView: View {
                             }
                         }
                     }
-                        .frame(height: 300)
+                    .frame(height: 300)
 
                     Spacer()
 
                     let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
                     VStack {
-                        if (!paceGraph.isEmpty) {
+                        if !paceGraph.isEmpty {
                             LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                                 .environmentObject(activityViewModel)
                         } else {
                             Text("No pace data available")
                         }
-                        if (!heartRateGraph.isEmpty) {
+                        if !heartRateGraph.isEmpty {
                             LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                                 .environmentObject(activityViewModel)
                         } else {
@@ -94,15 +94,15 @@ struct PreviewWorkoutView: View {
                 }
             }
         }
-            .task {
-                do {
-                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-                } catch WorkoutErrors.noWorkout {
-                    print("No workout to get heart rate graph")
-                } catch {
-                    print("Error getting heart rate graph")
-                }
+        .task {
+            do {
+                enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+            } catch WorkoutErrors.noWorkout {
+                print("No workout to get heart rate graph")
+            } catch {
+                print("Error getting heart rate graph")
             }
+        }
         //            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
         //            .task {
         //                do {

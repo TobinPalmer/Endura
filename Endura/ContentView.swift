@@ -5,15 +5,15 @@
 //  Created by Tobin Palmer on 7/15/23.
 //
 
-import SwiftUI
-import FirebaseFirestore
 import FirebaseAuth
+import FirebaseFirestore
+import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var navigation: NavigationModel;
+    @EnvironmentObject var navigation: NavigationModel
 
     var body: some View {
-        switch (navigation.currentView) {
+        switch navigation.currentView {
         case .LOGIN:
             NavigationView {
                 LoginView()
@@ -23,42 +23,42 @@ struct ContentView: View {
                 NavigationView {
                     DashboardView()
                 }
-                    .tabItem {
-                        Image(systemName: "house")
-                        Text("Home")
-                    }
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
+                }
 
                 NavigationView {
                     ActivitiesView()
                 }
-                    .tabItem {
-                        Image(systemName: "figure.run")
-                        Text("Activities")
-                    }
+                .tabItem {
+                    Image(systemName: "figure.run")
+                    Text("Activities")
+                }
 
                 NavigationView {
                     TrainingView()
                 }
-                    .tabItem {
-                        Image(systemName: "calendar")
-                        Text("Training")
-                    }
+                .tabItem {
+                    Image(systemName: "calendar")
+                    Text("Training")
+                }
 
                 NavigationView {
                     ProgressDashboardView()
                 }
-                    .tabItem {
-                        Image(systemName: "chart.bar")
-                        Text("Progress")
-                    }
+                .tabItem {
+                    Image(systemName: "chart.bar")
+                    Text("Progress")
+                }
 
                 NavigationView {
                     ProfileView()
                 }
-                    .tabItem {
-                        Image(systemName: "person")
-                        Text("Profile")
-                    }
+                .tabItem {
+                    Image(systemName: "person")
+                    Text("Profile")
+                }
             }
         }
     }

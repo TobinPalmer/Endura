@@ -18,7 +18,7 @@ struct UserProfileLink<Content: View>: View {
         NavigationLink(destination: UserProfileView(uid)) {
             content
         }
-            .buttonStyle(PlainButtonStyle())
+        .buttonStyle(PlainButtonStyle())
     }
 }
 

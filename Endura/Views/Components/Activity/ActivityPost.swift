@@ -29,7 +29,7 @@ struct ActivityPost: View {
                         Text("Loading...")
                     }
                 }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 Text("Afternoon Run")
@@ -45,7 +45,7 @@ struct ActivityPost: View {
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 ActivityMapImage(id)
             }
-                .buttonStyle(PlainButtonStyle())
+            .buttonStyle(PlainButtonStyle())
 
             HStack {
                 Button(action: {
@@ -60,7 +60,7 @@ struct ActivityPost: View {
                     }
                 }
             }
-                .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(alignment: .leading) {
                 ForEach(activity.comments, id: \.self) { comment in
@@ -79,13 +79,13 @@ struct ActivityPost: View {
                 }
             }
         }
-            .padding(8)
-            .cornerRadius(10)
-            .foregroundColor(.primary)
-            .frame(maxWidth: .infinity)
-            .padding(8)
-            .background(Color(.systemBackground))
-            .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
-            .cornerRadius(10)
+        .padding(8)
+        .cornerRadius(10)
+        .foregroundColor(.primary)
+        .frame(maxWidth: .infinity)
+        .padding(8)
+        .background(Color(.systemBackground))
+        .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
+        .cornerRadius(10)
     }
 }

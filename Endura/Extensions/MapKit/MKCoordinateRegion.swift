@@ -20,13 +20,13 @@ public extension MKCoordinateRegion {
         }
 
         let center = CLLocationCoordinate2D(
-                latitude: (minLat + maxLat) / 2,
-                longitude: (minLon + maxLon) / 2
+            latitude: (minLat + maxLat) / 2,
+            longitude: (minLon + maxLon) / 2
         )
 
         let span = MKCoordinateSpan(
-                latitudeDelta: (maxLat - minLat) * 1.2,
-                longitudeDelta: (maxLon - minLon) * 1.2
+            latitudeDelta: (maxLat - minLat) * 1.2,
+            longitudeDelta: (maxLon - minLon) * 1.2
         )
 
         self.init(center: center, span: span)
