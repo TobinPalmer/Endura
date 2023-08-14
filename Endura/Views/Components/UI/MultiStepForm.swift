@@ -6,11 +6,13 @@ import Foundation
 import SwiftUI
 
 struct MultiStepForm: View {
+    @ObservedObject private var viewModel: SignupFormInfo;
     @State private var currentStep = 0
     private let steps: [AnyView]
 
-    init(_ steps: [AnyView]) {
+    init(_ steps: [AnyView], viewModel: SignupFormInfo) {
         self.steps = steps
+        self.viewModel = viewModel
     }
 
     var body: some View {
@@ -23,11 +25,13 @@ struct MultiStepForm: View {
                 ForEach(0..<steps.count, id: \.self) { index in
                     if index == currentStep {
                         steps[index]
+                                //                            .environmentObject(formInfo)
                             .transition(.opacity)
                     }
                 }
                 if (currentStep == steps.count) {
                     Text("Success!")
+                    Text("First Name: \(viewModel.firstName)")
                 }
             }
 
