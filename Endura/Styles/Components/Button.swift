@@ -16,6 +16,7 @@ public struct EnduraButtonStyle: ButtonStyle {
         configuration.label
             .padding()
             .background(disabled ? Color.gray : Color.blue)
+            .animation(.easeInOut(duration: 0.1), value: disabled)
             .foregroundColor(.white)
             .cornerRadius(5)
     }
