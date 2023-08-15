@@ -34,28 +34,6 @@ struct MultiStepForm: View {
                         .environmentObject(viewModel)
                 }
             }
-
-            Spacer()
-
-            HStack {
-                if currentPage > 0 && currentPage < steps.count {
-                    Button("Back") {
-                        withAnimation {
-                            currentPage -= 1
-                        }
-                    }
-                }
-                Spacer()
-                if currentPage < steps.count - 1 {
-                    Text(String(describing: currentPage))
-                } else {
-                    Button("Submit") {
-                        withAnimation {
-                            currentPage += 1
-                        }
-                    }
-                }
-            }
         }
     }
 }

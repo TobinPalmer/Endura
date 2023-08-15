@@ -16,11 +16,21 @@ struct SignupStepThreeView: View {
     }
 
     public var body: some View {
-        VStack {}
+        VStack {
+            Text("Is your name \(viewModel.firstName) \(viewModel.lastName)?")
+        }
 
-        Button("Back") {
-            withAnimation {
-                currentPage -= 1
+        HStack {
+            Button("Back") {
+                withAnimation {
+                    currentPage -= 1
+                }
+            }
+
+            Button("Submit") {
+                withAnimation {
+                    currentPage += 1
+                }
             }
         }
     }

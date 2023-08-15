@@ -13,7 +13,7 @@ struct SignupFinishedView: View {
 
     public var body: some View {
         VStack {
-            Text("FirstName: \(formInfo.firstName)")
+            Text("Welcome, \(formInfo.firstName)")
         }
     }
 }
