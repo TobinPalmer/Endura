@@ -55,7 +55,6 @@ struct AnimatedPath: View {
 struct LineGraph<Style>: View where Style: LineGraphStyle {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
-    @State private var statsBoxLocation: CGFloat? = nil
     private let style: Style
 
     private let data: [(Date, Double)]
@@ -94,20 +93,20 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                     AnimatedPath(path: path, color: style.color, duration: 2)
                 }
 
-                if statsBoxLocation != nil {
-                    let proportionOfTimestampInRange = statsBoxLocation! / geometry.frame(in: .local).width
+                if activityViewModel.analysisValue != nil {
+                    let proportionOfTimestampInRange = activityViewModel.analysisValue! / geometry.frame(in: .local).width
                     let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
                     let yPosition = geometry.frame(in: .local).height * CGFloat((data.first(where: { point in
                         let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
                         let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                        return statsBoxLocation! < xPosition
+                        return activityViewModel.analysisValue! < xPosition
                     })?
                         .1 ?? 0 - minVal) / range)
 
                     let valueAtXPosition = data.first(where: { point in
                         let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
                         let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                        return statsBoxLocation! < xPosition
+                        return activityViewModel.analysisValue! < xPosition
                     })?
                         .1 ?? 0
 
@@ -132,7 +131,6 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
             .frame(height: CGFloat(height))
             .gesture(DragGesture(minimumDistance: 0)
                 .onChanged { value in
-                    statsBoxLocation = value.location.x
                     let x = value.location.x
                     if let hitPoint = data.first(where: { point in
                         let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
@@ -140,10 +138,11 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                         return x < xPosition
                     }) {
                         activityViewModel.analysisPosition = hitPoint.0
+                        activityViewModel.analysisValue = value.location.x
                     }
                 }
                 .onEnded { _ in
-                    statsBoxLocation = nil
+                    activityViewModel.analysisValue = nil
                     activityViewModel.analysisPosition = nil
                 }
             )
