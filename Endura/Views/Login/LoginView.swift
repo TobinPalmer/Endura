@@ -37,10 +37,13 @@ struct LoginView: View {
             } label: {
                 Text("Login")
             }
+            .buttonStyle(EnduraButtonStyle(disabled: viewModel.email.isEmpty || viewModel.password.isEmpty))
+            .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
 
             NavigationLink(destination: SignupView()) {
                 Text("Signup")
             }
+            .buttonStyle(EnduraButtonStyle())
         }
         .frame(width: 300, height: 300)
     }
