@@ -45,7 +45,7 @@ struct AnimatedPath: View {
             .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
             .foregroundColor(color)
             .onAppear {
-                withAnimation(.linear(duration: self.duration)) {
+                withAnimation(.linear(duration: duration)) {
                     self.drawPercent = 1
                 }
             }
@@ -55,6 +55,7 @@ struct AnimatedPath: View {
 struct LineGraph<Style>: View where Style: LineGraphStyle {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
+    @State private var statsBoxLocation: CGFloat? = nil
     private let style: Style
 
     private let data: [(Date, Double)]
@@ -76,10 +77,11 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         let maxVal = data.max(by: { $0.1 < $1.1 })?.1 ?? 0
         let minVal = data.min(by: { $0.1 < $1.1 })?.1 ?? 0
         let range = maxVal - minVal
-        let mean = data.reduce(0) { $0 + $1.1 } / Double(data.count)
+        let mean = data.reduce(0) {
+            $0 + $1.1
+        } / Double(data.count)
 
         let minTimestamp = data.min(by: { $0.0 < $1.0 })?.0 ?? Date()
-        let minTimestampInterval: Double = minTimestamp.timeIntervalSince1970
         let maxTimestamp = data.max(by: { $0.0 < $1.0 })?.0 ?? Date()
         let timestampRange = maxTimestamp.timeIntervalSince(minTimestamp)
 
@@ -87,10 +89,31 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
             ZStack {
                 GeometryReader { geometry in
                     let frame = geometry.frame(in: .local)
-                    let stepHeight = frame.height / CGFloat(range)
-                    let path = self.createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
+                    let path = createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
 
                     AnimatedPath(path: path, color: style.color, duration: 2)
+                }
+
+                if statsBoxLocation != nil {
+                    let proportionOfTimestampInRange = statsBoxLocation! / geometry.frame(in: .local).width
+                    let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                    let yPosition = geometry.frame(in: .local).height * CGFloat((data.first(where: { point in
+                        let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
+                        let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                        return statsBoxLocation! < xPosition
+                    })?
+                        .1 ?? 0 - minVal) / range)
+
+                    let valueAtXPosition = data.first(where: { point in
+                        let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
+                        let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                        return statsBoxLocation! < xPosition
+                    })?
+                        .1 ?? 0
+
+                    let valueAtXPositionString = valueModifier(valueAtXPosition)
+
+                    Text(valueAtXPositionString)
                 }
 
                 Text("\(valueModifier(mean))")
@@ -109,6 +132,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
             .frame(height: CGFloat(height))
             .gesture(DragGesture(minimumDistance: 0)
                 .onChanged { value in
+                    statsBoxLocation = value.location.x
                     let x = value.location.x
                     if let hitPoint = data.first(where: { point in
                         let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
@@ -119,6 +143,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                     }
                 }
                 .onEnded { _ in
+                    statsBoxLocation = nil
                     activityViewModel.analysisPosition = nil
                 }
             )
