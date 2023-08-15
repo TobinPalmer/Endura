@@ -25,9 +25,12 @@ struct LoginView: View {
     var body: some View {
         VStack {
             Text("Login")
-            LoginTextInput("Email", $viewModel.email)
-                .keyboardType(.emailAddress)
-            LoginTextInput("Password", $viewModel.password, secure: true)
+
+            TextField("Email", text: $viewModel.email)
+                .textFieldStyle(EnduraTextFieldStyle())
+
+            SecureField("Password", text: $viewModel.password)
+                .textFieldStyle(EnduraTextFieldStyle())
 
             Button {
                 viewModel.login()

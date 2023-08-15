@@ -19,7 +19,6 @@ struct SignupStepTwoView: View {
         VStack {
             TextField("Email", text: $viewModel.email)
                 .textFieldStyle(EnduraTextFieldStyle())
-                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.emailAddress)
 
             TextField("Password", text: $viewModel.password)

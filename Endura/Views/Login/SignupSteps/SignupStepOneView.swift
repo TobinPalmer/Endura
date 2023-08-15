@@ -19,7 +19,6 @@ struct SignupStepOneView: View {
         VStack {
             TextField("First Name", text: $viewModel.firstName)
                 .textFieldStyle(EnduraTextFieldStyle())
-                .textFieldStyle(RoundedBorderTextFieldStyle())
 
             TextField("Last Name", text: $viewModel.lastName)
                 .textFieldStyle(EnduraTextFieldStyle())
