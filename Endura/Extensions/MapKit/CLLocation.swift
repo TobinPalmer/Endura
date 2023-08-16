@@ -10,6 +10,18 @@ extension CLLocation: Identifiable, Encodable {
         UUID().uuidString
     }
 
+//    func fetchCityAndCountry(completion: @escaping (_ city: String?, _ country: String?, _ error: Error?) -> ()) {
+//        CLGeocoder().reverseGeocodeLocation(self) {
+//            completion($0?.first?.locality, $0?.first?.country, $1)
+//        }
+//    }
+    func fetchCityAndCountry() async throws -> (String?, String?) {
+        let placemarks = try await CLGeocoder().reverseGeocodeLocation(self)
+        let city = placemarks.first?.locality
+        let country = placemarks.first?.country
+        return (city, country)
+    }
+
     private enum CodingKeys: String, CodingKey {
         case latitude
         case longitude

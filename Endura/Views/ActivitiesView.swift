@@ -34,6 +34,8 @@ import SwiftUI
                         time: data.time,
                         distance: data.distance,
                         duration: data.duration,
+                        startLocation: data.startLocation,
+                        startCity: data.startCity,
                         comments: data.comments,
                         likes: data.likes
                     )

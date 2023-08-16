@@ -55,12 +55,14 @@ public struct ActivityData: Codable {
         distance / duration
     }
 
+    var startLocation: LocationData
+    var startCity: String
     var comments: [ActivityCommentData]
     var likes: [String]
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
-        return ActivityDataWithRoute(uid: uid, time: time, distance: distance, duration: duration, data: routeData, comments: comments, likes: likes)
+        return ActivityDataWithRoute(uid: uid, time: time, distance: distance, duration: duration, startLocation: startLocation, startCity: startCity, data: routeData, comments: comments, likes: likes)
     }
 }
 
@@ -73,12 +75,14 @@ public struct ActivityDataWithRoute {
         distance / duration
     }
 
+    var startLocation: LocationData
+    var startCity: String
     var data: ActivityRouteData
     var comments: [ActivityCommentData]
     var likes: [String]
 
     public func getDataWithoutRoute() -> ActivityData {
-        ActivityData(uid: uid, time: time, distance: distance, duration: duration, comments: comments, likes: likes)
+        ActivityData(uid: uid, time: time, distance: distance, duration: duration, startLocation: startLocation, startCity: startCity, comments: comments, likes: likes)
     }
 
     public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {

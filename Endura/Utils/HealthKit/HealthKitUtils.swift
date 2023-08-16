@@ -271,14 +271,24 @@ public enum HealthKitUtils {
 
                 if i % dataRate == 0 {
                     if i > 0 {
-                        let filteredHeartRateArray = graphSectionData.2.filter { $0.heartRate != 0.0 }
-                        let filteredPaceArray = graphSectionData.2.filter { $0.pace != 0.0 }
+                        let filteredHeartRateArray = graphSectionData.2.filter {
+                            $0.heartRate != 0.0
+                        }
+                        let filteredPaceArray = graphSectionData.2.filter {
+                            $0.pace != 0.0
+                        }
 
                         let graphSectionPoint = GraphData(
                             timestamp: graphSectionData.1,
-                            altitude: graphSectionData.2.reduce(0) { $0 + $1.altitude } / Double(graphSectionData.2.count),
-                            heartRate: filteredHeartRateArray.reduce(0) { $0 + $1.heartRate } / Double(filteredHeartRateArray.count),
-                            pace: filteredPaceArray.reduce(0) { $0 + $1.pace } / Double(filteredPaceArray.count)
+                            altitude: graphSectionData.2.reduce(0) {
+                                $0 + $1.altitude
+                            } / Double(graphSectionData.2.count),
+                            heartRate: filteredHeartRateArray.reduce(0) {
+                                $0 + $1.heartRate
+                            } / Double(filteredHeartRateArray.count),
+                            pace: filteredPaceArray.reduce(0) {
+                                $0 + $1.pace
+                            } / Double(filteredPaceArray.count)
                         )
 
                         graphData.append(graphSectionPoint)
@@ -291,11 +301,16 @@ public enum HealthKitUtils {
             }
         }
 
-        let workoutData = ActivityDataWithRoute(
+        let workoutData = try await ActivityDataWithRoute(
             uid: AuthUtils.getCurrentUID(),
             time: workout.startDate,
             distance: workoutDistance,
             duration: workoutDuration,
+            startLocation: LocationData(
+                latitude: data.first?.coordinate.latitude ?? 0.0,
+                longitude: data.first?.coordinate.longitude ?? 0.0
+            ),
+            startCity: data.first?.fetchCityAndCountry().0 ?? "",
             data: ActivityRouteData(
                 routeData: routeData,
                 graphData: graphData,

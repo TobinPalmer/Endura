@@ -23,7 +23,7 @@ struct ActivityView: View {
             if let activityData = activityData {
                 ScrollView(.vertical) {
                     VStack {
-                        ActivityHeader(uid: activity.uid, activityData: ActivityUtils.activityDataWithRouteToActivityData(activityData))
+                        ActivityHeader(uid: activity.uid, activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)())
 
                         ActivityMap(activityData.data.routeData)
                             .frame(height: 300)
