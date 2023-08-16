@@ -85,15 +85,39 @@ public struct ActivityDataWithRoute {
         ActivityData(uid: uid, time: time, distance: distance, duration: duration, startLocation: startLocation, startCity: startCity, comments: comments, likes: likes)
     }
 
-    public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {
-        var pace = LineGraphData()
+    public func getHeartRateGraph() -> LineGraphData {
         var heartRate = LineGraphData()
 
         data.graphData.forEach { val in
-            pace.append((val.timestamp, val.pace))
-            heartRate.append((val.timestamp, val.heartRate))
+            if val.heartRate > 0 && !val.heartRate.isNaN && !val.heartRate.isInfinite {
+                heartRate.append((val.timestamp, val.heartRate))
+            }
         }
 
-        return (pace, heartRate)
+        return heartRate
     }
+
+    public func getPaceGraph() -> LineGraphData {
+        var pace = LineGraphData()
+
+        data.graphData.forEach { val in
+            if val.pace > 0 && !val.pace.isNaN && !val.pace.isInfinite {
+                pace.append((val.timestamp, val.pace))
+            }
+        }
+
+        return pace
+    }
+
+//    public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {
+//        var pace = LineGraphData()
+//        var heartRate = LineGraphData()
+//
+//        data.graphData.forEach { val in
+//            pace.append((val.timestamp, val.pace))
+//            heartRate.append((val.timestamp, val.heartRate))
+//        }
+//
+//        return (pace, heartRate)
+//    }
 }

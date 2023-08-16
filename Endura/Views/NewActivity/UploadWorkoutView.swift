@@ -72,7 +72,8 @@ struct PreviewWorkoutView: View {
 
                     Spacer()
 
-                    let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
+                    let paceGraph = activityData.getPaceGraph()
+                    let heartRateGraph = activityData.getHeartRateGraph()
                     VStack {
                         if !paceGraph.isEmpty {
                             LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())

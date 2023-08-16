@@ -78,7 +78,6 @@ struct NewActivityView: View {
                         let earliestDate = activityEndDatesToUUIDs.keys.min() ?? Date()
                         activityEndDatesToUUIDs[activity.startDate] = activity.uuid
                         if activity.uuid == activityEndDatesToUUIDs[activity.startDate] {
-                            print("end")
                             totalItemsLoaded += 10
                             await uploadsViewModel.getActivities(10)
                         }

@@ -31,7 +31,8 @@ struct ActivityView: View {
                         ActivityGridStats(distance: activityData.distance, duration: activityData.duration, topSpace: !activityData.data.routeData.isEmpty)
 
                         VStack {
-                            let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
+                            let paceGraph = activityData.getPaceGraph()
+                            let heartRateGraph = activityData.getHeartRateGraph()
                             LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                             LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                         }
