@@ -41,7 +41,7 @@ struct PreviewWorkoutView: View {
                 Text("\(activityData.duration) \(activityData.distance)")
                 ScrollView(.vertical) {
                     HStack {
-                        Text("\(ConversionUtils.metersToMiles(activityData.distance))")
+                        Text("\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2))")
                         Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
                     }
 

@@ -41,16 +41,45 @@ struct ActivityPost: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .topLeading)
             }
+
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
-                Text("Afternoon Run")
-                    .font(.title)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(spacing: 10) {
+                    Text("Afternoon Run")
+                        .font(.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Text("Very good run today. I felt great and was able to keep a good pace throughout the run. I'm looking forward to my next run.")
+                        .multilineTextAlignment(.leading)
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
 
             HStack {
-                Text("\(ConversionUtils.metersToMiles(activity.distance)) mi")
-                Text("\(FormattingUtils.secondsToFormattedTime(activity.duration))")
+                VStack {
+                    Text("Distance")
+                        .foregroundColor(.secondary)
+                        .font(.system(size: 11))
+
+                    Text("\(ConversionUtils.metersToMiles(activity.distance).truncate(places: 2).removeTrailingZeros()) mi")
+                        .font(.title3)
+                }
+
+                HStack(spacing: 20) {
+                    Divider().frame(width: 1)
+                }
+                .frame(width: 2, height: 50)
+
+                VStack {
+                    Text("Duration")
+                        .foregroundColor(.secondary)
+                        .font(.system(size: 11))
+                    Text("\(FormattingUtils.secondsToFormattedTime(activity.duration))")
+                        .font(.title3)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 ActivityMapImage(id)

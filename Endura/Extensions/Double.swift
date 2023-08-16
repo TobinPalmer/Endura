@@ -11,6 +11,16 @@ public extension Double {
     }
 
     func truncate(places: Int) -> Double {
-        return Double(floor(pow(10.0, Double(places)) * self) / pow(10.0, Double(places)))
+        let value = Double(floor(pow(10.0, Double(places)) * self) / pow(10.0, Double(places)))
+        let truncated = value.truncatingRemainder(dividingBy: 1)
+        return truncated == 0 ? value : value + truncated
+    }
+
+    func removeTrailingZeros() -> String {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: self)) ?? ""
     }
 }
