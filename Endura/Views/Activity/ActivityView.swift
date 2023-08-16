@@ -21,31 +21,35 @@ struct ActivityView: View {
         VStack {
             if let activityData = activityData {
                 ScrollView(.vertical) {
-                    HStack {
-                        Text("\(ConversionUtils.metersToMiles(activityData.distance))")
-                        Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
-                    }
-
-                    ActivityMap(activityData.data.routeData)
-                        .frame(height: 300)
-                        .environmentObject(activityViewModel)
-
                     VStack {
-                        let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
-                        if !paceGraph.isEmpty {
-                            LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
-                                .environmentObject(activityViewModel)
-                        } else {
-                            Text("No pace data available")
+                        HStack {
+                            Text("\(ConversionUtils.metersToMiles(activityData.distance))")
+                            Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
                         }
-                        if !heartRateGraph.isEmpty {
-                            LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
-                                .environmentObject(activityViewModel)
-                        } else {
-                            Text("No heart rate data available")
+
+                        ActivityMap(activityData.data.routeData)
+                            .frame(height: 300)
+                            .environmentObject(activityViewModel)
+
+                        VStack {
+                            let (paceGraph, heartRateGraph) = activityData.getPaceAndHeartRateGraphData()
+                            if !paceGraph.isEmpty {
+                                LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
+                                    .environmentObject(activityViewModel)
+                            } else {
+                                Text("No pace data available")
+                            }
+                            if !heartRateGraph.isEmpty {
+                                LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
+                                    .environmentObject(activityViewModel)
+                            } else {
+                                Text("No heart rate data available")
+                            }
                         }
                     }
+                    .padding()
                 }
+                .border(Color.black)
             }
         }
         .task {

@@ -23,13 +23,21 @@ struct ActivityPost: View {
                 HStack {
                     ProfileImage(activity.uid, size: 50)
                     if let user = databaseCache.getUserData(activity.uid) {
-                        Text(user.name)
-                            .font(.title)
+                        VStack {
+                            Text(user.name)
+                                .font(.title)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+
+                            Text("Today at 5:26 PM • Santa Monica, USA")
+                                .font(.subheadline)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        }
+                        .frame(maxHeight: .infinity, alignment: .topLeading)
                     } else {
                         Text("Loading...")
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
             }
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 Text("Afternoon Run")

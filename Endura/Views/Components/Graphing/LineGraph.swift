@@ -52,6 +52,33 @@ struct AnimatedPath: View {
     }
 }
 
+struct DraggableModifier: ViewModifier {
+    enum Direction {
+        case vertical
+        case horizontal
+    }
+
+    let direction: Direction
+    @State private var draggedOffset: CGSize = .zero
+
+    func body(content: Content) -> some View {
+        content
+            .offset(
+                CGSize(width: direction == .vertical ? 0 : draggedOffset.width,
+                       height: direction == .horizontal ? 0 : draggedOffset.height)
+            )
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        self.draggedOffset = value.translation
+                    }
+                    .onEnded { _ in
+                        self.draggedOffset = .zero
+                    }
+            )
+    }
+}
+
 struct LineGraph<Style>: View where Style: LineGraphStyle {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
@@ -129,7 +156,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
             }
             .padding(10)
             .frame(height: CGFloat(height))
-            .gesture(DragGesture(minimumDistance: 0)
+            .gesture(DragGesture(minimumDistance: 10)
                 .onChanged { value in
                     let x = value.location.x
                     if let hitPoint = data.first(where: { point in

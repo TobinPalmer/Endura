@@ -23,7 +23,7 @@ struct ActivityMapImage: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 case .failure:
-                    Text("No Map Available")
+                    EmptyView()
                 @unknown default:
                     EmptyView()
                 }
