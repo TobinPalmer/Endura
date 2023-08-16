@@ -36,11 +36,14 @@ struct ActivityPost: View {
                 }
             }
 
-            ActivityPostStats(distance: activity.distance, duration: activity.duration)
+            ActivityPostStats(distance: activity.distance, duration: activity.duration, pace: activity.pace)
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 ActivityMapImage(id)
+                    .cornerRadius(5)
+                    .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
             }
+
             .buttonStyle(PlainButtonStyle())
 
             HStack {

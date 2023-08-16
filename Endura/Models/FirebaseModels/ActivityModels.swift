@@ -51,6 +51,10 @@ public struct ActivityData: Codable {
     var time: Date
     var distance: Double
     var duration: TimeInterval
+    var pace: Double {
+        distance / duration
+    }
+
     var comments: [ActivityCommentData]
     var likes: [String]
 
@@ -65,6 +69,10 @@ public struct ActivityDataWithRoute {
     var time: Date
     var distance: Double
     var duration: TimeInterval
+    var pace: Double {
+        distance / duration
+    }
+
     var data: ActivityRouteData
     var comments: [ActivityCommentData]
     var likes: [String]
