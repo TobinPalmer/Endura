@@ -23,13 +23,15 @@ struct ActivityPost: View {
                 HStack {
                     ProfileImage(activity.uid, size: 50)
                     if let user = databaseCache.getUserData(activity.uid) {
-                        VStack {
+                        VStack(spacing: 3) {
                             Text(user.name)
-                                .font(.title)
+                                .font(.title3)
+                                .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
                             Text("Today at 5:26 PM • Santa Monica, USA")
-                                .font(.subheadline)
+                                .font(.system(size: 12))
+                                .foregroundColor(.secondary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         }
                         .frame(maxHeight: .infinity, alignment: .topLeading)
