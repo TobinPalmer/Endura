@@ -77,7 +77,7 @@ public struct ActivityDataWithRoute {
         var pace = LineGraphData()
         var heartRate = LineGraphData()
 
-        _ = data.graphData.forEach { val in
+        data.graphData.forEach { val in
             pace.append((val.timestamp, val.pace))
             heartRate.append((val.timestamp, val.heartRate))
         }

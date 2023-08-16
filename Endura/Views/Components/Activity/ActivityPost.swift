@@ -19,33 +19,13 @@ struct ActivityPost: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            UserProfileLink(activity.uid) {
-                HStack {
-                    ProfileImage(activity.uid, size: 50)
-                    if let user = databaseCache.getUserData(activity.uid) {
-                        VStack(spacing: 3) {
-                            Text(user.name)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-
-                            Text("Today at 5:26 PM • Santa Monica, USA")
-                                .font(.system(size: 12))
-                                .foregroundColor(.secondary)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                        }
-                        .frame(maxHeight: .infinity, alignment: .topLeading)
-                    } else {
-                        Text("Loading...")
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-            }
+            ActivityHeader(uid: activity.uid)
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 VStack(spacing: 10) {
                     Text("Afternoon Run")
-                        .font(.title)
+                        .font(.title2)
+                        .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     Text("Very good run today. I felt great and was able to keep a good pace throughout the run. I'm looking forward to my next run.")
@@ -56,30 +36,7 @@ struct ActivityPost: View {
                 }
             }
 
-            HStack {
-                VStack {
-                    Text("Distance")
-                        .foregroundColor(.secondary)
-                        .font(.system(size: 11))
-
-                    Text("\(ConversionUtils.metersToMiles(activity.distance).truncate(places: 2).removeTrailingZeros()) mi")
-                        .font(.title3)
-                }
-
-                HStack(spacing: 20) {
-                    Divider().frame(width: 1)
-                }
-                .frame(width: 2, height: 50)
-
-                VStack {
-                    Text("Duration")
-                        .foregroundColor(.secondary)
-                        .font(.system(size: 11))
-                    Text("\(FormattingUtils.secondsToFormattedTime(activity.duration))")
-                        .font(.title3)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            ActivityPostStats(distance: activity.distance, duration: activity.duration)
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 ActivityMapImage(id)

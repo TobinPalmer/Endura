@@ -32,12 +32,12 @@ class MapViewContainer: ObservableObject {
 struct ActivityMap: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
     private var routeData: [RouteData]
+    private var bottomSpace: Bool
     @State private var mapViewContainer = MapViewContainer()
-//    @State private var mapView: MapView?
-//    @State private var mapImageOptions: (origin: CGPoint, size: CGSize)?
 
-    public init(_ route: [RouteData]) {
+    public init(_ route: [RouteData], bottomSpace: Bool = false) {
         routeData = route
+        self.bottomSpace = bottomSpace
     }
 
 //
@@ -56,9 +56,11 @@ struct ActivityMap: View {
 //    }
 
     var body: some View {
-        GeometryReader { _ in
-            VStack {
-                if !routeData.isEmpty {
+        if routeData.isEmpty {
+            EmptyView()
+        } else {
+            GeometryReader { _ in
+                VStack {
 //                    let mapView =
                     MapView(mapViewContainer: mapViewContainer, routeData: routeData)
                         //                    mapView
@@ -74,15 +76,6 @@ struct ActivityMap: View {
                                 mapViewContainer.removeAnnotation()
                             }
                         }
-//                        .onAppear() {
-//                            self.mapView = mapView
-//                            self.mapImageOptions = (origin: geometry.frame(in: .global).origin, size: geometry.size)
-//                            print("should work")
-//                            print(String(describing: self.mapView))
-                    ////                            print("definitely should work", self.mapImageOptions)
-//                        }
-                } else {
-                    Text("No route data available")
                 }
             }
         }

@@ -100,81 +100,85 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
     }
 
     var body: some View {
-        let maxVal = data.max(by: { $0.1 < $1.1 })?.1 ?? 0
-        let minVal = data.min(by: { $0.1 < $1.1 })?.1 ?? 0
-        let range = maxVal - minVal
-        let mean = data.reduce(0) {
-            $0 + $1.1
-        } / Double(data.count)
+        if !data.isEmpty {
+            let maxVal = data.max(by: { $0.1 < $1.1 })?.1 ?? 0
+            let minVal = data.min(by: { $0.1 < $1.1 })?.1 ?? 0
+            let range = maxVal - minVal
+            let mean = data.reduce(0) {
+                $0 + $1.1
+            } / Double(data.count)
 
-        let minTimestamp = data.min(by: { $0.0 < $1.0 })?.0 ?? Date()
-        let maxTimestamp = data.max(by: { $0.0 < $1.0 })?.0 ?? Date()
-        let timestampRange = maxTimestamp.timeIntervalSince(minTimestamp)
+            let minTimestamp = data.min(by: { $0.0 < $1.0 })?.0 ?? Date()
+            let maxTimestamp = data.max(by: { $0.0 < $1.0 })?.0 ?? Date()
+            let timestampRange = maxTimestamp.timeIntervalSince(minTimestamp)
 
-        GeometryReader { geometry in
-            ZStack {
-                GeometryReader { geometry in
-                    let frame = geometry.frame(in: .local)
-                    let path = createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
+            GeometryReader { geometry in
+                ZStack {
+                    GeometryReader { geometry in
+                        let frame = geometry.frame(in: .local)
+                        let path = createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
 
-                    AnimatedPath(path: path, color: style.color, duration: 2)
-                }
-
-                if activityViewModel.analysisValue != nil {
-                    let proportionOfTimestampInRange = activityViewModel.analysisValue! / geometry.frame(in: .local).width
-                    let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                    let yPosition = geometry.frame(in: .local).height * CGFloat((data.first(where: { point in
-                        let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
-                        let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                        return activityViewModel.analysisValue! < xPosition
-                    })?
-                        .1 ?? 0 - minVal) / range)
-
-                    let valueAtXPosition = data.first(where: { point in
-                        let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
-                        let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                        return activityViewModel.analysisValue! < xPosition
-                    })?
-                        .1 ?? 0
-
-                    let valueAtXPositionString = valueModifier(valueAtXPosition)
-
-                    Text(valueAtXPositionString)
-                }
-
-                Text("\(valueModifier(mean))")
-                    .font(.footnote)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .position(x: 10, y: CGFloat(height) / 2)
-
-                Text("\(valueModifier(minVal))")
-                    .font(.footnote)
-                    .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .position(x: 10, y: CGFloat(height) - 20)
-            }
-            .padding(10)
-            .frame(height: CGFloat(height))
-            .gesture(DragGesture(minimumDistance: 10)
-                .onChanged { value in
-                    let x = value.location.x
-                    if let hitPoint = data.first(where: { point in
-                        let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
-                        let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
-                        return x < xPosition
-                    }) {
-                        activityViewModel.analysisPosition = hitPoint.0
-                        activityViewModel.analysisValue = value.location.x
+                        AnimatedPath(path: path, color: style.color, duration: 2)
                     }
+
+                    if activityViewModel.analysisValue != nil {
+                        let proportionOfTimestampInRange = activityViewModel.analysisValue! / geometry.frame(in: .local).width
+                        let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                        let yPosition = geometry.frame(in: .local).height * CGFloat((data.first(where: { point in
+                            let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
+                            let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                            return activityViewModel.analysisValue! < xPosition
+                        })?
+                            .1 ?? 0 - minVal) / range)
+
+                        let valueAtXPosition = data.first(where: { point in
+                            let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
+                            let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                            return activityViewModel.analysisValue! < xPosition
+                        })?
+                            .1 ?? 0
+
+                        let valueAtXPositionString = valueModifier(valueAtXPosition)
+
+                        Text(valueAtXPositionString)
+                    }
+
+                    Text("\(valueModifier(mean))")
+                        .font(.footnote)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                        .position(x: 10, y: CGFloat(height) / 2)
+
+                    Text("\(valueModifier(minVal))")
+                        .font(.footnote)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                        .position(x: 10, y: CGFloat(height) - 20)
                 }
-                .onEnded { _ in
-                    activityViewModel.analysisValue = nil
-                    activityViewModel.analysisPosition = nil
-                }
-            )
+                .padding(10)
+                .frame(height: CGFloat(height))
+                .gesture(DragGesture(minimumDistance: 10)
+                    .onChanged { value in
+                        let x = value.location.x
+                        if let hitPoint = data.first(where: { point in
+                            let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
+                            let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
+                            return x < xPosition
+                        }) {
+                            activityViewModel.analysisPosition = hitPoint.0
+                            activityViewModel.analysisValue = value.location.x
+                        }
+                    }
+                    .onEnded { _ in
+                        activityViewModel.analysisValue = nil
+                        activityViewModel.analysisPosition = nil
+                    }
+                )
+            }
+            .frame(height: CGFloat(height))
+        } else {
+            EmptyView()
         }
-        .frame(height: CGFloat(height))
     }
 
     func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> Path {
