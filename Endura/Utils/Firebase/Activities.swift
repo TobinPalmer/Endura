@@ -63,4 +63,15 @@ public enum ActivityUtils {
             print("Error uploading workout: \(error)")
         }
     }
+
+    public static func activityDataWithRouteToActivityData(_ data: ActivityDataWithRoute) -> ActivityData {
+        ActivityData(
+            uid: data.uid,
+            time: data.time,
+            distance: data.distance,
+            duration: data.duration,
+            comments: data.comments,
+            likes: data.likes
+        )
+    }
 }

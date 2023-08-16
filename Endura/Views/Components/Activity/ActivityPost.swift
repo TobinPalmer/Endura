@@ -19,7 +19,7 @@ struct ActivityPost: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            ActivityHeader(uid: activity.uid)
+            ActivityHeader(uid: activity.uid, activityData: activity)
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 VStack(spacing: 10) {

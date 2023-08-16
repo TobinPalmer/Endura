@@ -9,10 +9,12 @@ import SwiftUI
 struct ActivityHeader: View {
     @EnvironmentObject var databaseCache: DatabaseCacheModel
     private let uid: String
+    private let activityData: ActivityData
     private let bottomSpace: Bool
 
-    public init(uid: String, bottomSpace: Bool = false) {
+    public init(uid: String, activityData: ActivityData, bottomSpace: Bool = false) {
         self.uid = uid
+        self.activityData = activityData
         self.bottomSpace = bottomSpace
     }
 
@@ -27,7 +29,7 @@ struct ActivityHeader: View {
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
-                        Text("Today at 5:26 PM • Santa Monica, USA")
+                        Text("\(activityData.time.formatted()) • Santa Monica, USA")
                             .font(.system(size: 12))
                             .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
