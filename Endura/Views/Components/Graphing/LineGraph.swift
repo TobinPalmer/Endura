@@ -47,10 +47,12 @@ struct AnimatedPath: View {
     let path: Path
     let color: Color
     let duration: Double
+    let fill: Bool
 
     var body: some View {
         path.trim(from: 0, to: drawPercent)
             .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            //            .fill(fill ? color.opacity(0.35) : Color.clear)
             .foregroundColor(color)
             .onAppear {
                 withAnimation(.linear(duration: duration)) {
@@ -127,8 +129,13 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                         let paths = createPaths(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
 
                         ForEach(0 ..< paths.endIndex, id: \.self) { i in
-                            paths[i]
-                                .fill(style.color)
+//                            AnimatedPath(path: paths[i], color: style.color, duration: 2, fill: true)
+                            let path = paths[i]
+                            let x = path.boundingRect.origin.x
+                            let y = path.boundingRect.origin.y
+                            if !x.isNaN && !y.isNaN && !x.isInfinite && !y.isInfinite {
+                                AnimatedPath(path: path, color: style.color, duration: 2, fill: true)
+                            }
                         }
                     }
 //                    GeometryReader { geometry in
@@ -252,6 +259,29 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         return paths
     }
 
+//    func createPaths(from data: [(Date, Double)], in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
+//        var paths: [Path] = []
+//        var previousPoint: CGPoint?
+//        for index in data.indices {
+//            let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
+//            let xPosition = frame.width * CGFloat(proportionOfTimestampInRange)
+//            let yPosition = frame.height * CGFloat((data[index].1 - minVal) / range)
+//
+//            let point = CGPoint(x: xPosition, y: frame.height - yPosition)
+//            var path = Path()
+//            if let previousPoint = previousPoint {
+//                path.move(to: previousPoint)
+//                path.addLine(to: point)
+//                path.addLine(to: CGPoint(x: point.x, y: frame.height))
+//                path.addLine(to: CGPoint(x: previousPoint.x, y: frame.height))
+//                path.closeSubpath()
+//            }
+//            previousPoint = point
+//            paths.append(path)
+//        }
+//        return paths
+//    }
+
     func createPaths(from data: [(Date, Double)], in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
         var paths: [Path] = []
         var previousPoint: CGPoint?
@@ -263,11 +293,13 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
             let point = CGPoint(x: xPosition, y: frame.height - yPosition)
             var path = Path()
             if let previousPoint = previousPoint {
-                path.move(to: previousPoint)
-                path.addLine(to: point)
-                path.addLine(to: CGPoint(x: point.x, y: frame.height))
-                path.addLine(to: CGPoint(x: previousPoint.x, y: frame.height))
-                path.closeSubpath()
+                if previousPoint.x > 0 && previousPoint.x < frame.width {
+                    path.move(to: previousPoint)
+                    path.addLine(to: point)
+                    path.addLine(to: CGPoint(x: point.x, y: frame.height))
+                    path.addLine(to: CGPoint(x: previousPoint.x, y: frame.height))
+                    path.closeSubpath()
+                }
             }
             previousPoint = point
             paths.append(path)
