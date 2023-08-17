@@ -37,11 +37,14 @@ public enum ActivityUtils {
         ])
     }
 
-    public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage) async throws {
+    public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil) async throws {
         do {
             let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: activity.getDataWithoutRoute())
             try activityDoc.collection("data").document("data").setData(from: activity.data)
 
+            guard let image else {
+                return
+            }
             let storage = Storage.storage()
             let storageRef = storage.reference()
             let imageRef = storageRef.child("activities/\(activityDoc.documentID)/map")

@@ -71,10 +71,13 @@ struct PreviewWorkoutView: View {
                     .environmentObject(activityViewModel)
 
                     Button {
+                        print("UPloading WOrkout")
                         Task {
                             do {
                                 if let mapRef = mapRef, let geometryRef = geometryRef {
                                     try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
+                                } else {
+                                    try await ActivityUtils.uploadActivity(activity: activityData)
                                 }
                             } catch {
                                 print("Error uploading workout: \(error)")
