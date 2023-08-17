@@ -41,7 +41,7 @@ struct ActivityGridStats: View {
                 Text("Duration")
                     .foregroundColor(.secondary)
                     .font(.system(size: 11))
-                Text("\(FormattingUtils.secondsToFormattedTime(activityData.distance))")
+                Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
                     .font(.title3)
             }
             .frame(maxWidth: .infinity, alignment: .center)
