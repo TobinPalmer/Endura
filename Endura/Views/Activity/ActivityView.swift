@@ -28,7 +28,7 @@ struct ActivityView: View {
                         ActivityMap(activityData.data.routeData)
                             .frame(height: 300)
 
-                        ActivityGridStats(distance: activityData.distance, duration: activityData.duration, topSpace: !activityData.data.routeData.isEmpty)
+                        ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
 
                         VStack {
                             let paceGraph = activityData.getPaceGraph()

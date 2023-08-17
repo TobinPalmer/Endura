@@ -36,7 +36,7 @@ struct ActivityPost: View {
                 }
             }
 
-            ActivityPostStats(distance: activity.distance, duration: activity.duration, pace: activity.pace)
+            ActivityPostStats(activityData: activity)
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 ActivityMapImage(id)

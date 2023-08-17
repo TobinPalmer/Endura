@@ -15,14 +15,10 @@ private struct VLine: View {
 }
 
 struct ActivityPostStats: View {
-    private let distance: Double
-    private let duration: Double
-    private let pace: Double
+    private let activityData: ActivityData
 
-    public init(distance: Double, duration: Double, pace: Double) {
-        self.distance = distance
-        self.duration = duration
-        self.pace = pace
+    public init(activityData: ActivityData) {
+        self.activityData = activityData
     }
 
     public var body: some View {
@@ -33,7 +29,7 @@ struct ActivityPostStats: View {
                     .font(.system(size: 12))
                     .minimumScaleFactor(0.5)
 
-                Text("\(ConversionUtils.metersToMiles(distance).truncate(places: 2).removeTrailingZeros()) mi")
+                Text("\(ConversionUtils.metersToMiles(activityData.distance).truncate(places: 2).removeTrailingZeros()) mi")
                     .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize))
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
@@ -48,7 +44,7 @@ struct ActivityPostStats: View {
                     .font(.system(size: 12))
                     .minimumScaleFactor(0.5)
 
-                Text("\(FormattingUtils.secondsToFormattedTime(duration))")
+                Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
                     .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize))
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
@@ -63,7 +59,7 @@ struct ActivityPostStats: View {
                     .font(.system(size: 12))
                     .minimumScaleFactor(0.5)
 
-                Text("\(ConversionUtils.convertMpsToMpm(pace)) min/mile")
+                Text("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
                     .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize))
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)

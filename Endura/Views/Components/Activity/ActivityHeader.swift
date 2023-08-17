@@ -29,7 +29,7 @@ struct ActivityHeader: View {
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
-                        Text("\(activityData.time.formatted()) • \(activityData.startCity)")
+                        Text("\(activityData.time.formatted()) \(activityData.startCity != "" ? "•" : "") \(activityData.startCity)")
                             .font(.system(size: 12))
                             .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

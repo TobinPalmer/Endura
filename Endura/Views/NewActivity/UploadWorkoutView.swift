@@ -43,25 +43,28 @@ struct PreviewWorkoutView: View {
                 ScrollView {
                     ActivityHeader(uid: activityData.uid, activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)())
 
-                    VStack {
-                        GeometryReader { geometry in
-                            VStack {
-                                let map =
-                                    ActivityMap(activityData.data.routeData)
-                                        .frame(height: 300)
-                                        .environmentObject(activityViewModel)
-                                map
+                    if !activityData.data.routeData.isEmpty {
+                        VStack {
+                            GeometryReader { geometry in
+                                VStack {
+                                    let map =
+                                        ActivityMap(activityData.data.routeData)
+                                            .frame(height: 300)
+                                            .environmentObject(activityViewModel)
+                                    map
 
-                                let _ = mapRef = map
-                                let _ = geometryRef = geometry
+                                    let _ = mapRef = map
+                                    let _ = geometryRef = geometry
+                                }
                             }
                         }
+                        .frame(height: 300)
                     }
-                    .frame(height: 300)
 
                     VStack {
                         let paceGraph = activityData.getPaceGraph()
                         let heartRateGraph = activityData.getHeartRateGraph()
+                        ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
                         LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                         LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                     }
@@ -88,6 +91,7 @@ struct PreviewWorkoutView: View {
                 }
             }
         }
+        .padding()
         .frame(maxHeight: .infinity)
         .task {
             do {

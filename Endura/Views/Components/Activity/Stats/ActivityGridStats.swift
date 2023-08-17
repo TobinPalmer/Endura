@@ -7,16 +7,14 @@ import Foundation
 import SwiftUI
 
 struct ActivityGridStats: View {
-    private let distance: Double
-    private let duration: Double
+    private let activityData: ActivityData
     private let topSpace: Bool
     private let bottomSpace: Bool
 
-    public init(distance: Double, duration: Double, topSpace: Bool = false, bottomSpace: Bool = false) {
-        self.distance = distance
-        self.duration = duration
-        self.topSpace = topSpace
+    public init(activityData: ActivityData, bottomSpace: Bool = false, topSpace: Bool = false) {
+        self.activityData = activityData
         self.bottomSpace = bottomSpace
+        self.topSpace = topSpace
     }
 
     public var body: some View {
@@ -29,7 +27,7 @@ struct ActivityGridStats: View {
                     .foregroundColor(.secondary)
                     .font(.system(size: 11))
 
-                Text("\(ConversionUtils.metersToMiles(distance).truncate(places: 2).removeTrailingZeros()) mi")
+                Text("\(ConversionUtils.metersToMiles(activityData.distance).truncate(places: 2).removeTrailingZeros()) mi")
                     .font(.title3)
             }
             .frame(maxWidth: .infinity, alignment: .center)
@@ -43,11 +41,15 @@ struct ActivityGridStats: View {
                 Text("Duration")
                     .foregroundColor(.secondary)
                     .font(.system(size: 11))
-                Text("\(FormattingUtils.secondsToFormattedTime(duration))")
+                Text("\(FormattingUtils.secondsToFormattedTime(activityData.distance))")
                     .font(.title3)
             }
             .frame(maxWidth: .infinity, alignment: .center)
         }
         .frame(maxWidth: .infinity, alignment: .center)
+
+        if bottomSpace {
+            Spacer(minLength: 10)
+        }
     }
 }
