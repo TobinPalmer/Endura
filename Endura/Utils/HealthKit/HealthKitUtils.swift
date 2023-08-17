@@ -132,9 +132,7 @@ public enum HealthKitUtils {
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let results = results {
-                    print("RAW RESULTS", results) // Print the raw results
                     let data = compileCadenceDataFromResults(results, workout: workout)
-                    print("COMPILED RESULTS", data) // Print the compiled results
                     continuation.resume(returning: data)
                 } else {
                     continuation.resume(throwing: HealthKitErrors.unknownError)

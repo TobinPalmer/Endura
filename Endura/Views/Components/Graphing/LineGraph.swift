@@ -16,6 +16,10 @@ struct ElevationLineGraphStyle: LineGraphStyle {
     public let color: Color = .gray
 }
 
+struct CadenceLineGraphStyle: LineGraphStyle {
+    public let color: Color = .purple
+}
+
 struct LineSegment: Shape {
     var start, end: CGPoint
 
