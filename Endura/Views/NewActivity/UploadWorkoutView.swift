@@ -65,15 +65,16 @@ struct PreviewWorkoutView: View {
                         let paceGraph = activityData.getGraph(for: .pace)
                         let heartRateGraph = activityData.getGraph(for: .heartRate)
                         let elevationGraph = activityData.getGraph(for: .elevation)
+                        let cadenceGraph = activityData.getGraph(for: .cadence)
                         ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
                         LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                         LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                         LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
+                        LineGraph(data: cadenceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
                     }
                     .environmentObject(activityViewModel)
 
                     Button {
-                        print("UPloading WOrkout")
                         Task {
                             do {
                                 if let mapRef = mapRef, let geometryRef = geometryRef {

@@ -8,6 +8,14 @@ import Foundation
 import HealthKit
 import UIKit
 
+protocol TimestampPoint: Codable {
+    var timestamp: Date { get }
+}
+
+extension HeartRateData: TimestampPoint {}
+
+extension CadenceData: TimestampPoint {}
+
 public enum HealthKitUtils {
     private static let healthStore = HKHealthStore()
 
@@ -105,14 +113,14 @@ public enum HealthKitUtils {
 
     public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateData] {
         let interval = DateComponents(second: 1)
-        let query = await createQueryForWorkout(workout, interval: interval)
+        let query = await createHeartRateQueryForWorkout(workout, interval: interval)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateData], Error>) in
             query.initialResultsHandler = { _, results, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let results = results {
-                    let data = compileDataFromResults(results, workout: workout)
+                    let data = compileHeartRateDataFromResults(results, workout: workout)
                     continuation.resume(returning: data)
                 } else {
                     continuation.resume(throwing: HealthKitErrors.unknownError)
@@ -123,7 +131,30 @@ public enum HealthKitUtils {
         return results
     }
 
-    private static func createQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+    public static func getCadenceGraph(for workout: HKWorkout) async throws -> [CadenceData] {
+        let interval = DateComponents(second: 1)
+        let query = await createCadenceQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CadenceData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    print("RAW RESULTS", results) // Print the raw results
+                    let data = compileCadenceDataFromResults(results, workout: workout)
+                    print("COMPILED RESULTS", data) // Print the compiled results
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        return results
+    }
+
+    private static func createHeartRateQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
         let quantityType = HKObjectType.quantityType(forIdentifier: .heartRate)!
 
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
@@ -137,7 +168,42 @@ public enum HealthKitUtils {
         )
     }
 
-    private static func compileDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [HeartRateData] {
+    private static func createCadenceQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.cumulativeSum, .separateBySource],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
+    private static func compileCadenceDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [CadenceData] {
+        var cadenceData = [CadenceData]()
+
+        results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
+            if let sumQuantity = statistics.sumQuantity() {
+                let duration = statistics.endDate.timeIntervalSince(statistics.startDate)
+                let averageCadence = sumQuantity.doubleValue(for: HKUnit.count()) / (duration / 60)
+
+                let startDate = statistics.startDate
+                let endDate = statistics.endDate
+
+                var currentDate = startDate
+                while currentDate < endDate {
+                    cadenceData.append(CadenceData(timestamp: currentDate, cadence: averageCadence))
+                    currentDate = Calendar.current.date(byAdding: .second, value: 1, to: currentDate)!
+                }
+            }
+        }
+
+        return cadenceData
+    }
+
+    private static func compileHeartRateDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [HeartRateData] {
         var heartRateData = [HeartRateData]()
 
         results.enumerateStatistics(
@@ -220,6 +286,8 @@ public enum HealthKitUtils {
 
         var heartRate = try await HealthKitUtils.getHeartRateGraph(for: workout)
 
+        var cadence = try await HealthKitUtils.getCadenceGraph(for: workout)
+
         var dataRate = 1
 
         if !data.isEmpty {
@@ -227,7 +295,7 @@ public enum HealthKitUtils {
             let maxPoints = 200
 
             let workoutEvents = workout.workoutEvents ?? []
-            let workoutPausesArray = workoutEvents.filter {
+            workoutEvents.filter {
                 $0.type == .pause || $0.type == .resume
             }
             .map {
@@ -239,14 +307,24 @@ public enum HealthKitUtils {
             data.removeSubrange(0 ... 5)
             for i in 0 ..< data.count {
                 var heartRateAtPoint: Double?
+                var cadenceAtPoint: Double? = 0.0
                 let point = data[i]
 
-                for j in 0 ..< heartRate.count {
-                    if Int(heartRate[j].timestamp.timeIntervalSince1970) == Int(point.timestamp.timeIntervalSince1970) { // Check if dates are about equal
-                        heartRateAtPoint = heartRate[j].heartRate
-                        heartRate.removeSubrange(0 ... j) // Remove all previous heart rate points since they are no longer needed
-                        break
+                func updateGraphData<T: TimestampPoint>(_ data: inout [T], timestamp: Date, updateValue: (T) -> Void) {
+                    for j in 0 ..< data.count {
+                        if Int(data[j].timestamp.timeIntervalSince1970) == Int(timestamp.timeIntervalSince1970) {
+                            updateValue(data[j])
+                            data.removeSubrange(0 ... j)
+                            break
+                        }
                     }
+                }
+
+                updateGraphData(&cadence, timestamp: point.timestamp) {
+                    cadenceAtPoint = $0.cadence
+                }
+                updateGraphData(&heartRate, timestamp: point.timestamp) {
+                    heartRateAtPoint = $0.heartRate
                 }
 
                 let routePoint = RouteData(
@@ -257,6 +335,7 @@ public enum HealthKitUtils {
                     ),
                     altitude: point.altitude,
                     heartRate: heartRateAtPoint ?? 0.0,
+                    cadence: cadenceAtPoint ?? 0.0,
                     pace: point.speed
                 )
 
@@ -265,6 +344,7 @@ public enum HealthKitUtils {
                 let graphPoint = GraphData(
                     timestamp: point.timestamp,
                     altitude: point.altitude,
+                    cadence: cadenceAtPoint ?? 0.0,
                     heartRate: heartRateAtPoint ?? 0.0,
                     pace: point.speed
                 )
@@ -283,6 +363,9 @@ public enum HealthKitUtils {
                             altitude: graphSectionData.2.reduce(0) {
                                 $0 + $1.altitude
                             } / Double(graphSectionData.2.count),
+                            cadence: filteredHeartRateArray.reduce(0) {
+                                $0 + $1.cadence
+                            } / Double(filteredHeartRateArray.count),
                             heartRate: filteredHeartRateArray.reduce(0) {
                                 $0 + $1.heartRate
                             } / Double(filteredHeartRateArray.count),
