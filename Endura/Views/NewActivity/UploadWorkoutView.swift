@@ -30,20 +30,18 @@ struct PreviewWorkoutView: View {
     @State private var enduraWorkout: ActivityDataWithRoute?
     @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
 
+    @State private var mapRef: (any View)? = nil
+    @State private var geometryRef: GeometryProxy? = nil
+
     init(workout: HKWorkout) {
         self.workout = workout
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Afternoon Run").font(.title)
+        VStack {
             if let activityData = enduraWorkout {
-                Text("\(activityData.duration) \(activityData.distance)")
-                ScrollView(.vertical) {
-                    HStack {
-                        Text("\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2))")
-                        Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
-                    }
+                ScrollView {
+                    ActivityHeader(uid: activityData.uid, activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)())
 
                     VStack {
                         GeometryReader { geometry in
@@ -54,40 +52,35 @@ struct PreviewWorkoutView: View {
                                         .environmentObject(activityViewModel)
                                 map
 
-                                Button {
-                                    Task {
-                                        do {
-                                            try await ActivityUtils.uploadActivity(activity: activityData, image: map.takeScreenshot(origin: geometry.frame(in: .global).origin, size: geometry.size))
-                                        } catch {
-                                            print("Error uploading workout: \(error)")
-                                        }
-                                    }
-                                } label: {
-                                    Text("Upload")
-                                }
+                                let _ = mapRef = map
+                                let _ = geometryRef = geometry
                             }
                         }
                     }
                     .frame(height: 300)
 
-                    Spacer()
-
-                    let paceGraph = activityData.getPaceGraph()
-                    let heartRateGraph = activityData.getHeartRateGraph()
                     VStack {
-                        if !paceGraph.isEmpty {
-                            LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
-                                .environmentObject(activityViewModel)
-                        } else {
-                            Text("No pace data available")
-                        }
-                        if !heartRateGraph.isEmpty {
-                            LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
-                                .environmentObject(activityViewModel)
-                        } else {
-                            Text("No heart rate data available")
-                        }
+                        let paceGraph = activityData.getPaceGraph()
+                        let heartRateGraph = activityData.getHeartRateGraph()
+                        LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
+                        LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                     }
+                    .environmentObject(activityViewModel)
+
+                    Button {
+                        Task {
+                            do {
+                                if let mapRef = mapRef, let geometryRef = geometryRef {
+                                    try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
+                                }
+                            } catch {
+                                print("Error uploading workout: \(error)")
+                            }
+                        }
+                    } label: {
+                        Text("Upload")
+                    }
+                    .buttonStyle(EnduraButtonStyle())
                 }
             } else {
                 ProgressView {
@@ -95,6 +88,7 @@ struct PreviewWorkoutView: View {
                 }
             }
         }
+        .frame(maxHeight: .infinity)
         .task {
             do {
                 enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
@@ -104,15 +98,5 @@ struct PreviewWorkoutView: View {
                 print("Error getting heart rate graph")
             }
         }
-        //            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-        //            .task {
-        //                do {
-        //                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-        //                } catch WorkoutErrors.noWorkout {
-        //                    print("No workout to get heart rate graph")
-        //                } catch {
-        //                    print("Error getting heart rate graph")
-        //                }
-        //            }
     }
 }
