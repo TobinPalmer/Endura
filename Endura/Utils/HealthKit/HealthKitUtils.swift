@@ -8,14 +8,6 @@ import Foundation
 import HealthKit
 import UIKit
 
-protocol TimestampPoint: Codable {
-    var timestamp: Date { get }
-}
-
-extension HeartRateData: TimestampPoint {}
-
-extension CadenceData: TimestampPoint {}
-
 public enum HealthKitUtils {
     private static let healthStore = HKHealthStore()
 

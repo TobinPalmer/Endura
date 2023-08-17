@@ -130,16 +130,12 @@ public struct ActivityDataWithRoute {
 
         return graphData
     }
-
-//    public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {
-//        var pace = LineGraphData()
-//        var heartRate = LineGraphData()
-//
-//        data.graphData.forEach { val in
-//            pace.append((val.timestamp, val.pace))
-//            heartRate.append((val.timestamp, val.heartRate))
-//        }
-//
-//        return (pace, heartRate)
-//    }
 }
+
+protocol TimestampPoint: Codable {
+    var timestamp: Date { get }
+}
+
+extension HeartRateData: TimestampPoint {}
+
+extension CadenceData: TimestampPoint {}
