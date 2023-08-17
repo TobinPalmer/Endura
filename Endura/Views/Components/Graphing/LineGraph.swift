@@ -124,10 +124,19 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                 ZStack {
                     GeometryReader { geometry in
                         let frame = geometry.frame(in: .local)
-                        let path = createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
+                        let paths = createPaths(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
 
-                        AnimatedPath(path: path, color: style.color, duration: 2)
+                        ForEach(0 ..< paths.endIndex, id: \.self) { i in
+                            paths[i]
+                                .fill(style.color)
+                        }
                     }
+//                    GeometryReader { geometry in
+//                        let frame = geometry.frame(in: .local)
+//                        let path = createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
+//
+//                        AnimatedPath(path: path, color: style.color, duration: 2)
+//                    }
 
                     if activityViewModel.analysisValue != nil {
                         let proportionOfTimestampInRange = activityViewModel.analysisValue! / geometry.frame(in: .local).width
@@ -189,8 +198,34 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         }
     }
 
-    func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> Path {
-        var path = Path()
+//    func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> Path {
+//        var path = Path()
+//        var previousDate: Date?
+//        for index in data.indices {
+//            let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
+//            let xPosition = frame.width * CGFloat(proportionOfTimestampInRange)
+//            let yPosition = frame.height * CGFloat((data[index].1 - minVal) / range)
+//
+//            let point = CGPoint(x: xPosition, y: frame.height - yPosition)
+//
+//            if let previousDate = previousDate, data[index].0.timeIntervalSince(previousDate) > Double(step * 2) {
+//                path.move(to: point)
+//            } else if index == 0 {
+//                path.move(to: point)
+//            } else {
+//                path.addLine(to: point)
+//            }
+//            previousDate = data[index].0
+//        }
+//        // Close path at the bottom of the graph
+//        path.addLine(to: CGPoint(x: path.currentPoint!.x, y: frame.height))
+//        path.addLine(to: CGPoint(x: 0, y: frame.height))
+//        path.closeSubpath()
+//        return path
+//    }
+
+    func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
+        var paths = [Path]()
         var previousDate: Date?
         for index in data.indices {
             let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
@@ -199,6 +234,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
 
             let point = CGPoint(x: xPosition, y: frame.height - yPosition)
 
+            var path = Path()
             if let previousDate = previousDate, data[index].0.timeIntervalSince(previousDate) > Double(step * 2) {
                 path.move(to: point)
             } else if index == 0 {
@@ -206,12 +242,36 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
             } else {
                 path.addLine(to: point)
             }
+            path.addLine(to: CGPoint(x: path.currentPoint!.x, y: frame.height))
+            path.addLine(to: CGPoint(x: 0, y: frame.height))
+            path.closeSubpath()
+            paths.append(path)
+
             previousDate = data[index].0
         }
-        // Close path at the bottom of the graph
-//        path.addLine(to: CGPoint(x: path.currentPoint!.x, y: frame.height))
-//        path.addLine(to: CGPoint(x: 0, y: frame.height))
-//        path.closeSubpath()
-        return path
+        return paths
+    }
+
+    func createPaths(from data: [(Date, Double)], in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
+        var paths: [Path] = []
+        var previousPoint: CGPoint?
+        for index in data.indices {
+            let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
+            let xPosition = frame.width * CGFloat(proportionOfTimestampInRange)
+            let yPosition = frame.height * CGFloat((data[index].1 - minVal) / range)
+
+            let point = CGPoint(x: xPosition, y: frame.height - yPosition)
+            var path = Path()
+            if let previousPoint = previousPoint {
+                path.move(to: previousPoint)
+                path.addLine(to: point)
+                path.addLine(to: CGPoint(x: point.x, y: frame.height))
+                path.addLine(to: CGPoint(x: previousPoint.x, y: frame.height))
+                path.closeSubpath()
+            }
+            previousPoint = point
+            paths.append(path)
+        }
+        return paths
     }
 }
