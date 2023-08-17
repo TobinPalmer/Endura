@@ -21,35 +21,34 @@ struct ActivityGridStats: View {
         if topSpace {
             Spacer(minLength: 10)
         }
-        HStack {
-            VStack(alignment: .center) {
-                Text("Distance")
-                    .foregroundColor(.secondary)
-                    .font(.system(size: 11))
 
-                Text("\(ConversionUtils.metersToMiles(activityData.distance).truncate(places: 2).removeTrailingZeros()) mi")
-                    .font(.title3)
+        VStack {
+            ActivityGridSection {
+                ActivityStatsSection {
+                    ActivityStatsDiscriptionText("Distance")
+                    ActivityStatsValueText("\(ConversionUtils.metersToMiles(activityData.distance).truncate(places: 2).removeTrailingZeros()) mi")
+                }
+
+                ActivityStatsVLine()
+
+                ActivityStatsSection {
+                    ActivityStatsDiscriptionText("Duration")
+                    ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .center)
 
-            HStack(spacing: 20) {
-                Divider().frame(width: 1)
+            ActivityGridSection {
+                ActivityStatsSection {
+                    ActivityStatsDiscriptionText("Pace")
+                    ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
+                }
+
+                ActivityStatsSection {}
             }
-            .frame(width: 2, height: 50)
 
-            VStack {
-                Text("Duration")
-                    .foregroundColor(.secondary)
-                    .font(.system(size: 11))
-                Text("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
-                    .font(.title3)
+            if bottomSpace {
+                Spacer(minLength: 10)
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
-
-        if bottomSpace {
-            Spacer(minLength: 10)
         }
     }
 }
