@@ -12,6 +12,10 @@ struct HeartRateLineGraphStyle: LineGraphStyle {
     public let color: Color = .red
 }
 
+struct AltitudeLineGraphStyle: LineGraphStyle {
+    public let color: Color = .gray
+}
+
 struct LineSegment: Shape {
     var start, end: CGPoint
 

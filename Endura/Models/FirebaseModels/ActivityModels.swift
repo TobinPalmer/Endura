@@ -109,6 +109,18 @@ public struct ActivityDataWithRoute {
         return pace
     }
 
+    public func getElevationGraph() -> LineGraphData {
+        var heartRate = LineGraphData()
+
+        data.graphData.forEach { val in
+            if val.altitude > 0 && !val.altitude.isNaN && !val.altitude.isInfinite {
+                heartRate.append((val.timestamp, val.altitude))
+            }
+        }
+
+        return heartRate
+    }
+
 //    public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {
 //        var pace = LineGraphData()
 //        var heartRate = LineGraphData()

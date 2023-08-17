@@ -33,8 +33,11 @@ struct ActivityView: View {
                         VStack {
                             let paceGraph = activityData.getPaceGraph()
                             let heartRateGraph = activityData.getHeartRateGraph()
+                            let elevationGraph = activityData.getElevationGraph()
+
                             LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                             LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
+                            LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: AltitudeLineGraphStyle())
                         }
                     }
                     .environmentObject(activityViewModel)
