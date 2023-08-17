@@ -12,7 +12,7 @@ struct HeartRateLineGraphStyle: LineGraphStyle {
     public let color: Color = .red
 }
 
-struct AltitudeLineGraphStyle: LineGraphStyle {
+struct ElevationLineGraphStyle: LineGraphStyle {
     public let color: Color = .gray
 }
 

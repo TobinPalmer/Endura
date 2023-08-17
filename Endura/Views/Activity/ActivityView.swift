@@ -31,13 +31,16 @@ struct ActivityView: View {
                         ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
 
                         VStack {
-                            let paceGraph = activityData.getPaceGraph()
-                            let heartRateGraph = activityData.getHeartRateGraph()
-                            let elevationGraph = activityData.getElevationGraph()
+//                            let paceGraph = activityData.getPaceGraph()
+//                            let heartRateGraph = activityData.getHeartRateGraph()
+//                            let elevationGraph = activityData.getElevationGraph()
+                            let paceGraph = activityData.getGraph(for: .pace)
+                            let heartRateGraph = activityData.getGraph(for: .heartRate)
+                            let elevationGraph = activityData.getGraph(for: .elevation)
 
                             LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                             LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
-                            LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: AltitudeLineGraphStyle())
+                            LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
                         }
                     }
                     .environmentObject(activityViewModel)

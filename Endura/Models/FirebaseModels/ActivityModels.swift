@@ -6,6 +6,12 @@ import FirebaseFirestore
 import Foundation
 import MapKit
 
+public enum GraphType: String, Codable {
+    case pace
+    case heartRate
+    case elevation
+}
+
 public typealias LineGraphData = [(Date, Double)]
 
 public struct ActivityCommentData: Codable, Hashable {
@@ -85,40 +91,32 @@ public struct ActivityDataWithRoute {
         ActivityData(uid: uid, time: time, distance: distance, duration: duration, startLocation: startLocation, startCity: startCity, comments: comments, likes: likes)
     }
 
-    public func getHeartRateGraph() -> LineGraphData {
-        var heartRate = LineGraphData()
+    public func getGraph(for type: GraphType) -> LineGraphData {
+        var graphData = LineGraphData()
+        var selector: (GraphData) -> Double
 
-        data.graphData.forEach { val in
-            if val.heartRate > 0 && !val.heartRate.isNaN && !val.heartRate.isInfinite {
-                heartRate.append((val.timestamp, val.heartRate))
+        switch type {
+        case .pace:
+            selector = {
+                $0.pace
+            }
+        case .heartRate:
+            selector = {
+                $0.heartRate
+            }
+        case .elevation:
+            selector = {
+                $0.altitude
             }
         }
 
-        return heartRate
-    }
-
-    public func getPaceGraph() -> LineGraphData {
-        var pace = LineGraphData()
-
         data.graphData.forEach { val in
-            if val.pace > 0 && !val.pace.isNaN && !val.pace.isInfinite {
-                pace.append((val.timestamp, val.pace))
+            if selector(val) > 0 && !selector(val).isNaN && !selector(val).isInfinite {
+                graphData.append((val.timestamp, selector(val)))
             }
         }
 
-        return pace
-    }
-
-    public func getElevationGraph() -> LineGraphData {
-        var heartRate = LineGraphData()
-
-        data.graphData.forEach { val in
-            if val.altitude > 0 && !val.altitude.isNaN && !val.altitude.isInfinite {
-                heartRate.append((val.timestamp, val.altitude))
-            }
-        }
-
-        return heartRate
+        return graphData
     }
 
 //    public func getPaceAndHeartRateGraphData() -> (LineGraphData, LineGraphData) {
