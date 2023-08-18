@@ -131,11 +131,17 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                         ForEach(0 ..< paths.endIndex, id: \.self) { i in
 //                            AnimatedPath(path: paths[i], color: style.color, duration: 2, fill: true)
                             let path = paths[i]
-                            let x = path.boundingRect.origin.x
-                            let y = path.boundingRect.origin.y
-                            if !x.isNaN && !y.isNaN && !x.isInfinite && !y.isInfinite {
-                                AnimatedPath(path: path, color: style.color, duration: 2, fill: true)
-                            }
+                            path
+                                .foregroundColor(style.color)
+                                .overlay(
+                                    LineSegment(start: CGPoint(x: activityViewModel.analysisValue ?? 0, y: 0), end: CGPoint(x: activityViewModel.analysisValue ?? 0, y: frame.height))
+                                        .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                                        .foregroundColor(.black)
+                                        .opacity(activityViewModel.analysisValue != nil ? 1 : 0)
+                                        .animation(.easeInOut(duration: 0.5), value: activityViewModel.analysisValue)
+                                )
+                                .frame(maxWidth: .infinity)
+//                            }
                         }
                     }
 //                    GeometryReader { geometry in
@@ -179,7 +185,6 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                         .foregroundColor(.black)
                         .position(x: 10, y: CGFloat(height) - 20)
                 }
-                .padding(10)
                 .frame(height: CGFloat(height))
                 .gesture(DragGesture(minimumDistance: 10)
                     .onChanged { value in
