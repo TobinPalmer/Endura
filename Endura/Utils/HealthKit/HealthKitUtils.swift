@@ -129,7 +129,6 @@ public enum HealthKitUtils {
     }
 
     public static func getCadenceGraph(for workout: HKWorkout) async throws -> [CadenceData] {
-        print("getting cadence graph")
         let interval = DateComponents(second: 1)
         let query = await createCadenceQueryForWorkout(workout, interval: interval)
 
@@ -152,7 +151,6 @@ public enum HealthKitUtils {
 
     @available(iOS 16.0, *)
     public static func getPowerGraph(for workout: HKWorkout) async throws -> [PowerData] {
-        print("getting power graph")
         let interval = DateComponents(second: 1)
         let query = await createPowerQueryForWorkout(workout, interval: interval)
 
@@ -170,7 +168,6 @@ public enum HealthKitUtils {
             healthStore.execute(query)
         }
 
-        print("Returning", results)
         return results
     }
 
