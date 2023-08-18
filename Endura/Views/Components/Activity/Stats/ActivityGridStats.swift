@@ -43,7 +43,10 @@ struct ActivityGridStats: View {
                     ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
                 }
 
-                ActivityStatsSection {}
+                ActivityStatsSection {
+                    ActivityStatsDiscriptionText("Calories")
+                    ActivityStatsValueText("\(activityData.calories.truncate(places: 0).removeTrailingZeros()) cal")
+                }
             }
 
             if bottomSpace {

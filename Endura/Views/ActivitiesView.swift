@@ -34,6 +34,7 @@ import SwiftUI
                         time: data.time,
                         distance: data.distance,
                         duration: data.duration,
+                        calories: data.calories,
                         startLocation: data.startLocation,
                         startCity: data.startCity,
                         comments: data.comments,
