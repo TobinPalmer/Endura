@@ -11,6 +11,7 @@ public enum GraphType: String, Codable {
     case heartRate
     case elevation
     case cadence
+    case power
 }
 
 public typealias LineGraphData = [(Date, Double)]
@@ -36,6 +37,11 @@ public struct CadenceData: Codable {
     var cadence: Double
 }
 
+public struct PowerData: Codable {
+    var timestamp: Date
+    var power: Double
+}
+
 public struct RouteData: Codable {
     var timestamp: Date
     var location: LocationData
@@ -43,6 +49,7 @@ public struct RouteData: Codable {
     var heartRate: Double
     var cadence: Double
     var pace: Double
+    var power: Double
 }
 
 // The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
@@ -52,6 +59,7 @@ public struct GraphData: Codable {
     var cadence: Double
     var heartRate: Double
     var pace: Double
+    var power: Double
 }
 
 public struct ActivityRouteData: Codable {
@@ -120,6 +128,10 @@ public struct ActivityDataWithRoute {
             selector = {
                 $0.cadence
             }
+        case .power:
+            selector = {
+                $0.power
+            }
         }
 
         data.graphData.forEach { val in
@@ -139,3 +151,5 @@ protocol TimestampPoint: Codable {
 extension HeartRateData: TimestampPoint {}
 
 extension CadenceData: TimestampPoint {}
+
+extension PowerData: TimestampPoint {}

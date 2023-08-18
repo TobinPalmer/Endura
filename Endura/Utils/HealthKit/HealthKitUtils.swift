@@ -12,13 +12,19 @@ public enum HealthKitUtils {
     private static let healthStore = HKHealthStore()
 
     public static func requestAuthorization() {
-        let typesToRead: Set<HKObjectType> = [
+        let baseTypesToRead: Set<HKObjectType> = [
             HKObjectType.workoutType(),
             HKSeriesType.workoutRoute(),
             HKObjectType.quantityType(forIdentifier: .stepCount)!,
             HKObjectType.quantityType(forIdentifier: .heartRate)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
         ]
+
+        var typesToRead: Set<HKObjectType> = baseTypesToRead
+
+        if #available(iOS 16.0, *) {
+            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningPower)!)
+        }
 
         healthStore.requestAuthorization(toShare: nil, read: typesToRead) { _, error in
             if let error = error {
@@ -56,7 +62,6 @@ public enum HealthKitUtils {
     }
 
     public static func getLocationData(for route: HKWorkoutRoute) async throws -> [CLLocation] {
-        print("calling location data")
         let locations = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
             var allLocations: [CLLocation] = []
             let query = HKWorkoutRouteQuery(route: route) { _, locationsOrNil, done, errorOrNil in
@@ -124,6 +129,7 @@ public enum HealthKitUtils {
     }
 
     public static func getCadenceGraph(for workout: HKWorkout) async throws -> [CadenceData] {
+        print("getting cadence graph")
         let interval = DateComponents(second: 1)
         let query = await createCadenceQueryForWorkout(workout, interval: interval)
 
@@ -141,6 +147,30 @@ public enum HealthKitUtils {
             healthStore.execute(query)
         }
 
+        return results
+    }
+
+    @available(iOS 16.0, *)
+    public static func getPowerGraph(for workout: HKWorkout) async throws -> [PowerData] {
+        print("getting power graph")
+        let interval = DateComponents(second: 1)
+        let query = await createPowerQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[PowerData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compilePowerDataFromResults(results, workout: workout)
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        print("Returning", results)
         return results
     }
 
@@ -171,6 +201,25 @@ public enum HealthKitUtils {
         )
     }
 
+    private static func createPowerQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType: HKQuantityType
+        if #available(iOS 16.0, *) {
+            quantityType = HKObjectType.quantityType(forIdentifier: .runningPower)!
+        } else {
+            quantityType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+        }
+
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
     private static func compileCadenceDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [CadenceData] {
         var cadenceData = [CadenceData]()
 
@@ -191,6 +240,47 @@ public enum HealthKitUtils {
         }
 
         return cadenceData
+    }
+
+    @available(iOS 16.0, *)
+    private static func compilePowerDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [PowerData] {
+        var power = [PowerData]()
+
+        results.enumerateStatistics(
+            from: workout.startDate,
+            to: workout.endDate
+        ) { statistics, _ in
+            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.watt()),
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.watt())
+            {
+                let average = (minValue + maxValue) / 2
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
+
+                power.append(PowerData(timestamp: date, power: average))
+            }
+        }
+
+        var filledArray = [PowerData]()
+
+        for i in 0 ..< power.count {
+            let currentTuple = power[i]
+
+            if i > 0 {
+                let previousTuple = power[i - 1]
+
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
+                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
+
+                    for missingSecond in missingRange {
+                        filledArray.append(PowerData(timestamp: missingSecond, power: previousTuple.power))
+                    }
+                }
+            }
+
+            filledArray.append(currentTuple)
+        }
+
+        return filledArray
     }
 
     private static func compileHeartRateDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [HeartRateData] {
@@ -278,6 +368,11 @@ public enum HealthKitUtils {
 
         var cadence = try await HealthKitUtils.getCadenceGraph(for: workout)
 
+        var power = [PowerData]()
+        if #available(iOS 16.0, *) {
+            power = try await HealthKitUtils.getPowerGraph(for: workout)
+        }
+
         var dataRate = 1
 
         if !data.isEmpty {
@@ -297,7 +392,8 @@ public enum HealthKitUtils {
             data.removeSubrange(0 ... 5)
             for i in 0 ..< data.count {
                 var heartRateAtPoint: Double?
-                var cadenceAtPoint: Double? = 0.0
+                var cadenceAtPoint: Double?
+                var powerAtPoint: Double?
                 let point = data[i]
 
                 func updateGraphData<T: TimestampPoint>(_ data: inout [T], timestamp: Date, updateValue: (T) -> Void) {
@@ -317,6 +413,12 @@ public enum HealthKitUtils {
                     heartRateAtPoint = $0.heartRate
                 }
 
+                if #available(iOS 16.0, *) {
+                    updateGraphData(&power, timestamp: point.timestamp) {
+                        powerAtPoint = $0.power
+                    }
+                }
+
                 let routePoint = RouteData(
                     timestamp: point.timestamp,
                     location: LocationData(
@@ -326,7 +428,8 @@ public enum HealthKitUtils {
                     altitude: point.altitude,
                     heartRate: heartRateAtPoint ?? 0.0,
                     cadence: cadenceAtPoint ?? 0.0,
-                    pace: point.speed
+                    pace: point.speed,
+                    power: powerAtPoint ?? 0.0
                 )
 
                 routeData.append(routePoint)
@@ -336,7 +439,8 @@ public enum HealthKitUtils {
                     altitude: point.altitude,
                     cadence: cadenceAtPoint ?? 0.0,
                     heartRate: heartRateAtPoint ?? 0.0,
-                    pace: point.speed
+                    pace: point.speed,
+                    power: powerAtPoint ?? 0.0
                 )
 
                 if i % dataRate == 0 {
@@ -347,21 +451,30 @@ public enum HealthKitUtils {
                         let filteredPaceArray = graphSectionData.2.filter {
                             $0.pace != 0.0
                         }
+                        let filteredCadenceArray = graphSectionData.2.filter {
+                            $0.cadence != 0.0
+                        }
+                        let filteredPowerArray = graphSectionData.2.filter {
+                            $0.power != 0.0
+                        }
 
                         let graphSectionPoint = GraphData(
                             timestamp: graphSectionData.1,
                             altitude: graphSectionData.2.reduce(0) {
                                 $0 + $1.altitude
                             } / Double(graphSectionData.2.count),
-                            cadence: filteredHeartRateArray.reduce(0) {
+                            cadence: filteredCadenceArray.reduce(0) {
                                 $0 + $1.cadence
-                            } / Double(filteredHeartRateArray.count),
+                            } / Double(filteredCadenceArray.count),
                             heartRate: filteredHeartRateArray.reduce(0) {
                                 $0 + $1.heartRate
                             } / Double(filteredHeartRateArray.count),
                             pace: filteredPaceArray.reduce(0) {
                                 $0 + $1.pace
-                            } / Double(filteredPaceArray.count)
+                            } / Double(filteredPaceArray.count),
+                            power: filteredPowerArray.reduce(0) {
+                                $0 + $1.power
+                            } / Double(filteredPowerArray.count)
                         )
 
                         graphData.append(graphSectionPoint)

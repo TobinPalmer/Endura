@@ -17,7 +17,13 @@ struct ElevationLineGraphStyle: LineGraphStyle {
 }
 
 struct CadenceLineGraphStyle: LineGraphStyle {
-    public let color: Color = .purple
+    // #871C46
+    public let color: Color = .init(red: 0.5294117647, green: 0.1098039216, blue: 0.2745098039)
+}
+
+struct PowerLineGraphStyle: LineGraphStyle {
+    // #CEF350
+    public let color: Color = .init(red: 0.8078431373, green: 0.9529411765, blue: 0.3137254902)
 }
 
 struct LineSegment: Shape {
@@ -129,10 +135,10 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                         let paths = createPaths(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
 
                         ForEach(0 ..< paths.endIndex, id: \.self) { i in
-//                            AnimatedPath(path: paths[i], color: style.color, duration: 2, fill: true)
                             let path = paths[i]
                             path
-                                .foregroundColor(style.color)
+                                .foregroundColor(style.color.opacity(0.5))
+                                .opacity(activityViewModel.analysisValue != nil ? 0.75 : 1) // 75% of original (0.5)
                                 .overlay(
                                     LineSegment(start: CGPoint(x: activityViewModel.analysisValue ?? 0, y: 0), end: CGPoint(x: activityViewModel.analysisValue ?? 0, y: frame.height))
                                         .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
@@ -141,15 +147,8 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                                         .animation(.easeInOut(duration: 0.5), value: activityViewModel.analysisValue)
                                 )
                                 .frame(maxWidth: .infinity)
-//                            }
                         }
                     }
-//                    GeometryReader { geometry in
-//                        let frame = geometry.frame(in: .local)
-//                        let path = createPath(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
-//
-//                        AnimatedPath(path: path, color: style.color, duration: 2)
-//                    }
 
                     if activityViewModel.analysisValue != nil {
                         let proportionOfTimestampInRange = activityViewModel.analysisValue! / geometry.frame(in: .local).width
@@ -263,29 +262,6 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         }
         return paths
     }
-
-//    func createPaths(from data: [(Date, Double)], in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
-//        var paths: [Path] = []
-//        var previousPoint: CGPoint?
-//        for index in data.indices {
-//            let proportionOfTimestampInRange = data[index].0.timeIntervalSince(minTimestamp) / timestampRange
-//            let xPosition = frame.width * CGFloat(proportionOfTimestampInRange)
-//            let yPosition = frame.height * CGFloat((data[index].1 - minVal) / range)
-//
-//            let point = CGPoint(x: xPosition, y: frame.height - yPosition)
-//            var path = Path()
-//            if let previousPoint = previousPoint {
-//                path.move(to: previousPoint)
-//                path.addLine(to: point)
-//                path.addLine(to: CGPoint(x: point.x, y: frame.height))
-//                path.addLine(to: CGPoint(x: previousPoint.x, y: frame.height))
-//                path.closeSubpath()
-//            }
-//            previousPoint = point
-//            paths.append(path)
-//        }
-//        return paths
-//    }
 
     func createPaths(from data: [(Date, Double)], in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
         var paths: [Path] = []
