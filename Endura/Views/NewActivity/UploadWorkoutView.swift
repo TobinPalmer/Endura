@@ -67,7 +67,6 @@ struct PreviewWorkoutView: View {
                         let elevationGraph = activityData.getGraph(for: .elevation)
                         let cadenceGraph = activityData.getGraph(for: .cadence)
                         let powerGraph = activityData.getGraph(for: .power)
-                        let _ = print("Power Graph", powerGraph)
                         ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
                         LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                         LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())

@@ -35,6 +35,7 @@ import SwiftUI
                         distance: data.distance,
                         duration: data.duration,
                         totalDuration: data.totalDuration,
+                        averagePower: data.averagePower,
                         calories: data.calories,
                         startLocation: data.startLocation,
                         startCity: data.startCity,

@@ -365,7 +365,7 @@ public enum HealthKitUtils {
 
         var cadence = try await HealthKitUtils.getCadenceGraph(for: workout)
 
-        var power = [PowerData]()
+        var power: [PowerData]? = nil
         if #available(iOS 16.0, *) {
             power = try await HealthKitUtils.getPowerGraph(for: workout)
         }
@@ -411,8 +411,10 @@ public enum HealthKitUtils {
                 }
 
                 if #available(iOS 16.0, *) {
-                    updateGraphData(&power, timestamp: point.timestamp) {
-                        powerAtPoint = $0.power
+                    if var power = power {
+                        updateGraphData(&power, timestamp: point.timestamp) {
+                            powerAtPoint = $0.power
+                        }
                     }
                 }
 
@@ -490,6 +492,9 @@ public enum HealthKitUtils {
             distance: workoutDistance,
             duration: workoutDuration,
             totalDuration: workout.startDate.distance(to: workout.endDate),
+            averagePower: power == nil ? nil : power!.reduce(0) {
+                $0 + $1.power
+            } / Double(power!.count),
             calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
             startLocation: LocationData(
                 latitude: data.first?.coordinate.latitude ?? 0.0,

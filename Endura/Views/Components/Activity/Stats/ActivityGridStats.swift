@@ -55,7 +55,12 @@ struct ActivityGridStats: View {
                     ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.totalDuration))")
                 }
 
-                ActivityStatsSection {}
+                ActivityStatsSection {
+                    if let averagePower = activityData.averagePower {
+                        ActivityStatsDiscriptionText("Average Power")
+                        ActivityStatsValueText("\(ConversionUtils.round(averagePower)) W")
+                    }
+                }
             }
 
             if bottomSpace {
