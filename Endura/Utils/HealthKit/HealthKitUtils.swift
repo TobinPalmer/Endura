@@ -492,6 +492,7 @@ public enum HealthKitUtils {
             time: workout.startDate,
             distance: workoutDistance,
             duration: workoutDuration,
+            totalDuration: workout.startDate.distance(to: workout.endDate),
             calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
             startLocation: LocationData(
                 latitude: data.first?.coordinate.latitude ?? 0.0,

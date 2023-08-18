@@ -73,6 +73,7 @@ public struct ActivityData: Codable {
     var time: Date
     var distance: Double
     var duration: TimeInterval
+    var totalDuration: TimeInterval
     var pace: Double {
         distance / duration
     }
@@ -85,7 +86,7 @@ public struct ActivityData: Codable {
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
-        return ActivityDataWithRoute(uid: uid, time: time, distance: distance, duration: duration, calories: calories, startLocation: startLocation, startCity: startCity, data: routeData, comments: comments, likes: likes)
+        return ActivityDataWithRoute(uid: uid, time: time, distance: distance, duration: duration, totalDuration: totalDuration, calories: calories, startLocation: startLocation, startCity: startCity, data: routeData, comments: comments, likes: likes)
     }
 }
 
@@ -94,6 +95,7 @@ public struct ActivityDataWithRoute {
     var time: Date
     var distance: Double
     var duration: TimeInterval
+    var totalDuration: TimeInterval
     var pace: Double {
         distance / duration
     }
@@ -106,7 +108,7 @@ public struct ActivityDataWithRoute {
     var likes: [String]
 
     public func getDataWithoutRoute() -> ActivityData {
-        ActivityData(uid: uid, time: time, distance: distance, duration: duration, calories: calories, startLocation: startLocation, startCity: startCity, comments: comments, likes: likes)
+        ActivityData(uid: uid, time: time, distance: distance, duration: duration, totalDuration: totalDuration, calories: calories, startLocation: startLocation, startCity: startCity, comments: comments, likes: likes)
     }
 
     public func getGraph(for type: GraphType) -> LineGraphData {

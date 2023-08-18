@@ -49,6 +49,15 @@ struct ActivityGridStats: View {
                 }
             }
 
+            ActivityGridSection {
+                ActivityStatsSection {
+                    ActivityStatsDiscriptionText("Elapsed Time")
+                    ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.totalDuration))")
+                }
+
+                ActivityStatsSection {}
+            }
+
             if bottomSpace {
                 Spacer(minLength: 10)
             }
