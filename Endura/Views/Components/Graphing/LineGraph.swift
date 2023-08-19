@@ -123,7 +123,6 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
     public init(data: LineGraphData, step: Int, height: Int = 200, valueModifier: @escaping (Double) -> String = { i in
         String(i)
     }, style: Style) {
-        print("Graphing ", data)
         self.data = data
         self.step = step
         self.height = height
