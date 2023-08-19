@@ -26,7 +26,6 @@ struct ActivityStatsDiscriptionText: View {
     var body: some View {
         if block {
             Text(text)
-                .foregroundColor(.secondary)
                 .font(Font.custom("FlowBlock-Regular", size: 12, relativeTo: .title))
                 .minimumScaleFactor(0.5)
         } else {

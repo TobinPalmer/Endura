@@ -25,16 +25,12 @@ struct ActivityHeader: View {
             VStack(spacing: 3) {
                 HStack {
                     ProfileImage(uid, size: 50, placeholder: true)
-                    HStack {
+                    VStack(alignment: .leading) {
                         Text("---------")
                             .font(Font.custom("FlowBlock-Regular", size: 20, relativeTo: .title))
-//                    .fontWeight(.semibold)
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
                         Text("--------- - ---------")
                             .font(Font.custom("FlowBlock-Regular", size: 12, relativeTo: .title))
-//                    .foregroundColor(.secondary)
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .topLeading)

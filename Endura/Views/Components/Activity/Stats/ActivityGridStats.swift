@@ -28,39 +28,43 @@ struct ActivityGridStats: View {
             VStack {
                 ActivityGridSection {
                     ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------")
-                        ActivityStatsValueText("----")
+                        ActivityStatsDiscriptionText("-------------", block: true)
+                        ActivityStatsValueText("----------", block: true)
                     }
 
                     ActivityStatsVLine()
 
                     ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------")
-                        ActivityStatsValueText("----")
+                        ActivityStatsDiscriptionText("-------------", block: true)
+                        ActivityStatsValueText("----------", block: true)
                     }
                 }
 
                 ActivityGridSection {
                     ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------", block: true)
-                        ActivityStatsValueText("----", block: true)
+                        ActivityStatsDiscriptionText("-------------", block: true)
+                        ActivityStatsValueText("----------", block: true)
                     }
 
+                    ActivityStatsVLine()
+
                     ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------", block: true)
-                        ActivityStatsValueText("----", block: true)
+                        ActivityStatsDiscriptionText("-------------", block: true)
+                        ActivityStatsValueText("----------", block: true)
                     }
                 }
 
                 ActivityGridSection {
                     ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------", block: true)
-                        ActivityStatsValueText("----", block: true)
+                        ActivityStatsDiscriptionText("-------------", block: true)
+                        ActivityStatsValueText("----------", block: true)
                     }
 
+                    ActivityStatsVLine()
+
                     ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------", block: true)
-                        ActivityStatsValueText("----", block: true)
+                        ActivityStatsDiscriptionText("-------------", block: true)
+                        ActivityStatsValueText("----------", block: true)
                     }
                 }
 
