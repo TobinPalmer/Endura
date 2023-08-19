@@ -16,31 +16,49 @@ struct ActivityStatsVLine: View {
 
 struct ActivityStatsDiscriptionText: View {
     private let text: String
+    private let block: Bool
 
-    public init(_ text: String) {
+    public init(_ text: String, block: Bool = false) {
         self.text = text
+        self.block = block
     }
 
     var body: some View {
-        Text(text)
-            .foregroundColor(.secondary)
-            .font(.system(size: 12))
-            .minimumScaleFactor(0.5)
+        if block {
+            Text(text)
+                .foregroundColor(.secondary)
+                .font(Font.custom("FlowBlock-Regular", size: 12, relativeTo: .title))
+                .minimumScaleFactor(0.5)
+        } else {
+            Text(text)
+                .foregroundColor(.secondary)
+                .font(.system(size: 12))
+                .minimumScaleFactor(0.5)
+        }
     }
 }
 
 struct ActivityStatsValueText: View {
     private let text: String
+    private let block: Bool
 
-    public init(_ text: String) {
+    public init(_ text: String, block: Bool = false) {
         self.text = text
+        self.block = block
     }
 
     var body: some View {
-        Text(text)
-            .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize))
-            .lineLimit(1)
-            .minimumScaleFactor(0.5)
+        if block {
+            Text(text)
+                .font(Font.custom("FlowBlock-Regular", size: UIFont.preferredFont(forTextStyle: .body).pointSize, relativeTo: .title))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+        } else {
+            Text(text)
+                .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+        }
     }
 }
 

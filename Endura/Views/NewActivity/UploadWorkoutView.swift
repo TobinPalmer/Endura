@@ -93,10 +93,53 @@ struct PreviewWorkoutView: View {
                     }
                     .buttonStyle(EnduraButtonStyle())
                 }
+//                VStack {
+//                    Text("Loaded")
+//                }
+//                    .frame(width: 500, height: 500)
+//                    .foregroundColor(Color.red)
             } else {
-                ProgressView {
-                    Text("Loading...")
+                ScrollView {
+                    ActivityHeader(uid: "", activityData: nil, placeholder: true)
+
+                    VStack {
+                        Text("Loading...")
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(height: 300)
+                    .foregroundColor(Color.red)
+                    .border(.red)
+
+                    ActivityGridStats(activityData: nil, placeholder: true)
                 }
+
+//                if !activityData.data.routeData.isEmpty {
+//                    VStack {
+//                        GeometryReader { geometry in
+//                            VStack {
+//                                let map =
+//                                        ActivityMap(activityData.data.routeData)
+//                                            .frame(height: 300)
+//                                            .environmentObject(activityViewModel)
+//                                map
+//
+//                                let _ = mapRef = map
+//                                let _ = geometryRef = geometry
+//                            }
+//                        }
+//                    }
+//                        .frame(height: 300)
+//                }
+
+//                Button {
+//                } label: {
+//                    Text("Upload")
+//                }
+//                    .buttonStyle(EnduraButtonStyle(disabled: true))
+//                    .disabled(true)
+//                ProgressView {
+//                    Text("Loading...")
+//                }
             }
         }
         .padding()

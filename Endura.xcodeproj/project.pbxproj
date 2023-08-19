@@ -53,6 +53,7 @@
 		17CC6EE5F11BB76AD09EDBBF /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6507B9EB6FEDAE6EB719 /* Array.swift */; };
 		17CC6F2D2274313C2825BE5B /* ActivitySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66D4EBE24BD79F3FA0F7 /* ActivitySchedule.swift */; };
 		17CC6F4B78384077758D0334 /* Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FAD8A0AC457723ACD1F /* Conversion.swift */; };
+		6969809E76BDCFF142A312E4 /* FlowBlock-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */; };
 		696980FB9DBE79E1EA36A768 /* ActivityMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982EE94EC856245965FFD /* ActivityMap.swift */; };
 		6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */; };
 		69698264AD04B1437CE58655 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698354833B838F454F85E8 /* Collection.swift */; };
@@ -123,6 +124,7 @@
 		026042D72A62E27C00F4AF88 /* EnduraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITests.swift; sourceTree = "<group>"; };
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		026D06352A7B2A3200A91958 /* Endura.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Endura.entitlements; sourceTree = "<group>"; };
+		02BC053E2A903125007CB32C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		17CC6138F9F694BD479D8798 /* MKPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolyline.swift; sourceTree = "<group>"; };
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		17CC61A4C68A0172243AB286 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 		69698C33876AF4895EBEE5F7 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
 		69698D01B022430326F64D83 /* ActivityPostStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPostStats.swift; sourceTree = "<group>"; };
 		69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
+		69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; path = "FlowBlock-Regular.ttf"; sourceTree = "<group>"; };
 		69698E6CE08351083301EC53 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegion.swift; sourceTree = "<group>"; };
 		69698EC86F9A7092017FDF6F /* ActivityHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityHeader.swift; sourceTree = "<group>"; };
@@ -264,6 +267,7 @@
 		026042BB2A62E27900F4AF88 /* Endura */ = {
 			isa = PBXGroup;
 			children = (
+				02BC053E2A903125007CB32C /* Info.plist */,
 				026D06352A7B2A3200A91958 /* Endura.entitlements */,
 				0202FC552A67AB2700D28518 /* Extensions */,
 				0202FC542A67851500D28518 /* EnduraDebug.entitlements */,
@@ -277,6 +281,7 @@
 				69698295434F07B0A3B70B02 /* Models */,
 				69698BED38E7BC5FB38B4BA0 /* Errors */,
 				69698DD361B3846255EF0F67 /* Styles */,
+				696980F8615E62AFAE8EB590 /* Fonts */,
 			);
 			path = Endura;
 			sourceTree = "<group>";
@@ -428,6 +433,14 @@
 				69698626B91694BAD5012252 /* NotificationUtils.swift */,
 			);
 			path = Notification;
+			sourceTree = "<group>";
+		};
+		696980F8615E62AFAE8EB590 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		69698295434F07B0A3B70B02 /* Models */ = {
@@ -713,6 +726,7 @@
 				026042C12A62E27C00F4AF88 /* Assets.xcassets in Resources */,
 				02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */,
 				6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */,
+				6969809E76BDCFF142A312E4 /* FlowBlock-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -970,6 +984,7 @@
 				DEVELOPMENT_TEAM = 879YJUG243;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Endura/Info.plist;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Needed to add workouts.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1001,6 +1016,7 @@
 				DEVELOPMENT_TEAM = 879YJUG243;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Endura/Info.plist;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Needed to add workouts.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

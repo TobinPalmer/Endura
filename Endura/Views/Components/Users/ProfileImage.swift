@@ -10,29 +10,39 @@ struct ProfileImage: View {
 
     private let uid: String
     private let size: Double
+    private let placeholder: Bool
 
-    init(_ uid: String, size: Double = 32) {
+    init(_ uid: String, size: Double = 32, placeholder: Bool = false) {
         self.uid = uid
         self.size = size
+        self.placeholder = placeholder
     }
 
     var body: some View {
-        if let user = databaseCache.getUserData(uid) {
-            if let profileImage = user.profileImage {
-                Image(uiImage: profileImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(Circle())
-                    .frame(width: size, height: size)
-            } else {
-                Image(systemName: "person.crop.circle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(Circle())
-                    .frame(width: 128, height: 128)
-            }
+        if placeholder {
+            Image(systemName: "person.crop.circle")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipShape(Circle())
+                .frame(width: size, height: size)
         } else {
-            Text("Loading...")
+            if let user = databaseCache.getUserData(uid) {
+                if let profileImage = user.profileImage {
+                    Image(uiImage: profileImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipShape(Circle())
+                        .frame(width: size, height: size)
+                } else {
+                    Image(systemName: "person.crop.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipShape(Circle())
+                        .frame(width: 128, height: 128)
+                }
+            } else {
+                Text("Loading...")
+            }
         }
     }
 }
