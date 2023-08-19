@@ -13,30 +13,6 @@ private enum UnitType {
     case unit(HKUnit)
 }
 
-func measureTime<T>(_ block: () throws -> T) rethrows -> (T, Double) {
-    let start = CFAbsoluteTimeGetCurrent()
-    let result = try block()
-    let end = CFAbsoluteTimeGetCurrent()
-    return (result, end - start)
-}
-
-func measureAsyncTime<T>(_ block: () async throws -> T) async throws -> (T, Double) {
-    let start = CFAbsoluteTimeGetCurrent()
-    let result = try await block()
-    let end = CFAbsoluteTimeGetCurrent()
-    return (result, end - start)
-}
-
-func startTimer() -> Date {
-    Date()
-}
-
-func stopTimerAndPrintElapsedTime(start: Date, title: String = "Block") {
-    let endTime = Date()
-    let elapsedTime = endTime.timeIntervalSince(start)
-    print("\(title) took \(elapsedTime) seconds to run.")
-}
-
 public enum HealthKitUtils {
     private static let healthStore = HKHealthStore()
 
@@ -169,17 +145,13 @@ public enum HealthKitUtils {
     }
 
     public static func workoutToActivityData(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
-        let startTime12 = startTimer()
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
         let workoutDuration = workout.duration
         var routeData = [RouteData]()
         var graphData = [GraphData]()
 
-        let startTime2 = startTimer()
         let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
-        stopTimerAndPrintElapsedTime(start: startTime2, title: "Get workout route")
 
-        let startTime = startTimer()
         var data = [CLLocation]()
 
         for route in routes {
@@ -187,9 +159,6 @@ public enum HealthKitUtils {
             data.append(contentsOf: routeData)
         }
 
-        stopTimerAndPrintElapsedTime(start: startTime, title: "Get location data")
-
-        let startTime3 = startTimer()
         var heartRate = try await HealthKitUtils.getHeartRateGraph(for: workout)
 
         var cadence = try await HealthKitUtils.getCadenceGraph(for: workout)
@@ -206,10 +175,6 @@ public enum HealthKitUtils {
         }
 
         var dataRate = 1
-
-        stopTimerAndPrintElapsedTime(start: startTime3, title: "Get graphs")
-
-        let startTime4 = startTimer()
 
         func updateGraphData<T: TimestampPoint>(_ data: inout [T], timestamp: Date, updateValue: (T) -> Void) {
             for j in 0 ..< data.count {
@@ -239,8 +204,6 @@ public enum HealthKitUtils {
             var verticleOscillationAtPoint: Double?
             var groundContactTimeAtPoint: Double?
             var strideLengthAtPoint: Double?
-
-            let startTimer8 = startTimer()
 
             for i in 0 ..< data.count where i % dataRate == 0 {
                 let point = data[i]
@@ -324,8 +287,6 @@ public enum HealthKitUtils {
                         }
                     }
 
-                    print("Cadence sum for loop \(i), \(cadenceSum)")
-
                     let graphSectionPoint = GraphData(
                         altitude: altitudeSum / Double(graphSectionData.2.count),
                         cadence: cadenceSum / 1.0,
@@ -345,13 +306,7 @@ public enum HealthKitUtils {
                     graphSectionData.2.append(graphPoint)
                 }
             }
-
-            stopTimerAndPrintElapsedTime(start: startTimer8, title: "Loop through data")
         }
-
-        stopTimerAndPrintElapsedTime(start: startTime4, title: "Compile data")
-
-        let startTime5 = startTimer()
 
         let workoutData = try await ActivityDataWithRoute(
             averagePower: power == nil
@@ -375,10 +330,6 @@ public enum HealthKitUtils {
             totalDuration: workout.startDate.distance(to: workout.endDate),
             uid: AuthUtils.getCurrentUID()
         )
-
-        stopTimerAndPrintElapsedTime(start: startTime5, title: "Create activity data")
-
-        stopTimerAndPrintElapsedTime(start: startTime12, title: "Total time")
 
         return workoutData
     }
