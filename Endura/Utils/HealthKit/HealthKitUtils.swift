@@ -111,446 +111,6 @@ public enum HealthKitUtils {
         }
     }
 
-    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateData] {
-        let interval = DateComponents(second: 1)
-        let query = await createHeartRateQueryForWorkout(workout, interval: interval)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileHeartRateDataFromResults(results, workout: workout)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-        return results
-    }
-
-    public static func getCadenceGraph(for workout: HKWorkout) async throws -> [CadenceData] {
-        let interval = DateComponents(second: 1)
-        let query = await createCadenceQueryForWorkout(workout, interval: interval)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CadenceData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileCadenceDataFromResults(results, workout: workout)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getGroundContactTimeGraph(for workout: HKWorkout) async throws -> [GroundContactTimeData] {
-        let interval = DateComponents(second: 1)
-        let query = await createGroundContactTimeQueryForWorkout(workout, interval: interval)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[GroundContactTimeData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileGroundContactTimeDataFromResults(results, workout: workout)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getStrideLengthGraph(for workout: HKWorkout) async throws -> [StrideLengthData] {
-        let interval = DateComponents(second: 1)
-        let query = await createStrideLengthQueryForWorkout(workout, interval: interval)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[StrideLengthData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileStrideLengthDataFromResults(results, workout: workout)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getVerticleOscillationGraph(for workout: HKWorkout) async throws -> [VerticleOscillationData] {
-        let interval = DateComponents(second: 1)
-        let query = await createVerticleOscillationQueryForWorkout(workout, interval: interval)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VerticleOscillationData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileVerticleOscillationDataFromResults(results, workout: workout)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getPowerGraph(for workout: HKWorkout) async throws -> [PowerData] {
-        let interval = DateComponents(second: 1)
-        let query = await createPowerQueryForWorkout(workout, interval: interval)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[PowerData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compilePowerDataFromResults(results, workout: workout)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    private static func createHeartRateQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
-        let quantityType = HKObjectType.quantityType(forIdentifier: .heartRate)!
-
-        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
-
-        return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.discreteMax, .discreteMin],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
-        )
-    }
-
-    @available(iOS 16.0, *)
-    private static func createGroundContactTimeQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
-        let quantityType = HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!
-        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
-
-        return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.discreteMax, .discreteMin],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
-        )
-    }
-
-    @available(iOS 16.0, *)
-    private static func createVerticleOscillationQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
-        let quantityType = HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!
-        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
-
-        return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.discreteMax, .discreteMin],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
-        )
-    }
-
-    private static func createCadenceQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
-        let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
-
-        return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.cumulativeSum, .separateBySource],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
-        )
-    }
-
-    @available(iOS 16.0, *)
-    private static func createStrideLengthQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
-        let quantityType = HKObjectType.quantityType(forIdentifier: .runningStrideLength)!
-
-        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
-
-        return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.discreteMax, .discreteMin],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
-        )
-    }
-
-    @available(iOS 16.0, *)
-    private static func createPowerQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
-        let quantityType = HKObjectType.quantityType(forIdentifier: .runningPower)!
-
-        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
-
-        return HKStatisticsCollectionQuery(
-            quantityType: quantityType,
-            quantitySamplePredicate: predicate,
-            options: [.discreteMax, .discreteMin],
-            anchorDate: workout.startDate,
-            intervalComponents: interval
-        )
-    }
-
-    private static func compileCadenceDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [CadenceData] {
-        var cadenceData = [CadenceData]()
-
-        results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
-            if let sumQuantity = statistics.sumQuantity() {
-                let duration = statistics.endDate.timeIntervalSince(statistics.startDate)
-                let averageCadence = sumQuantity.doubleValue(for: HKUnit.count()) / (duration / 60)
-
-                let startDate = statistics.startDate
-                let endDate = statistics.endDate
-
-                var currentDate = startDate
-                while currentDate < endDate {
-                    cadenceData.append(CadenceData(timestamp: currentDate, cadence: averageCadence))
-                    currentDate = Calendar.current.date(byAdding: .second, value: 1, to: currentDate)!
-                }
-            }
-        }
-
-        return cadenceData
-    }
-
-    @available(iOS 16.0, *)
-    private static func compilePowerDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [PowerData] {
-        var power = [PowerData]()
-
-        results.enumerateStatistics(
-            from: workout.startDate,
-            to: workout.endDate
-        ) { statistics, _ in
-            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.watt()),
-               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.watt())
-            {
-                let average = (minValue + maxValue) / 2
-                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
-
-                power.append(PowerData(timestamp: date, power: average))
-            }
-        }
-
-        var filledArray = [PowerData]()
-
-        for i in 0 ..< power.count {
-            let currentTuple = power[i]
-
-            if i > 0 {
-                let previousTuple = power[i - 1]
-
-                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
-                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
-
-                    for missingSecond in missingRange {
-                        filledArray.append(PowerData(timestamp: missingSecond, power: previousTuple.power))
-                    }
-                }
-            }
-
-            filledArray.append(currentTuple)
-        }
-
-        return filledArray
-    }
-
-    @available(iOS 16.0, *)
-    private static func compileStrideLengthDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [StrideLengthData] {
-        var strideLength = [StrideLengthData]()
-
-        results.enumerateStatistics(
-            from: workout.startDate,
-            to: workout.endDate
-        ) { statistics, _ in
-            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.meter()),
-               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.meter())
-            {
-                let average = (minValue + maxValue) / 2
-                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
-
-                strideLength.append(StrideLengthData(timestamp: date, strideLength: average))
-            }
-        }
-
-        var filledArray = [StrideLengthData]()
-
-        for i in 0 ..< strideLength.count {
-            let currentTuple = strideLength[i]
-
-            if i > 0 {
-                let previousTuple = strideLength[i - 1]
-
-                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
-                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
-
-                    for missingSecond in missingRange {
-                        filledArray.append(StrideLengthData(timestamp: missingSecond, strideLength: previousTuple.strideLength))
-                    }
-                }
-            }
-
-            filledArray.append(currentTuple)
-        }
-
-        return filledArray
-    }
-
-    @available(iOS 16.0, *)
-    private static func compileVerticleOscillationDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [VerticleOscillationData] {
-        var verticleOscillation = [VerticleOscillationData]()
-
-        results.enumerateStatistics(
-            from: workout.startDate,
-            to: workout.endDate
-        ) { statistics, _ in
-            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.meter()),
-               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.meter())
-            {
-                let average = (minValue + maxValue) / 2
-                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
-
-                verticleOscillation.append(VerticleOscillationData(timestamp: date, verticleOscillation: average))
-            }
-        }
-
-        var filledArray = [VerticleOscillationData]()
-
-        for i in 0 ..< verticleOscillation.count {
-            let currentTuple = verticleOscillation[i]
-
-            if i > 0 {
-                let previousTuple = verticleOscillation[i - 1]
-
-                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
-                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
-
-                    for missingSecond in missingRange {
-                        filledArray.append(VerticleOscillationData(timestamp: missingSecond, verticleOscillation: previousTuple.verticleOscillation))
-                    }
-                }
-            }
-
-            filledArray.append(currentTuple)
-        }
-
-        return filledArray
-    }
-
-    @available(iOS 16.0, *)
-    private static func compileGroundContactTimeDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [GroundContactTimeData] {
-        var groundContactTime = [GroundContactTimeData]()
-
-        results.enumerateStatistics(
-            from: workout.startDate,
-            to: workout.endDate
-        ) { statistics, _ in
-            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.second()),
-               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.second())
-            {
-                let average = (minValue + maxValue) / 2
-                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
-
-                groundContactTime.append(GroundContactTimeData(timestamp: date, groundContactTime: average))
-            }
-        }
-
-        var filledArray = [GroundContactTimeData]()
-
-        for i in 0 ..< groundContactTime.count {
-            let currentTuple = groundContactTime[i]
-
-            if i > 0 {
-                let previousTuple = groundContactTime[i - 1]
-
-                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
-                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
-
-                    for missingSecond in missingRange {
-                        filledArray.append(GroundContactTimeData(timestamp: missingSecond, groundContactTime: previousTuple.groundContactTime))
-                    }
-                }
-            }
-
-            filledArray.append(currentTuple)
-        }
-
-        return filledArray
-    }
-
-    private static func compileHeartRateDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [HeartRateData] {
-        var heartRateData = [HeartRateData]()
-
-        results.enumerateStatistics(
-            from: workout.startDate,
-            to: workout.endDate
-        ) { statistics, _ in
-            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
-               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min"))
-            {
-                let average = (minValue + maxValue) / 2
-                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
-
-                heartRateData.append(HeartRateData(timestamp: date, heartRate: average))
-            }
-        }
-
-        var filledArray = [HeartRateData]()
-
-        for i in 0 ..< heartRateData.count {
-            let currentTuple = heartRateData[i]
-
-            if i > 0 {
-                let previousTuple = heartRateData[i - 1]
-
-                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
-                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
-
-                    for missingSecond in missingRange {
-                        filledArray.append(HeartRateData(timestamp: missingSecond, heartRate: previousTuple.heartRate))
-                    }
-                }
-            }
-
-            filledArray.append(currentTuple)
-        }
-
-        return filledArray
-    }
-
     public static func getListOfWorkouts(limitTo: Int = 1, offset: Int = 0) async throws -> [HKWorkout?] {
         let workoutType = HKObjectType.workoutType()
 
@@ -769,5 +329,445 @@ public enum HealthKitUtils {
         )
 
         return workoutData
+    }
+
+    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateData] {
+        let interval = DateComponents(second: 1)
+        let query = await createHeartRateQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compileHeartRateDataFromResults(results, workout: workout)
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+        return results
+    }
+
+    public static func getCadenceGraph(for workout: HKWorkout) async throws -> [CadenceData] {
+        let interval = DateComponents(second: 1)
+        let query = await createCadenceQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CadenceData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compileCadenceDataFromResults(results, workout: workout)
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        return results
+    }
+
+    @available(iOS 16.0, *)
+    public static func getGroundContactTimeGraph(for workout: HKWorkout) async throws -> [GroundContactTimeData] {
+        let interval = DateComponents(second: 1)
+        let query = await createGroundContactTimeQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[GroundContactTimeData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compileGroundContactTimeDataFromResults(results, workout: workout)
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        return results
+    }
+
+    @available(iOS 16.0, *)
+    public static func getStrideLengthGraph(for workout: HKWorkout) async throws -> [StrideLengthData] {
+        let interval = DateComponents(second: 1)
+        let query = await createStrideLengthQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[StrideLengthData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compileStrideLengthDataFromResults(results, workout: workout)
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        return results
+    }
+
+    @available(iOS 16.0, *)
+    public static func getVerticleOscillationGraph(for workout: HKWorkout) async throws -> [VerticleOscillationData] {
+        let interval = DateComponents(second: 1)
+        let query = await createVerticleOscillationQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VerticleOscillationData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compileVerticleOscillationDataFromResults(results, workout: workout)
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        return results
+    }
+
+    @available(iOS 16.0, *)
+    public static func getPowerGraph(for workout: HKWorkout) async throws -> [PowerData] {
+        let interval = DateComponents(second: 1)
+        let query = await createPowerQueryForWorkout(workout, interval: interval)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[PowerData], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    let data = compilePowerDataFromResults(results, workout: workout)
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        return results
+    }
+
+    private static func createHeartRateQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType = HKObjectType.quantityType(forIdentifier: .heartRate)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
+    private static func createCadenceQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType = HKObjectType.quantityType(forIdentifier: .stepCount)!
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.cumulativeSum, .separateBySource],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
+    @available(iOS 16.0, *)
+    private static func createGroundContactTimeQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType = HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
+    @available(iOS 16.0, *)
+    private static func createVerticleOscillationQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType = HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
+    @available(iOS 16.0, *)
+    private static func createStrideLengthQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType = HKObjectType.quantityType(forIdentifier: .runningStrideLength)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
+    @available(iOS 16.0, *)
+    private static func createPowerQueryForWorkout(_ workout: HKWorkout, interval: DateComponents) async -> HKStatisticsCollectionQuery {
+        let quantityType = HKObjectType.quantityType(forIdentifier: .runningPower)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+
+        return HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: [.discreteMax, .discreteMin],
+            anchorDate: workout.startDate,
+            intervalComponents: interval
+        )
+    }
+
+    @available(iOS 16.0, *)
+    private static func compilePowerDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [PowerData] {
+        var power = [PowerData]()
+
+        results.enumerateStatistics(
+            from: workout.startDate,
+            to: workout.endDate
+        ) { statistics, _ in
+            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.watt()),
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.watt())
+            {
+                let average = (minValue + maxValue) / 2
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
+
+                power.append(PowerData(timestamp: date, power: average))
+            }
+        }
+
+        var filledArray = [PowerData]()
+
+        for i in 0 ..< power.count {
+            let currentTuple = power[i]
+
+            if i > 0 {
+                let previousTuple = power[i - 1]
+
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
+                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
+
+                    for missingSecond in missingRange {
+                        filledArray.append(PowerData(timestamp: missingSecond, power: previousTuple.power))
+                    }
+                }
+            }
+
+            filledArray.append(currentTuple)
+        }
+
+        return filledArray
+    }
+
+    @available(iOS 16.0, *)
+    private static func compileStrideLengthDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [StrideLengthData] {
+        var strideLength = [StrideLengthData]()
+
+        results.enumerateStatistics(
+            from: workout.startDate,
+            to: workout.endDate
+        ) { statistics, _ in
+            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.meter()),
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.meter())
+            {
+                let average = (minValue + maxValue) / 2
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
+
+                strideLength.append(StrideLengthData(timestamp: date, strideLength: average))
+            }
+        }
+
+        var filledArray = [StrideLengthData]()
+
+        for i in 0 ..< strideLength.count {
+            let currentTuple = strideLength[i]
+
+            if i > 0 {
+                let previousTuple = strideLength[i - 1]
+
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
+                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
+
+                    for missingSecond in missingRange {
+                        filledArray.append(StrideLengthData(timestamp: missingSecond, strideLength: previousTuple.strideLength))
+                    }
+                }
+            }
+
+            filledArray.append(currentTuple)
+        }
+
+        return filledArray
+    }
+
+    @available(iOS 16.0, *)
+    private static func compileVerticleOscillationDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [VerticleOscillationData] {
+        var verticleOscillation = [VerticleOscillationData]()
+
+        results.enumerateStatistics(
+            from: workout.startDate,
+            to: workout.endDate
+        ) { statistics, _ in
+            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.meter()),
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.meter())
+            {
+                let average = (minValue + maxValue) / 2
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
+
+                verticleOscillation.append(VerticleOscillationData(timestamp: date, verticleOscillation: average))
+            }
+        }
+
+        var filledArray = [VerticleOscillationData]()
+
+        for i in 0 ..< verticleOscillation.count {
+            let currentTuple = verticleOscillation[i]
+
+            if i > 0 {
+                let previousTuple = verticleOscillation[i - 1]
+
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
+                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
+
+                    for missingSecond in missingRange {
+                        filledArray.append(VerticleOscillationData(timestamp: missingSecond, verticleOscillation: previousTuple.verticleOscillation))
+                    }
+                }
+            }
+
+            filledArray.append(currentTuple)
+        }
+
+        return filledArray
+    }
+
+    @available(iOS 16.0, *)
+    private static func compileGroundContactTimeDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [GroundContactTimeData] {
+        var groundContactTime = [GroundContactTimeData]()
+
+        results.enumerateStatistics(
+            from: workout.startDate,
+            to: workout.endDate
+        ) { statistics, _ in
+            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit.second()),
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit.second())
+            {
+                let average = (minValue + maxValue) / 2
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
+
+                groundContactTime.append(GroundContactTimeData(timestamp: date, groundContactTime: average))
+            }
+        }
+
+        var filledArray = [GroundContactTimeData]()
+
+        for i in 0 ..< groundContactTime.count {
+            let currentTuple = groundContactTime[i]
+
+            if i > 0 {
+                let previousTuple = groundContactTime[i - 1]
+
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
+                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
+
+                    for missingSecond in missingRange {
+                        filledArray.append(GroundContactTimeData(timestamp: missingSecond, groundContactTime: previousTuple.groundContactTime))
+                    }
+                }
+            }
+
+            filledArray.append(currentTuple)
+        }
+
+        return filledArray
+    }
+
+    private static func compileCadenceDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [CadenceData] {
+        var cadenceData = [CadenceData]()
+
+        results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
+            if let sumQuantity = statistics.sumQuantity() {
+                let duration = statistics.endDate.timeIntervalSince(statistics.startDate)
+                let averageCadence = sumQuantity.doubleValue(for: HKUnit.count()) / (duration / 60)
+
+                let startDate = statistics.startDate
+                let endDate = statistics.endDate
+
+                var currentDate = startDate
+                while currentDate < endDate {
+                    cadenceData.append(CadenceData(timestamp: currentDate, cadence: averageCadence))
+                    currentDate = Calendar.current.date(byAdding: .second, value: 1, to: currentDate)!
+                }
+            }
+        }
+
+        return cadenceData
+    }
+
+    private static func compileHeartRateDataFromResults(_ results: HKStatisticsCollection, workout: HKWorkout) -> [HeartRateData] {
+        var heartRateData = [HeartRateData]()
+
+        results.enumerateStatistics(
+            from: workout.startDate,
+            to: workout.endDate
+        ) { statistics, _ in
+            if let minValue = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: "count/min")),
+               let maxValue = statistics.maximumQuantity()?.doubleValue(for: HKUnit(from: "count/min"))
+            {
+                let average = (minValue + maxValue) / 2
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
+
+                heartRateData.append(HeartRateData(timestamp: date, heartRate: average))
+            }
+        }
+
+        var filledArray = [HeartRateData]()
+
+        for i in 0 ..< heartRateData.count {
+            let currentTuple = heartRateData[i]
+
+            if i > 0 {
+                let previousTuple = heartRateData[i - 1]
+
+                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousTuple.timestamp, to: currentTuple.timestamp).second, missingSeconds > 1 {
+                    let missingRange = sequence(first: previousTuple.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentTuple.timestamp })
+
+                    for missingSecond in missingRange {
+                        filledArray.append(HeartRateData(timestamp: missingSecond, heartRate: previousTuple.heartRate))
+                    }
+                }
+            }
+
+            filledArray.append(currentTuple)
+        }
+
+        return filledArray
     }
 }
