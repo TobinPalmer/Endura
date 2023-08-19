@@ -68,7 +68,7 @@ struct ActivitiesView: View {
     var body: some View {
         VStack {
             ScrollView(.vertical) {
-                if activityViewModel.activities.count > 0 {
+                if !activityViewModel.activities.isEmpty {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
                         ForEach(activityViewModel.activities.keys.sorted(by: >), id: \.self) { key in
                             if let activity = activityViewModel.activities[key] {

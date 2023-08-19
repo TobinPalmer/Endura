@@ -72,6 +72,7 @@
 		696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980A9493FB9C9A2291998 /* WorkoutErrors.swift */; };
 		6969874C7C01175EDE8DC3F7 /* UploadWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982855FE478D8D2440495 /* UploadWorkoutView.swift */; };
 		6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985F087A56B76C2C803F6 /* CLLocation.swift */; };
+		696987B340F19C1B27872C5F /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 696981BDEAA09748168F40DF /* .swiftformat */; };
 		69698807D54F05B3A30EAF76 /* AboutSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969811C4405638F258AF4C5 /* AboutSettingsView.swift */; };
 		696988338532B62D457787E0 /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */; };
 		69698893EB5D0BC95CC94D1F /* ActivityStatsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986316AB6F45157A56439 /* ActivityStatsComponents.swift */; };
@@ -156,6 +157,7 @@
 		696980A9493FB9C9A2291998 /* WorkoutErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutErrors.swift; sourceTree = "<group>"; };
 		6969811C4405638F258AF4C5 /* AboutSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutSettingsView.swift; sourceTree = "<group>"; };
 		6969819A8C4285A3E148D771 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		696981BDEAA09748168F40DF /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = file.swiftformat; path = .swiftformat; sourceTree = "<group>"; };
 		696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = ".pre-commit-config.yaml"; sourceTree = "<group>"; };
 		6969823BD48F3E76801C7E59 /* SignupStepThreeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepThreeView.swift; sourceTree = "<group>"; };
 		696982855FE478D8D2440495 /* UploadWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				026042D62A62E27C00F4AF88 /* EnduraUITests */,
 				026042BA2A62E27900F4AF88 /* Products */,
 				696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */,
+				696981BDEAA09748168F40DF /* .swiftformat */,
 			);
 			sourceTree = "<group>";
 		};
@@ -727,6 +730,7 @@
 				02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */,
 				6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */,
 				6969809E76BDCFF142A312E4 /* FlowBlock-Regular.ttf in Resources */,
+				696987B340F19C1B27872C5F /* .swiftformat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

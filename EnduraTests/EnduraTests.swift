@@ -5,8 +5,8 @@
 //  Created by Tobin Palmer on 7/15/23.
 //
 
-@testable import Endura
 import XCTest
+@testable import Endura
 
 final class EnduraTests: XCTestCase {
     override func setUpWithError() throws {

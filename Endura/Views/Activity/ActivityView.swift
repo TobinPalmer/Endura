@@ -53,6 +53,8 @@ struct ActivityView: View {
                     .environmentObject(activityViewModel)
                     .padding()
                 }
+            } else {
+                Text("Loading...")
             }
         }
         .task {
