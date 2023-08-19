@@ -1,5 +1,5 @@
 //
-// Created by Brandon Kirbyson on 7/26/23.
+//  ScheduleDay.swift created on 8/2/23.
 //
 
 import Foundation

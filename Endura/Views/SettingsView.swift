@@ -1,5 +1,5 @@
 //
-// Created by Brandon Kirbyson on 7/31/23.
+//  SettingsView.swift created on 7/31/23.
 //
 
 import Foundation

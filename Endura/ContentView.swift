@@ -1,8 +1,5 @@
 //
-//  ContentView.swift
-//  Endura
-//
-//  Created by Tobin Palmer on 7/15/23.
+//  ContentView.swift created on 8/13/23.
 //
 
 import FirebaseAuth

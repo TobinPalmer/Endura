@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/18/23.
+//  HealthKitUtils.swift created on 8/19/23.
 //
 
 import CoreLocation

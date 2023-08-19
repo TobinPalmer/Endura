@@ -1,16 +1,11 @@
 //
-//  HKWorkoutActivityType.swift
-//  Endura
-//
-//  Created by Tobin Palmer on 7/18/23.
+//  HKWorkoutActivityType.swift created on 7/18/23.
 //
 
 import HealthKit
 
 public extension HKWorkoutActivityType {
-    /*
-     Simple mapping of available workout types to a human readable name.
-     */
+    /// Simple mapping of available workout types to a human readable name.
     var name: String {
         switch self {
         case .americanFootball: return "American Football"

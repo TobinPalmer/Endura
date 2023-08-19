@@ -1,9 +1,8 @@
 //
-// Created by Tobin Palmer on 8/15/23.
+//  ActivityHeader.swift created on 8/19/23.
 //
 
 import Foundation
-
 import SwiftUI
 
 struct ActivityHeader: View {

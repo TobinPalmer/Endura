@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/22/23.
+//  ActivityMap.swift created on 8/16/23.
 //
 
 import Combine

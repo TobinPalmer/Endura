@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/18/23.
+//  Activity.swift created on 8/16/23.
 //
 
 import FirebaseFirestore

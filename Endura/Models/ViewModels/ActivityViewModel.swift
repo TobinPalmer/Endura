@@ -1,5 +1,5 @@
 //
-// Created by Brandon Kirbyson on 7/30/23.
+//  ActivityViewModel.swift created on 7/30/23.
 //
 
 import Foundation

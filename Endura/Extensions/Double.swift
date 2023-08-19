@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/21/23.
+//  Double.swift created on 7/21/23.
 //
 
 import Foundation

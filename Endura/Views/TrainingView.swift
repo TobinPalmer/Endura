@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/17/23.
+//  TrainingView.swift created on 7/27/23.
 //
 
 import Foundation

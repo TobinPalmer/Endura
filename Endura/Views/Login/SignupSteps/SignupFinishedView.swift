@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 8/13/23.
+//  SignupFinishedView.swift created on 8/13/23.
 //
 
 import Foundation

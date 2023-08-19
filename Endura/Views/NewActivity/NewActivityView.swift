@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/19/23.
+//  NewActivityView.swift created on 8/16/23.
 //
 
 import Foundation

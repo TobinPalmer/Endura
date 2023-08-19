@@ -1,9 +1,8 @@
 //
-// Created by Tobin Palmer on 8/13/23.
+//  SignupStepOneView.swift created on 8/14/23.
 //
 
 import Foundation
-
 import SwiftUI
 
 struct SignupStepOneView: View {

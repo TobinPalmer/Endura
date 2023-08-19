@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 8/17/23.
+//  ActivityStatsComponents.swift created on 8/18/23.
 //
 
 import Foundation

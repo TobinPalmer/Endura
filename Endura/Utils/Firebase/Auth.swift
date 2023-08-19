@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/16/23.
+//  Auth.swift created on 8/2/23.
 //
 
 import FirebaseAuth

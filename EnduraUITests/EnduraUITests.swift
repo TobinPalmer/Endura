@@ -1,8 +1,5 @@
 //
-//  EnduraUITests.swift
-//  EnduraUITests
-//
-//  Created by Tobin Palmer on 7/15/23.
+//  EnduraUITests.swift created on 7/15/23.
 //
 
 import XCTest

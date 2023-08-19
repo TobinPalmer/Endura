@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/22/23.
+//  CLLocation.swift created on 8/16/23.
 //
 
 import Foundation
@@ -10,11 +10,11 @@ extension CLLocation: Identifiable, Encodable {
         UUID().uuidString
     }
 
-//    func fetchCityAndCountry(completion: @escaping (_ city: String?, _ country: String?, _ error: Error?) -> ()) {
-//        CLGeocoder().reverseGeocodeLocation(self) {
-//            completion($0?.first?.locality, $0?.first?.country, $1)
-//        }
-//    }
+    ///    func fetchCityAndCountry(completion: @escaping (_ city: String?, _ country: String?, _ error: Error?) -> ()) {
+    ///        CLGeocoder().reverseGeocodeLocation(self) {
+    ///            completion($0?.first?.locality, $0?.first?.country, $1)
+    ///        }
+    ///    }
     func fetchCityAndCountry() async throws -> (String?, String?) {
         let placemarks = try await CLGeocoder().reverseGeocodeLocation(self)
         let city = placemarks.first?.locality

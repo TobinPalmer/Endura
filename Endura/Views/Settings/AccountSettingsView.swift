@@ -1,5 +1,5 @@
 //
-// Created by Brandon Kirbyson on 7/31/23.
+//  AccountSettingsView.swift created on 8/2/23.
 //
 
 import FirebaseAuth

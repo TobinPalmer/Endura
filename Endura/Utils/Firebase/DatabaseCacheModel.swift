@@ -1,5 +1,5 @@
 //
-// Created by Brandon Kirbyson on 8/2/23.
+//  DatabaseCacheModel.swift created on 8/2/23.
 //
 
 import FirebaseFirestore

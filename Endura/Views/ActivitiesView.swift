@@ -1,5 +1,5 @@
 //
-// Created by Brandon Kirbyson on 7/28/23.
+//  ActivitiesView.swift created on 8/18/23.
 //
 
 import FirebaseAuth

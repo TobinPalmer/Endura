@@ -1,3 +1,7 @@
+//
+//  LineGraph.swift created on 8/19/23.
+//
+
 import SwiftUI
 
 public protocol LineGraphStyle {
@@ -17,27 +21,27 @@ struct ElevationLineGraphStyle: LineGraphStyle {
 }
 
 struct CadenceLineGraphStyle: LineGraphStyle {
-    // #871C46
+    /// #871C46
     public let color: Color = .init(red: 0.5294117647, green: 0.1098039216, blue: 0.2745098039)
 }
 
 struct PowerLineGraphStyle: LineGraphStyle {
-    // #CEF350
+    /// #CEF350
     public let color: Color = .init(red: 0.8078431373, green: 0.9529411765, blue: 0.3137254902)
 }
 
 struct GroundContactTimeLineGraphStyle: LineGraphStyle {
-    // #0094ff
+    /// #0094ff
     public let color: Color = .init(red: 0, green: 0.5803921569, blue: 1)
 }
 
 struct StrideLengthLineGraphStyle: LineGraphStyle {
-    // #FFB900
+    /// #FFB900
     public let color: Color = .init(red: 1, green: 0.7254901961, blue: 0)
 }
 
 struct VerticalOscillationLineGraphStyle: LineGraphStyle {
-    // #FFB900
+    /// #FFB900
     public let color: Color = .init(red: 1, green: 0.7254901961, blue: 0)
 }
 

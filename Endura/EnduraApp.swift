@@ -1,8 +1,5 @@
 //
-//  EnduraApp.swift
-//  Endura
-//
-//  Created by Tobin Palmer on 7/15/23.
+//  EnduraApp.swift created on 8/2/23.
 //
 
 import FirebaseCore

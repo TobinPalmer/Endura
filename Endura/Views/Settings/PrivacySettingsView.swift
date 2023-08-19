@@ -1,9 +1,8 @@
 //
-// Created by Tobin Palmer on 8/2/23.
+//  PrivacySettingsView.swift created on 8/2/23.
 //
 
 import Foundation
-
 import SwiftUI
 
 struct PrivacySettingsView: View {

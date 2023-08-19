@@ -1,5 +1,5 @@
 //
-// Created by Tobin Palmer on 7/17/23.
+//  ActivityModels.swift created on 8/18/23.
 //
 
 import FirebaseFirestore
@@ -73,7 +73,7 @@ public struct RouteData: Codable {
     var verticleOscillation: Double
 }
 
-// The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
+/// The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
 public struct GraphData: Codable {
     var altitude: Double
     var cadence: Double

@@ -1,5 +1,5 @@
 //
-// Created by Brandon Kirbyson on 7/21/23.
+//  UserModels.swift created on 8/2/23.
 //
 
 import Foundation
