@@ -109,7 +109,7 @@ struct ActivityGridStats: View {
                     }
 
                     ActivityStatsSection {
-                        if let averagePower = activityData.averagePower {
+                        if let averagePower = activityData.averagePower, averagePower > 0 {
                             ActivityStatsDiscriptionText("Average Power")
                             ActivityStatsValueText("\(ConversionUtils.round(averagePower)) W")
                         }
