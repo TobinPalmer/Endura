@@ -26,6 +26,21 @@ struct PowerLineGraphStyle: LineGraphStyle {
     public let color: Color = .init(red: 0.8078431373, green: 0.9529411765, blue: 0.3137254902)
 }
 
+struct GroundContactTimeLineGraphStyle: LineGraphStyle {
+    // #0094ff
+    public let color: Color = .init(red: 0, green: 0.5803921569, blue: 1)
+}
+
+struct StrideLengthLineGraphStyle: LineGraphStyle {
+    // #FFB900
+    public let color: Color = .init(red: 1, green: 0.7254901961, blue: 0)
+}
+
+struct VerticalOscillationLineGraphStyle: LineGraphStyle {
+    // #FFB900
+    public let color: Color = .init(red: 1, green: 0.7254901961, blue: 0)
+}
+
 struct LineSegment: Shape {
     var start, end: CGPoint
 

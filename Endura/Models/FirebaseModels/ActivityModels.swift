@@ -7,11 +7,14 @@ import Foundation
 import MapKit
 
 public enum GraphType: String, Codable {
-    case pace
-    case heartRate
-    case elevation
     case cadence
+    case elevation
+    case groundContactTime
+    case heartRate
+    case pace
     case power
+    case strideLength
+    case verticleOscillation
 }
 
 public typealias LineGraphData = [(Date, Double)]
@@ -42,14 +45,32 @@ public struct PowerData: Codable {
     var power: Double
 }
 
+public struct GroundContactTimeData: Codable {
+    var timestamp: Date
+    var groundContactTime: Double
+}
+
+public struct StrideLengthData: Codable {
+    var timestamp: Date
+    var strideLength: Double
+}
+
+public struct VerticleOscillationData: Codable {
+    var timestamp: Date
+    var verticleOscillation: Double
+}
+
 public struct RouteData: Codable {
     var altitude: Double
     var cadence: Double
     var heartRate: Double
+    var groundContactTime: Double
     var location: LocationData
     var pace: Double
     var power: Double
+    var strideLength: Double
     var timestamp: Date
+    var verticleOscillation: Double
 }
 
 // The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
@@ -57,9 +78,12 @@ public struct GraphData: Codable {
     var altitude: Double
     var cadence: Double
     var heartRate: Double
+    var groundContactTime: Double
     var pace: Double
     var power: Double
+    var strideLength: Double
     var timestamp: Date
+    var verticleOscillation: Double
 }
 
 public struct ActivityRouteData: Codable {
@@ -157,6 +181,18 @@ public struct ActivityDataWithRoute {
             selector = {
                 $0.power
             }
+        case .groundContactTime:
+            selector = {
+                $0.groundContactTime
+            }
+        case .strideLength:
+            selector = {
+                $0.strideLength
+            }
+        case .verticleOscillation:
+            selector = {
+                $0.verticleOscillation
+            }
         }
 
         data.graphData.forEach { val in
@@ -173,8 +209,14 @@ protocol TimestampPoint: Codable {
     var timestamp: Date { get }
 }
 
-extension HeartRateData: TimestampPoint {}
-
 extension CadenceData: TimestampPoint {}
 
+extension HeartRateData: TimestampPoint {}
+
 extension PowerData: TimestampPoint {}
+
+extension StrideLengthData: TimestampPoint {}
+
+extension GroundContactTimeData: TimestampPoint {}
+
+extension VerticleOscillationData: TimestampPoint {}
