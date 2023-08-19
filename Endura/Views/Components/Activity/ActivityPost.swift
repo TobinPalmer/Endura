@@ -69,7 +69,11 @@ struct ActivityPost: View {
                     TextField("Add a comment...", text: $message)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Button(action: {
-                        let comment = ActivityCommentData(uid: AuthUtils.getCurrentUID(), time: Date(), message: message)
+                        let comment = ActivityCommentData(
+                            message: message,
+                            time: Date(),
+                            uid: AuthUtils.getCurrentUID()
+                        )
                         message = ""
                         ActivityUtils.addComment(id: id, comment: comment)
                     }) {

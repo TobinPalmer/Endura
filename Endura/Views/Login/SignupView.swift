@@ -11,7 +11,7 @@ private final class SignupViewModel: ObservableObject {
 //    }
 }
 
-internal final class SignupFormInfo: ObservableObject {
+final class SignupFormInfo: ObservableObject {
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var email: String = ""

@@ -17,9 +17,9 @@ public enum GraphType: String, Codable {
 public typealias LineGraphData = [(Date, Double)]
 
 public struct ActivityCommentData: Codable, Hashable {
-    let uid: String
-    let time: Date
     let message: String
+    let time: Date
+    let uid: String
 }
 
 public struct LocationData: Codable {
@@ -43,74 +43,93 @@ public struct PowerData: Codable {
 }
 
 public struct RouteData: Codable {
-    var timestamp: Date
-    var location: LocationData
     var altitude: Double
-    var heartRate: Double
     var cadence: Double
+    var heartRate: Double
+    var location: LocationData
     var pace: Double
     var power: Double
+    var timestamp: Date
 }
 
 // The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
 public struct GraphData: Codable {
-    var timestamp: Date
     var altitude: Double
     var cadence: Double
     var heartRate: Double
     var pace: Double
     var power: Double
+    var timestamp: Date
 }
 
 public struct ActivityRouteData: Codable {
-    var routeData: [RouteData]
     var graphData: [GraphData]
     var graphInterval: Int
+    var routeData: [RouteData]
 }
 
 public struct ActivityData: Codable {
-    var uid: String
-    var time: Date
-    var distance: Double
-    var duration: TimeInterval
-    var totalDuration: TimeInterval
-    var pace: Double {
-        distance / duration
-    }
-
     var averagePower: Double?
     var calories: Double
-    var startLocation: LocationData
-    var startCity: String
     var comments: [ActivityCommentData]
+    var distance: Double
+    var duration: TimeInterval
     var likes: [String]
+    var pace: Double { distance / duration }
+    var startCity: String
+    var startLocation: LocationData
+    var time: Date
+    var totalDuration: TimeInterval
+    var uid: String
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
-        return ActivityDataWithRoute(uid: uid, time: time, distance: distance, duration: duration, totalDuration: totalDuration, averagePower: averagePower, calories: calories, startLocation: startLocation, startCity: startCity, data: routeData, comments: comments, likes: likes)
+        return ActivityDataWithRoute(
+            averagePower: averagePower,
+            calories: calories,
+            comments: comments,
+            data: routeData,
+            distance: distance,
+            duration: duration,
+            likes: likes,
+            startCity: startCity,
+            startLocation: startLocation,
+            time: time,
+            totalDuration: totalDuration,
+            uid: uid
+        )
     }
 }
 
 public struct ActivityDataWithRoute {
-    var uid: String
-    var time: Date
-    var distance: Double
-    var duration: TimeInterval
-    var totalDuration: TimeInterval
-    var pace: Double {
-        distance / duration
-    }
-
     var averagePower: Double?
     var calories: Double
-    var startLocation: LocationData
-    var startCity: String
-    var data: ActivityRouteData
     var comments: [ActivityCommentData]
+    var data: ActivityRouteData
+    var distance: Double
+    var duration: TimeInterval
     var likes: [String]
+    var pace: Double { distance / duration }
+    var startCity: String
+    var startLocation: LocationData
+    var time: Date
+    var totalDuration: TimeInterval
+    var uid: String
 
     public func getDataWithoutRoute() -> ActivityData {
-        ActivityData(uid: uid, time: time, distance: distance, duration: duration, totalDuration: totalDuration, averagePower: averagePower, calories: calories, startLocation: startLocation, startCity: startCity, comments: comments, likes: likes)
+        ActivityData(
+            averagePower: averagePower,
+            calories: calories,
+            comments: comments,
+            distance: distance,
+            duration: duration,
+            likes: likes,
+            startCity: startCity,
+            startLocation: startLocation,
+            time: time,
+            totalDuration: totalDuration,
+            uid: uid
+        )
     }
 
     public func getGraph(for type: GraphType) -> LineGraphData {

@@ -30,17 +30,17 @@ import SwiftUI
                 do {
                     let data = try diff.document.data(as: ActivityData.self)
                     let activity = ActivityData(
-                        uid: data.uid,
-                        time: data.time,
-                        distance: data.distance,
-                        duration: data.duration,
-                        totalDuration: data.totalDuration,
                         averagePower: data.averagePower,
                         calories: data.calories,
-                        startLocation: data.startLocation,
-                        startCity: data.startCity,
                         comments: data.comments,
-                        likes: data.likes
+                        distance: data.distance,
+                        duration: data.duration,
+                        likes: data.likes,
+                        startCity: data.startCity,
+                        startLocation: data.startLocation,
+                        time: data.time,
+                        totalDuration: data.totalDuration,
+                        uid: data.uid
                     )
 
                     if diff.type == .added || diff.type == .modified {

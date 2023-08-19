@@ -16,7 +16,11 @@ public enum ActivityUtils {
             return routeData
         } catch {
             print("Error getting activity route data: \(error)")
-            return ActivityRouteData(routeData: [], graphData: [], graphInterval: 0)
+            return ActivityRouteData(
+                graphData: [],
+                graphInterval: 0,
+                routeData: []
+            )
         }
     }
 

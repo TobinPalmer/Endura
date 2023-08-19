@@ -419,27 +419,24 @@ public enum HealthKitUtils {
                 }
 
                 let routePoint = RouteData(
-                    timestamp: point.timestamp,
-                    location: LocationData(
-                        latitude: point.coordinate.latitude,
-                        longitude: point.coordinate.longitude
-                    ),
                     altitude: point.altitude,
-                    heartRate: heartRateAtPoint ?? 0.0,
                     cadence: cadenceAtPoint ?? 0.0,
+                    heartRate: heartRateAtPoint ?? 0.0,
+                    location: LocationData(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude),
                     pace: point.speed,
-                    power: powerAtPoint ?? 0.0
+                    power: powerAtPoint ?? 0.0,
+                    timestamp: point.timestamp
                 )
 
                 routeData.append(routePoint)
 
                 let graphPoint = GraphData(
-                    timestamp: point.timestamp,
                     altitude: point.altitude,
                     cadence: cadenceAtPoint ?? 0.0,
                     heartRate: heartRateAtPoint ?? 0.0,
                     pace: point.speed,
-                    power: powerAtPoint ?? 0.0
+                    power: powerAtPoint ?? 0.0,
+                    timestamp: point.timestamp
                 )
 
                 if i % dataRate == 0 {
@@ -458,7 +455,6 @@ public enum HealthKitUtils {
                         }
 
                         let graphSectionPoint = GraphData(
-                            timestamp: graphSectionData.1,
                             altitude: graphSectionData.2.reduce(0) {
                                 $0 + $1.altitude
                             } / Double(graphSectionData.2.count),
@@ -473,7 +469,8 @@ public enum HealthKitUtils {
                             } / Double(filteredPaceArray.count),
                             power: filteredPowerArray.reduce(0) {
                                 $0 + $1.power
-                            } / Double(filteredPowerArray.count)
+                            } / Double(filteredPowerArray.count),
+                            timestamp: graphSectionData.1
                         )
 
                         graphData.append(graphSectionPoint)
@@ -487,27 +484,26 @@ public enum HealthKitUtils {
         }
 
         let workoutData = try await ActivityDataWithRoute(
-            uid: AuthUtils.getCurrentUID(),
-            time: workout.startDate,
+            averagePower: power == nil
+                ? nil
+                : power!.reduce(0) {
+                    $0 + $1.power
+                } / Double(power!.count),
+            calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
+            comments: [],
+            data: ActivityRouteData(
+                graphData: graphData,
+                graphInterval: dataRate,
+                routeData: routeData
+            ),
             distance: workoutDistance,
             duration: workoutDuration,
-            totalDuration: workout.startDate.distance(to: workout.endDate),
-            averagePower: power == nil ? nil : power!.reduce(0) {
-                $0 + $1.power
-            } / Double(power!.count),
-            calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
-            startLocation: LocationData(
-                latitude: data.first?.coordinate.latitude ?? 0.0,
-                longitude: data.first?.coordinate.longitude ?? 0.0
-            ),
+            likes: [],
             startCity: data.first?.fetchCityAndCountry().0 ?? "",
-            data: ActivityRouteData(
-                routeData: routeData,
-                graphData: graphData,
-                graphInterval: dataRate
-            ),
-            comments: [],
-            likes: []
+            startLocation: LocationData(latitude: data.first?.coordinate.latitude ?? 0.0, longitude: data.first?.coordinate.longitude ?? 0.0),
+            time: workout.startDate,
+            totalDuration: workout.startDate.distance(to: workout.endDate),
+            uid: AuthUtils.getCurrentUID()
         )
 
         return workoutData
