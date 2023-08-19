@@ -177,12 +177,10 @@ public enum HealthKitUtils {
         var dataRate = 1
 
         func updateGraphData<T: TimestampPoint>(_ data: inout [T], timestamp: Date, updateValue: (T) -> Void) {
-            for j in 0 ..< data.count {
-                if Int(data[j].timestamp.timeIntervalSince1970) == Int(timestamp.timeIntervalSince1970) {
-                    updateValue(data[j])
-                    data.removeSubrange(0 ... j)
-                    break
-                }
+            for j in 0 ..< data.count where Int(data[j].timestamp.timeIntervalSince1970) == Int(timestamp.timeIntervalSince1970) {
+                updateValue(data[j])
+                data.removeSubrange(0 ... j)
+                break
             }
         }
 
