@@ -68,6 +68,24 @@ struct ActivityView: View {
                 }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: {
+                        print("Edit")
+                    }) {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    Button(action: {
+                        ActivityUtils.deleteActivity(id: id)
+                    }) {
+                        Label("Delete", systemImage: "trash")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+            }
+        }
         .padding()
         .task {
             activityData = await activity.withRouteData(id: id)

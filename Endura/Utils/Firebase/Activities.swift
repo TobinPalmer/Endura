@@ -41,6 +41,10 @@ public enum ActivityUtils {
         ])
     }
 
+    public static func deleteActivity(id: String) {
+        Firestore.firestore().collection("activities").document(id).delete()
+    }
+
     public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil) async throws {
         do {
             let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: activity.getDataWithoutRoute())
