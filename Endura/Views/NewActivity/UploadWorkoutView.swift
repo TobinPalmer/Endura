@@ -118,34 +118,6 @@ struct PreviewWorkoutView: View {
 
                     ActivityGridStats(activityData: nil, placeholder: true)
                 }
-
-//                if !activityData.data.routeData.isEmpty {
-//                    VStack {
-//                        GeometryReader { geometry in
-//                            VStack {
-//                                let map =
-//                                        ActivityMap(activityData.data.routeData)
-//                                            .frame(height: 300)
-//                                            .environmentObject(activityViewModel)
-//                                map
-//
-//                                let _ = mapRef = map
-//                                let _ = geometryRef = geometry
-//                            }
-//                        }
-//                    }
-//                        .frame(height: 300)
-//                }
-
-//                Button {
-//                } label: {
-//                    Text("Upload")
-//                }
-//                    .buttonStyle(EnduraButtonStyle(disabled: true))
-//                    .disabled(true)
-//                ProgressView {
-//                    Text("Loading...")
-//                }
             }
         }
         .padding()

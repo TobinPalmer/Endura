@@ -51,12 +51,24 @@ struct ActivityView: View {
                         }
                     }
                     .environmentObject(activityViewModel)
-                    .padding()
                 }
             } else {
-                Text("Loading...")
+                ScrollView {
+                    ActivityHeader(uid: "", activityData: nil, placeholder: true)
+
+                    VStack {
+                        Text("Loading...")
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(height: 300)
+                    .foregroundColor(Color.red)
+                    .border(.red)
+
+                    ActivityGridStats(activityData: nil, placeholder: true)
+                }
             }
         }
+        .padding()
         .task {
             activityData = await activity.withRouteData(id: id)
         }
