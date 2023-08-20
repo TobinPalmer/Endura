@@ -32,9 +32,9 @@ struct ActivityHeader: View {
                             .font(Font.custom("FlowBlock-Regular", size: 12, relativeTo: .title))
                     }
                 }
-                .frame(maxHeight: .infinity, alignment: .topLeading)
+                    .frame(maxHeight: .infinity, alignment: .topLeading)
             }
-            .frame(maxWidth: .infinity, maxHeight: 50, alignment: .topLeading)
+                .frame(maxWidth: .infinity, maxHeight: 50, alignment: .topLeading)
         } else {
             UserProfileLink(uid) {
                 HStack {
@@ -53,12 +53,12 @@ struct ActivityHeader: View {
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                             }
                         }
-                        .frame(maxHeight: .infinity, alignment: .topLeading)
+                            .frame(maxHeight: 50, alignment: .topLeading)
                     } else {
                         Text("Loading...")
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
             }
 
             if bottomSpace {
