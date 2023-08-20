@@ -15,7 +15,7 @@ public struct EnduraButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(disabled ? Color.gray : Color.blue)
+            .background(disabled ? Color.gray : Color.accentColor)
             .animation(.easeInOut(duration: 0.1), value: disabled)
             .foregroundColor(.white)
             .cornerRadius(5)

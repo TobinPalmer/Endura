@@ -23,28 +23,40 @@ struct LoginView: View {
     @ObservedObject fileprivate var viewModel = LoginViewModel()
 
     var body: some View {
-        VStack {
-            Text("Login")
+        ZStack {
+            Color("Background")
+                .edgesIgnoringSafeArea(.all)
+            VStack(alignment: .center, spacing: 30) {
+                Image("EnduraLogo")
+                    .resizable()
+                    .frame(width: 100, height: 100)
 
-            TextField("Email", text: $viewModel.email)
-                .textFieldStyle(EnduraTextFieldStyle())
-
-            SecureField("Password", text: $viewModel.password)
-                .textFieldStyle(EnduraTextFieldStyle())
-
-            Button {
-                viewModel.login()
-            } label: {
                 Text("Login")
-            }
-            .buttonStyle(EnduraButtonStyle(disabled: viewModel.email.isEmpty || viewModel.password.isEmpty))
-            .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("Text"))
 
-            NavigationLink(destination: SignupView()) {
-                Text("Signup")
+                TextField("Email", text: $viewModel.email)
+                    .textFieldStyle(EnduraTextFieldStyle())
+
+                SecureField("Password", text: $viewModel.password)
+                    .textFieldStyle(EnduraTextFieldStyle())
+
+                Button {
+                    viewModel.login()
+                } label: {
+                    Text("Login")
+                }
+                    .buttonStyle(EnduraButtonStyle(disabled: viewModel.email.isEmpty || viewModel.password.isEmpty))
+                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
+
+                NavigationLink(destination: SignupView()) {
+                    Text("Signup")
+                }
+                    .buttonStyle(EnduraButtonStyle())
             }
-            .buttonStyle(EnduraButtonStyle())
+                .frame(width: .infinity, height: .infinity)
+                .padding(40)
         }
-        .frame(width: 300, height: 300)
     }
 }
