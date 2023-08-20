@@ -1,5 +1,5 @@
 //
-//  NewActivityView.swift created on 8/16/23.
+//  NewActivityView.swift created on 8/20/23.
 //
 
 import Foundation
@@ -54,39 +54,23 @@ struct NewActivityView: View {
     @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
 
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(uploadsViewModel.uploads.compactMap {
-                    $0
-                }, id: \.self) { activity in
-                    Button(action: {}) {
-                        let workoutType = activity.workoutActivityType.name
-                        let workoutDistance = activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0
-                        NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
-                            HStack {
-                                Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
-                                Text(activity.startDate, style: .date)
-                                if let distance = activity.totalDistance {
-                                    Text(String(describing: distance.doubleValue(for: .mile())))
-                                }
+        List(uploadsViewModel.uploads, id: \.self) { activity in
+            if let activity {
+                NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
+                    let workoutType = activity.workoutActivityType.name
+                    let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0).rounded(toPlaces: 2).removeTrailingZeros()
+                    HStack {
+                        Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
+                        Text(activity.startDate, style: .date)
+                        Text("\(workoutDistance)")
 
-                                Text(workoutType)
-                            }
-                        }
-                    }
-                    .task {
-                        let earliestDate = activityEndDatesToUUIDs.keys.min() ?? Date()
-                        activityEndDatesToUUIDs[activity.startDate] = activity.uuid
-                        if activity.uuid == activityEndDatesToUUIDs[activity.startDate] {
-                            totalItemsLoaded += 10
-                            await uploadsViewModel.getActivities(10)
-                        }
+                        Text(workoutType)
                     }
                 }
             }
         }
         .task {
-            await uploadsViewModel.getActivities(1_000_000)
+            await uploadsViewModel.getActivities(100)
         }
     }
 }
