@@ -32,9 +32,9 @@ struct ActivityHeader: View {
                             .font(Font.custom("FlowBlock-Regular", size: 12, relativeTo: .title))
                     }
                 }
-                    .frame(maxHeight: .infinity, alignment: .topLeading)
+                .frame(maxHeight: .infinity, alignment: .topLeading)
             }
-                .frame(maxWidth: .infinity, maxHeight: 50, alignment: .topLeading)
+            .frame(maxWidth: .infinity, maxHeight: 50, alignment: .topLeading)
         } else {
             UserProfileLink(uid) {
                 HStack {
@@ -47,18 +47,26 @@ struct ActivityHeader: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
                             if let activityData = activityData {
-                                Text("\(activityData.startTime.formatted()) \(activityData.startCity != "" ? "•" : "") \(activityData.startCity)")
+                                if let startCity = activityData.startCity {
+                                    Text("\(activityData.startTime.formatted()) • \(startCity)")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.secondary)
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                                }
+                            } else {
+                                let startTime = String(activityData?.startTime.formatted() ?? "")
+                                Text(startTime)
                                     .font(.system(size: 12))
                                     .foregroundColor(.secondary)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                             }
                         }
-                            .frame(maxHeight: 50, alignment: .topLeading)
+                        .frame(maxHeight: 50, alignment: .topLeading)
                     } else {
                         Text("Loading...")
                     }
                 }
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
             }
 
             if bottomSpace {

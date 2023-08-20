@@ -105,8 +105,8 @@ public struct ActivityGridStatsData: Codable {
 
 public struct ActivityHeaderData: Codable {
     var startTime: Date
-    var startLocation: LocationData
-    var startCity: String
+    var startLocation: LocationData?
+    var startCity: String?
     var uid: String
 }
 

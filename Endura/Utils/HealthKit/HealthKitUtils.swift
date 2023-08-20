@@ -90,7 +90,7 @@ public enum HealthKitUtils {
         return locations
     }
 
-    public static func getFirstWorkoutRoute(workout: HKWorkout) async throws -> HKWorkoutRoute {
+    public static func getFirstWorkoutRoute(workout: HKWorkout) async throws -> HKWorkoutRoute? {
         let predicate = HKQuery.predicateForObjects(from: workout)
         do {
             let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKSample], Error>) in
@@ -110,7 +110,7 @@ public enum HealthKitUtils {
                 throw HealthKitErrors.workoutFailedCast
             }
 
-            return workouts.first!
+            return workouts.first
         } catch {
             throw HealthKitErrors.unknownError
         }
@@ -186,12 +186,18 @@ public enum HealthKitUtils {
 
     public static func getWorkoutHeaderData(_ workout: HKWorkout) async throws -> ActivityHeaderData {
         let firstRoute = try? await HealthKitUtils.getFirstWorkoutRoute(workout: workout)
-        let firstLocation = try? await HealthKitUtils.getLocationData(for: firstRoute!)
+        let firstLocation: [CLLocation]?
+
+        if let firstRoute = firstRoute {
+            firstLocation = try? await HealthKitUtils.getLocationData(for: firstRoute)
+        } else {
+            firstLocation = nil
+        }
 
         return try await ActivityHeaderData(
             startTime: workout.startDate,
-            startLocation: LocationData(latitude: firstLocation?.first?.coordinate.latitude ?? 0.0, longitude: firstLocation?.first?.coordinate.longitude ?? 0.0),
-            startCity: firstLocation?.first?.fetchCityAndCountry().0 ?? "",
+            startLocation: firstRoute == nil ? nil : LocationData(latitude: firstLocation?.first?.coordinate.latitude ?? 0.0, longitude: firstLocation?.first?.coordinate.longitude ?? 0.0),
+            startCity: firstLocation?.first?.fetchCityAndCountry().0 ?? nil,
             uid: AuthUtils.getCurrentUID()
         )
     }
