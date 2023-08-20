@@ -65,6 +65,7 @@
 		696983C807BF764F750FB09D /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989B3ACC5846606EE527B /* Auth.swift */; };
 		696983CDA34BD4646BE2E88D /* ActivityHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EC86F9A7092017FDF6F /* ActivityHeader.swift */; };
 		696983D815E023C30549A7BB /* HealthKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984EE498475DB24E5E333 /* HealthKitErrors.swift */; };
+		69698448F824900E6A820802 /* PostUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */; };
 		6969862795DF6489B7776F59 /* FriendsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969833F0B9CB6C90025B1F5 /* FriendsSettingsView.swift */; };
 		6969862885B67FBCC1A259BC /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698C33876AF4895EBEE5F7 /* PrivacySettingsView.swift */; };
 		6969868831515D393F393036 /* ActivityGridStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698FC39866D068E770C60E /* ActivityGridStats.swift */; };
@@ -185,6 +186,7 @@
 		69698D01B022430326F64D83 /* ActivityPostStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPostStats.swift; sourceTree = "<group>"; };
 		69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; path = "FlowBlock-Regular.ttf"; sourceTree = "<group>"; };
+		69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostUploadView.swift; sourceTree = "<group>"; };
 		69698E6CE08351083301EC53 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegion.swift; sourceTree = "<group>"; };
 		69698EC86F9A7092017FDF6F /* ActivityHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityHeader.swift; sourceTree = "<group>"; };
@@ -591,6 +593,7 @@
 			children = (
 				6969849C3C4EA502A9EE3634 /* NewActivityView.swift */,
 				696982855FE478D8D2440495 /* UploadWorkoutView.swift */,
+				69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */,
 			);
 			path = NewActivity;
 			sourceTree = "<group>";
@@ -820,6 +823,7 @@
 				6969868831515D393F393036 /* ActivityGridStats.swift in Sources */,
 				696983CDA34BD4646BE2E88D /* ActivityHeader.swift in Sources */,
 				69698893EB5D0BC95CC94D1F /* ActivityStatsComponents.swift in Sources */,
+				69698448F824900E6A820802 /* PostUploadView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

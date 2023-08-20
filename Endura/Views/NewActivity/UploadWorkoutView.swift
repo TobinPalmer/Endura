@@ -14,6 +14,7 @@ import SwiftUICharts
 @MainActor private final class PreviewWorkoutModel: ObservableObject {
     @Published fileprivate var mapRef: (any View)?
     @Published fileprivate var geometryRef: GeometryProxy?
+    @Published fileprivate var isShowingSummary = false
 
     fileprivate final func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
@@ -111,11 +112,11 @@ struct PreviewWorkoutView: View {
                         Task {
                             do {
                                 if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
-                                    print("Uploading with map")
-                                    try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
+                                    previewWorkoutModel.isShowingSummary = true
+//                  try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
                                 } else {
-                                    print("Uploading without map")
-                                    try await ActivityUtils.uploadActivity(activity: activityData)
+                                    previewWorkoutModel.isShowingSummary = true
+//                  try await ActivityUtils.uploadActivity(activity: activityData)
                                 }
                             } catch {
                                 print("Error uploading workout: \(error)")
@@ -135,26 +136,15 @@ struct PreviewWorkoutView: View {
                     workoutHeader = try await HealthKitUtils.getWorkoutHeaderData(workout)
                     enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
                 } catch WorkoutErrors.noWorkout {
-                    print("No workout to get heart rate graph")
-                } catch let err {
-                    print("Error getting graph data", err)
+                } catch {
+                    print("Error getting graph data", error)
                 }
             }
-//      } else {
-//        ScrollView {
-//          ActivityHeader(uid: "", activityData: nil, placeholder: true)
-//
-//          VStack {
-//            Text("Loading...")
-//          }
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .frame(height: 300)
-//            .foregroundColor(Color.red)
-//            .border(.red)
-//
-//          ActivityGridStats(activityData: nil, placeholder: true)
-//        }
-//      }
+        }
+        .fullScreenCover(isPresented: $previewWorkoutModel.isShowingSummary) {
+            if let activityData = enduraWorkout {
+                PostUploadView(activityData: activityData)
+            }
         }
     }
 }
