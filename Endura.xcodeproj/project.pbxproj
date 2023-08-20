@@ -38,6 +38,7 @@
 		17CC65FFF4C4939ED6E24B68 /* MultiStepForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */; };
 		17CC665E4DC7CCF0BA6216D2 /* FindUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6B1555ECC86F1858E844 /* FindUsersView.swift */; };
 		17CC668261B0BC82E6EEDDBA /* ActivityPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69F5F51AE211727A3343 /* ActivityPost.swift */; };
+		17CC66AE951B3D00B9798DFE /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66685EBC6CD75C2599F5 /* SettingsModel.swift */; };
 		17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64CF9FA32EE591326705 /* UIColor.swift */; };
 		17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC659A1576329D2B4CB4F2 /* ActivityView.swift */; };
 		17CC682E88A5BF7A13F60DB5 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */; };
@@ -138,6 +139,7 @@
 		17CC6507B9EB6FEDAE6EB719 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		17CC659A1576329D2B4CB4F2 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		17CC666255DBC8045DFCBCF2 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		17CC66685EBC6CD75C2599F5 /* SettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		17CC666B55C0D3EBEF97E9D3 /* Calendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		17CC667CC1714144EA4F1172 /* UserModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		17CC669024974E7F58F1F1B6 /* ScheduleDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDay.swift; sourceTree = "<group>"; };
@@ -333,6 +335,14 @@
 			path = Schedule;
 			sourceTree = "<group>";
 		};
+		17CC6240CAA64B7FBF3CB0CA /* SettingsModels */ = {
+			isa = PBXGroup;
+			children = (
+				17CC66685EBC6CD75C2599F5 /* SettingsModel.swift */,
+			);
+			path = SettingsModels;
+			sourceTree = "<group>";
+		};
 		17CC636CA05F136BDFF8A042 /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +464,7 @@
 				696986EDB3F87EE749147042 /* AppViewModel.swift */,
 				69698F66CFE1EDEA0C937BEE /* FirebaseModels */,
 				17CC60C52B690F82F607C81C /* ViewModels */,
+				17CC6240CAA64B7FBF3CB0CA /* SettingsModels */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -824,6 +835,7 @@
 				696983CDA34BD4646BE2E88D /* ActivityHeader.swift in Sources */,
 				69698893EB5D0BC95CC94D1F /* ActivityStatsComponents.swift in Sources */,
 				69698448F824900E6A820802 /* PostUploadView.swift in Sources */,
+				17CC66AE951B3D00B9798DFE /* SettingsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

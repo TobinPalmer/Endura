@@ -18,7 +18,7 @@
 --exponentcase lowercase
 --exponentgrouping disabled
 --fractiongrouping disabled
---header \n {file} created on {created}.\n
+--header strip
 --hexgrouping 4,8
 --hexliteralcase uppercase
 --ifdef indent

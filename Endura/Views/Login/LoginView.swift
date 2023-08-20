@@ -1,7 +1,3 @@
-//
-//  LoginView.swift created on 8/20/23.
-//
-
 import Foundation
 import SwiftUI
 

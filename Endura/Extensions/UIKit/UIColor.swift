@@ -1,7 +1,3 @@
-//
-//  UIColor.swift created on 8/1/23.
-//
-
 import Foundation
 import SwiftUI
 

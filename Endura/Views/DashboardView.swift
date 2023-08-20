@@ -1,7 +1,3 @@
-//
-//  DashboardView.swift created on 7/28/23.
-//
-
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift

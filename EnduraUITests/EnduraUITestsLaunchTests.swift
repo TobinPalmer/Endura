@@ -1,7 +1,3 @@
-//
-//  EnduraUITestsLaunchTests.swift created on 7/15/23.
-//
-
 import XCTest
 
 final class EnduraUITestsLaunchTests: XCTestCase {

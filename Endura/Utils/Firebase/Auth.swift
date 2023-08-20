@@ -1,7 +1,3 @@
-//
-//  Auth.swift created on 8/2/23.
-//
-
 import FirebaseAuth
 import Foundation
 

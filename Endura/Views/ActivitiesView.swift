@@ -1,7 +1,3 @@
-//
-//  ActivitiesView.swift created on 8/20/23.
-//
-
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift

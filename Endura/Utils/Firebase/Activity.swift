@@ -1,7 +1,3 @@
-//
-//  Activity.swift created on 8/16/23.
-//
-
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation

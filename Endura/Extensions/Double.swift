@@ -1,7 +1,3 @@
-//
-//  Double.swift created on 7/21/23.
-//
-
 import Foundation
 
 public extension Double {

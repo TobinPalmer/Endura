@@ -1,7 +1,3 @@
-//
-//  EnduraApp.swift created on 8/2/23.
-//
-
 import FirebaseCore
 import SwiftUI
 

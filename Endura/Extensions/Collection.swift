@@ -1,7 +1,3 @@
-//
-//  Collection.swift created on 7/25/23.
-//
-
 import Foundation
 
 public extension Collection {

@@ -1,7 +1,3 @@
-//
-//  DatabaseCacheModel.swift created on 8/2/23.
-//
-
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation

@@ -1,7 +1,3 @@
-//
-//  Calendar.swift created on 8/2/23.
-//
-
 import Foundation
 
 public struct CalendarUtils {

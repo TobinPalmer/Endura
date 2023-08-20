@@ -1,7 +1,3 @@
-//
-//  LineGraph.swift created on 8/19/23.
-//
-
 import SwiftUI
 
 public protocol LineGraphStyle {

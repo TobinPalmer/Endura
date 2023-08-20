@@ -1,7 +1,3 @@
-//
-//  EnduraTests.swift created on 7/22/23.
-//
-
 import XCTest
 @testable import Endura
 

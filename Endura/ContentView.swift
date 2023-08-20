@@ -1,7 +1,3 @@
-//
-//  ContentView.swift created on 8/13/23.
-//
-
 import FirebaseAuth
 import FirebaseFirestore
 import SwiftUI

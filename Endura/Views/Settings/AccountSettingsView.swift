@@ -1,7 +1,3 @@
-//
-//  AccountSettingsView.swift created on 8/2/23.
-//
-
 import FirebaseAuth
 import FirebaseStorage
 import Foundation

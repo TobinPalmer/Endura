@@ -1,7 +1,3 @@
-//
-//  ActivityMap.swift created on 8/16/23.
-//
-
 import Combine
 import Foundation
 import HealthKit

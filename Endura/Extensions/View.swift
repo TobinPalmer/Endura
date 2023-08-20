@@ -1,7 +1,3 @@
-//
-//  View.swift created on 7/30/23.
-//
-
 import Foundation
 import SwiftUI
 

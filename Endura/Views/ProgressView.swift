@@ -1,7 +1,3 @@
-//
-//  ProgressView.swift created on 7/31/23.
-//
-
 import Foundation
 import SwiftUI
 

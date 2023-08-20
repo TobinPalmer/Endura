@@ -1,7 +1,3 @@
-//
-//  SignupFinishedView.swift created on 8/13/23.
-//
-
 import Foundation
 import SwiftUI
 
