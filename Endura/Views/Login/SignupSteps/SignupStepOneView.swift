@@ -16,6 +16,11 @@ struct SignupStepOneView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(Color.accentColor)
+
                 TextField("First Name", text: $viewModel.firstName)
                     .disableAutocorrection(true)
                     .textFieldStyle(EnduraTextFieldStyle())
@@ -30,7 +35,7 @@ struct SignupStepOneView: View {
                     }
                 }
                 .buttonStyle(EnduraButtonStyle(disabled: viewModel.firstName.isEmpty || viewModel.lastName.isEmpty))
-                .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
+//                .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
             }
             .padding(40)
         }

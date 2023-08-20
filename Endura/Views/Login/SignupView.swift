@@ -26,6 +26,10 @@ struct SignupView: View {
             AnyView(SignupStepOneView(viewModel: signupFormInfo, currentStep: $currentStep)),
             AnyView(SignupStepTwoView(viewModel: signupFormInfo, currentStep: $currentStep)),
             AnyView(SignupStepThreeView(viewModel: signupFormInfo, currentStep: $currentStep)),
+            AnyView(SignupStepFourView(viewModel: signupFormInfo, currentStep: $currentStep)),
+            AnyView(SignupStepFiveView(viewModel: signupFormInfo, currentStep: $currentStep)),
+            AnyView(SignupStepSixView(viewModel: signupFormInfo, currentStep: $currentStep)),
+            AnyView(SignupStepSevenView(viewModel: signupFormInfo, currentStep: $currentStep)),
         ], viewModel: signupFormInfo, currentPage: $currentStep)
     }
 }

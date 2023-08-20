@@ -38,7 +38,7 @@ struct SignupStepTwoView: View {
                         }
                     }
                     .buttonStyle(EnduraButtonStyle(disabled: viewModel.firstName.isEmpty || viewModel.lastName.isEmpty))
-                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
+//                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
                 }
             }
             .padding(40)
