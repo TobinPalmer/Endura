@@ -7,36 +7,45 @@ import SwiftUI
 
 struct SignupStepTwoView: View {
     @StateObject private var viewModel: SignupFormInfo
-    @Binding private var currentPage: Int
+    @Binding private var currentStep: Int
 
     init(viewModel: SignupFormInfo, currentStep: Binding<Int>) {
         _viewModel = StateObject(wrappedValue: viewModel)
-        _currentPage = currentStep
+        _currentStep = currentStep
     }
 
     public var body: some View {
-        VStack {
-            TextField("Email", text: $viewModel.email)
-                .textFieldStyle(EnduraTextFieldStyle())
-                .keyboardType(.emailAddress)
+        ZStack {
+            Color("Background")
+                .edgesIgnoringSafeArea(.all)
 
-            TextField("Password", text: $viewModel.password)
-                .textFieldStyle(EnduraTextFieldStyle())
+            VStack(alignment: .center, spacing: 20) {
+                TextField("Email", text: $viewModel.email)
+                    .disableAutocorrection(true)
+                    .keyboardType(.emailAddress)
+                    .textFieldStyle(EnduraTextFieldStyle())
 
-            HStack {
-                Button("Back") {
-                    withAnimation {
-                        currentPage -= 1
+                TextField("Password", text: $viewModel.password)
+                    .textFieldStyle(EnduraTextFieldStyle())
+
+                HStack {
+                    Button("Back") {
+                        withAnimation {
+                            currentStep -= 1
+                        }
                     }
-                }
+                    .buttonStyle(EnduraButtonStyle())
 
-                Button("Next") {
-                    withAnimation {
-                        currentPage += 1
+                    Button("Next") {
+                        withAnimation {
+                            currentStep += 1
+                        }
                     }
+                    .buttonStyle(EnduraButtonStyle(disabled: viewModel.firstName.isEmpty || viewModel.lastName.isEmpty))
+                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
                 }
-                .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
             }
+            .padding(40)
         }
     }
 }

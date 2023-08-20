@@ -15,19 +15,28 @@ struct SignupStepOneView: View {
     }
 
     public var body: some View {
-        VStack {
-            TextField("First Name", text: $viewModel.firstName)
-                .textFieldStyle(EnduraTextFieldStyle())
+        ZStack {
+            Color("Background")
+                .edgesIgnoringSafeArea(.all)
 
-            TextField("Last Name", text: $viewModel.lastName)
-                .textFieldStyle(EnduraTextFieldStyle())
+            VStack(alignment: .center, spacing: 20) {
+                TextField("First Name", text: $viewModel.firstName)
+                    .disableAutocorrection(true)
+                    .textFieldStyle(EnduraTextFieldStyle())
 
-            Button("Next") {
-                withAnimation {
-                    currentStep += 1
+                TextField("Last Name", text: $viewModel.lastName)
+                    .disableAutocorrection(true)
+                    .textFieldStyle(EnduraTextFieldStyle())
+
+                Button("Next") {
+                    withAnimation {
+                        currentStep += 1
+                    }
                 }
+                .buttonStyle(EnduraButtonStyle(disabled: viewModel.firstName.isEmpty || viewModel.lastName.isEmpty))
+                .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
             }
-            .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
+            .padding(40)
         }
     }
 }

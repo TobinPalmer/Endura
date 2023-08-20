@@ -26,7 +26,7 @@ struct LoginView: View {
         ZStack {
             Color("Background")
                 .edgesIgnoringSafeArea(.all)
-            VStack(alignment: .center, spacing: 30) {
+            VStack(alignment: .center, spacing: 20) {
                 Image("EnduraLogo")
                     .resizable()
                     .frame(width: 100, height: 100)
