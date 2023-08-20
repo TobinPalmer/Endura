@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-struct SignupStepThreeView: View {
+struct SignupStepFourView: View {
     @StateObject private var viewModel: SignupFormInfo
     @Binding private var currentStep: Int
 
