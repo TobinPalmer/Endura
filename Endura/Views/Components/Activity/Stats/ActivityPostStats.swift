@@ -16,7 +16,7 @@ struct ActivityPostStats: View {
         HStack {
             ActivityStatsSection {
                 ActivityStatsDiscriptionText("Distance")
-                ActivityStatsValueText("\(ConversionUtils.metersToMiles(activityData.distance).truncate(places: 2).removeTrailingZeros()) mi")
+                ActivityStatsValueText("\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2)) miles")
             }
 
             ActivityStatsVLine()
