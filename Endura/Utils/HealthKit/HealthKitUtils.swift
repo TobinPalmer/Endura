@@ -1,5 +1,5 @@
 //
-//  HealthKitUtils.swift created on 8/19/23.
+//  HealthKitUtils.swift created on 8/20/23.
 //
 
 import CoreLocation
