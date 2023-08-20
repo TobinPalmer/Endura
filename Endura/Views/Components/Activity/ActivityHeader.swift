@@ -8,11 +8,11 @@ import SwiftUI
 struct ActivityHeader: View {
     @EnvironmentObject var databaseCache: DatabaseCacheModel
     private let uid: String
-    private let activityData: ActivityData?
+    private let activityData: ActivityHeaderData?
     private let bottomSpace: Bool
     private let placeholder: Bool
 
-    public init(uid: String, activityData: ActivityData?, bottomSpace: Bool = false, placeholder: Bool = false) {
+    public init(uid: String, activityData: ActivityHeaderData?, bottomSpace: Bool = false, placeholder: Bool = false) {
         self.uid = uid
         self.placeholder = placeholder
         self.activityData = activityData
@@ -47,7 +47,7 @@ struct ActivityHeader: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
                             if let activityData = activityData {
-                                Text("\(activityData.time.formatted()) \(activityData.startCity != "" ? "•" : "") \(activityData.startCity)")
+                                Text("\(activityData.startTime.formatted()) \(activityData.startCity != "" ? "•" : "") \(activityData.startCity)")
                                     .font(.system(size: 12))
                                     .foregroundColor(.secondary)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

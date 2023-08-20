@@ -90,6 +90,32 @@ public enum HealthKitUtils {
         return locations
     }
 
+    public static func getFirstWorkoutRoute(workout: HKWorkout) async throws -> HKWorkoutRoute {
+        let predicate = HKQuery.predicateForObjects(from: workout)
+        do {
+            let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKSample], Error>) in
+                healthStore.execute(HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: 1, resultsHandler: { _, samples, _, _, error in
+                    if let hasError = error {
+                        continuation.resume(throwing: hasError)
+                        return
+                    }
+
+                    guard let samples = samples else {
+                        return
+                    }
+                    continuation.resume(returning: samples)
+                }))
+            }
+            guard let workouts = samples as? [HKWorkoutRoute] else {
+                throw HealthKitErrors.workoutFailedCast
+            }
+
+            return workouts.first!
+        } catch {
+            throw HealthKitErrors.unknownError
+        }
+    }
+
     public static func getWorkoutRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
         let predicate = HKQuery.predicateForObjects(from: workout)
         do {
@@ -144,7 +170,33 @@ public enum HealthKitUtils {
         }
     }
 
-    public static func workoutToActivityData(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
+    public static func getWorkoutGridStatsData(_ workout: HKWorkout) -> ActivityGridStatsData {
+        let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
+        let workoutDuration = workout.duration
+
+        return ActivityGridStatsData(
+            calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
+            distance: workoutDistance,
+            duration: workoutDuration,
+            time: workout.startDate,
+            totalDuration: workout.startDate.distance(to: workout.endDate),
+            uid: AuthUtils.getCurrentUID()
+        )
+    }
+
+    public static func getWorkoutHeaderData(_ workout: HKWorkout) async throws -> ActivityHeaderData {
+        let firstRoute = try? await HealthKitUtils.getFirstWorkoutRoute(workout: workout)
+        let firstLocation = try? await HealthKitUtils.getLocationData(for: firstRoute!)
+
+        return try await ActivityHeaderData(
+            startTime: workout.startDate,
+            startLocation: LocationData(latitude: firstLocation?.first?.coordinate.latitude ?? 0.0, longitude: firstLocation?.first?.coordinate.longitude ?? 0.0),
+            startCity: firstLocation?.first?.fetchCityAndCountry().0 ?? "",
+            uid: AuthUtils.getCurrentUID()
+        )
+    }
+
+    public static func workoutToActivityDataWithRoute(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
         let workoutDuration = workout.duration
         var routeData = [RouteData]()

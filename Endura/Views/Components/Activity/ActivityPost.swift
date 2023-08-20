@@ -1,5 +1,5 @@
 //
-//  ActivityPost.swift created on 8/18/23.
+//  ActivityPost.swift created on 8/19/23.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ struct ActivityPost: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            ActivityHeader(uid: activity.uid, activityData: activity)
+            ActivityHeader(uid: activity.uid, activityData: activity.withHeaderStats())
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 VStack(spacing: 10) {

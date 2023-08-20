@@ -92,6 +92,24 @@ public struct ActivityRouteData: Codable {
     var routeData: [RouteData]
 }
 
+public struct ActivityGridStatsData: Codable {
+    var averagePower: Double?
+    var calories: Double
+    var distance: Double
+    var duration: TimeInterval
+    var pace: Double { distance / duration }
+    var time: Date
+    var totalDuration: TimeInterval
+    var uid: String
+}
+
+public struct ActivityHeaderData: Codable {
+    var startTime: Date
+    var startLocation: LocationData
+    var startCity: String
+    var uid: String
+}
+
 public struct ActivityData: Codable {
     var averagePower: Double?
     var calories: Double
@@ -105,6 +123,27 @@ public struct ActivityData: Codable {
     var time: Date
     var totalDuration: TimeInterval
     var uid: String
+
+    public func withHeaderStats() -> ActivityHeaderData {
+        ActivityHeaderData(
+            startTime: time,
+            startLocation: startLocation,
+            startCity: startCity,
+            uid: uid
+        )
+    }
+
+    public func withGridStats() -> ActivityGridStatsData {
+        ActivityGridStatsData(
+            averagePower: averagePower,
+            calories: calories,
+            distance: distance,
+            duration: duration,
+            time: time,
+            totalDuration: totalDuration,
+            uid: uid
+        )
+    }
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
@@ -139,6 +178,27 @@ public struct ActivityDataWithRoute {
     var time: Date
     var totalDuration: TimeInterval
     var uid: String
+
+    public func withGridStats() -> ActivityGridStatsData {
+        ActivityGridStatsData(
+            averagePower: averagePower,
+            calories: calories,
+            distance: distance,
+            duration: duration,
+            time: time,
+            totalDuration: totalDuration,
+            uid: uid
+        )
+    }
+
+    public func withHeaderStats() -> ActivityHeaderData {
+        ActivityHeaderData(
+            startTime: time,
+            startLocation: startLocation,
+            startCity: startCity,
+            uid: uid
+        )
+    }
 
     public func getDataWithoutRoute() -> ActivityData {
         ActivityData(

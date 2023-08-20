@@ -23,12 +23,12 @@ struct ActivityView: View {
             if let activityData = activityData {
                 ScrollView(.vertical) {
                     VStack {
-                        ActivityHeader(uid: activity.uid, activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)())
+                        ActivityHeader(uid: activity.uid, activityData: activityData.withHeaderStats())
 
                         ActivityMap(activityData.data.routeData)
                             .frame(height: 300)
 
-                        ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
+                        ActivityGridStats(activityData: ActivityDataWithRoute.withGridStats(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
 
                         VStack {
                             let cadenceGraph = activityData.getGraph(for: .cadence)

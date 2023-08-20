@@ -1,5 +1,5 @@
 //
-//  ActivitiesView.swift created on 8/19/23.
+//  ActivitiesView.swift created on 8/20/23.
 //
 
 import FirebaseAuth

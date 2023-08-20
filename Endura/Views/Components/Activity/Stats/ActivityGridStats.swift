@@ -6,12 +6,12 @@ import Foundation
 import SwiftUI
 
 struct ActivityGridStats: View {
-    private let activityData: ActivityData?
+    private let activityData: ActivityGridStatsData?
     private let topSpace: Bool
     private let bottomSpace: Bool
     private let placeholder: Bool
 
-    public init(activityData: ActivityData?, bottomSpace: Bool = false, topSpace: Bool = false, placeholder: Bool = false) {
+    public init(activityData: ActivityGridStatsData?, bottomSpace: Bool = false, topSpace: Bool = false, placeholder: Bool = false) {
         self.activityData = activityData
         self.bottomSpace = bottomSpace
         self.topSpace = topSpace
@@ -73,7 +73,7 @@ struct ActivityGridStats: View {
             }
         }
 
-        if let activityData = activityData {
+        if let activityData {
             VStack {
                 ActivityGridSection {
                     ActivityStatsSection {

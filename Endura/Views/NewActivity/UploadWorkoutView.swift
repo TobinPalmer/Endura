@@ -17,7 +17,7 @@ import SwiftUICharts
 
     fileprivate final func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
-            return try await HealthKitUtils.workoutToActivityData(workout)
+            return try await HealthKitUtils.workoutToActivityDataWithRoute(workout)
         } catch {
             throw error
         }
@@ -29,10 +29,9 @@ struct PreviewWorkoutView: View {
 
     private var workout: HKWorkout
     @State private var enduraWorkout: ActivityDataWithRoute?
+    @State private var workoutStats: ActivityGridStatsData?
+    @State private var workoutHeader: ActivityHeaderData?
     @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
-
-    //  @State private var mapRef: (any View)?
-    //  @State private var geometryRef: GeometryProxy?
 
     init(workout: HKWorkout) {
         self.workout = workout
@@ -45,10 +44,14 @@ struct PreviewWorkoutView: View {
 
     var body: some View {
         VStack {
-            if let activityData = enduraWorkout {
-                ScrollView {
-                    ActivityHeader(uid: activityData.uid, activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)())
+            ScrollView {
+                if let workoutHeader {
+                    ActivityHeader(uid: workoutHeader.uid, activityData: workoutHeader)
+                } else {
+                    ActivityHeader(uid: "", activityData: nil, placeholder: true)
+                }
 
+                if let activityData = enduraWorkout {
                     if !activityData.data.routeData.isEmpty {
                         VStack {
                             GeometryReader { geometry in
@@ -67,9 +70,23 @@ struct PreviewWorkoutView: View {
                         }
                         .frame(height: 300)
                     }
+                } else {
+                    VStack {
+                        Text("Loading...")
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(height: 300)
+                    .foregroundColor(Color.red)
+                    .border(.red)
+                }
 
-                    ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
+                if let activityData = enduraWorkout {
+                    ActivityGridStats(activityData: workoutStats, topSpace: !activityData.data.routeData.isEmpty)
+                } else {
+                    ActivityGridStats(activityData: workoutStats, topSpace: false)
+                }
 
+                if let activityData = enduraWorkout {
                     VStack {
                         let cadenceGraph = activityData.getGraph(for: .cadence)
                         let elevationGraph = activityData.getGraph(for: .elevation)
@@ -109,32 +126,35 @@ struct PreviewWorkoutView: View {
                     }
                     .buttonStyle(EnduraButtonStyle())
                 }
-            } else {
-                ScrollView {
-                    ActivityHeader(uid: "", activityData: nil, placeholder: true)
-
-                    VStack {
-                        Text("Loading...")
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .frame(height: 300)
-                    .foregroundColor(Color.red)
-                    .border(.red)
-
-                    ActivityGridStats(activityData: nil, placeholder: true)
+            }
+            .padding()
+            .frame(maxHeight: .infinity)
+            .task {
+                do {
+                    workoutStats = HealthKitUtils.getWorkoutGridStatsData(workout)
+                    workoutHeader = try await HealthKitUtils.getWorkoutHeaderData(workout)
+                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+                } catch WorkoutErrors.noWorkout {
+                    print("No workout to get heart rate graph")
+                } catch let err {
+                    print("Error getting graph data", err)
                 }
             }
-        }
-        .padding()
-        .frame(maxHeight: .infinity)
-        .task {
-            do {
-                enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-            } catch WorkoutErrors.noWorkout {
-                print("No workout to get heart rate graph")
-            } catch let err {
-                print("Error getting graph data", err)
-            }
+//      } else {
+//        ScrollView {
+//          ActivityHeader(uid: "", activityData: nil, placeholder: true)
+//
+//          VStack {
+//            Text("Loading...")
+//          }
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            .frame(height: 300)
+//            .foregroundColor(Color.red)
+//            .border(.red)
+//
+//          ActivityGridStats(activityData: nil, placeholder: true)
+//        }
+//      }
         }
     }
 }
