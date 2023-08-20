@@ -12,7 +12,8 @@ import SwiftUI
 import SwiftUICharts
 
 @MainActor private final class PreviewWorkoutModel: ObservableObject {
-    @Published public var number = 2
+    @Published fileprivate var mapRef: (any View)?
+    @Published fileprivate var geometryRef: GeometryProxy?
 
     fileprivate final func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
@@ -30,11 +31,16 @@ struct PreviewWorkoutView: View {
     @State private var enduraWorkout: ActivityDataWithRoute?
     @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
 
-    @State private var mapRef: (any View)? = nil
-    @State private var geometryRef: GeometryProxy? = nil
+    //  @State private var mapRef: (any View)?
+    //  @State private var geometryRef: GeometryProxy?
 
     init(workout: HKWorkout) {
         self.workout = workout
+    }
+
+    private func assignMap(map: (any View)?, geometry: GeometryProxy?) {
+        previewWorkoutModel.mapRef = map
+        previewWorkoutModel.geometryRef = geometry
     }
 
     var body: some View {
@@ -46,20 +52,23 @@ struct PreviewWorkoutView: View {
                     if !activityData.data.routeData.isEmpty {
                         VStack {
                             GeometryReader { geometry in
+                                let map =
+                                    ActivityMap(activityData.data.routeData)
+                                        .frame(height: 300)
+                                        .environmentObject(activityViewModel)
                                 VStack {
-                                    let map =
-                                        ActivityMap(activityData.data.routeData)
-                                            .frame(height: 300)
-                                            .environmentObject(activityViewModel)
                                     map
-
-                                    let _ = mapRef = map
-                                    let _ = geometryRef = geometry
+                                }
+                                .onAppear {
+                                    print("Assigning Map")
+                                    assignMap(map: map, geometry: geometry)
                                 }
                             }
                         }
                         .frame(height: 300)
                     }
+
+                    ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
 
                     VStack {
                         let cadenceGraph = activityData.getGraph(for: .cadence)
@@ -70,7 +79,6 @@ struct PreviewWorkoutView: View {
                         let powerGraph = activityData.getGraph(for: .power)
                         let strideLengthGraph = activityData.getGraph(for: .strideLength)
                         let verticalOscillationGraph = activityData.getGraph(for: .verticleOscillation)
-                        ActivityGridStats(activityData: ActivityDataWithRoute.getDataWithoutRoute(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
                         LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                         LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
                         LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
@@ -85,9 +93,11 @@ struct PreviewWorkoutView: View {
                     Button {
                         Task {
                             do {
-                                if let mapRef = mapRef, let geometryRef = geometryRef {
+                                if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
+                                    print("Uploading with map")
                                     try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
                                 } else {
+                                    print("Uploading without map")
                                     try await ActivityUtils.uploadActivity(activity: activityData)
                                 }
                             } catch {
@@ -99,11 +109,6 @@ struct PreviewWorkoutView: View {
                     }
                     .buttonStyle(EnduraButtonStyle())
                 }
-//                VStack {
-//                    Text("Loaded")
-//                }
-//                    .frame(width: 500, height: 500)
-//                    .foregroundColor(Color.red)
             } else {
                 ScrollView {
                     ActivityHeader(uid: "", activityData: nil, placeholder: true)
