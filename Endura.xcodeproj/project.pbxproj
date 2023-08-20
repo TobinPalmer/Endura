@@ -42,6 +42,7 @@
 		17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64CF9FA32EE591326705 /* UIColor.swift */; };
 		17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC659A1576329D2B4CB4F2 /* ActivityView.swift */; };
 		17CC682E88A5BF7A13F60DB5 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */; };
+		17CC68DAEFAD7FB41ABA0D99 /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */; };
 		17CC69010684FDD587AF79B9 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61A4C68A0172243AB286 /* View.swift */; };
 		17CC6BD8CFCA13C8952D4534 /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC68FD129A61DF48BD0D4F /* Formatting.swift */; };
 		17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC647C809BFAC3C20DA478 /* Date.swift */; };
@@ -159,6 +160,7 @@
 		17CC6D870BA8F7FE33770E38 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		17CC6D93D86A82B085AB91BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		17CC6E3C3259ED54F0BF31D1 /* Activities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activities.swift; sourceTree = "<group>"; };
+		17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsModel.swift; sourceTree = "<group>"; };
 		17CC6FAD8A0AC457723ACD1F /* Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversion.swift; sourceTree = "<group>"; };
 		17CC6FE8496937628D610F98 /* UserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		696980A9493FB9C9A2291998 /* WorkoutErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutErrors.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 			isa = PBXGroup;
 			children = (
 				17CC66685EBC6CD75C2599F5 /* SettingsModel.swift */,
+				17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */,
 			);
 			path = SettingsModels;
 			sourceTree = "<group>";
@@ -852,6 +855,7 @@
 				696988523E8242CDC94CE688 /* SignupStepFiveView.swift in Sources */,
 				696981FA92CEA0D45CA25D21 /* SignupStepSixView.swift in Sources */,
 				696986CF195F54AD8C049BA1 /* SignupStepSevenView.swift in Sources */,
+				17CC68DAEFAD7FB41ABA0D99 /* NotificationsSettingsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
