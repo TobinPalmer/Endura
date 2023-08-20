@@ -1,5 +1,5 @@
 //
-//  ActivitiesView.swift created on 8/18/23.
+//  ActivitiesView.swift created on 8/19/23.
 //
 
 import FirebaseAuth
@@ -85,6 +85,10 @@ struct ActivitiesView: View {
                 } else {
                     Text("No activities")
                 }
+            }
+            .refreshable {
+                // TODO: Reload the activities (Including map images)
+                print("Refreshing")
             }
         }
         .background(Color(.secondarySystemBackground))
