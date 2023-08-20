@@ -1,5 +1,5 @@
 //
-//  LoginView.swift created on 8/14/23.
+//  LoginView.swift created on 8/20/23.
 //
 
 import Foundation
@@ -37,6 +37,9 @@ struct LoginView: View {
                     .foregroundColor(Color("Text"))
 
                 TextField("Email", text: $viewModel.email)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .keyboardType(.emailAddress)
                     .textFieldStyle(EnduraTextFieldStyle())
 
                 SecureField("Password", text: $viewModel.password)
@@ -47,16 +50,16 @@ struct LoginView: View {
                 } label: {
                     Text("Login")
                 }
-                    .buttonStyle(EnduraButtonStyle(disabled: viewModel.email.isEmpty || viewModel.password.isEmpty))
-                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
+                .buttonStyle(EnduraButtonStyle(disabled: viewModel.email.isEmpty || viewModel.password.isEmpty))
+                .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
 
                 NavigationLink(destination: SignupView()) {
                     Text("Signup")
                 }
-                    .buttonStyle(EnduraButtonStyle())
+                .buttonStyle(EnduraButtonStyle())
             }
-                .frame(width: .infinity, height: .infinity)
-                .padding(40)
+            .frame(width: .infinity, height: .infinity)
+            .padding(40)
         }
     }
 }
