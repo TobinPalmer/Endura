@@ -34,7 +34,8 @@ import Foundation
                 firstName: document.firstName,
                 lastName: document.lastName,
                 profileImage: image,
-                friends: document.friends
+                friends: document.friends,
+                role: document.role
             )
             usersCache.updateValue(userData, forKey: uid)
         } catch {

@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 
 public enum Roles: String, Codable {
-    case ADMIN
-    case USER
+    case ADMIN = "admin"
+    case USER = "user"
 }
 
 public struct UserData {
@@ -13,11 +13,10 @@ public struct UserData {
     var lastName: String
     var profileImage: UIImage?
     var friends: [String]
+    var role: Roles
 }
 
 public struct UserDocument: Codable {
-    var birthDate: String
-    var email: String
     var firstName: String
     var lastName: String
     var friends: [String]

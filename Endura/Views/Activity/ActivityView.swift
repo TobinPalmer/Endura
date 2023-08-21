@@ -77,6 +77,15 @@ struct ActivityView: View {
                     }) {
                         Label("Delete", systemImage: "trash")
                     }
+
+                    if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
+                        Button(action: {
+                            print("Banned")
+                        }) {
+                            Label("Ban User", systemImage: "trash")
+                                .foregroundColor(.red)
+                        }
+                    }
                 } label: {
                     Image(systemName: "ellipsis")
                 }
@@ -85,6 +94,7 @@ struct ActivityView: View {
         .padding()
         .task {
             activityData = await activity.withRouteData(id: id)
+            print("ROLE", databaseCache.getUserData(AuthUtils.getCurrentUID())?.role)
         }
     }
 }

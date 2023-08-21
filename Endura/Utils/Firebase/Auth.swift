@@ -34,12 +34,6 @@ public enum AuthUtils {
         return userInfo
     }
 
-    public static func getRole() async -> Roles {
-        let userInfo = await getUserInfo()
-
-        return userInfo?.role ?? .USER
-    }
-
     public static func loginWithEmail(_ email: String, _ password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { user, error in
             if user != nil {
