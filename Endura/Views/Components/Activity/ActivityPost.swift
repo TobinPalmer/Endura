@@ -1,4 +1,5 @@
 import Foundation
+import Inject
 import SwiftUI
 
 struct ActivityPost: View {
@@ -78,6 +79,7 @@ struct ActivityPost: View {
                 }
             }
         }
+        .enableInjection()
         .padding(8)
         .cornerRadius(10)
         .foregroundColor(.primary)
@@ -87,4 +89,18 @@ struct ActivityPost: View {
         .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
         .cornerRadius(10)
     }
+}
+
+class ActivityPost_Previews: PreviewProvider {
+    static var previews: some View {
+        InjectedContentView()
+    }
+
+    #if DEBUG
+        @objc class func injected() {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            windowScene?.windows.first?.rootViewController =
+                UIHostingController(rootView: InjectedContentView())
+        }
+    #endif
 }

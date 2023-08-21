@@ -9,7 +9,7 @@ import SwiftUI
 struct DashboardView: View {
     var body: some View {
         VStack {
-            Text("Welcome to the app!")
+            Text("Welcome to the app")
 
             Button {
                 NotificationUtils.sendNotification(title: "Test", body: "Test", date: Date().addingTimeInterval(5))
@@ -24,14 +24,14 @@ struct DashboardView: View {
 
 class DashboardView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(NavigationModel.instance).environmentObject(DatabaseCacheModel())
+        InjectedContentView()
     }
 
     #if DEBUG
         @objc class func injected() {
             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             windowScene?.windows.first?.rootViewController =
-                UIHostingController(rootView: ContentView().environmentObject(NavigationModel.instance).environmentObject(DatabaseCacheModel()))
+                UIHostingController(rootView: InjectedContentView())
         }
     #endif
 }

@@ -3,6 +3,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation
 import HealthKit
+import Inject
 import SwiftUI
 
 @MainActor private final class ActivitiesViewModel: ObservableObject {
@@ -87,6 +88,7 @@ struct ActivitiesView: View {
                 print("Refreshing")
             }
         }
+        .enableInjection()
         .background(Color(.secondarySystemBackground))
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -107,4 +109,18 @@ struct ActivitiesView: View {
             }
         }
     }
+}
+
+class ActivitiesView_Previews: PreviewProvider {
+    static var previews: some View {
+        InjectedContentView()
+    }
+
+    #if DEBUG
+        @objc class func injected() {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            windowScene?.windows.first?.rootViewController =
+                UIHostingController(rootView: InjectedContentView())
+        }
+    #endif
 }

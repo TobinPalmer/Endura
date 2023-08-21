@@ -37,7 +37,7 @@ struct ProgressDashboardView: View {
         ScrollView {
             LazyVStack {
                 ForEach(viewModel.items.indices, id: \.self) { index in
-                    Text("Item Number \(viewModel.items[index])")
+                    Text("Item Num \(viewModel.items[index])")
                         .task {
                             if index == viewModel.items.count - 5 {
                                 do {
