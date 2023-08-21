@@ -1,4 +1,5 @@
 import FirebaseAuth
+import FirebaseFirestore
 import Foundation
 
 public enum AuthUtils {
@@ -17,6 +18,26 @@ public enum AuthUtils {
                 NavigationModel.instance.currentView = .HOME
             }
         }
+    }
+
+    public static func getUserInfo() async -> UserDocument? {
+        let userRef = Firestore.firestore().collection("users").document(getCurrentUID())
+        var userInfo: UserDocument?
+
+        do {
+            let document = try await userRef.getDocument(as: UserDocument.self)
+            userInfo = document
+        } catch {
+            print("Error decoding user: \(error)")
+        }
+
+        return userInfo
+    }
+
+    public static func getRole() async -> Roles {
+        let userInfo = await getUserInfo()
+
+        return userInfo?.role ?? .USER
     }
 
     public static func loginWithEmail(_ email: String, _ password: String) {
