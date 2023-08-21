@@ -1,9 +1,11 @@
 import FirebaseAuth
 import FirebaseFirestore
+import Inject
 import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var navigation: NavigationModel
+    @ObservedObject private var IO = Inject.observer
 
     var body: some View {
         switch navigation.currentView {
@@ -26,7 +28,7 @@ struct ContentView: View {
                 }
                 .tabItem {
                     Image(systemName: "figure.run")
-                    Text("Activities")
+                    Text("Activity")
                 }
 
                 NavigationView {
@@ -53,6 +55,21 @@ struct ContentView: View {
                     Text("Profile")
                 }
             }
+            .enableInjection()
         }
     }
+}
+
+class ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        InjectedContentView()
+    }
+
+    #if DEBUG
+        @objc class func injected() {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            windowScene?.windows.first?.rootViewController =
+                UIHostingController(rootView: InjectedContentView())
+        }
+    #endif
 }

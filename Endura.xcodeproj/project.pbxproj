@@ -25,6 +25,7 @@
 		026042F62A62E36300F4AF88 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F52A62E36300F4AF88 /* FirebaseFunctions */; };
 		026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */; };
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
+		0267A8072A92CC3D0090E032 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 0267A8062A92CC3D0090E032 /* Inject */; };
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
 		17CC6078651983C541BA712F /* DatabaseCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
@@ -224,6 +225,7 @@
 				026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */,
 				026042E82A62E36300F4AF88 /* FirebaseAnalytics in Frameworks */,
 				026042F22A62E36300F4AF88 /* FirebaseFirestore in Frameworks */,
+				0267A8072A92CC3D0090E032 /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,6 +663,7 @@
 				026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */,
 				026042F92A62E36300F4AF88 /* FirebaseStorage */,
 				E955630B2A6F4F2800AC74DE /* SwiftUICharts */,
+				0267A8062A92CC3D0090E032 /* Inject */,
 			);
 			productName = Endura;
 			productReference = 026042B92A62E27900F4AF88 /* Endura.app */;
@@ -737,6 +740,7 @@
 			packageReferences = (
 				026042E62A62E36300F4AF88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E955630A2A6F4F2800AC74DE /* XCRemoteSwiftPackageReference "ChartView" */,
+				0267A8052A92CC3D0090E032 /* XCRemoteSwiftPackageReference "Inject" */,
 			);
 			productRefGroup = 026042BA2A62E27900F4AF88 /* Products */;
 			projectDirPath = "";
@@ -1036,6 +1040,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.enduraapp.EnduraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1068,6 +1076,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.endurapp.EnduraApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1202,6 +1211,14 @@
 				minimumVersion = 10.12.0;
 			};
 		};
+		0267A8052A92CC3D0090E032 /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.4;
+			};
+		};
 		E955630A2A6F4F2800AC74DE /* XCRemoteSwiftPackageReference "ChartView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AppPear/ChartView";
@@ -1262,6 +1279,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 026042E62A62E36300F4AF88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		0267A8062A92CC3D0090E032 /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0267A8052A92CC3D0090E032 /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
 		};
 		E955630B2A6F4F2800AC74DE /* SwiftUICharts */ = {
 			isa = XCSwiftPackageProductDependency;

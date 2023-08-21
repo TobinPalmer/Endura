@@ -14,7 +14,17 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         NotificationUtils.requestPermission()
 
         HealthKitUtils.subscribeToNewWorkouts()
+
+        #if DEBUG
+            Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+        #endif
         return true
+    }
+}
+
+struct InjectedContentView: View {
+    var body: some View {
+        ContentView().environmentObject(NavigationModel.instance).environmentObject(DatabaseCacheModel())
     }
 }
 
@@ -23,7 +33,7 @@ struct EnduraApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(NavigationModel.instance).environmentObject(DatabaseCacheModel())
+            InjectedContentView()
         }
     }
 }
