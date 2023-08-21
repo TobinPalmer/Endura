@@ -30,6 +30,9 @@ struct PreviewWorkoutView: View {
     @State private var workoutHeader: ActivityHeaderData?
     @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
 
+    @State private var activityTitle: String = ""
+    @State private var activityDescription: String = ""
+
     init(workout: HKWorkout) {
         self.workout = workout
     }
@@ -47,6 +50,18 @@ struct PreviewWorkoutView: View {
                 } else {
                     ActivityHeader(uid: "", activityData: nil, placeholder: true)
                 }
+
+                TextField("Title", text: $activityTitle)
+                    .font(.title)
+                    .textFieldStyle(EnduraTextFieldStyle())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 10)
+
+                TextField("Description", text: $activityDescription)
+                    .font(.body)
+                    .textFieldStyle(EnduraTextFieldStyle())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 10)
 
                 if let activityData = enduraWorkout {
                     if !activityData.data.routeData.isEmpty {
@@ -83,7 +98,7 @@ struct PreviewWorkoutView: View {
                     ActivityGridStats(activityData: workoutStats, topSpace: false)
                 }
 
-                if let activityData = enduraWorkout {
+                if var activityData = enduraWorkout {
                     VStack {
                         let cadenceGraph = activityData.getGraph(for: .cadence)
                         let elevationGraph = activityData.getGraph(for: .elevation)
@@ -109,6 +124,28 @@ struct PreviewWorkoutView: View {
                             do {
                                 if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
                                     previewWorkoutModel.isShowingSummary = true
+
+                                    if activityTitle.isEmpty {
+                                        let hour = Calendar.current.component(.hour, from: activityData.time)
+
+                                        switch hour {
+                                        case 0 ..< 12:
+                                            let _ = activityData.title = "Morning Activity"
+                                        case 12 ..< 17:
+                                            let _ = activityData.title = "Lunch Activity"
+                                        case 17 ..< 24:
+                                            let _ = activityData.title = "Evening Activity"
+                                        default:
+                                            let _ = activityData.title = "Activity"
+                                        }
+                                    } else {
+                                        let _ = activityData.title = activityTitle
+                                        let _ = activityData.description = activityDescription
+                                    }
+
+                                    print("Final", activityData.title)
+                                    print("Final", activityData.description)
+
                                     try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
                                 } else {
                                     previewWorkoutModel.isShowingSummary = true
