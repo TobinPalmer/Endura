@@ -20,20 +20,6 @@ public enum AuthUtils {
         }
     }
 
-    public static func getUserInfo() async -> UserDocument? {
-        let userRef = Firestore.firestore().collection("users").document(getCurrentUID())
-        var userInfo: UserDocument?
-
-        do {
-            let document = try await userRef.getDocument(as: UserDocument.self)
-            userInfo = document
-        } catch {
-            print("Error decoding user: \(error)")
-        }
-
-        return userInfo
-    }
-
     public static func loginWithEmail(_ email: String, _ password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { user, error in
             if user != nil {

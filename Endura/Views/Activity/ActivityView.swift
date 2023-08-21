@@ -83,7 +83,6 @@ struct ActivityView: View {
                             print("Banned")
                         }) {
                             Label("Ban User", systemImage: "trash")
-                                .foregroundColor(.red)
                         }
                     }
                 } label: {
@@ -94,7 +93,6 @@ struct ActivityView: View {
         .padding()
         .task {
             activityData = await activity.withRouteData(id: id)
-            print("ROLE", databaseCache.getUserData(AuthUtils.getCurrentUID())?.role)
         }
     }
 }

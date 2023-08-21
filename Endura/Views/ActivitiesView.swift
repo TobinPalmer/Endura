@@ -25,7 +25,22 @@ import SwiftUI
 
             snapshot.documentChanges.forEach { diff in
                 do {
-                    let data = try diff.document.data(as: ActivityData.self)
+                    var data = try diff.document.data(as: ActivityData.self)
+                    // Assuming data.time is of type Date
+                    let calendar = Calendar.current
+                    let hour = calendar.component(.hour, from: data.time)
+
+                    switch hour {
+                    case 0 ..< 12:
+                        data.title = "Morning Activity"
+                    case 12 ..< 17:
+                        data.title = "Lunch Activity"
+                    case 17 ..< 24:
+                        data.title = "Evening Activity"
+                    default:
+                        data.title = "Activity"
+                    }
+
                     let activity = ActivityData(
                         averagePower: data.averagePower,
                         calories: data.calories,
@@ -37,7 +52,7 @@ import SwiftUI
                         startCity: data.startCity,
                         startLocation: data.startLocation,
                         time: data.time,
-                        title: data.title.isEmpty ? "Default Title" : data.title,
+                        title: data.title,
                         totalDuration: data.totalDuration,
                         uid: data.uid
                     )
