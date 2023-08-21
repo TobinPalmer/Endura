@@ -27,7 +27,7 @@ struct ContentView: View {
                     ActivitiesView()
                 }
                 .tabItem {
-                    Image(systemName: "figure.run")
+                    Image(systemName: "figure.walk")
                     Text("Activity")
                 }
 

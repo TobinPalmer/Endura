@@ -60,7 +60,7 @@ public enum ActivityUtils {
                 return
             }
             imageRef.putData(data, metadata: metadata) { metadata, error in
-                guard let metadata = metadata else {
+                guard metadata != nil else {
                     print("Error uploading image: \(error!)")
                     return
                 }

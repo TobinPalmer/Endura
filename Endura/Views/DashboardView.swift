@@ -9,7 +9,7 @@ import SwiftUI
 struct DashboardView: View {
     var body: some View {
         VStack {
-            Text("Welcome to the app")
+            Text("Welcome to the test")
 
             Button {
                 NotificationUtils.sendNotification(title: "Test", body: "Test", date: Date().addingTimeInterval(5))

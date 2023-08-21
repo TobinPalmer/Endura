@@ -106,20 +106,24 @@ public struct ActivityHeaderData: Codable {
     var uid: String
 }
 
-public struct ActivityData: Codable {
-    var averagePower: Double?
-    var calories: Double
-    var comments: [ActivityCommentData]
-    var distance: Double
-    var duration: TimeInterval
-    var likes: [String]
-    var pace: Double { distance / duration }
-    var startCity: String
-    var startLocation: LocationData
-    var time: Date
-    var totalDuration: TimeInterval
-    var uid: String
+protocol ActivityDataProtocol {
+    var averagePower: Double? { get }
+    var calories: Double { get }
+    var distance: Double { get }
+    var duration: TimeInterval { get }
+    var time: Date { get }
+    var totalDuration: TimeInterval { get }
+    var uid: String { get }
+    var startCity: String { get }
+    var startLocation: LocationData { get }
+    var description: String { get }
+    var title: String { get }
 
+    func withHeaderStats() -> ActivityHeaderData
+    func withGridStats() -> ActivityGridStatsData
+}
+
+extension ActivityDataProtocol {
     public func withHeaderStats() -> ActivityHeaderData {
         ActivityHeaderData(
             startTime: time,
@@ -140,6 +144,23 @@ public struct ActivityData: Codable {
             uid: uid
         )
     }
+}
+
+public struct ActivityData: Codable, ActivityDataProtocol {
+    var averagePower: Double?
+    var calories: Double
+    var comments: [ActivityCommentData]
+    var distance: Double
+    var description: String
+    var duration: TimeInterval
+    var likes: [String]
+    var pace: Double { distance / duration }
+    var startCity: String
+    var startLocation: LocationData
+    var time: Date
+    var title: String
+    var totalDuration: TimeInterval
+    var uid: String
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
@@ -149,52 +170,35 @@ public struct ActivityData: Codable {
             comments: comments,
             data: routeData,
             distance: distance,
+            description: description,
             duration: duration,
             likes: likes,
             startCity: startCity,
             startLocation: startLocation,
             time: time,
+            title: title,
             totalDuration: totalDuration,
             uid: uid
         )
     }
 }
 
-public struct ActivityDataWithRoute {
+public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     var averagePower: Double?
     var calories: Double
     var comments: [ActivityCommentData]
     var data: ActivityRouteData
     var distance: Double
+    var description: String
     var duration: TimeInterval
     var likes: [String]
     var pace: Double { distance / duration }
     var startCity: String
     var startLocation: LocationData
     var time: Date
+    var title: String
     var totalDuration: TimeInterval
     var uid: String
-
-    public func withGridStats() -> ActivityGridStatsData {
-        ActivityGridStatsData(
-            averagePower: averagePower,
-            calories: calories,
-            distance: distance,
-            duration: duration,
-            time: time,
-            totalDuration: totalDuration,
-            uid: uid
-        )
-    }
-
-    public func withHeaderStats() -> ActivityHeaderData {
-        ActivityHeaderData(
-            startTime: time,
-            startLocation: startLocation,
-            startCity: startCity,
-            uid: uid
-        )
-    }
 
     public func getDataWithoutRoute() -> ActivityData {
         ActivityData(
@@ -202,11 +206,13 @@ public struct ActivityDataWithRoute {
             calories: calories,
             comments: comments,
             distance: distance,
+            description: description,
             duration: duration,
             likes: likes,
             startCity: startCity,
             startLocation: startLocation,
             time: time,
+            title: title,
             totalDuration: totalDuration,
             uid: uid
         )

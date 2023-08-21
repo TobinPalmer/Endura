@@ -20,16 +20,18 @@ struct ActivityPost: View {
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 VStack(spacing: 10) {
-                    Text("Afternoon Run")
+                    Text(activity.title)
                         .font(.title2)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Text("Very good run today. I felt great and was able to keep a good pace throughout the run. I'm looking forward to my next run.")
-                        .multilineTextAlignment(.leading)
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if !activity.description.isEmpty {
+                        Text(activity.description)
+                            .multilineTextAlignment(.leading)
+                            .font(.system(size: 12))
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
             }
 

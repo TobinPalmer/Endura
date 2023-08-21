@@ -31,11 +31,13 @@ import SwiftUI
                         calories: data.calories,
                         comments: data.comments,
                         distance: data.distance,
+                        description: data.description,
                         duration: data.duration,
                         likes: data.likes,
                         startCity: data.startCity,
                         startLocation: data.startLocation,
                         time: data.time,
+                        title: data.title.isEmpty ? "Default Title" : data.title,
                         totalDuration: data.totalDuration,
                         uid: data.uid
                     )

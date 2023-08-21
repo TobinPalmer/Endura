@@ -374,11 +374,13 @@ public enum HealthKitUtils {
                 routeData: routeData
             ),
             distance: workoutDistance,
+            description: "",
             duration: workoutDuration,
             likes: [],
             startCity: data.first?.fetchCityAndCountry().0 ?? "",
             startLocation: LocationData(latitude: data.first?.coordinate.latitude ?? 0.0, longitude: data.first?.coordinate.longitude ?? 0.0),
             time: workout.startDate,
+            title: "",
             totalDuration: workout.startDate.distance(to: workout.endDate),
             uid: AuthUtils.getCurrentUID()
         )

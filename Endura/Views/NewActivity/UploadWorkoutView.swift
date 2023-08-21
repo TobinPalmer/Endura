@@ -109,10 +109,10 @@ struct PreviewWorkoutView: View {
                             do {
                                 if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
                                     previewWorkoutModel.isShowingSummary = true
-//                  try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
+                                    try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
                                 } else {
                                     previewWorkoutModel.isShowingSummary = true
-//                  try await ActivityUtils.uploadActivity(activity: activityData)
+                                    try await ActivityUtils.uploadActivity(activity: activityData)
                                 }
                             } catch {
                                 print("Error uploading workout: \(error)")
