@@ -21,6 +21,11 @@ struct ActivityView: View {
                     VStack {
                         ActivityHeader(uid: activity.uid, activityData: activityData.withHeaderStats())
 
+                        Text(activity.title)
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
                         ActivityMap(activityData.data.routeData)
                             .frame(height: 300)
 
@@ -51,6 +56,11 @@ struct ActivityView: View {
             } else {
                 ScrollView {
                     ActivityHeader(uid: "", activityData: nil, placeholder: true)
+
+                    Text("-----------------------")
+                        .font(Font.custom("FlowBlock-Regular", size: 30, relativeTo: .title))
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
                     VStack {
                         Text("Loading...")
