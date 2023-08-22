@@ -213,19 +213,22 @@ public enum HealthKitUtils {
             data.append(contentsOf: routeData)
         }
 
-        var heartRate = try await HealthKitUtils.getHeartRateGraph(for: workout)
-
-        var cadence = try await HealthKitUtils.getCadenceGraph(for: workout)
+        var heartRate = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .heartRate, unit: .string("count/min"), dataType: HeartRateData.self)
+        var cadence = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .stepCount, options: [.cumulativeSum, .separateBySource], unit: .unit(.count()), dataType: CadenceData.self)
 
         var groundContactTime: [GroundContactTimeData]? = nil
         var power: [PowerData]? = nil
         var strideLength: [StrideLengthData]? = nil
         var verticleOscillation: [VerticleOscillationData]? = nil
         if #available(iOS 16.0, *) {
-            groundContactTime = try await HealthKitUtils.getGroundContactTimeGraph(for: workout)
-            power = try await HealthKitUtils.getPowerGraph(for: workout)
-            strideLength = try await HealthKitUtils.getStrideLengthGraph(for: workout)
-            verticleOscillation = try await HealthKitUtils.getVerticleOscillationGraph(for: workout)
+            groundContactTime = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningGroundContactTime, unit: .unit(.secondUnit(with: .milli)), dataType: GroundContactTimeData.self)
+            power = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningPower, unit: .unit(.watt()), dataType: PowerData.self)
+            strideLength = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningStrideLength, unit: .unit(.meter()), dataType: StrideLengthData.self)
+            verticleOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticleOscillationData.self)
+//      groundContactTime = try await HealthKitUtils.getGroundContactTimeGraph(for: workout)
+//      power = try await HealthKitUtils.getPowerGraph(for: workout)
+//      strideLength = try await HealthKitUtils.getStrideLengthGraph(for: workout)
+//      verticleOscillation = try await HealthKitUtils.getVerticleOscillationGraph(for: workout)
         }
 
         var dataRate = 1
@@ -388,137 +391,15 @@ public enum HealthKitUtils {
         return workoutData
     }
 
-    public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateData] {
-        let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .heartRate)!)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileResultsFromWorkoutDiscreteMinMax(results, workout: workout, unit: .string("count/min"), dataType: HeartRateData.self)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-        return results
-    }
-
-    public static func getCadenceGraph(for workout: HKWorkout) async throws -> [CadenceData] {
-        let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .stepCount)!, options: [.cumulativeSum, .separateBySource])
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CadenceData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileResultsFromWorkoutCumulative(results, workout: workout, unit: .unit(.count()), dataType: CadenceData.self)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getGroundContactTimeGraph(for workout: HKWorkout) async throws -> [GroundContactTimeData] {
-        let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[GroundContactTimeData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileResultsFromWorkoutDiscreteMinMax(results, workout: workout, unit: .unit(.secondUnit(with: .milli)), dataType: GroundContactTimeData.self)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getStrideLengthGraph(for workout: HKWorkout) async throws -> [StrideLengthData] {
-        let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningStrideLength)!)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[StrideLengthData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileResultsFromWorkoutDiscreteMinMax(results, workout: workout, unit: .unit(.meter()), dataType: StrideLengthData.self)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getVerticleOscillationGraph(for workout: HKWorkout) async throws -> [VerticleOscillationData] {
-        let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VerticleOscillationData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileResultsFromWorkoutDiscreteMinMax(results, workout: workout, unit: .unit(.meter()), dataType: VerticleOscillationData.self)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    @available(iOS 16.0, *)
-    public static func getPowerGraph(for workout: HKWorkout) async throws -> [PowerData] {
-        let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningPower)!)
-
-        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[PowerData], Error>) in
-            query.initialResultsHandler = { _, results, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let results = results {
-                    let data = compileResultsFromWorkoutDiscreteMinMax(results, workout: workout, unit: .unit(.watt()), dataType: PowerData.self)
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: HealthKitErrors.unknownError)
-                }
-            }
-            healthStore.execute(query)
-        }
-
-        return results
-    }
-
-    private static func createWorkoutQuery(for workout: HKWorkout, with interval: DateComponents, quantityType: HKQuantityType, options: HKStatisticsOptions = [.discreteMax, .discreteMin]) async -> HKStatisticsCollectionQuery {
+    private static func createWorkoutQuery(
+        for workout: HKWorkout,
+        with interval: DateComponents,
+        quantityType: HKQuantityType,
+        options: HKStatisticsOptions = [.discreteMax, .discreteMin]
+    ) async -> HKStatisticsCollectionQuery {
+        print("Creating query for \(workout) with \(interval) and \(quantityType) ")
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+        print("Predicate: \(predicate)")
 
         return HKStatisticsCollectionQuery(
             quantityType: quantityType,
@@ -565,11 +446,17 @@ public enum HealthKitUtils {
                                                                                    unit: UnitType,
                                                                                    dataType: T.Type) -> [T] where T: Codable
     {
+        if dataType == HeartRateData.self {
+            print("RESULTS", results)
+            print("Heart rate data")
+        }
+
         var dataPoints = [T]()
 
         results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
             var minVal: Double?
             var maxVal: Double?
+
             switch unit {
             case let .string(unitString):
                 minVal = statistics.minimumQuantity()?.doubleValue(for: HKUnit(from: unitString))
@@ -601,6 +488,7 @@ public enum HealthKitUtils {
                     dataPoints.append(dataPoint as! T)
                 case is HeartRateData.Type:
                     let dataPoint = HeartRateData(timestamp: date, heartRate: average)
+                    print("appending ", dataPoint)
                     dataPoints.append(dataPoint as! T)
                 default:
                     break
@@ -647,5 +535,39 @@ public enum HealthKitUtils {
         }
 
         return filledArray
+    }
+
+    private static func getGraph<T: TimestampPoint>(
+        for workout: HKWorkout,
+        quantityTypeIdentifier: HKQuantityTypeIdentifier,
+        options: HKStatisticsOptions = [.discreteMax, .discreteMin],
+        unit: UnitType,
+        dataType: T.Type
+    ) async throws -> [T] where T: Codable {
+        let interval = DateComponents(second: 1)
+        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: quantityTypeIdentifier)!, options: options)
+
+        let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[T], Error>) in
+            query.initialResultsHandler = { _, results, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let results = results {
+                    if options.contains(.cumulativeSum) {
+                        let data = compileResultsFromWorkoutCumulative(results, workout: workout, unit: unit, dataType: dataType)
+                        continuation.resume(returning: data)
+                    } else {
+                        let data = compileResultsFromWorkoutDiscreteMinMax(results, workout: workout, unit: unit, dataType: dataType)
+                        continuation.resume(returning: data)
+                    }
+                } else {
+                    continuation.resume(throwing: HealthKitErrors.unknownError)
+                }
+            }
+            healthStore.execute(query)
+        }
+
+        print("Getting graph for \(quantityTypeIdentifier.rawValue)")
+        print("Results: \(results)")
+        return results
     }
 }

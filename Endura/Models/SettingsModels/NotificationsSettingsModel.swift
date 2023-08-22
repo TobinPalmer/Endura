@@ -1,7 +1,3 @@
-//
-// Created by Brandon Kirbyson on 8/20/23.
-//
-
 import Foundation
 
 struct NotificationsSettingsModel {

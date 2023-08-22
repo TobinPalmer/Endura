@@ -78,16 +78,4 @@ public enum ActivityUtils {
             print("Image uploaded successfully")
         }
     }
-
-    private static func putData(_ data: Data, metadata: StorageMetadata, for ref: StorageReference) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            ref.putData(data, metadata: metadata) { _, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume()
-                }
-            }
-        }
-    }
 }
