@@ -249,8 +249,6 @@ public enum HealthKitUtils {
                 dataRate = Int(data.count / maxPoints)
             }
 
-            print("Data rate, ", dataRate)
-
             data.removeSubrange(0 ... 5)
 
             var heartRateAtPoint: Double?
@@ -397,9 +395,7 @@ public enum HealthKitUtils {
         quantityType: HKQuantityType,
         options: HKStatisticsOptions = [.discreteMax, .discreteMin]
     ) async -> HKStatisticsCollectionQuery {
-        print("Creating query for \(workout) with \(interval) and \(quantityType) ")
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
-        print("Predicate: \(predicate)")
 
         return HKStatisticsCollectionQuery(
             quantityType: quantityType,
@@ -446,11 +442,6 @@ public enum HealthKitUtils {
                                                                                    unit: UnitType,
                                                                                    dataType: T.Type) -> [T] where T: Codable
     {
-        if dataType == HeartRateData.self {
-            print("RESULTS", results)
-            print("Heart rate data")
-        }
-
         var dataPoints = [T]()
 
         results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
@@ -488,7 +479,6 @@ public enum HealthKitUtils {
                     dataPoints.append(dataPoint as! T)
                 case is HeartRateData.Type:
                     let dataPoint = HeartRateData(timestamp: date, heartRate: average)
-                    print("appending ", dataPoint)
                     dataPoints.append(dataPoint as! T)
                 default:
                     break
@@ -566,8 +556,6 @@ public enum HealthKitUtils {
             healthStore.execute(query)
         }
 
-        print("Getting graph for \(quantityTypeIdentifier.rawValue)")
-        print("Results: \(results)")
         return results
     }
 }
