@@ -11,6 +11,11 @@ import SwiftUICharts
     @Published fileprivate var mapRef: (any View)?
     @Published fileprivate var geometryRef: GeometryProxy?
     @Published fileprivate var isShowingSummary = false
+    @Published fileprivate var enduraWorkout: ActivityDataWithRoute?
+    @Published fileprivate var workoutStats: ActivityGridStatsData?
+    @Published fileprivate var workoutHeader: ActivityHeaderData?
+    @Published fileprivate var activityTitle: String = ""
+    @Published fileprivate var activityDescription: String = ""
 
     fileprivate final func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
@@ -23,47 +28,49 @@ import SwiftUICharts
 
 struct PreviewWorkoutView: View {
     @StateObject var activityViewModel = ActivityViewModel()
+    @StateObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
+    @State private var isShowingSummary = false
+
+    @MainActor func updateWorkoutStats(_ workout: HKWorkout) {
+        previewWorkoutModel.workoutStats = HealthKitUtils.getWorkoutGridStatsData(workout)
+    }
+
+    @MainActor func updateWorkoutHeader(_ workout: HKWorkout) async throws {
+        previewWorkoutModel.workoutHeader = try await HealthKitUtils.getWorkoutHeaderData(workout)
+    }
+
+    @MainActor func updateEnduraWorkout(_ workout: HKWorkout) async throws {
+        previewWorkoutModel.enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+    }
 
     private var workout: HKWorkout
-    @State private var enduraWorkout: ActivityDataWithRoute?
-    @State private var workoutStats: ActivityGridStatsData?
-    @State private var workoutHeader: ActivityHeaderData?
-    @ObservedObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
-
-    @State private var activityTitle: String = ""
-    @State private var activityDescription: String = ""
 
     init(workout: HKWorkout) {
         self.workout = workout
     }
 
-    private func assignMap(map: (any View)?, geometry: GeometryProxy?) {
-        previewWorkoutModel.mapRef = map
-        previewWorkoutModel.geometryRef = geometry
-    }
-
     var body: some View {
         VStack {
             ScrollView {
-                if let workoutHeader {
+                if let workoutHeader = previewWorkoutModel.workoutHeader {
                     ActivityHeader(uid: workoutHeader.uid, activityData: workoutHeader)
                 } else {
                     ActivityHeader(uid: "", activityData: nil, placeholder: true)
                 }
 
-                TextField("Title", text: $activityTitle)
+                TextField("Title", text: $previewWorkoutModel.activityTitle)
                     .font(.title)
                     .textFieldStyle(EnduraTextFieldStyle())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
 
-                TextField("Description", text: $activityDescription)
+                TextField("Description", text: $previewWorkoutModel.activityDescription)
                     .font(.body)
                     .textFieldStyle(EnduraTextFieldStyle())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
 
-                if let activityData = enduraWorkout {
+                if let activityData = previewWorkoutModel.enduraWorkout {
                     if !activityData.data.routeData.isEmpty {
                         VStack {
                             GeometryReader { geometry in
@@ -75,47 +82,26 @@ struct PreviewWorkoutView: View {
                                     map
                                 }
                                 .onAppear {
-                                    print("Assigning Map")
-                                    assignMap(map: map, geometry: geometry)
+                                    previewWorkoutModel.mapRef = map
+                                    previewWorkoutModel.geometryRef = geometry
                                 }
                             }
                         }
                         .frame(height: 300)
                     }
                 } else {
-                    VStack {
-                        Text("Loading...")
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .frame(height: 300)
-                    .foregroundColor(Color.red)
-                    .border(.red)
+                    LoadingMap()
                 }
 
-                if let activityData = enduraWorkout {
-                    ActivityGridStats(activityData: workoutStats, topSpace: !activityData.data.routeData.isEmpty)
+                if let activityData = previewWorkoutModel.enduraWorkout {
+                    ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: !activityData.data.routeData.isEmpty)
                 } else {
-                    ActivityGridStats(activityData: workoutStats, topSpace: false)
+                    ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: false)
                 }
 
-                if var activityData = enduraWorkout {
+                if var activityData = previewWorkoutModel.enduraWorkout {
                     VStack {
-                        let cadenceGraph = activityData.getGraph(for: .cadence)
-                        let elevationGraph = activityData.getGraph(for: .elevation)
-                        let groundContactTimeGraph = activityData.getGraph(for: .groundContactTime)
-                        let heartRateGraph = activityData.getGraph(for: .heartRate)
-                        let paceGraph = activityData.getGraph(for: .pace)
-                        let powerGraph = activityData.getGraph(for: .power)
-                        let strideLengthGraph = activityData.getGraph(for: .strideLength)
-                        let verticalOscillationGraph = activityData.getGraph(for: .verticleOscillation)
-                        LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
-                        LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
-                        LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
-                        LineGraph(data: cadenceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: CadenceLineGraphStyle())
-                        LineGraph(data: powerGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: PowerLineGraphStyle())
-                        LineGraph(data: groundContactTimeGraph, step: activityData.data.graphInterval, height: 200, style: GroundContactTimeLineGraphStyle())
-                        LineGraph(data: strideLengthGraph, step: activityData.data.graphInterval, height: 200, style: StrideLengthLineGraphStyle())
-                        LineGraph(data: verticalOscillationGraph, step: activityData.data.graphInterval, height: 200, style: VerticalOscillationLineGraphStyle())
+                        ActivityGraphsView(activityData)
                     }
                     .environmentObject(activityViewModel)
 
@@ -123,34 +109,21 @@ struct PreviewWorkoutView: View {
                         Task {
                             do {
                                 if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
-                                    previewWorkoutModel.isShowingSummary = true
-
-                                    if activityTitle.isEmpty {
-                                        let hour = Calendar.current.component(.hour, from: activityData.time)
-
-                                        switch hour {
-                                        case 0 ..< 12:
-                                            let _ = activityData.title = "Morning Activity"
-                                        case 12 ..< 17:
-                                            let _ = activityData.title = "Lunch Activity"
-                                        case 17 ..< 24:
-                                            let _ = activityData.title = "Evening Activity"
-                                        default:
-                                            let _ = activityData.title = "Activity"
-                                        }
+                                    if previewWorkoutModel.activityTitle.isEmpty {
+                                        activityData.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
                                     } else {
-                                        let _ = activityData.title = activityTitle
-                                        let _ = activityData.description = activityDescription
+                                        activityData.title = previewWorkoutModel.activityTitle
+                                        activityData.description = previewWorkoutModel.activityDescription
                                     }
 
-                                    print("Final", activityData.title)
-                                    print("Final", activityData.description)
-
-                                    try await ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
+                                    try ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
                                 } else {
-                                    previewWorkoutModel.isShowingSummary = true
-                                    try await ActivityUtils.uploadActivity(activity: activityData)
+                                    try ActivityUtils.uploadActivity(activity: activityData)
                                 }
+
+                                print("setting model to true")
+                                previewWorkoutModel.isShowingSummary = true
+                                isShowingSummary = true
                             } catch {
                                 print("Error uploading workout: \(error)")
                             }
@@ -164,20 +137,37 @@ struct PreviewWorkoutView: View {
             .padding()
             .frame(maxHeight: .infinity)
             .task {
-                do {
-                    workoutStats = HealthKitUtils.getWorkoutGridStatsData(workout)
-                    workoutHeader = try await HealthKitUtils.getWorkoutHeaderData(workout)
-                    enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
-                } catch WorkoutErrors.noWorkout {
-                } catch {
-                    print("Error getting graph data", error)
+                await withThrowingTaskGroup(of: Void.self) { group in
+                    group.addTask {
+                        await updateWorkoutStats(workout)
+                    }
+                    group.addTask {
+                        try await updateWorkoutHeader(workout)
+                    }
+                    group.addTask {
+                        try await updateEnduraWorkout(workout)
+                    }
                 }
             }
-        }
-        .fullScreenCover(isPresented: $previewWorkoutModel.isShowingSummary) {
-            if let activityData = enduraWorkout {
-                PostUploadView(activityData: activityData)
+            .fullScreenCover(isPresented: $previewWorkoutModel.isShowingSummary) {
+                if let activityData = previewWorkoutModel.enduraWorkout {
+                    PostUploadView(activityData: activityData)
+                } else {
+                    Text("Error uploading workout")
+                }
             }
+
+//        .fullScreenCover(isPresented: Binding(
+//          get: { previewWorkoutModel.isShowingSummary || isShowingSummary },
+//          set: { newValue in
+//            previewWorkoutModel.isShowingSummary = newValue
+//            isShowingSummary = newValue
+//          }
+//        )) {
+//          if let activityData = previewWorkoutModel.enduraWorkout {
+//            PostUploadView(activityData: activityData)
+//          }
+//        }
         }
     }
 }

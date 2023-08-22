@@ -5,6 +5,24 @@ public enum ConversionUtils {
         String(metersPerSec.rounded())
     }
 
+    public static func getDefaultActivityName(time: Date) -> String {
+        let hour = Calendar.current.component(.hour, from: time)
+        var title: String
+
+        switch hour {
+        case 0 ..< 12:
+            title = "Morning Activity"
+        case 12 ..< 17:
+            title = "Lunch Activity"
+        case 17 ..< 24:
+            title = "Evening Activity"
+        default:
+            title = "Activity"
+        }
+
+        return title
+    }
+
     public static func convertMpsToMpm(_ metersPerSec: Double) -> String {
         if metersPerSec <= 0 {
             return "0:00"

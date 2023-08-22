@@ -41,33 +41,53 @@ public enum ActivityUtils {
         Firestore.firestore().collection("activities").document(id).delete()
     }
 
-    public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil) async throws {
+    public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil) throws {
         do {
-            let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: activity.getDataWithoutRoute())
+            let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: activity)
             try activityDoc.collection("data").document("data").setData(from: activity.data)
 
             guard let image else {
+                print("No image, returning")
                 return
             }
-            let storage = Storage.storage()
-            let storageRef = storage.reference()
-            let imageRef = storageRef.child("activities/\(activityDoc.documentID)/map")
-            let data = image.pngData()
-            let metadata = StorageMetadata()
-            metadata.contentType = "image/png"
-            guard let data = data else {
-                print("Error getting image data")
-                return
-            }
-            imageRef.putData(data, metadata: metadata) { metadata, error in
-                guard metadata != nil else {
-                    print("Error uploading image: \(error!)")
-                    return
-                }
-                print("Image uploaded successfully")
-            }
+
+            uploadImage(image, for: activityDoc)
+
         } catch {
             print("Error uploading workout: \(error)")
+        }
+    }
+
+    private static func uploadImage(_ image: UIImage, for activityDoc: DocumentReference) {
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let imageRef = storageRef.child("activities/\(activityDoc.documentID)/map")
+        let data = image.pngData()
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
+        guard let data else {
+            print("Error getting image data")
+            return
+        }
+
+        imageRef.putData(data, metadata: metadata) { metadata, error in
+            guard metadata != nil else {
+                print("Error uploading image: \(error!)")
+                return
+            }
+            print("Image uploaded successfully")
+        }
+    }
+
+    private static func putData(_ data: Data, metadata: StorageMetadata, for ref: StorageReference) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            ref.putData(data, metadata: metadata) { _, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
         }
     }
 }

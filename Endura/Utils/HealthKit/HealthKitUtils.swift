@@ -361,7 +361,7 @@ public enum HealthKitUtils {
         }
 
         let workoutData = try await ActivityDataWithRoute(
-            averagePower: power == nil
+            averagePower: power?.isEmpty ?? true
                 ? nil
                 : power!.reduce(0) {
                     $0 + $1.power
