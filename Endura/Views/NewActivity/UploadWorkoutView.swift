@@ -19,7 +19,7 @@ import SwiftUICharts
 
     fileprivate final func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
-            return try await HealthKitUtils.workoutToActivityDataWithRoute(workout)
+            return try await HealthKitUtils.workoutToActivityDataWithRoute(for: workout)
         } catch {
             throw error
         }
@@ -32,11 +32,11 @@ struct PreviewWorkoutView: View {
     @State private var isShowingSummary = false
 
     @MainActor func updateWorkoutStats(_ workout: HKWorkout) {
-        previewWorkoutModel.workoutStats = HealthKitUtils.getWorkoutGridStatsData(workout)
+        previewWorkoutModel.workoutStats = HealthKitUtils.getWorkoutGridStatsData(for: workout)
     }
 
     @MainActor func updateWorkoutHeader(_ workout: HKWorkout) async throws {
-        previewWorkoutModel.workoutHeader = try await HealthKitUtils.getWorkoutHeaderData(workout)
+        previewWorkoutModel.workoutHeader = try await HealthKitUtils.getWorkoutHeaderData(for: workout)
     }
 
     @MainActor func updateEnduraWorkout(_ workout: HKWorkout) async throws {

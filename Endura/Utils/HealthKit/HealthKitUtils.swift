@@ -166,7 +166,7 @@ public enum HealthKitUtils {
         }
     }
 
-    public static func getWorkoutGridStatsData(_ workout: HKWorkout) -> ActivityGridStatsData {
+    public static func getWorkoutGridStatsData(for workout: HKWorkout) -> ActivityGridStatsData {
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
         let workoutDuration = workout.duration
 
@@ -180,7 +180,7 @@ public enum HealthKitUtils {
         )
     }
 
-    public static func getWorkoutHeaderData(_ workout: HKWorkout) async throws -> ActivityHeaderData {
+    public static func getWorkoutHeaderData(for workout: HKWorkout) async throws -> ActivityHeaderData {
         let firstRoute = try? await HealthKitUtils.getFirstWorkoutRoute(workout: workout)
         let firstLocation: [CLLocation]?
 
@@ -198,7 +198,7 @@ public enum HealthKitUtils {
         )
     }
 
-    public static func workoutToActivityDataWithRoute(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
+    public static func workoutToActivityDataWithRoute(for workout: HKWorkout) async throws -> ActivityDataWithRoute {
         let workoutDistance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0.0
         let workoutDuration = workout.duration
         var routeData = [RouteData]()
@@ -390,7 +390,7 @@ public enum HealthKitUtils {
 
     public static func getHeartRateGraph(for workout: HKWorkout) async throws -> [HeartRateData] {
         let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(workout: workout, interval: interval, quantityType: HKObjectType.quantityType(forIdentifier: .heartRate)!)
+        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .heartRate)!)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HeartRateData], Error>) in
             query.initialResultsHandler = { _, results, error in
@@ -410,7 +410,7 @@ public enum HealthKitUtils {
 
     public static func getCadenceGraph(for workout: HKWorkout) async throws -> [CadenceData] {
         let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(workout: workout, interval: interval, quantityType: HKObjectType.quantityType(forIdentifier: .stepCount)!, options: [.cumulativeSum, .separateBySource])
+        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .stepCount)!, options: [.cumulativeSum, .separateBySource])
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CadenceData], Error>) in
             query.initialResultsHandler = { _, results, error in
@@ -432,7 +432,7 @@ public enum HealthKitUtils {
     @available(iOS 16.0, *)
     public static func getGroundContactTimeGraph(for workout: HKWorkout) async throws -> [GroundContactTimeData] {
         let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(workout: workout, interval: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!)
+        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[GroundContactTimeData], Error>) in
             query.initialResultsHandler = { _, results, error in
@@ -454,7 +454,7 @@ public enum HealthKitUtils {
     @available(iOS 16.0, *)
     public static func getStrideLengthGraph(for workout: HKWorkout) async throws -> [StrideLengthData] {
         let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(workout: workout, interval: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningStrideLength)!)
+        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningStrideLength)!)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[StrideLengthData], Error>) in
             query.initialResultsHandler = { _, results, error in
@@ -476,7 +476,7 @@ public enum HealthKitUtils {
     @available(iOS 16.0, *)
     public static func getVerticleOscillationGraph(for workout: HKWorkout) async throws -> [VerticleOscillationData] {
         let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(workout: workout, interval: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!)
+        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[VerticleOscillationData], Error>) in
             query.initialResultsHandler = { _, results, error in
@@ -498,7 +498,7 @@ public enum HealthKitUtils {
     @available(iOS 16.0, *)
     public static func getPowerGraph(for workout: HKWorkout) async throws -> [PowerData] {
         let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(workout: workout, interval: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningPower)!)
+        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: .runningPower)!)
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[PowerData], Error>) in
             query.initialResultsHandler = { _, results, error in
@@ -517,7 +517,7 @@ public enum HealthKitUtils {
         return results
     }
 
-    private static func createWorkoutQuery(workout: HKWorkout, interval: DateComponents, quantityType: HKQuantityType, options: HKStatisticsOptions = [.discreteMax, .discreteMin]) async -> HKStatisticsCollectionQuery {
+    private static func createWorkoutQuery(for workout: HKWorkout, with interval: DateComponents, quantityType: HKQuantityType, options: HKStatisticsOptions = [.discreteMax, .discreteMin]) async -> HKStatisticsCollectionQuery {
         let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
 
         return HKStatisticsCollectionQuery(
