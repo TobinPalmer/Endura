@@ -16,21 +16,23 @@ struct ActivityGraphsView: View {
             let paceGraph = activityData.getGraph(for: .pace) // [(x, y)]
             let cadenceGraph = activityData.getGraph(for: .cadence) // [(x, y)]
 
-            let combined = Array(zip(paceGraph, cadenceGraph)).flatMap {
-                [("pace", $0.0.0, $0.0.1), ("cadence", $0.1.0, $0.1.1)]
-            }
-
-            let _ = print(combined)
-
             if #available(iOS 16.0, *) {
-                Chart(combined, id: \.0) { tuple in
-                    LineMark(
-                        x: .value("X values", tuple.1),
-                        y: .value("Y values", tuple.2)
-                    )
-                    .foregroundStyle(
-                        tuple.0 == "pace" ? .red : .blue
-                    )
+                Chart {
+                    ForEach(paceGraph, id: \.0) { tuple in
+                        LineMark(
+                            x: .value("X values", tuple.0),
+                            y: .value("Y values", tuple.1),
+                            series: .value("Series", "Pace")
+                        ).foregroundStyle(.blue).interpolationMethod(.catmullRom)
+                    }
+
+                    ForEach(cadenceGraph, id: \.0) { tuple in
+                        LineMark(
+                            x: .value("X values", tuple.0),
+                            y: .value("Y values", tuple.1),
+                            series: .value("Series", "Cadence")
+                        ).foregroundStyle(.green).interpolationMethod(.catmullRom)
+                    }
                 }
 
 //        Chart(combined, id: \.1) { tuple in

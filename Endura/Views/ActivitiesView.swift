@@ -72,9 +72,9 @@ import SwiftUI
             )
 
             if diff.type == .added || diff.type == .modified {
-                self.activities.updateValue(activity, forKey: diff.document.documentID)
+                activities.updateValue(activity, forKey: diff.document.documentID)
             } else if diff.type == .removed {
-                self.activities.removeValue(forKey: diff.document.documentID)
+                activities.removeValue(forKey: diff.document.documentID)
             }
         } catch {
             print("Error decoding activity: \(error)")
@@ -105,37 +105,37 @@ struct ActivitiesView: View {
                             }
                         }
                     }
-                        .padding(10)
+                    .padding(10)
                 } else {
                     Text("No activities")
                 }
             }
-                .refreshable {
-                    // TODO: Reload the activities (Including map images)
-                    print("Refreshing")
-                    activityViewModel.loadNewActivities()
-                }
+            .refreshable {
+                // TODO: Reload the activities (Including map images)
+                print("Refreshing")
+                activityViewModel.loadNewActivities()
+            }
         }
-            .enableInjection()
-            .background(Color(.secondarySystemBackground))
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination: NewActivityView()) {
-                        Image(systemName: "plus")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination: FindUsersView()) {
-                        Image(systemName: "person.2")
-                    }
-                }
-
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    UserProfileLink(AuthUtils.getCurrentUID()) {
-                        ProfileImage(AuthUtils.getCurrentUID(), size: 30)
-                    }
+        .enableInjection()
+        .background(Color(.secondarySystemBackground))
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationLink(destination: NewActivityView()) {
+                    Image(systemName: "plus")
                 }
             }
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationLink(destination: FindUsersView()) {
+                    Image(systemName: "person.2")
+                }
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                UserProfileLink(AuthUtils.getCurrentUID()) {
+                    ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                }
+            }
+        }
     }
 }
 
@@ -145,10 +145,10 @@ class ActivitiesView_Previews: PreviewProvider {
     }
 
     #if DEBUG
-    @objc class func injected() {
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        windowScene?.windows.first?.rootViewController =
-            UIHostingController(rootView: InjectedContentView())
-    }
+        @objc class func injected() {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            windowScene?.windows.first?.rootViewController =
+                UIHostingController(rootView: InjectedContentView())
+        }
     #endif
 }
