@@ -13,12 +13,12 @@ public struct UserData {
     var lastName: String
     var profileImage: UIImage?
     var friends: [String]
-    var role: Roles
+    var role: Roles?
 }
 
 public struct UserDocument: Codable {
     var firstName: String
     var lastName: String
     var friends: [String]
-    var role: Roles
+    var role: Roles?
 }
