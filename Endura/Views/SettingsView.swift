@@ -6,47 +6,79 @@ struct SettingsView: View {
 
     var body: some View {
         VStack {
-            List {
-//                VStack {
-//                    ProfileImage(AuthUtils.getCurrentUID(), size: 128)
+//      List {
+            ////                VStack {
+            ////                    ProfileImage(AuthUtils.getCurrentUID(), size: 128)
+            ////
+            ////                    if let user = databaseCache.getUserData(AuthUtils.getCurrentUID()) {
+            ////                        Text(user.name)
+            ////                            .font(.title)
+            ////                            .fontWeight(.semibold)
+            ////                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            ////                    }
+            ////                }
+            ////                    .background(.clear)
 //
-//                    if let user = databaseCache.getUserData(AuthUtils.getCurrentUID()) {
-//                        Text(user.name)
-//                            .font(.title)
-//                            .fontWeight(.semibold)
-//                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-//                    }
-//                }
-//                    .background(.clear)
+//        Section(header: Text("Account")) {
+//          NavigationLink(destination: AccountSettingsView()) {
+//            Label("Account", systemImage: "person")
+//          }
+//          NavigationLink(destination: FriendsSettingsView()) {
+//            Label("Friends", systemImage: "person.2")
+//          }
+//          NavigationLink(destination: NotificationsSettingsView()) {
+//            Label("Notifications", systemImage: "bell")
+//          }
+//
+//          NavigationLink(destination: PrivacySettingsView()) {
+//            Label("Privacy", systemImage: "lock")
+//          }
+//
+//          NavigationLink(destination: AboutSettingsView()) {
+//            Label("About", systemImage: "info.circle")
+//          }
+//        }
+//
+//        Section {
+//          Button {
+//            AuthUtils.logout()
+//          } label: {
+//            Text("Logout").foregroundColor(.red)
+//          }
+//        }
+//      }
+            VStack {
+                List {
+                    Section(header: Text("Account")) {
+                        NavigationLink(destination: AccountSettingsView()) {
+                            Label("Account", systemImage: "person")
+                        }
+                        NavigationLink(destination: FriendsSettingsView()) {
+                            Label("Friends", systemImage: "person.2")
+                        }
+                        NavigationLink(destination: NotificationsSettingsView()) {
+                            Label("Notifications", systemImage: "bell")
+                        }
 
-                Section(header: Text("Account")) {
-                    NavigationLink(destination: AccountSettingsView()) {
-                        Label("Account", systemImage: "person")
-                    }
-                    NavigationLink(destination: FriendsSettingsView()) {
-                        Label("Friends", systemImage: "person.2")
-                    }
-                    NavigationLink(destination: NotificationsSettingsView()) {
-                        Label("Notifications", systemImage: "bell")
-                    }
+                        NavigationLink(destination: PrivacySettingsView()) {
+                            Label("Privacy", systemImage: "lock")
+                        }
 
-                    NavigationLink(destination: PrivacySettingsView()) {
-                        Label("Privacy", systemImage: "lock")
-                    }
-
-                    NavigationLink(destination: AboutSettingsView()) {
-                        Label("About", systemImage: "info.circle")
+                        NavigationLink(destination: AboutSettingsView()) {
+                            Label("About", systemImage: "info.circle")
+                        }
                     }
                 }
+                .frame(maxHeight: .infinity)
 
-                Section {
-                    Button {
-                        AuthUtils.logout()
-                    } label: {
-                        Text("Logout").foregroundColor(.red)
-                    }
+                Button(action: {
+                    AuthUtils.logout()
+                }) {
+                    Text("Logout")
+                        .foregroundColor(.red)
                 }
             }
         }
+        .background(Color(.systemGroupedBackground))
     }
 }
