@@ -16,13 +16,22 @@ struct SignupStepFourView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
-                TextField("Email", text: $viewModel.email)
-                    .disableAutocorrection(true)
-                    .keyboardType(.emailAddress)
-                    .textFieldStyle(EnduraTextFieldStyle())
+                var birthdayRange: ClosedRange<Date> {
+                    let min = Calendar.current.date(byAdding: .year, value: -100, to: Date())!
+                    let max = Calendar.current.date(byAdding: .year, value: -8, to: Date())!
+                    return min ... max
+                }
 
-                TextField("Password", text: $viewModel.password)
-                    .textFieldStyle(EnduraTextFieldStyle())
+                DatePicker("Birthday", selection: $viewModel.birthday, in: birthdayRange, displayedComponents: .date)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .frame(maxHeight: 400)
+
+                Picker("Flavor", selection: $viewModel.gender) {
+                    Text("Male")
+                    Text("Female")
+                    Text("Other")
+                }
+                .pickerStyle(.inline)
 
                 HStack {
                     Button("Back") {

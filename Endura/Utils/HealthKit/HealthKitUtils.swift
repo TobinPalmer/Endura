@@ -66,7 +66,7 @@ public enum HealthKitUtils {
         }
 
         for type in typesToRead {
-            if healthStore.authorizationStatus(for: type) != .sharingAuthorized {
+            if healthStore.authorizationStatus(for: type) == .notDetermined {
                 return false
             }
         }
