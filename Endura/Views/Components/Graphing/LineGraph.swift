@@ -36,7 +36,7 @@ struct StrideLengthLineGraphStyle: LineGraphStyle {
     public let color: Color = .init(red: 1, green: 0.7254901961, blue: 0)
 }
 
-struct VerticalOscillationLineGraphStyle: LineGraphStyle {
+struct VerticleOscillationLineGraphStyle: LineGraphStyle {
     /// #FFB900
     public let color: Color = .init(red: 1, green: 0.7254901961, blue: 0)
 }

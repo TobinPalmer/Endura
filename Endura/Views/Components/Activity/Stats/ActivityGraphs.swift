@@ -61,13 +61,28 @@ struct ActivityGraphsView: View {
         VStack {
             let paceGraph = activityData.getGraph(for: .pace)
             let cadenceGraph = activityData.getGraph(for: .cadence)
+            let elevationGraph = activityData.getGraph(for: .elevation)
+            let heartRateGraph = activityData.getGraph(for: .heartRate)
+            let powerGraph = activityData.getGraph(for: .power)
+            let strideLengthGraph = activityData.getGraph(for: .strideLength)
+            let verticleOscillation = activityData.getGraph(for: .verticleOscillation)
 
             if #available(iOS 16.0, *) {
                 HoverableChart(graph: paceGraph, xPosition: $xPosition, color: .blue)
                 HoverableChart(graph: cadenceGraph, xPosition: $xPosition, color: .red)
+                HoverableChart(graph: elevationGraph, xPosition: $xPosition, color: .green)
+                HoverableChart(graph: heartRateGraph, xPosition: $xPosition, color: .orange)
+                HoverableChart(graph: powerGraph, xPosition: $xPosition, color: .purple)
+                HoverableChart(graph: strideLengthGraph, xPosition: $xPosition, color: .yellow)
+                HoverableChart(graph: verticleOscillation, xPosition: $xPosition, color: .pink)
             } else {
                 LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                 LineGraph(data: cadenceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: CadenceLineGraphStyle())
+                LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
+                LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
+                LineGraph(data: powerGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: PowerLineGraphStyle())
+                LineGraph(data: strideLengthGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: StrideLengthLineGraphStyle())
+                LineGraph(data: verticleOscillation, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: VerticleOscillationLineGraphStyle())
             }
         }
     }
