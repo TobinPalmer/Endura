@@ -10,7 +10,6 @@ import SwiftUICharts
 @MainActor private final class PreviewWorkoutModel: ObservableObject {
     @Published fileprivate var mapRef: (any View)?
     @Published fileprivate var geometryRef: GeometryProxy?
-    @Published fileprivate var isShowingSummary = false
     @Published fileprivate var enduraWorkout: ActivityDataWithRoute?
     @Published fileprivate var workoutStats: ActivityGridStatsData?
     @Published fileprivate var workoutHeader: ActivityHeaderData?
@@ -121,9 +120,8 @@ struct PreviewWorkoutView: View {
                                     try ActivityUtils.uploadActivity(activity: activityData)
                                 }
 
-                                print("setting model to true")
-                                previewWorkoutModel.isShowingSummary = true
                                 isShowingSummary = true
+                                print("setting model to true")
                             } catch {
                                 print("Error uploading workout: \(error)")
                             }
@@ -149,7 +147,7 @@ struct PreviewWorkoutView: View {
                     }
                 }
             }
-            .fullScreenCover(isPresented: $previewWorkoutModel.isShowingSummary) {
+            .fullScreenCover(isPresented: $isShowingSummary) {
                 if let activityData = previewWorkoutModel.enduraWorkout {
                     PostUploadView(activityData: activityData)
                 } else {

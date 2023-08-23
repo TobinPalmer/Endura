@@ -46,12 +46,9 @@ public enum ActivityUtils {
             let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: activity)
             try activityDoc.collection("data").document("data").setData(from: activity.data)
 
-            guard let image else {
-                print("No image, returning")
-                return
+            if let image = image {
+                uploadImage(image, for: activityDoc)
             }
-
-            uploadImage(image, for: activityDoc)
 
         } catch {
             print("Error uploading workout: \(error)")
