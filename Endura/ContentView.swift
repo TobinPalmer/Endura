@@ -20,57 +20,57 @@ struct ContentView: View {
                     NavigationView {
                         DashboardView()
                     }
-                        .tabItem {
-                            Image(systemName: "house")
-                            Text("Home")
-                        }
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Home")
+                    }
 
                     NavigationView {
                         ActivitiesView()
                     }
-                        .tabItem {
-                            Image(systemName: "figure.walk")
-                            Text("Activity")
-                        }
+                    .tabItem {
+                        Image(systemName: "figure.walk")
+                        Text("Activity")
+                    }
 
                     NavigationView {
                         TrainingView()
                     }
-                        .tabItem {
-                            Image(systemName: "calendar")
-                            Text("Training")
-                        }
+                    .tabItem {
+                        Image(systemName: "calendar")
+                        Text("Training")
+                    }
 
                     NavigationView {
                         ProgressDashboardView()
                     }
-                        .tabItem {
-                            Image(systemName: "chart.bar")
-                            Text("Progress")
-                        }
+                    .tabItem {
+                        Image(systemName: "chart.bar")
+                        Text("Progress")
+                    }
 
                     NavigationView {
                         ProfileView()
                     }
-                        .tabItem {
-                            Image(systemName: "person")
-                            Text("Profile")
-                        }
+                    .tabItem {
+                        Image(systemName: "person")
+                        Text("Profile")
+                    }
                 }
-                    .environmentObject(ActiveUserModel(settings: settings))
-                    .enableInjection()
+                .environmentObject(ActiveUserModel(settings: settings))
+                .enableInjection()
             } else {
                 VStack {
                     ProgressView()
                     Text("Loading...")
                 }
-                    .task {
-                        do {
-                            settings = try await ActiveUserModel.fetchSettings()
-                        } catch {
-                            print("Error fetching settings: \(error)")
-                        }
+                .task {
+                    do {
+                        settings = try await ActiveUserModel.fetchSettings()
+                    } catch {
+                        print("Error fetching settings: \(error)")
                     }
+                }
             }
         }
     }
@@ -82,10 +82,10 @@ class ContentView_Previews: PreviewProvider {
     }
 
     #if DEBUG
-    @objc class func injected() {
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        windowScene?.windows.first?.rootViewController =
-            UIHostingController(rootView: InjectedContentView())
-    }
+        @objc class func injected() {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            windowScene?.windows.first?.rootViewController =
+                UIHostingController(rootView: InjectedContentView())
+        }
     #endif
 }

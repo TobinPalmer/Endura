@@ -15,7 +15,7 @@ import SwiftUI
     fileprivate func loadActivities() {
         let baseQuery = Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: ActivitiesViewModel.loadAmount)
 
-        let query = (lastDocument == nil) ? baseQuery : baseQuery.start(afterDocument: lastDocument!)
+        let query = (lastDocument == nil) ? baseQuery.whereField("time", isLessThan: Date()) : baseQuery.start(afterDocument: lastDocument!)
 
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {

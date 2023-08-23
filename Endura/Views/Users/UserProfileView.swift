@@ -19,7 +19,7 @@ struct UserProfileLink<Content: View>: View {
 }
 
 struct UserProfileView: View {
-    @EnvironmentObject var databaseCache: DatabaseCacheModel
+    @EnvironmentObject var databaseCache: UsersCacheModel
     private let uid: String
 
     init(_ uid: String) {

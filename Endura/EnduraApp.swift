@@ -24,7 +24,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 struct InjectedContentView: View {
     var body: some View {
-        ContentView().environmentObject(NavigationModel.instance).environmentObject(DatabaseCacheModel())
+        ContentView().environmentObject(NavigationModel.instance).environmentObject(UsersCacheModel())
     }
 }
 

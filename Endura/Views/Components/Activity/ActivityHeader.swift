@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 struct ActivityHeader: View {
-    @EnvironmentObject var databaseCache: DatabaseCacheModel
+    @EnvironmentObject var databaseCache: UsersCacheModel
     private let uid: String
     private let activityData: ActivityHeaderData?
     private let bottomSpace: Bool

@@ -3,7 +3,7 @@ import Inject
 import SwiftUI
 
 struct ActivityPost: View {
-    @EnvironmentObject var databaseCache: DatabaseCacheModel
+    @EnvironmentObject var databaseCache: UsersCacheModel
     private var activity: ActivityData
     private var id: String
 

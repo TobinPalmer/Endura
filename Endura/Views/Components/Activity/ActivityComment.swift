@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 struct ActivityComment: View {
-    @EnvironmentObject var databaseCache: DatabaseCacheModel
+    @EnvironmentObject var databaseCache: UsersCacheModel
     private var comment: ActivityCommentData
 
     init(_ comment: ActivityCommentData) {

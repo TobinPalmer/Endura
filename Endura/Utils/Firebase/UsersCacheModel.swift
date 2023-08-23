@@ -2,7 +2,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation
 
-@MainActor public final class DatabaseCacheModel: ObservableObject {
+@MainActor public final class UsersCacheModel: ObservableObject {
     @Published private final var usersCache: [String: UserData?] = [:]
 
     public func getUserData(_ uid: String) -> UserData? {

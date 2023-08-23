@@ -27,7 +27,7 @@
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
 		0267A8072A92CC3D0090E032 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 0267A8062A92CC3D0090E032 /* Inject */; };
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
-		17CC6078651983C541BA712F /* DatabaseCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */; };
+		17CC6078651983C541BA712F /* UsersCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* UsersCacheModel.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
 		17CC621F59B1D4C332521571 /* Activities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E3C3259ED54F0BF31D1 /* Activities.swift */; };
 		17CC62FFC55BCB9A6AEA355C /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69B387F52E1CA55F3716 /* ProgressView.swift */; };
@@ -159,7 +159,7 @@
 		17CC69B387F52E1CA55F3716 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		17CC69F5F51AE211727A3343 /* ActivityPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPost.swift; sourceTree = "<group>"; };
-		17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseCacheModel.swift; sourceTree = "<group>"; };
+		17CC6A37858A0F182DF80601 /* UsersCacheModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCacheModel.swift; sourceTree = "<group>"; };
 		17CC6B1555ECC86F1858E844 /* FindUsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindUsersView.swift; sourceTree = "<group>"; };
 		17CC6C296596DA475D462B36 /* ActivitiesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
 		17CC6D870BA8F7FE33770E38 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
@@ -619,7 +619,7 @@
 			children = (
 				696989B3ACC5846606EE527B /* Auth.swift */,
 				17CC6E3C3259ED54F0BF31D1 /* Activities.swift */,
-				17CC6A37858A0F182DF80601 /* DatabaseCacheModel.swift */,
+				17CC6A37858A0F182DF80601 /* UsersCacheModel.swift */,
 				17CC66B87BB1D53138DC7BC5 /* ActiveUserModel.swift */,
 			);
 			path = Firebase;
@@ -849,7 +849,7 @@
 				E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */,
 				17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */,
 				17CC6ECAF92DDC8FB82BA9B0 /* UIView.swift in Sources */,
-				17CC6078651983C541BA712F /* DatabaseCacheModel.swift in Sources */,
+				17CC6078651983C541BA712F /* UsersCacheModel.swift in Sources */,
 				17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */,
 				69698807D54F05B3A30EAF76 /* AboutSettingsView.swift in Sources */,
 				6969862885B67FBCC1A259BC /* PrivacySettingsView.swift in Sources */,

@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ActivityView: View {
     @StateObject var activityViewModel = ActivityViewModel()
-    @EnvironmentObject var databaseCache: DatabaseCacheModel
+    @EnvironmentObject var databaseCache: UsersCacheModel
 
     private var id: String
     private var activity: ActivityData

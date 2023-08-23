@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 struct ProfileImage: View {
-    @EnvironmentObject var databaseCache: DatabaseCacheModel
+    @EnvironmentObject var databaseCache: UsersCacheModel
 
     private let uid: String
     private let size: Double
