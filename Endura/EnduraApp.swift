@@ -10,8 +10,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
         AuthUtils.initAuth()
 
-        HealthKitUtils.requestAuthorization()
-        NotificationUtils.requestPermission()
+//        HealthKitUtils.requestAuthorization()
+//        NotificationUtils.requestPermission()
 
         HealthKitUtils.subscribeToNewWorkouts()
 

@@ -16,13 +16,27 @@ struct SignupStepThreeView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
-                TextField("Email", text: $viewModel.email)
-                    .disableAutocorrection(true)
-                    .keyboardType(.emailAddress)
-                    .textFieldStyle(EnduraTextFieldStyle())
+//                TextField("Email", text: $viewModel.email)
+//                    .disableAutocorrection(true)
+//                    .keyboardType(.emailAddress)
+//                    .textFieldStyle(EnduraTextFieldStyle())
+//
+//                TextField("Password", text: $viewModel.password)
+//                    .textFieldStyle(EnduraTextFieldStyle())
 
-                TextField("Password", text: $viewModel.password)
-                    .textFieldStyle(EnduraTextFieldStyle())
+                Button {
+                    HealthKitUtils.requestAuthorization()
+                } label: {
+                    Text("Give health permissions")
+                }
+                .disabled(HealthKitUtils.isAuthorized())
+
+                Button {
+                    NotificationUtils.requestPermission()
+                } label: {
+                    Text("Give notification permissions")
+                }
+                .disabled(NotificationUtils.isAuthorized())
 
                 HStack {
                     Button("Back") {

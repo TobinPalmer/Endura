@@ -12,6 +12,18 @@ public enum NotificationUtils {
         }
     }
 
+    public static func isAuthorized() -> Bool {
+        let semaphore = DispatchSemaphore(value: 0)
+        var isAuthorized = false
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            isAuthorized = settings.authorizationStatus == .authorized
+            semaphore.signal()
+        }
+        semaphore.wait()
+
+        return isAuthorized
+    }
+
     public static func sendNotification(title: String, body: String, date: Date) {
         let content = UNMutableNotificationContent()
         content.title = title

@@ -49,6 +49,31 @@ public enum HealthKitUtils {
         }
     }
 
+    public static func isAuthorized() -> Bool {
+        var typesToRead: Set<HKObjectType> = [
+            HKObjectType.workoutType(),
+            HKSeriesType.workoutRoute(),
+            HKObjectType.quantityType(forIdentifier: .stepCount)!,
+            HKObjectType.quantityType(forIdentifier: .heartRate)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+        ]
+
+        if #available(iOS 16.0, *) {
+            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningPower)!)
+            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!)
+            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!)
+            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningStrideLength)!)
+        }
+
+        for type in typesToRead {
+            if healthStore.authorizationStatus(for: type) != .sharingAuthorized {
+                return false
+            }
+        }
+
+        return true
+    }
+
     public static func subscribeToNewWorkouts() {
         let sampleType = HKObjectType.workoutType()
 

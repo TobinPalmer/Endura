@@ -18,6 +18,7 @@ struct ActivityGraphsView: View {
             let powerGraph = activityData.getGraph(for: .power)
             let strideLengthGraph = activityData.getGraph(for: .strideLength)
             let verticalOscillationGraph = activityData.getGraph(for: .verticleOscillation)
+
             LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
             LineGraph(data: heartRateGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
             LineGraph(data: elevationGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
