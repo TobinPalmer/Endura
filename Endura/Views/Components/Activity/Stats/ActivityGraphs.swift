@@ -15,8 +15,6 @@ struct ActivityGraphsView: View {
         VStack {
             let paceGraph = activityData.getGraph(for: .pace)
 
-            let _ = print("Pace graph: \(paceGraph)")
-
             if #available(iOS 16.0, *) {
                 Chart(paceGraph, id: \.1) { tuple in
                     LineMark(
@@ -35,12 +33,7 @@ struct ActivityGraphsView: View {
                 )
                 .frame(height: 300)
                 .chartOverlay { _ in
-//            let pos1 = proxy.position(for: (x: xPosition, y: paceGraph[xPosition].1)) ?? .zero
-//            let pos2 = proxy.position(for: (x: xPosition + 1, y: paceGraph[xPosition + 1].1)) ?? .zero
-
                     VStack(spacing: 0) {
-                        let _ = print("Point \(xPosition) -> \(paceGraph[safe: xPosition]?.1), LENGTH: \(paceGraph.count)")
-
                         if let pace = paceGraph[safe: xPosition]?.1 {
                             Text("\(pace.rounded(toPlaces: 2))")
                                 .font(.system(size: 10))
