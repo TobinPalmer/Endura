@@ -93,7 +93,10 @@ public struct ActivityGridStatsData: Codable {
     var calories: Double
     var distance: Double
     var duration: TimeInterval
-    var pace: Double { distance / duration }
+    var pace: Double {
+        distance / duration
+    }
+
     var time: Date
     var totalDuration: TimeInterval
     var uid: String
@@ -154,7 +157,10 @@ public struct ActivityData: Codable, ActivityDataProtocol {
     var description: String
     var duration: TimeInterval
     var likes: [String]
-    var pace: Double { distance / duration }
+    var pace: Double {
+        distance / duration
+    }
+
     var startCity: String
     var startLocation: LocationData
     var time: Date
@@ -192,7 +198,10 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     var description: String
     var duration: TimeInterval
     var likes: [String]
-    var pace: Double { distance / duration }
+    var pace: Double {
+        distance / duration
+    }
+
     var startCity: String
     var startLocation: LocationData
     var time: Date

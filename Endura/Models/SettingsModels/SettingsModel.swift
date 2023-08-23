@@ -1,5 +1,5 @@
 import Foundation
 
-struct SettingsModel {
-    var notifications: NotificationsSettingsModel
+public struct SettingsModel: Codable {
+    var notifications: Bool
 }

@@ -6,6 +6,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var navigation: NavigationModel
     @ObservedObject private var IO = Inject.observer
+    @State private var settings: SettingsModel?
 
     var body: some View {
         switch navigation.currentView {
@@ -14,48 +15,63 @@ struct ContentView: View {
                 LoginView()
             }
         case .HOME:
-            TabView {
-                NavigationView {
-                    DashboardView()
-                }
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
+            if let settings = settings {
+                TabView {
+                    NavigationView {
+                        DashboardView()
+                    }
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Home")
+                        }
 
-                NavigationView {
-                    ActivitiesView()
-                }
-                .tabItem {
-                    Image(systemName: "figure.walk")
-                    Text("Activity")
-                }
+                    NavigationView {
+                        ActivitiesView()
+                    }
+                        .tabItem {
+                            Image(systemName: "figure.walk")
+                            Text("Activity")
+                        }
 
-                NavigationView {
-                    TrainingView()
-                }
-                .tabItem {
-                    Image(systemName: "calendar")
-                    Text("Training")
-                }
+                    NavigationView {
+                        TrainingView()
+                    }
+                        .tabItem {
+                            Image(systemName: "calendar")
+                            Text("Training")
+                        }
 
-                NavigationView {
-                    ProgressDashboardView()
-                }
-                .tabItem {
-                    Image(systemName: "chart.bar")
-                    Text("Progress")
-                }
+                    NavigationView {
+                        ProgressDashboardView()
+                    }
+                        .tabItem {
+                            Image(systemName: "chart.bar")
+                            Text("Progress")
+                        }
 
-                NavigationView {
-                    ProfileView()
+                    NavigationView {
+                        ProfileView()
+                    }
+                        .tabItem {
+                            Image(systemName: "person")
+                            Text("Profile")
+                        }
                 }
-                .tabItem {
-                    Image(systemName: "person")
-                    Text("Profile")
+                    .environmentObject(ActiveUserModel(settings: settings))
+                    .enableInjection()
+            } else {
+                VStack {
+                    ProgressView()
+                    Text("Loading...")
                 }
+                    .task {
+                        do {
+                            settings = try await ActiveUserModel.fetchSettings()
+                        } catch {
+                            print("Error fetching settings: \(error)")
+                        }
+                    }
             }
-            .enableInjection()
         }
     }
 }
@@ -66,10 +82,10 @@ class ContentView_Previews: PreviewProvider {
     }
 
     #if DEBUG
-        @objc class func injected() {
-            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            windowScene?.windows.first?.rootViewController =
-                UIHostingController(rootView: InjectedContentView())
-        }
+    @objc class func injected() {
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        windowScene?.windows.first?.rootViewController =
+            UIHostingController(rootView: InjectedContentView())
+    }
     #endif
 }
