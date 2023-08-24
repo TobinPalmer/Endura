@@ -6,16 +6,21 @@ import SwiftUI
 struct HoverableChart: View {
     private let graph: LineGraphData
     private let color: Color
+    private let label: String
     @Binding private var xPosition: Int
 
-    public init(graph: LineGraphData, xPosition: Binding<Int>, color: Color) {
+    public init(graph: LineGraphData, xPosition: Binding<Int>, color: Color, label: String) {
         self.graph = graph
         _xPosition = xPosition
         self.color = color
+        self.label = label
     }
 
     public var body: some View {
         if !graph.filter({ $0.1 != 0 }).isEmpty {
+            Text(label)
+                .font(.title3)
+                .padding()
             Chart {
                 ForEach(graph, id: \.0) { tuple in
                     LineMark(
@@ -70,13 +75,13 @@ struct ActivityGraphsView: View {
             let verticleOscillation = activityData.getGraph(for: .verticleOscillation)
 
             if #available(iOS 16.0, *) {
-                HoverableChart(graph: paceGraph, xPosition: $xPosition, color: .blue)
-                HoverableChart(graph: cadenceGraph, xPosition: $xPosition, color: .red)
-                HoverableChart(graph: elevationGraph, xPosition: $xPosition, color: .green)
-                HoverableChart(graph: heartRateGraph, xPosition: $xPosition, color: .orange)
-                HoverableChart(graph: powerGraph, xPosition: $xPosition, color: .purple)
-                HoverableChart(graph: strideLengthGraph, xPosition: $xPosition, color: .yellow)
-                HoverableChart(graph: verticleOscillation, xPosition: $xPosition, color: .pink)
+                HoverableChart(graph: paceGraph, xPosition: $xPosition, color: .blue, label: "Pace")
+                HoverableChart(graph: cadenceGraph, xPosition: $xPosition, color: .red, label: "Cadence")
+                HoverableChart(graph: elevationGraph, xPosition: $xPosition, color: .green, label: "Elevation")
+                HoverableChart(graph: heartRateGraph, xPosition: $xPosition, color: .orange, label: "Heart Rate")
+                HoverableChart(graph: powerGraph, xPosition: $xPosition, color: .purple, label: "Power")
+                HoverableChart(graph: strideLengthGraph, xPosition: $xPosition, color: .yellow, label: "Stride Length")
+                HoverableChart(graph: verticleOscillation, xPosition: $xPosition, color: .pink, label: "Verticle Oscillation")
             } else {
                 LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                 LineGraph(data: cadenceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: CadenceLineGraphStyle())
