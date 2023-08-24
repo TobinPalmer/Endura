@@ -7,13 +7,17 @@ struct HoverableChart: View {
     private let graph: LineGraphData
     private let color: Color
     private let label: String
+    private let valueModifier: (Double) -> String
     @Binding private var xPosition: Int
 
-    public init(graph: LineGraphData, xPosition: Binding<Int>, color: Color, label: String) {
+    public init(graph: LineGraphData, xPosition: Binding<Int>, color: Color, valueModifier: @escaping (Double) -> String = {
+        String($0)
+    }, label: String) {
         self.graph = graph
         _xPosition = xPosition
         self.color = color
         self.label = label
+        self.valueModifier = valueModifier
     }
 
     public var body: some View {
@@ -42,7 +46,7 @@ struct HoverableChart: View {
             .chartOverlay { _ in
                 VStack(spacing: 0) {
                     if let pace = graph[safe: xPosition]?.1 {
-                        Text("\(pace.rounded(toPlaces: 2))")
+                        Text("\(valueModifier(pace))")
                             .font(.system(size: 10))
                             .padding()
                             .foregroundColor(.red)
@@ -75,7 +79,7 @@ struct ActivityGraphsView: View {
             let verticleOscillation = activityData.getGraph(for: .verticleOscillation)
 
             if #available(iOS 16.0, *) {
-                HoverableChart(graph: paceGraph, xPosition: $xPosition, color: .blue, label: "Pace")
+                HoverableChart(graph: paceGraph, xPosition: $xPosition, color: .blue, valueModifier: ConversionUtils.convertMpsToMpm, label: "Pace")
                 HoverableChart(graph: cadenceGraph, xPosition: $xPosition, color: .red, label: "Cadence")
                 HoverableChart(graph: elevationGraph, xPosition: $xPosition, color: .green, label: "Elevation")
                 HoverableChart(graph: heartRateGraph, xPosition: $xPosition, color: .orange, label: "Heart Rate")
