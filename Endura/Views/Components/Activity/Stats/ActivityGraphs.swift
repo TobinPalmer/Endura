@@ -4,6 +4,8 @@ import SwiftUI
 
 @available(iOS 16.0, *)
 struct HoverableChart: View {
+    @EnvironmentObject var activityViewModel: ActivityViewModel
+
     private let graph: LineGraphData
     private let color: Color
     private let label: String
@@ -36,6 +38,8 @@ struct HoverableChart: View {
             }
             .gesture(DragGesture(minimumDistance: 10)
                 .onChanged { value in
+                    activityViewModel.analysisPosition = graph[safe: xPosition]?.0
+
                     let x = value.location.x
                     let max = graph.count - 1
                     let width = UIScreen.main.bounds.width - 20
@@ -46,7 +50,7 @@ struct HoverableChart: View {
             .chartOverlay { _ in
                 VStack(spacing: 0) {
                     if let pace = graph[safe: xPosition]?.1 {
-                        Text("\(valueModifier(pace))")
+                        Text("\(valueModifier(pace)) at \(graph[safe: xPosition]?.0.formatted() ?? "")")
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding()

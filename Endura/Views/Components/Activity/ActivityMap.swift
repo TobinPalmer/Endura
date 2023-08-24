@@ -62,6 +62,7 @@ struct ActivityMap: View {
                         //                    mapView
                         .frame(height: 300)
                         .onChange(of: activityViewModel.analysisPosition) { timePosition in
+                            print("Changed! \(timePosition)")
                             if let timePosition = timePosition {
                                 if let position = routeData.first(where: { data in
                                     data.timestamp > timePosition
