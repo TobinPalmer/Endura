@@ -47,13 +47,15 @@ struct HoverableChart: View {
                 VStack(spacing: 0) {
                     if let pace = graph[safe: xPosition]?.1 {
                         Text("\(valueModifier(pace))")
-                            .font(.system(size: 10))
+                            .font(.title3)
+                            .fontWeight(.semibold)
                             .padding()
-                            .foregroundColor(.red)
-                            .background(.gray.opacity(0.5))
+                            .foregroundColor(.white)
+                            .background(color)
+                            .cornerRadius(5)
                     }
                 }
-                .border(.red)
+                .position(x: CGFloat(xPosition) / CGFloat(max(1, graph.count - 1)) * UIScreen.main.bounds.width, y: 100)
             }
         }
     }
@@ -80,12 +82,11 @@ struct ActivityGraphsView: View {
 
             if #available(iOS 16.0, *) {
                 HoverableChart(graph: paceGraph, xPosition: $xPosition, color: .blue, valueModifier: ConversionUtils.convertMpsToMpm, label: "Pace")
-                HoverableChart(graph: cadenceGraph, xPosition: $xPosition, color: .red, label: "Cadence")
-                HoverableChart(graph: elevationGraph, xPosition: $xPosition, color: .green, label: "Elevation")
-                HoverableChart(graph: heartRateGraph, xPosition: $xPosition, color: .orange, label: "Heart Rate")
-                HoverableChart(graph: powerGraph, xPosition: $xPosition, color: .purple, label: "Power")
-                HoverableChart(graph: strideLengthGraph, xPosition: $xPosition, color: .yellow, label: "Stride Length")
-                HoverableChart(graph: verticleOscillation, xPosition: $xPosition, color: .pink, label: "Verticle Oscillation")
+                HoverableChart(graph: cadenceGraph, xPosition: $xPosition, color: .red, valueModifier: ConversionUtils.round, label: "Cadence")
+                HoverableChart(graph: elevationGraph, xPosition: $xPosition, color: .green, valueModifier: ConversionUtils.round, label: "Elevation")
+                HoverableChart(graph: powerGraph, xPosition: $xPosition, color: .purple, valueModifier: ConversionUtils.round, label: "Power")
+                HoverableChart(graph: strideLengthGraph, xPosition: $xPosition, color: .yellow, valueModifier: ConversionUtils.round, label: "Stride Length")
+                HoverableChart(graph: verticleOscillation, xPosition: $xPosition, color: .pink, valueModifier: ConversionUtils.round, label: "Verticle Oscillation")
             } else {
                 LineGraph(data: paceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                 LineGraph(data: cadenceGraph, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: CadenceLineGraphStyle())
