@@ -15,35 +15,37 @@ struct HoverableChart: View {
     }
 
     public var body: some View {
-        Chart {
-            ForEach(graph, id: \.0) { tuple in
-                LineMark(
-                    x: .value("X values", tuple.0),
-                    y: .value("Y values", tuple.1),
-                    series: .value("Series", "Pace")
-                ).foregroundStyle(color).interpolationMethod(.catmullRom)
-            }
-        }
-        .gesture(DragGesture(minimumDistance: 10)
-            .onChanged { value in
-                let x = value.location.x
-                let max = graph.count - 1
-                let width = UIScreen.main.bounds.width - 20
-                let index = Int((x / width) * CGFloat(max))
-                xPosition = index
-            }
-        )
-        .chartOverlay { _ in
-            VStack(spacing: 0) {
-                if let pace = graph[safe: xPosition]?.1 {
-                    Text("\(pace.rounded(toPlaces: 2))")
-                        .font(.system(size: 10))
-                        .padding()
-                        .foregroundColor(.red)
-                        .background(.gray.opacity(0.5))
+        if !graph.filter({ $0.1 != 0 }).isEmpty {
+            Chart {
+                ForEach(graph, id: \.0) { tuple in
+                    LineMark(
+                        x: .value("X values", tuple.0),
+                        y: .value("Y values", tuple.1),
+                        series: .value("Series", "Pace")
+                    ).foregroundStyle(color).interpolationMethod(.catmullRom)
                 }
             }
-            .border(.red)
+            .gesture(DragGesture(minimumDistance: 10)
+                .onChanged { value in
+                    let x = value.location.x
+                    let max = graph.count - 1
+                    let width = UIScreen.main.bounds.width - 20
+                    let index = Int((x / width) * CGFloat(max))
+                    xPosition = index
+                }
+            )
+            .chartOverlay { _ in
+                VStack(spacing: 0) {
+                    if let pace = graph[safe: xPosition]?.1 {
+                        Text("\(pace.rounded(toPlaces: 2))")
+                            .font(.system(size: 10))
+                            .padding()
+                            .foregroundColor(.red)
+                            .background(.gray.opacity(0.5))
+                    }
+                }
+                .border(.red)
+            }
         }
     }
 }
