@@ -62,34 +62,45 @@ struct ActivityMap: View {
                         //                    mapView
                         .frame(height: 300)
                         .onChange(of: activityViewModel.analysisPosition) { timePosition in
-                            if let timePosition = timePosition,
-                               let workoutStartDate = activityViewModel.workoutStartDate,
-                               let workoutEndDate = activityViewModel.workoutEndDate
-                            {
-                                // Convert dates to timestamps
-                                let startTimestamp = workoutStartDate.timeIntervalSince1970
-                                let endTimestamp = workoutEndDate.timeIntervalSince1970
-
-                                // Calculate the total duration in seconds
-                                let totalDuration = endTimestamp - startTimestamp
-
-                                // Calculate the ratio of timePosition to the total duration
-                                let ratio = (timePosition.timeIntervalSince1970 - startTimestamp) / totalDuration
-
-                                // Estimate the index in the routeData array where the timePosition would be
-                                let estimatedIndex = Int(ratio * Double(routeData.count))
-                                print("Estimated index: \(estimatedIndex)")
-
-                                // Check if the estimated index is within the bounds of the array
-                                if estimatedIndex >= 0 && estimatedIndex < routeData.count {
-                                    // Update the annotation with the estimated position
-                                    let position = routeData[estimatedIndex]
+                            print("Changed! \(timePosition)")
+                            if let timePosition = timePosition {
+                                if let position = routeData.first(where: { data in
+                                    data.timestamp > timePosition
+                                }) {
                                     mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
                                 }
                             } else {
                                 mapViewContainer.removeAnnotation()
                             }
                         }
+//              print("lol")
+//                            if let timePosition = timePosition,
+//                               let workoutStartDate = activityViewModel.workoutStartDate,
+//                               let workoutEndDate = activityViewModel.workoutEndDate
+//                            {
+//                                // Convert dates to timestamps
+//                                let startTimestamp = workoutStartDate.timeIntervalSince1970
+//                                let endTimestamp = workoutEndDate.timeIntervalSince1970
+//
+//                                // Calculate the total duration in seconds
+//                                let totalDuration = endTimestamp - startTimestamp
+//
+//                                // Calculate the ratio of timePosition to the total duration
+//                                let ratio = (timePosition.timeIntervalSince1970 - startTimestamp) / totalDuration
+//
+//                                // Estimate the index in the routeData array where the timePosition would be
+//                                let estimatedIndex = Int(ratio * Double(routeData.count))
+//                                print("Estimated index: \(estimatedIndex)")
+//
+//                                // Check if the estimated index is within the bounds of the array
+//                                if estimatedIndex >= 0 && estimatedIndex < routeData.count {
+//                                    // Update the annotation with the estimated position
+//                                    let position = routeData[estimatedIndex]
+//                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
+//                                }
+//                            } else {
+//                                mapViewContainer.removeAnnotation()
+//                            }
                 }
             }
         }
