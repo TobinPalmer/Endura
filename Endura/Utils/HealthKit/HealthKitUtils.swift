@@ -244,16 +244,16 @@ public enum HealthKitUtils {
         var groundContactTime: [GroundContactTimeData]? = nil
         var power: [PowerData]? = nil
         var strideLength: [StrideLengthData]? = nil
-        var verticleOscillation: [VerticleOscillationData]? = nil
+        var verticalOscillation: [VerticalOscillationData]? = nil
         if #available(iOS 16.0, *) {
             groundContactTime = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningGroundContactTime, unit: .unit(.secondUnit(with: .milli)), dataType: GroundContactTimeData.self)
             power = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningPower, unit: .unit(.watt()), dataType: PowerData.self)
             strideLength = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningStrideLength, unit: .unit(.meter()), dataType: StrideLengthData.self)
-            verticleOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticleOscillationData.self)
+            verticalOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticalOscillationData.self)
 //      groundContactTime = try await HealthKitUtils.getGroundContactTimeGraph(for: workout)
 //      power = try await HealthKitUtils.getPowerGraph(for: workout)
 //      strideLength = try await HealthKitUtils.getStrideLengthGraph(for: workout)
-//      verticleOscillation = try await HealthKitUtils.getVerticleOscillationGraph(for: workout)
+//      verticalOscillation = try await HealthKitUtils.getVerticalOscillationGraph(for: workout)
         }
 
         var dataRate = 1
@@ -279,7 +279,7 @@ public enum HealthKitUtils {
             var heartRateAtPoint: Double?
             var cadenceAtPoint: Double?
             var powerAtPoint: Double?
-            var verticleOscillationAtPoint: Double?
+            var verticalOscillationAtPoint: Double?
             var groundContactTimeAtPoint: Double?
             var strideLengthAtPoint: Double?
 
@@ -295,7 +295,7 @@ public enum HealthKitUtils {
                 }
 
                 if #available(iOS 16.0, *) {
-                    if var power = power, var groundContactTime = groundContactTime, var strideLength = strideLength, var verticleOscillation = verticleOscillation {
+                    if var power = power, var groundContactTime = groundContactTime, var strideLength = strideLength, var verticalOscillation = verticalOscillation {
                         updateGraphData(&power, timestamp: point.timestamp) {
                             powerAtPoint = $0.power
                         }
@@ -308,8 +308,8 @@ public enum HealthKitUtils {
                             strideLengthAtPoint = $0.strideLength
                         }
 
-                        updateGraphData(&verticleOscillation, timestamp: point.timestamp) {
-                            verticleOscillationAtPoint = $0.verticleOscillation
+                        updateGraphData(&verticalOscillation, timestamp: point.timestamp) {
+                            verticalOscillationAtPoint = $0.verticalOscillation
                         }
                     }
                 }
@@ -324,7 +324,7 @@ public enum HealthKitUtils {
                     power: powerAtPoint ?? 0.0,
                     strideLength: 0.0,
                     timestamp: point.timestamp,
-                    verticleOscillation: 0.0
+                    verticalOscillation: 0.0
                 )
 
                 routeData.append(routePoint)
@@ -338,7 +338,7 @@ public enum HealthKitUtils {
                     power: powerAtPoint ?? 0.0,
                     strideLength: 0.0,
                     timestamp: point.timestamp,
-                    verticleOscillation: 0.0
+                    verticalOscillation: 0.0
                 )
 
                 if i > 0 {
@@ -374,7 +374,7 @@ public enum HealthKitUtils {
                         power: powerSum / 1.0,
                         strideLength: strideLengthAtPoint ?? 0.0,
                         timestamp: graphSectionData.1,
-                        verticleOscillation: verticleOscillationAtPoint ?? 0.0
+                        verticalOscillation: verticalOscillationAtPoint ?? 0.0
                     )
 
                     graphData.append(graphSectionPoint)
@@ -497,8 +497,8 @@ public enum HealthKitUtils {
                 case is StrideLengthData.Type:
                     let dataPoint = StrideLengthData(timestamp: date, strideLength: average)
                     dataPoints.append(dataPoint as! T)
-                case is VerticleOscillationData.Type:
-                    let dataPoint = VerticleOscillationData(timestamp: date, verticleOscillation: average)
+                case is VerticalOscillationData.Type:
+                    let dataPoint = VerticalOscillationData(timestamp: date, verticalOscillation: average)
                     dataPoints.append(dataPoint as! T)
                 case is GroundContactTimeData.Type:
                     let dataPoint = GroundContactTimeData(timestamp: date, groundContactTime: average)
@@ -531,8 +531,8 @@ public enum HealthKitUtils {
                         case is StrideLengthData.Type:
                             let dataPoint = StrideLengthData(timestamp: missingSecond, strideLength: (previousPoint as! StrideLengthData).strideLength)
                             filledArray.append(dataPoint as! T)
-                        case is VerticleOscillationData.Type:
-                            let dataPoint = VerticleOscillationData(timestamp: missingSecond, verticleOscillation: (previousPoint as! VerticleOscillationData).verticleOscillation)
+                        case is VerticalOscillationData.Type:
+                            let dataPoint = VerticalOscillationData(timestamp: missingSecond, verticalOscillation: (previousPoint as! VerticalOscillationData).verticalOscillation)
                             filledArray.append(dataPoint as! T)
                         case is GroundContactTimeData.Type:
                             let dataPoint = GroundContactTimeData(timestamp: missingSecond, groundContactTime: (previousPoint as! GroundContactTimeData).groundContactTime)

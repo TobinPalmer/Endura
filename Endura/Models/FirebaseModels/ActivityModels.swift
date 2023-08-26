@@ -10,7 +10,7 @@ public enum GraphType: String, Codable {
     case pace
     case power
     case strideLength
-    case verticleOscillation
+    case verticalOscillation
 }
 
 public typealias LineGraphData = [(Date, Double)]
@@ -51,9 +51,9 @@ public struct StrideLengthData: Codable {
     var strideLength: Double
 }
 
-public struct VerticleOscillationData: Codable {
+public struct VerticalOscillationData: Codable {
     var timestamp: Date
-    var verticleOscillation: Double
+    var verticalOscillation: Double
 }
 
 public struct RouteData: Codable {
@@ -66,7 +66,7 @@ public struct RouteData: Codable {
     var power: Double
     var strideLength: Double
     var timestamp: Date
-    var verticleOscillation: Double
+    var verticalOscillation: Double
 }
 
 /// The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
@@ -79,7 +79,17 @@ public struct GraphData: Codable {
     var power: Double
     var strideLength: Double
     var timestamp: Date
-    var verticleOscillation: Double
+    var verticalOscillation: Double
+}
+
+public struct ExtractedGraphData {
+    var pace: LineGraphData
+    var cadence: LineGraphData
+    var elevation: LineGraphData
+    var heartRate: LineGraphData
+    var power: LineGraphData
+    var strideLength: LineGraphData
+    var verticalOscillation: LineGraphData
 }
 
 public struct ActivityRouteData: Codable {
@@ -229,6 +239,57 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
         )
     }
 
+    public func getGraphData() -> ExtractedGraphData {
+        var paceGraph = LineGraphData()
+        var cadenceGraph = LineGraphData()
+        var elevationGraph = LineGraphData()
+        var heartRateGraph = LineGraphData()
+        var powerGraph = LineGraphData()
+        var strideLengthGraph = LineGraphData()
+        var verticalOscillationGraph = LineGraphData()
+
+        data.graphData.forEach { val in
+            print("Pace: \(val.pace)")
+            if val.pace > 0 && !val.pace.isNaN && !val.pace.isInfinite {
+                paceGraph.append((val.timestamp, val.pace))
+            }
+
+            if val.cadence > 0 && !val.cadence.isNaN && !val.cadence.isInfinite {
+                cadenceGraph.append((val.timestamp, val.cadence))
+            }
+
+            if val.altitude > 0 && !val.altitude.isNaN && !val.altitude.isInfinite {
+                elevationGraph.append((val.timestamp, val.altitude))
+            }
+
+            if val.heartRate > 0 && !val.heartRate.isNaN && !val.heartRate.isInfinite {
+                heartRateGraph.append((val.timestamp, val.heartRate))
+            }
+
+            if val.power > 0 && !val.power.isNaN && !val.power.isInfinite {
+                powerGraph.append((val.timestamp, val.power))
+            }
+
+            if val.strideLength > 0 && !val.strideLength.isNaN && !val.strideLength.isInfinite {
+                strideLengthGraph.append((val.timestamp, val.strideLength))
+            }
+
+            if val.verticalOscillation > 0 && !val.verticalOscillation.isNaN && !val.verticalOscillation.isInfinite {
+                verticalOscillationGraph.append((val.timestamp, val.verticalOscillation))
+            }
+        }
+
+        return ExtractedGraphData(
+            pace: paceGraph,
+            cadence: cadenceGraph,
+            elevation: elevationGraph,
+            heartRate: heartRateGraph,
+            power: powerGraph,
+            strideLength: strideLengthGraph,
+            verticalOscillation: verticalOscillationGraph
+        )
+    }
+
     public func getGraph(for type: GraphType) -> LineGraphData {
         var graphData = LineGraphData()
         var selector: (GraphData) -> Double
@@ -262,9 +323,9 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
             selector = {
                 $0.strideLength
             }
-        case .verticleOscillation:
+        case .verticalOscillation:
             selector = {
-                $0.verticleOscillation
+                $0.verticalOscillation
             }
         }
 
@@ -282,14 +343,20 @@ protocol TimestampPoint: Codable {
     var timestamp: Date { get }
 }
 
-extension CadenceData: TimestampPoint {}
+extension CadenceData: TimestampPoint {
+}
 
-extension HeartRateData: TimestampPoint {}
+extension HeartRateData: TimestampPoint {
+}
 
-extension PowerData: TimestampPoint {}
+extension PowerData: TimestampPoint {
+}
 
-extension StrideLengthData: TimestampPoint {}
+extension StrideLengthData: TimestampPoint {
+}
 
-extension GroundContactTimeData: TimestampPoint {}
+extension GroundContactTimeData: TimestampPoint {
+}
 
-extension VerticleOscillationData: TimestampPoint {}
+extension VerticalOscillationData: TimestampPoint {
+}
