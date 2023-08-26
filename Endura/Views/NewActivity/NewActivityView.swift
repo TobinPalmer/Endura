@@ -50,6 +50,12 @@ struct NewActivityView: View {
     @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
 
     var body: some View {
+        if !HealthKitUtils.isAuthorized() {
+            Text("Please authorize Apple Health to continue.")
+            Button("Authorize") {
+                HealthKitUtils.requestAuthorization()
+            }
+        }
         List(uploadsViewModel.uploads, id: \.self) { activity in
             if let activity {
                 NavigationLink(destination: PreviewWorkoutView(workout: activity)) {

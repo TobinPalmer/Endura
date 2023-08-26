@@ -74,6 +74,10 @@ public enum HealthKitUtils {
         return true
     }
 
+    public static func isAuthorizedForProperty<T: HKObjectType>(_ property: T) -> Bool {
+        healthStore.authorizationStatus(for: property) == .sharingAuthorized
+    }
+
     public static func subscribeToNewWorkouts() {
         let sampleType = HKObjectType.workoutType()
 
