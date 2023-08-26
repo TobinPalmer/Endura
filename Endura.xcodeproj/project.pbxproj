@@ -73,6 +73,7 @@
 		696983C807BF764F750FB09D /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989B3ACC5846606EE527B /* Auth.swift */; };
 		696983CDA34BD4646BE2E88D /* ActivityHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EC86F9A7092017FDF6F /* ActivityHeader.swift */; };
 		696983D815E023C30549A7BB /* HealthKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984EE498475DB24E5E333 /* HealthKitErrors.swift */; };
+		69698432B75EA04B0BC595C4 /* UploadWorkoutView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989121DA902768E7065E3 /* UploadWorkoutView2.swift */; };
 		69698448F824900E6A820802 /* PostUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */; };
 		6969855ACF14696C34902DFE /* ActivityGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696981D4B00F1C6031112F52 /* ActivityGraphs.swift */; };
 		6969862795DF6489B7776F59 /* FriendsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969833F0B9CB6C90025B1F5 /* FriendsSettingsView.swift */; };
@@ -196,6 +197,7 @@
 		696986EDB3F87EE749147042 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6969870866179CC66A7558FB /* ActivityModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityModels.swift; sourceTree = "<group>"; };
 		6969873280457DB033BF8C41 /* SignupStepSixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepSixView.swift; sourceTree = "<group>"; };
+		696989121DA902768E7065E3 /* UploadWorkoutView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView2.swift; sourceTree = "<group>"; };
 		6969899BCE76C8EFC97E0F3B /* HKWorkoutActivityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKWorkoutActivityType.swift; sourceTree = "<group>"; };
 		696989B3ACC5846606EE527B /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		696989BB502C0EDF35A4959D /* SignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
@@ -637,6 +639,7 @@
 				6969849C3C4EA502A9EE3634 /* NewActivityView.swift */,
 				696982855FE478D8D2440495 /* UploadWorkoutView.swift */,
 				69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */,
+				696989121DA902768E7065E3 /* UploadWorkoutView2.swift */,
 			);
 			path = NewActivity;
 			sourceTree = "<group>";
@@ -888,6 +891,7 @@
 				6969804B969F900F229CC66D /* LoadingMap.swift in Sources */,
 				17CC686F20DD2B41D0CEA6AE /* ActiveUserModel.swift in Sources */,
 				17CC698D69D7848BB549C593 /* PersistanceController.swift in Sources */,
+				69698432B75EA04B0BC595C4 /* UploadWorkoutView2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
