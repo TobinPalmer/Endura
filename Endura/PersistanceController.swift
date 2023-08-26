@@ -1,5 +1,5 @@
-import Foundation
 import CoreData
+import Foundation
 
 struct PersistenceController {
     /// A singleton for our entire app to use

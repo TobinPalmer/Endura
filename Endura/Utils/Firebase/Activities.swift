@@ -1,10 +1,10 @@
+import CoreData
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 import Foundation
 import HealthKit
-import CoreData
 
 public enum ActivityUtils {
     public static func getActivityRouteData(id: String) async -> ActivityRouteData {

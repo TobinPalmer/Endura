@@ -16,7 +16,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         HealthKitUtils.subscribeToNewWorkouts()
 
         #if DEBUG
-        Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+            Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
         #endif
         return true
     }

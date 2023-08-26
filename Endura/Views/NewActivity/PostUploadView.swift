@@ -82,7 +82,7 @@ struct PostUploadView: View {
             Button("Done") {
                 dismiss()
             }
-                .buttonStyle(EnduraButtonStyle())
+            .buttonStyle(EnduraButtonStyle())
         }
     }
 }

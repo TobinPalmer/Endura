@@ -67,8 +67,8 @@ struct NewActivityView: View {
                 }
             }
         }
-            .task {
-                await uploadsViewModel.getActivities(100)
-            }
+        .task {
+            await uploadsViewModel.getActivities(100)
+        }
     }
 }
