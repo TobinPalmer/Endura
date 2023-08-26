@@ -62,12 +62,10 @@ struct ActivityMap: View {
                         //                    mapView
                         .frame(height: 300)
                         .onChange(of: activityViewModel.analysisPosition) { timePosition in
-                            print("Changed! \(timePosition)")
                             if let timePosition = timePosition {
-                                if let position = routeData.first(where: { data in
-                                    data.timestamp > timePosition
-                                }) {
-                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
+                                if let location = activityViewModel.getAnalysisLocation(for: timePosition) {
+                                    print("Location: \(location)")
+                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
                                 }
                             } else {
                                 mapViewContainer.removeAnnotation()

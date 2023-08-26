@@ -26,7 +26,6 @@ import SwiftUICharts
 }
 
 struct PreviewWorkoutView: View {
-    @StateObject var activityViewModel = ActivityViewModel()
     @StateObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
     @State private var isShowingSummary = false
 
@@ -69,7 +68,8 @@ struct PreviewWorkoutView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
 
-                if let activityData = previewWorkoutModel.enduraWorkout {
+                if var activityData = previewWorkoutModel.enduraWorkout {
+                    let activityViewModel = ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData())
                     if !activityData.data.routeData.isEmpty {
                         VStack {
                             GeometryReader { geometry in
@@ -88,21 +88,12 @@ struct PreviewWorkoutView: View {
                         }
                             .frame(height: 300)
                     }
-                } else {
-                    LoadingMap()
-                }
 
-                if let activityData = previewWorkoutModel.enduraWorkout {
                     ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: !activityData.data.routeData.isEmpty)
-                } else {
-                    ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: false)
-                }
 
-                if var activityData = previewWorkoutModel.enduraWorkout {
                     VStack {
-                        ActivityGraphsView(activityData)
+                        ActivityGraphsView(activityData).environmentObject(activityViewModel)
                     }
-                        .environmentObject(activityViewModel)
 
                     Button {
                         Task {
@@ -131,21 +122,24 @@ struct PreviewWorkoutView: View {
                         Text("Upload")
                     }
                         .buttonStyle(EnduraButtonStyle())
+                } else {
+                    LoadingMap()
+                    ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: false)
                 }
             }
-                .padding()
-                .frame(maxHeight: .infinity)
-                .task {
-                    await withThrowingTaskGroup(of: Void.self) { group in
-                        group.addTask {
-                            await updateWorkoutStats(workout)
-                        }
-                        group.addTask {
-                            try await updateWorkoutHeader(workout)
-                        }
-                        group.addTask {
-                            try await updateEnduraWorkout(workout)
-                        }
+        }
+            .padding()
+            .frame(maxHeight: .infinity)
+            .task {
+                await withThrowingTaskGroup(of: Void.self) { group in
+                    group.addTask {
+                        await updateWorkoutStats(workout)
+                    }
+                    group.addTask {
+                        try await updateWorkoutHeader(workout)
+                    }
+                    group.addTask {
+                        try await updateEnduraWorkout(workout)
                     }
                 }
 
@@ -160,7 +154,7 @@ struct PreviewWorkoutView: View {
 //            PostUploadView(activityData: activityData)
 //          }
 //        }
-        }
+            }
             .fullScreenCover(isPresented: $isShowingSummary) {
                 if let activityData = previewWorkoutModel.enduraWorkout {
                     PostUploadView(activityData: activityData)

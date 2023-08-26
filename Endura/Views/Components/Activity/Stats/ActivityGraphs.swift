@@ -12,15 +12,13 @@ struct HoverableChart: View {
     private let valueModifier: (Double) -> String
     private let workoutStart: Date
     private let workoutEnd: Date
-    @Binding private var timestamp: Date?
 
-    public init(workoutStart: Date, workoutEnd: Date, graph: LineGraphData, timestamp: Binding<Date?>, color: Color, valueModifier: @escaping (Double) -> String = {
+    public init(workoutStart: Date, workoutEnd: Date, graph: LineGraphData, color: Color, label: String, valueModifier: @escaping (Double) -> String = {
         String($0)
-    }, label: String) {
+    }) {
         self.workoutStart = workoutStart
         self.workoutEnd = workoutEnd
         self.graph = graph
-        _timestamp = timestamp
         self.color = color
         self.label = label
         self.valueModifier = valueModifier
@@ -34,49 +32,77 @@ struct HoverableChart: View {
             Chart {
                 ForEach(graph, id: \.0) { tuple in
                     LineMark(
-                        x: .value("X values", tuple.0),
-                        y: .value("Y values", tuple.1),
-                        series: .value("Series", "Pace")
+                        x: .value("Timestamp", tuple.0),
+                        y: .value("Value", tuple.1)
                     ).foregroundStyle(color).interpolationMethod(.catmullRom)
                 }
-            }
-                .frame(width: UIScreen.main.bounds.width - 20, height: 200)
-                .border(Color.gray)
-                .gesture(DragGesture(minimumDistance: 10)
-                    .onChanged { value in
-//                        activityViewModel.analysisPosition = graph[safe: timestamp]?.0
-                        activityViewModel.workoutStartDate = workoutStart
-                        activityViewModel.workoutEndDate = workoutEnd
-                        activityViewModel.workoutDuration = workoutEnd.timeIntervalSince(workoutStart)
 
-                        let x = value.location.x
-                        let max = graph.count - 1
-                        let width = UIScreen.main.bounds.width - 20
-                        let index = Int((x / width) * CGFloat(max)) + 3
-//                        timestamp = index
-                    }
-                )
-                .chartOverlay { _ in
-                    let _ = print("Changed xposition to \(timestamp)")
-                    VStack(spacing: 0) {
-//                        if let pace = graph[safe: timestamp]?.1 {
-//                            Text("\(valueModifier(pace)) at \(graph[safe: timestamp]?.0.formatted() ?? "")")
-//                                .font(.title3)
-//                                .fontWeight(.semibold)
-//                                .padding()
-//                                .foregroundColor(.white)
-//                                .background(color)
-//                                .cornerRadius(5)
-//                        }
-                    }
+                if let analysisPosition = activityViewModel.analysisPosition {
+                    RectangleMark(x: .value("Timestamp", analysisPosition), width: 1)
+                        .foregroundStyle(.primary.opacity(1))
+                        .annotation(
+                            position: .top,
+                            alignment: .center,
+                            spacing: 0
+                        ) {
+                            let value = activityViewModel.getAnalysisValue(for: analysisPosition)?.pace
+//                            let _ = print("Value: \()")
+                            Text("\(value != nil ? valueModifier(value ?? 0) : "No Data") at \(analysisPosition.formatted(date: .omitted, time: .standard))")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(color)
+                                .cornerRadius(5)
+                        }
+                }
+            }
+                .frame(height: 200)
+                .padding(.horizontal, 10)
+                .border(Color.gray)
+                .chartOverlay { (chartProxy: ChartProxy) in
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .gesture(DragGesture()
+                            .onChanged { value in
+                                activityViewModel.analysisPosition = chartProxy.value(
+                                    atX: value.location.x
+                                )
+                                if let analysisPosition = activityViewModel.analysisPosition {
+                                    if analysisPosition < workoutStart {
+                                        activityViewModel.analysisPosition = workoutStart
+                                    } else if analysisPosition > workoutEnd {
+                                        activityViewModel.analysisPosition = workoutEnd
+                                    }
+                                }
+                            }
+                            .onEnded {
+                                _ in
+                                activityViewModel.analysisPosition = nil
+                            }
+                        )
+                }
+//                .chartOverlay { _ in
+            ////                    let _ = print("Changed xposition to \(timestamp)")
+//                    VStack(spacing: 0) {
+            ////                        if let pace = graph[safe: timestamp]?.1 {
+            ////                            Text("\(valueModifier(pace)) at \(graph[safe: timestamp]?.0.formatted() ?? "")")
+            ////                                .font(.title3)
+            ////                                .fontWeight(.semibold)
+            ////                                .padding()
+            ////                                .foregroundColor(.white)
+            ////                                .background(color)
+            ////                                .cornerRadius(5)
+            ////                        }
+//                    }
 //                        .position(x: CGFloat(timestamp) / CGFloat(max(1, graph.count - 1)) * UIScreen.main.bounds.width, y: 100)
 
-                    // Line to show where the user is
-                    Rectangle()
-                        .stroke(Color.red, style: StrokeStyle(lineWidth: 1, dash: [5]))
-                        .frame(width: 1, height: 200)
+//                    // Line to show where the user is
+//                    Rectangle()
+//                        .stroke(Color.red, style: StrokeStyle(lineWidth: 1, dash: [5]))
+//                        .frame(width: 1, height: 200)
 //                        .position(x: (CGFloat(timestamp) / CGFloat(max(1, graph.count - 1)) * UIScreen.main.bounds.width) - 12, y: 0)
-                }
+//                }
         }
     }
 }
@@ -101,6 +127,8 @@ struct ActivityGraphsView: View {
 //            let verticalOscillation = activityData.getGraph(for: .verticalOscillation)
 
             let graphData = activityData.getGraphData()
+            let start = activityData.workoutStart
+            let end = activityData.workoutStart + activityData.duration
 
 //            let _ = print("Pace length: \(graphData.pace.count)")
 //            let _ = print("Cadence length: \(graphData.cadence.count)")
@@ -117,12 +145,13 @@ struct ActivityGraphsView: View {
 //        HoverableChart(graph: powerGraph, xPosition: $xPosition, color: .purple, valueModifier: ConversionUtils.round, label: "Power")
 //        HoverableChart(graph: strideLengthGraph, xPosition: $xPosition, color: .yellow, valueModifier: ConversionUtils.round, label: "Stride Length")
 //        HoverableChart(graph: verticalOscillation, xPosition: $xPosition, color: .pink, valueModifier: ConversionUtils.round, label: "Vertical Oscillation")
-                HoverableChart(workoutStart: activityData.workoutStart, workoutEnd: activityData.workoutStart + activityData.duration, graph: graphData.pace, timestamp: $timestamp, color: .blue, valueModifier: ConversionUtils.convertMpsToMpm, label: "Pace")
-                HoverableChart(workoutStart: activityData.workoutStart, workoutEnd: activityData.workoutStart + activityData.duration, graph: graphData.cadence, timestamp: $timestamp, color: .red, valueModifier: ConversionUtils.round, label: "Cadence")
-                HoverableChart(workoutStart: activityData.workoutStart, workoutEnd: activityData.workoutStart + activityData.duration, graph: graphData.elevation, timestamp: $timestamp, color: .green, valueModifier: ConversionUtils.round, label: "Elevation")
-                HoverableChart(workoutStart: activityData.workoutStart, workoutEnd: activityData.workoutStart + activityData.duration, graph: graphData.power, timestamp: $timestamp, color: .purple, valueModifier: ConversionUtils.round, label: "Power")
-                HoverableChart(workoutStart: activityData.workoutStart, workoutEnd: activityData.workoutStart + activityData.duration, graph: graphData.strideLength, timestamp: $timestamp, color: .yellow, valueModifier: ConversionUtils.round, label: "Stride Length")
-                HoverableChart(workoutStart: activityData.workoutStart, workoutEnd: activityData.workoutStart + activityData.duration, graph: graphData.verticalOscillation, timestamp: $timestamp, color: .pink, valueModifier: ConversionUtils.round, label: "Vertical Oscillation")
+
+                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.pace, color: .blue, label: "Pace", valueModifier: ConversionUtils.convertMpsToMpm)
+                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.cadence, color: .red, label: "Cadence")
+                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.elevation, color: .green, label: "Elevation")
+                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.power, color: .purple, label: "Power")
+                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.strideLength, color: .yellow, label: "Stride Length")
+                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.verticalOscillation, color: .pink, label: "Vertical Oscillation")
             } else {
                 LineGraph(data: graphData.pace, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
                 LineGraph(data: graphData.cadence, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: CadenceLineGraphStyle())

@@ -15,6 +15,9 @@ public enum GraphType: String, Codable {
 
 public typealias LineGraphData = [(Date, Double)]
 
+public typealias IndexedGraphData = [Date: GraphData]
+public typealias IndexedRouteLocationData = [Date: LocationData]
+
 public struct ActivityCommentData: Codable, Hashable {
     let message: String
     let time: Date
@@ -239,6 +242,26 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
         )
     }
 
+    public func getIndexedGraphData() -> IndexedGraphData {
+        var graphData = IndexedGraphData()
+
+        data.graphData.forEach { val in
+            graphData[val.timestamp.roundedToNearestSecond()] = val
+        }
+
+        return graphData
+    }
+
+    public func getIndexedRouteLocationData() -> IndexedRouteLocationData {
+        var routeData = IndexedRouteLocationData()
+
+        data.routeData.forEach { val in
+            routeData[val.timestamp.roundedToNearestSecond()] = val.location
+        }
+
+        return routeData
+    }
+
     public func getGraphData() -> ExtractedGraphData {
         var paceGraph = LineGraphData()
         var cadenceGraph = LineGraphData()
@@ -249,7 +272,6 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
         var verticalOscillationGraph = LineGraphData()
 
         data.graphData.forEach { val in
-            print("Pace: \(val.pace)")
             if val.pace > 0 && !val.pace.isNaN && !val.pace.isInfinite {
                 paceGraph.append((val.timestamp, val.pace))
             }
