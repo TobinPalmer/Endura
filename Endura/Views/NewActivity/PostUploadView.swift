@@ -70,7 +70,7 @@ struct PostUploadView: View {
 
     public var body: some View {
         VStack {
-            let indexSeed = activityData.distance + activityData.duration + activityData.pace
+            let indexSeed = activityData.distance + activityData.duration
             let index = Int(indexSeed) % viewModel.headerTexts.count
 
             let headerText = viewModel.headerTexts[index]
@@ -82,7 +82,7 @@ struct PostUploadView: View {
             Button("Done") {
                 dismiss()
             }
-            .buttonStyle(EnduraButtonStyle())
+                .buttonStyle(EnduraButtonStyle())
         }
     }
 }

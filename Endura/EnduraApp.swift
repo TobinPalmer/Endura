@@ -16,15 +16,17 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         HealthKitUtils.subscribeToNewWorkouts()
 
         #if DEBUG
-            Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+        Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
         #endif
         return true
     }
 }
 
 struct InjectedContentView: View {
+    let persistenceController = PersistenceController.shared
+
     var body: some View {
-        ContentView().environmentObject(NavigationModel.instance).environmentObject(UsersCacheModel())
+        ContentView().environment(\.managedObjectContext, persistenceController.container.viewContext).environmentObject(NavigationModel.instance).environmentObject(UsersCacheModel())
     }
 }
 

@@ -3,6 +3,8 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 import Foundation
+import HealthKit
+import CoreData
 
 public enum ActivityUtils {
     public static func getActivityRouteData(id: String) async -> ActivityRouteData {
@@ -41,6 +43,31 @@ public enum ActivityUtils {
         Firestore.firestore().collection("activities").document(id).delete()
     }
 
+    public static func isActivityUploaded(_ activity: HKWorkout) -> Bool {
+        let context = PersistenceController.shared.container.viewContext
+        let fetchRequest: NSFetchRequest<Activity> = Activity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", activity.uuid as CVarArg)
+        do {
+            let fetchedActivities = try context.fetch(fetchRequest)
+            return !fetchedActivities.isEmpty
+        } catch {
+            return false
+        }
+    }
+
+    public static func setActivityUploaded(_ activity: HKWorkout) {
+        let context = PersistenceController.shared.container.newBackgroundContext()
+        context.perform {
+            let newActivity = Activity(context: context)
+            newActivity.id = activity.uuid // or any unique identifier for your activity
+            do {
+                try context.save()
+            } catch {
+                // handle the Core Data error
+            }
+        }
+    }
+
     public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil) throws {
         do {
             let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: activity)
@@ -56,9 +83,7 @@ public enum ActivityUtils {
     }
 
     private static func uploadImage(_ image: UIImage, for activityDoc: DocumentReference) {
-        let storage = Storage.storage()
-        let storageRef = storage.reference()
-        let imageRef = storageRef.child("activities/\(activityDoc.documentID)/map")
+        let imageRef = Storage.storage().reference().child("activities/\(activityDoc.documentID)/map")
         let data = image.pngData()
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"

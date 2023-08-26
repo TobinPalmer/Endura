@@ -80,13 +80,13 @@ struct PreviewWorkoutView: View {
                                 VStack {
                                     map
                                 }
-                                .onAppear {
-                                    previewWorkoutModel.mapRef = map
-                                    previewWorkoutModel.geometryRef = geometry
-                                }
+                                    .onAppear {
+                                        previewWorkoutModel.mapRef = map
+                                        previewWorkoutModel.geometryRef = geometry
+                                    }
                             }
                         }
-                        .frame(height: 300)
+                            .frame(height: 300)
                     }
                 } else {
                     LoadingMap()
@@ -102,24 +102,25 @@ struct PreviewWorkoutView: View {
                     VStack {
                         ActivityGraphsView(activityData)
                     }
-                    .environmentObject(activityViewModel)
+                        .environmentObject(activityViewModel)
 
                     Button {
                         Task {
                             do {
-                                if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
-                                    if previewWorkoutModel.activityTitle.isEmpty {
-                                        activityData.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
-                                    } else {
-                                        activityData.title = previewWorkoutModel.activityTitle
-                                        activityData.description = previewWorkoutModel.activityDescription
-                                    }
+//                                if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
+//                                    if previewWorkoutModel.activityTitle.isEmpty {
+//                                        activityData.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
+//                                    } else {
+//                                        activityData.title = previewWorkoutModel.activityTitle
+//                                        activityData.description = previewWorkoutModel.activityDescription
+//                                    }
+////
+//                                    try ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
+//                                } else {
+//                                    try ActivityUtils.uploadActivity(activity: activityData)
+//                                }
 
-                                    try ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
-                                } else {
-                                    try ActivityUtils.uploadActivity(activity: activityData)
-                                }
-
+                                ActivityUtils.setActivityUploaded(workout)
                                 isShowingSummary = true
                                 print("setting model to true")
                             } catch {
@@ -129,31 +130,24 @@ struct PreviewWorkoutView: View {
                     } label: {
                         Text("Upload")
                     }
-                    .buttonStyle(EnduraButtonStyle())
+                        .buttonStyle(EnduraButtonStyle())
                 }
             }
-            .padding()
-            .frame(maxHeight: .infinity)
-            .task {
-                await withThrowingTaskGroup(of: Void.self) { group in
-                    group.addTask {
-                        await updateWorkoutStats(workout)
-                    }
-                    group.addTask {
-                        try await updateWorkoutHeader(workout)
-                    }
-                    group.addTask {
-                        try await updateEnduraWorkout(workout)
+                .padding()
+                .frame(maxHeight: .infinity)
+                .task {
+                    await withThrowingTaskGroup(of: Void.self) { group in
+                        group.addTask {
+                            await updateWorkoutStats(workout)
+                        }
+                        group.addTask {
+                            try await updateWorkoutHeader(workout)
+                        }
+                        group.addTask {
+                            try await updateEnduraWorkout(workout)
+                        }
                     }
                 }
-            }
-            .fullScreenCover(isPresented: $isShowingSummary) {
-                if let activityData = previewWorkoutModel.enduraWorkout {
-                    PostUploadView(activityData: activityData)
-                } else {
-                    Text("Error uploading workout")
-                }
-            }
 
 //        .fullScreenCover(isPresented: Binding(
 //          get: { previewWorkoutModel.isShowingSummary || isShowingSummary },
@@ -167,5 +161,12 @@ struct PreviewWorkoutView: View {
 //          }
 //        }
         }
+            .fullScreenCover(isPresented: $isShowingSummary) {
+                if let activityData = previewWorkoutModel.enduraWorkout {
+                    PostUploadView(activityData: activityData)
+                } else {
+                    Text("Error uploading workout")
+                }
+            }
     }
 }

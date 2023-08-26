@@ -46,6 +46,7 @@
 		17CC686F20DD2B41D0CEA6AE /* ActiveUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66B87BB1D53138DC7BC5 /* ActiveUserModel.swift */; };
 		17CC68DAEFAD7FB41ABA0D99 /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */; };
 		17CC69010684FDD587AF79B9 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61A4C68A0172243AB286 /* View.swift */; };
+		17CC698D69D7848BB549C593 /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC620E713369BF3ECEA030 /* PersistanceController.swift */; };
 		17CC6BD8CFCA13C8952D4534 /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC68FD129A61DF48BD0D4F /* Formatting.swift */; };
 		17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC647C809BFAC3C20DA478 /* Date.swift */; };
 		17CC6CDF590381DF53B49F0D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D93D86A82B085AB91BD /* SettingsView.swift */; };
@@ -101,6 +102,7 @@
 		69698F967DFA9D0303BE96FF /* MKCoordinateRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */; };
 		69698FA1FC03637A47E3FA7D /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698626B91694BAD5012252 /* NotificationUtils.swift */; };
 		69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* DashboardView.swift */; };
+		E91E1F782A9827D00095D3E9 /* Activities.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */; };
 		E955630C2A6F4F2800AC74DE /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = E955630B2A6F4F2800AC74DE /* SwiftUICharts */; };
 		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
 /* End PBXBuildFile section */
@@ -140,6 +142,7 @@
 		17CC6138F9F694BD479D8798 /* MKPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolyline.swift; sourceTree = "<group>"; };
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		17CC61A4C68A0172243AB286 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		17CC620E713369BF3ECEA030 /* PersistanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 		17CC621472800F2D778E7D01 /* ActivityComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityComment.swift; sourceTree = "<group>"; };
 		17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStepForm.swift; sourceTree = "<group>"; };
 		17CC647C809BFAC3C20DA478 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -212,6 +215,7 @@
 		69698F375B8431109FFB3F98 /* TrainingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
 		69698FC39866D068E770C60E /* ActivityGridStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityGridStats.swift; sourceTree = "<group>"; };
 		69698FE247BAB2DB0A34EE25 /* SignupStepOneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepOneView.swift; sourceTree = "<group>"; };
+		E91E1F772A9827D00095D3E9 /* Activities.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Activities.xcdatamodel; sourceTree = "<group>"; };
 		E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityMapImage.swift; path = Endura/Views/Components/Activity/ActivityMapImage.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -307,6 +311,8 @@
 				69698BED38E7BC5FB38B4BA0 /* Errors */,
 				69698DD361B3846255EF0F67 /* Styles */,
 				696980F8615E62AFAE8EB590 /* Fonts */,
+				E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */,
+				17CC620E713369BF3ECEA030 /* PersistanceController.swift */,
 			);
 			path = Endura;
 			sourceTree = "<group>";
@@ -837,6 +843,7 @@
 				17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */,
 				17CC6375D0C9879B20E7B30B /* Calendar.swift in Sources */,
 				17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */,
+				E91E1F782A9827D00095D3E9 /* Activities.xcdatamodeld in Sources */,
 				17CC6E2D815670C3A2DBDFBF /* ActivitiesView.swift in Sources */,
 				17CC62FFC55BCB9A6AEA355C /* ProgressView.swift in Sources */,
 				17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */,
@@ -880,6 +887,7 @@
 				6969855ACF14696C34902DFE /* ActivityGraphs.swift in Sources */,
 				6969804B969F900F229CC66D /* LoadingMap.swift in Sources */,
 				17CC686F20DD2B41D0CEA6AE /* ActiveUserModel.swift in Sources */,
+				17CC698D69D7848BB549C593 /* PersistanceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1311,6 +1319,19 @@
 			productName = SwiftUICharts;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E91E1F772A9827D00095D3E9 /* Activities.xcdatamodel */,
+			);
+			currentVersion = E91E1F772A9827D00095D3E9 /* Activities.xcdatamodel */;
+			path = Activities.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 026042B12A62E27900F4AF88 /* Project object */;
 }

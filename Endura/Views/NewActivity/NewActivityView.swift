@@ -56,17 +56,19 @@ struct NewActivityView: View {
                     let workoutType = activity.workoutActivityType.name
                     let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0).rounded(toPlaces: 2).removeTrailingZeros()
                     HStack {
-                        Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
+                        if ActivityUtils.isActivityUploaded(activity) {
+                            Image(systemName: "checkmark").font(.largeTitle).foregroundColor(.green)
+                        } else {
+                            Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType)).font(.largeTitle)
+                        }
                         Text(activity.startDate, style: .date)
-                        Text("\(workoutDistance)")
-
-                        Text(workoutType)
+                        Text("• \(workoutDistance) mi")
                     }
                 }
             }
         }
-        .task {
-            await uploadsViewModel.getActivities(100)
-        }
+            .task {
+                await uploadsViewModel.getActivities(100)
+            }
     }
 }
