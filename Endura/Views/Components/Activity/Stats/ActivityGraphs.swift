@@ -14,7 +14,7 @@ struct HoverableChart: View {
     private let workoutEnd: Date
 
     public init(workoutStart: Date, workoutEnd: Date, graph: LineGraphData, color: Color, label: String, valueModifier: @escaping (Double) -> String = {
-        String($0)
+        ConversionUtils.round($0)
     }) {
         self.workoutStart = workoutStart
         self.workoutEnd = workoutEnd
@@ -57,31 +57,31 @@ struct HoverableChart: View {
                         }
                 }
             }
-                .frame(height: 200)
-                .padding(.horizontal, 10)
-                .border(Color.gray)
-                .chartOverlay { (chartProxy: ChartProxy) in
-                    Color.clear
-                        .contentShape(Rectangle())
-                        .gesture(DragGesture()
-                            .onChanged { value in
-                                activityViewModel.analysisPosition = chartProxy.value(
-                                    atX: value.location.x
-                                )
-                                if let analysisPosition = activityViewModel.analysisPosition {
-                                    if analysisPosition < workoutStart {
-                                        activityViewModel.analysisPosition = workoutStart
-                                    } else if analysisPosition > workoutEnd {
-                                        activityViewModel.analysisPosition = workoutEnd
-                                    }
+            .frame(height: 200)
+            .padding(.horizontal, 10)
+            .border(Color.gray)
+            .chartOverlay { (chartProxy: ChartProxy) in
+                Color.clear
+                    .contentShape(Rectangle())
+                    .gesture(DragGesture()
+                        .onChanged { value in
+                            activityViewModel.analysisPosition = chartProxy.value(
+                                atX: value.location.x
+                            )
+                            if let analysisPosition = activityViewModel.analysisPosition {
+                                if analysisPosition < workoutStart {
+                                    activityViewModel.analysisPosition = workoutStart
+                                } else if analysisPosition > workoutEnd {
+                                    activityViewModel.analysisPosition = workoutEnd
                                 }
                             }
-                            .onEnded {
-                                _ in
-                                activityViewModel.analysisPosition = nil
-                            }
-                        )
-                }
+                        }
+                        .onEnded {
+                            _ in
+                            activityViewModel.analysisPosition = nil
+                        }
+                    )
+            }
 //                .chartOverlay { _ in
             ////                    let _ = print("Changed xposition to \(timestamp)")
 //                    VStack(spacing: 0) {
