@@ -28,10 +28,12 @@ public enum ConversionUtils {
             return "0:00"
         }
 
+        let mps = metersPerSec.rounded(toPlaces: 3)
+
         let metersPerMile = 1609.34
         let secondsPerMinute = 60.0
 
-        let minutesPerMile = 1 / (metersPerSec / (metersPerMile / secondsPerMinute))
+        let minutesPerMile = 1 / (mps / (metersPerMile / secondsPerMinute))
 
         guard !minutesPerMile.isNaN || !minutesPerMile.isInfinite else {
             return "0:00"
