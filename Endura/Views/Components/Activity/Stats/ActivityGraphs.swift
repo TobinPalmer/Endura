@@ -30,12 +30,81 @@ struct HoverableChart: View {
                 .font(.title3)
                 .padding()
             Chart {
-                ForEach(graph.sorted(by: { $0.0 < $1.0 }), id: \.key) { tuple in
-                    LineMark(
-                        x: .value("Timestamp", tuple.0),
-                        y: .value("Value", tuple.1)
-                    ).foregroundStyle(color).interpolationMethod(.catmullRom)
-                }
+                RectangleMark(
+                    xStart: .value("Timestamp", workoutStart),
+                    xEnd: .value("Timestamp", workoutEnd)
+                )
+                    .foregroundStyle(.linearGradient(stops: [
+                        Gradient.Stop(color: color.opacity(0.5), location: 0),
+                        Gradient.Stop(color: color, location: 2 / 4)
+                    ], startPoint: .bottom, endPoint: .top)).mask {
+
+
+                        var lastTimestamp: Date? = nil
+                        let sortedGraph = graph.sorted(by: { $0.0 < $1.0 })
+
+                        let lineMarks = sortedGraph.map { tuple -> [AreaMark] in
+                            var lineMarks: [AreaMark] = []
+
+                            if let lastTimestamp = lastTimestamp,
+                               tuple.0.timeIntervalSince(lastTimestamp) > Double(activityViewModel.interval) {
+                                lineMarks.append(AreaMark(
+                                    x: .value("Timestamp", lastTimestamp.addingTimeInterval(1)),
+                                    y: .value("Value", 0)
+                                ))
+
+                                lineMarks.append(AreaMark(
+                                    x: .value("Timestamp", tuple.0.addingTimeInterval(-1)),
+                                    y: .value("Value", 0)
+                                ))
+//                            .foregroundStyle(color).interpolationMethod(.catmullRom) as! LineMark)
+                            }
+
+                            lineMarks.append(AreaMark(
+                                x: .value("Timestamp", tuple.0),
+                                y: .value("Value", tuple.1)
+                            ))
+//                        .foregroundStyle(color).interpolationMethod(.catmullRom) as! LineMark)
+
+                            lastTimestamp = tuple.0
+
+                            return lineMarks
+                        }
+
+                        let flattenedLineMarks: [AreaMark] = lineMarks.flatMap {
+                            $0
+                        }
+
+                        ForEach(flattenedLineMarks.indices, id: \.self) { index in
+                            flattenedLineMarks[index].foregroundStyle(color)
+//                        .interpolationMethod(.catmullRom)
+                        }
+
+//                var lastTimestamp: Date? = nil
+//                ForEach(graph.sorted(by: { $0.0 < $1.0 }), id: \.key) { tuple in
+//                    if let lastTimestamp = lastTimestamp {
+//                        if tuple.0.timeIntervalSince(lastTimestamp) > Double(activityViewModel.interval / 2) {
+//                            LineMark(
+//                                x: .value("Timestamp", lastTimestamp.addingTimeInterval(1)),
+//                                y: .value("Value", 0)
+//                            )
+//                                .foregroundStyle(color).interpolationMethod(.catmullRom)
+//
+//                            LineMark(
+//                                x: .value("Timestamp", tuple.0.addingTimeInterval(-1)),
+//                                y: .value("Value", 0)
+//                            )
+//                                .foregroundStyle(color).interpolationMethod(.catmullRom)
+//                        }
+//                    }
+//                    LineMark(
+//                        x: .value("Timestamp", tuple.0),
+//                        y: .value("Value", tuple.1)
+//                    ).foregroundStyle(color).interpolationMethod(.catmullRom)
+//                    lastTimestamp = tuple.0
+//                }
+
+                    }
 
                 if let analysisPosition = activityViewModel.analysisPosition {
                     if let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph) {

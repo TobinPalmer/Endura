@@ -4,9 +4,11 @@ public final class ActivityViewModel: ObservableObject {
     @Published var analysisPosition: Date? = nil
     @Published var analysisValue: Double? = nil
 
+    @Published var lastTimestamp: Date? = nil
+
     private let activityData: IndexedGraphData
     private let routeLocationData: IndexedRouteLocationData
-    private let interval: Int
+    public final let interval: Int
 
     init(activityData: IndexedGraphData, routeLocationData: IndexedRouteLocationData, interval: Int) {
         self.activityData = activityData
