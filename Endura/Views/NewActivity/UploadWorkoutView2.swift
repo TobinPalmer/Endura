@@ -3,7 +3,7 @@ import HealthKit
 import MapKit
 import SwiftUI
 
-@MainActor private final class PreviewWorkoutModel: ObservableObject {
+@MainActor private final class PreviewWorkoutModel2: ObservableObject {
     @Published fileprivate var mapRef: (any View)?
     @Published fileprivate var geometryRef: GeometryProxy?
     @Published fileprivate var enduraWorkout: ActivityDataWithRoute?
@@ -21,8 +21,8 @@ import SwiftUI
     }
 }
 
-struct PreviewWorkoutView: View {
-    @StateObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
+struct PreviewWorkoutView2: View {
+    @StateObject fileprivate var previewWorkoutModel = PreviewWorkoutModel2()
     @State private var isShowingSummary = false
 
     @MainActor func updateWorkoutStats(_ workout: HKWorkout) {
@@ -138,18 +138,6 @@ struct PreviewWorkoutView: View {
                     try await updateEnduraWorkout(workout)
                 }
             }
-
-//        .fullScreenCover(isPresented: Binding(
-//          get: { previewWorkoutModel.isShowingSummary || isShowingSummary },
-//          set: { newValue in
-//            previewWorkoutModel.isShowingSummary = newValue
-//            isShowingSummary = newValue
-//          }
-//        )) {
-//          if let activityData = previewWorkoutModel.enduraWorkout {
-//            PostUploadView(activityData: activityData)
-//          }
-//        }
         }
         .fullScreenCover(isPresented: $isShowingSummary) {
             if let activityData = previewWorkoutModel.enduraWorkout {

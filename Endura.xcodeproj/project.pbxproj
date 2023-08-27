@@ -81,6 +81,7 @@
 		696986BD803239CC2C5AE22A /* HKWorkoutActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969899BCE76C8EFC97E0F3B /* HKWorkoutActivityType.swift */; };
 		696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980A9493FB9C9A2291998 /* WorkoutErrors.swift */; };
 		696986CF195F54AD8C049BA1 /* SignupStepSevenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698DB807958E905BF87BDD /* SignupStepSevenView.swift */; };
+		69698701102B2554DFC547AD /* UploadWorkoutView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698647FA8CC85C3EA612CB /* UploadWorkoutView2.swift */; };
 		6969874C7C01175EDE8DC3F7 /* UploadWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982855FE478D8D2440495 /* UploadWorkoutView.swift */; };
 		6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696985F087A56B76C2C803F6 /* CLLocation.swift */; };
 		696987B340F19C1B27872C5F /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 696981BDEAA09748168F40DF /* .swiftformat */; };
@@ -193,6 +194,7 @@
 		696985F087A56B76C2C803F6 /* CLLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocation.swift; sourceTree = "<group>"; };
 		69698626B91694BAD5012252 /* NotificationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		696986316AB6F45157A56439 /* ActivityStatsComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityStatsComponents.swift; sourceTree = "<group>"; };
+		69698647FA8CC85C3EA612CB /* UploadWorkoutView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView2.swift; sourceTree = "<group>"; };
 		696986EDB3F87EE749147042 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6969870866179CC66A7558FB /* ActivityModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityModels.swift; sourceTree = "<group>"; };
 		6969873280457DB033BF8C41 /* SignupStepSixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepSixView.swift; sourceTree = "<group>"; };
@@ -637,6 +639,7 @@
 				6969849C3C4EA502A9EE3634 /* NewActivityView.swift */,
 				696982855FE478D8D2440495 /* UploadWorkoutView.swift */,
 				69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */,
+				69698647FA8CC85C3EA612CB /* UploadWorkoutView2.swift */,
 			);
 			path = NewActivity;
 			sourceTree = "<group>";
@@ -888,6 +891,7 @@
 				6969804B969F900F229CC66D /* LoadingMap.swift in Sources */,
 				17CC686F20DD2B41D0CEA6AE /* ActiveUserModel.swift in Sources */,
 				17CC698D69D7848BB549C593 /* PersistanceController.swift in Sources */,
+				69698701102B2554DFC547AD /* UploadWorkoutView2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
