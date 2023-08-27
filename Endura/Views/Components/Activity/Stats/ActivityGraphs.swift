@@ -1,4 +1,6 @@
-import Charts
+#if canImport(Charts)
+    import Charts
+#endif
 import Foundation
 import SwiftUI
 
@@ -29,58 +31,79 @@ struct HoverableChart: View {
             Text(label)
                 .font(.title3)
                 .padding()
-            Chart {
-                ForEach(graph, id: \.0) { tuple in
-                    LineMark(
-                        x: .value("Timestamp", tuple.0),
-                        y: .value("Value", tuple.1)
-                    ).foregroundStyle(color).interpolationMethod(.catmullRom)
-                }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                Chart {
+                    ForEach(graph, id: \.0) { tuple in
+                        LineMark(
+                            x: .value("Timestamp", tuple.0),
+                            y: .value("Value", tuple.1)
+                        ).foregroundStyle(color).interpolationMethod(.catmullRom)
+                    }
 
-                if let analysisPosition = activityViewModel.analysisPosition {
-                    RectangleMark(x: .value("Timestamp", analysisPosition), width: 1)
-                        .foregroundStyle(.primary.opacity(1))
-                        .annotation(
-                            position: .top,
-                            alignment: .center,
-                            spacing: 0
-                        ) {
-                            let value = activityViewModel.getAnalysisValue(for: analysisPosition)?.pace
-//                            let _ = print("Value: \()")
-                            Text("\(value != nil ? valueModifier(value ?? 0) : "No Data") at \(analysisPosition.formatted(date: .omitted, time: .standard))")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .padding()
-                                .foregroundColor(.white)
-                                .background(color)
-                                .cornerRadius(5)
-                        }
+//          if let analysisPosition = activityViewModel.analysisPosition {
+//            RectangleMark(x: .value("Timestamp", analysisPosition), width: 1)
+//              .foregroundStyle(.primary.opacity(1))
+//              .annotation(
+//                position: .overlay,
+//                alignment: .center,
+//                spacing: 0
+//              ) {
+//                let value = activityViewModel.getAnalysisValue(for: analysisPosition)?.pace
+//                Text("\(value != nil ? "tisfiojdsofjdoaf" : "f")")
+//                  .font(.title3)
+//                  .fontWeight(.semibold)
+//                  .foregroundColor(.white)
+//                  .background(color)
+//                  .cornerRadius(5)
+//                  .zIndex(100)
+//              }
+//          }
+
+                    if let analysisPosition = activityViewModel.analysisPosition {
+                        RectangleMark(x: .value("Timestamp", analysisPosition), width: 1)
+                            .foregroundStyle(.primary.opacity(1))
+                            .annotation(
+                                position: .overlay,
+                                alignment: .center,
+                                spacing: 0
+                            ) {
+                                let value = activityViewModel.getAnalysisValue(for: analysisPosition)?.pace
+                                Text("\(value != nil ? valueModifier(value ?? 0) : "No Data") \n \(analysisPosition.formatted(date: .omitted, time: .standard))")
+                                    .font(.system(size: 12))
+                                    .frame(width: 100, height: 40)
+                                    //                  .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                    .background(color)
+                                    .cornerRadius(5)
+                                    .offset(y: -80)
+                            }
+                    }
                 }
-            }
-            .frame(height: 200)
-            .padding(.horizontal, 10)
-            .border(Color.gray)
-            .chartOverlay { (chartProxy: ChartProxy) in
-                Color.clear
-                    .contentShape(Rectangle())
-                    .gesture(DragGesture()
-                        .onChanged { value in
-                            activityViewModel.analysisPosition = chartProxy.value(
-                                atX: value.location.x
-                            )
-                            if let analysisPosition = activityViewModel.analysisPosition {
-                                if analysisPosition < workoutStart {
-                                    activityViewModel.analysisPosition = workoutStart
-                                } else if analysisPosition > workoutEnd {
-                                    activityViewModel.analysisPosition = workoutEnd
+                .frame(height: 200)
+                .padding(.horizontal, 10)
+                .border(Color.gray)
+                .chartOverlay { (chartProxy: ChartProxy) in
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .gesture(DragGesture()
+                            .onChanged { value in
+                                activityViewModel.analysisPosition = chartProxy.value(
+                                    atX: value.location.x
+                                )
+                                if let analysisPosition = activityViewModel.analysisPosition {
+                                    if analysisPosition < workoutStart {
+                                        activityViewModel.analysisPosition = workoutStart
+                                    } else if analysisPosition > workoutEnd {
+                                        activityViewModel.analysisPosition = workoutEnd
+                                    }
                                 }
                             }
-                        }
-                        .onEnded {
-                            _ in
-                            activityViewModel.analysisPosition = nil
-                        }
-                    )
+                            .onEnded {
+                                _ in
+                                activityViewModel.analysisPosition = nil
+                            }
+                        )
+                }
             }
 //                .chartOverlay { _ in
             ////                    let _ = print("Changed xposition to \(timestamp)")

@@ -13,12 +13,14 @@ struct ContentView: View {
         case .LOGIN:
             NavigationView {
                 LoginView()
+                    .preferredColorScheme(.light)
             }
         case .HOME:
             if let settings = settings {
                 TabView {
                     NavigationView {
                         DashboardView()
+                            .preferredColorScheme(.light)
                     }
                     .tabItem {
                         Image(systemName: "house")

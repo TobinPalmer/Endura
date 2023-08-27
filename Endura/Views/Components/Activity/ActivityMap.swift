@@ -4,13 +4,13 @@ import HealthKit
 import MapKit
 import SwiftUI
 
-struct ColoredPolyline: Identifiable {
+private struct ColoredPolyline: Identifiable {
     var id = UUID()
     var color: UIColor
     var polyline: MKPolyline
 }
 
-class MapViewContainer: ObservableObject {
+private class MapViewContainer: ObservableObject {
     @Published var mapView: MKMapView = .init()
 
     func updateAnnotation(position: CLLocationCoordinate2D) {
@@ -36,30 +36,13 @@ struct ActivityMap: View {
         self.bottomSpace = bottomSpace
     }
 
-//
-//    public func getMapImage() -> UIImage {
-    ////        guard let mapView = mapView else {
-    ////            print("no map view")
-    ////            return UIImage()
-    ////        }
-//        guard let mapImageOptions = mapImageOptions else {
-//            print("no options", mapImageOptions)
-//            return UIImage()
-//        }
-//        let image = mapView.takeScreenshot(origin: mapImageOptions.origin, size: mapImageOptions.size)
-//        print("Image", image, "data", image.pngData())
-//        return image
-//    }
-
     var body: some View {
         if routeData.isEmpty {
             EmptyView()
         } else {
-            GeometryReader { _ in
+            VStack {
                 VStack {
-//                    let mapView =
                     MapView(mapViewContainer: mapViewContainer, routeData: routeData)
-                        //                    mapView
                         .frame(height: 300)
                         .onChange(of: activityViewModel.analysisPosition) { timePosition in
                             if let timePosition = timePosition {
@@ -71,34 +54,6 @@ struct ActivityMap: View {
                                 mapViewContainer.removeAnnotation()
                             }
                         }
-//              print("lol")
-//                            if let timePosition = timePosition,
-//                               let workoutStartDate = activityViewModel.workoutStartDate,
-//                               let workoutEndDate = activityViewModel.workoutEndDate
-//                            {
-//                                // Convert dates to timestamps
-//                                let startTimestamp = workoutStartDate.timeIntervalSince1970
-//                                let endTimestamp = workoutEndDate.timeIntervalSince1970
-//
-//                                // Calculate the total duration in seconds
-//                                let totalDuration = endTimestamp - startTimestamp
-//
-//                                // Calculate the ratio of timePosition to the total duration
-//                                let ratio = (timePosition.timeIntervalSince1970 - startTimestamp) / totalDuration
-//
-//                                // Estimate the index in the routeData array where the timePosition would be
-//                                let estimatedIndex = Int(ratio * Double(routeData.count))
-//                                print("Estimated index: \(estimatedIndex)")
-//
-//                                // Check if the estimated index is within the bounds of the array
-//                                if estimatedIndex >= 0 && estimatedIndex < routeData.count {
-//                                    // Update the annotation with the estimated position
-//                                    let position = routeData[estimatedIndex]
-//                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: position.location.latitude, longitude: position.location.longitude))
-//                                }
-//                            } else {
-//                                mapViewContainer.removeAnnotation()
-//                            }
                 }
             }
         }
