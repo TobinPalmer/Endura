@@ -250,7 +250,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
 //        return path
 //    }
 
-    func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
+    func createPath(from data: LineGraphData, in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
         var paths = [Path]()
         var previousDate: Date?
         for index in data.indices {
@@ -278,7 +278,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         return paths
     }
 
-    func createPaths(from data: [(Date, Double)], in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
+    func createPaths(from data: LineGraphData, in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
         var paths: [Path] = []
         var previousPoint: CGPoint?
         for index in data.indices {
