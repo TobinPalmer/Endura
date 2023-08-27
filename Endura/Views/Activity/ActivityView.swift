@@ -34,7 +34,7 @@ struct ActivityView: View {
                             ActivityGraphsView(activityData)
                         }
                     }
-                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData()))
+                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                 }
             } else {
                 ScrollView {

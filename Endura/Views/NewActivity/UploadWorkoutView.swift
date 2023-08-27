@@ -69,7 +69,7 @@ struct PreviewWorkoutView: View {
                     .padding(.bottom, 10)
 
                 if var activityData = previewWorkoutModel.enduraWorkout {
-                    let activityViewModel = ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData())
+                    let activityViewModel = ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval)
                     if !activityData.data.routeData.isEmpty {
                         VStack {
                             GeometryReader { geometry in

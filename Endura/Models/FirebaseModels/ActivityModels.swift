@@ -14,6 +14,7 @@ public enum GraphType: String, Codable {
 }
 
 public typealias LineGraphData = [(Date, Double)]
+public typealias IndexedLineGraphData = [Date: Double]
 
 public typealias IndexedGraphData = [Date: GraphData]
 public typealias IndexedRouteLocationData = [Date: LocationData]
@@ -86,13 +87,13 @@ public struct GraphData: Codable {
 }
 
 public struct ExtractedGraphData {
-    var pace: LineGraphData
-    var cadence: LineGraphData
-    var elevation: LineGraphData
-    var heartRate: LineGraphData
-    var power: LineGraphData
-    var strideLength: LineGraphData
-    var verticalOscillation: LineGraphData
+    var pace: IndexedLineGraphData
+    var cadence: IndexedLineGraphData
+    var elevation: IndexedLineGraphData
+    var heartRate: IndexedLineGraphData
+    var power: IndexedLineGraphData
+    var strideLength: IndexedLineGraphData
+    var verticalOscillation: IndexedLineGraphData
 }
 
 public struct ActivityRouteData: Codable {
@@ -263,41 +264,48 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     }
 
     public func getGraphData() -> ExtractedGraphData {
-        var paceGraph = LineGraphData()
-        var cadenceGraph = LineGraphData()
-        var elevationGraph = LineGraphData()
-        var heartRateGraph = LineGraphData()
-        var powerGraph = LineGraphData()
-        var strideLengthGraph = LineGraphData()
-        var verticalOscillationGraph = LineGraphData()
+        var paceGraph = IndexedLineGraphData()
+        var cadenceGraph = IndexedLineGraphData()
+        var elevationGraph = IndexedLineGraphData()
+        var heartRateGraph = IndexedLineGraphData()
+        var powerGraph = IndexedLineGraphData()
+        var strideLengthGraph = IndexedLineGraphData()
+        var verticalOscillationGraph = IndexedLineGraphData()
 
         data.graphData.forEach { val in
             if val.pace > 0 && !val.pace.isNaN && !val.pace.isInfinite {
-                paceGraph.append((val.timestamp, val.pace))
+//                paceGraph.append((val.timestamp, val.pace))
+                paceGraph[val.timestamp.roundedToNearestSecond()] = val.pace
             }
 
             if val.cadence > 0 && !val.cadence.isNaN && !val.cadence.isInfinite {
-                cadenceGraph.append((val.timestamp, val.cadence))
+//                cadenceGraph.append((val.timestamp, val.cadence))
+                cadenceGraph[val.timestamp.roundedToNearestSecond()] = val.cadence
             }
 
             if val.altitude > 0 && !val.altitude.isNaN && !val.altitude.isInfinite {
-                elevationGraph.append((val.timestamp, val.altitude))
+//                elevationGraph.append((val.timestamp, val.altitude))
+                elevationGraph[val.timestamp.roundedToNearestSecond()] = val.altitude
             }
 
             if val.heartRate > 0 && !val.heartRate.isNaN && !val.heartRate.isInfinite {
-                heartRateGraph.append((val.timestamp, val.heartRate))
+//                heartRateGraph.append((val.timestamp, val.heartRate))
+                heartRateGraph[val.timestamp.roundedToNearestSecond()] = val.heartRate
             }
 
             if val.power > 0 && !val.power.isNaN && !val.power.isInfinite {
-                powerGraph.append((val.timestamp, val.power))
+//                powerGraph.append((val.timestamp, val.power))
+                powerGraph[val.timestamp.roundedToNearestSecond()] = val.power
             }
 
             if val.strideLength > 0 && !val.strideLength.isNaN && !val.strideLength.isInfinite {
-                strideLengthGraph.append((val.timestamp, val.strideLength))
+//                strideLengthGraph.append((val.timestamp, val.strideLength))
+                strideLengthGraph[val.timestamp.roundedToNearestSecond()] = val.strideLength
             }
 
             if val.verticalOscillation > 0 && !val.verticalOscillation.isNaN && !val.verticalOscillation.isInfinite {
-                verticalOscillationGraph.append((val.timestamp, val.verticalOscillation))
+//                verticalOscillationGraph.append((val.timestamp, val.verticalOscillation))
+                verticalOscillationGraph[val.timestamp.roundedToNearestSecond()] = val.verticalOscillation
             }
         }
 
