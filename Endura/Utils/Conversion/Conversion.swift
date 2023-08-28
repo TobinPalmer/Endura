@@ -14,11 +14,11 @@ public enum ConversionUtils {
         var title: String
 
         switch hour {
-        case 0..<12:
+        case 0 ..< 12:
             title = "Morning Activity"
-        case 12..<17:
+        case 12 ..< 17:
             title = "Lunch Activity"
-        case 17..<24:
+        case 17 ..< 24:
             title = "Evening Activity"
         default:
             title = "Activity"

@@ -34,7 +34,7 @@ struct ActivityView: View {
                             ActivityGraphsView(activityData)
                         }
                     }
-                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
+                    .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                 }
             } else {
                 ScrollView {
@@ -48,44 +48,44 @@ struct ActivityView: View {
                     VStack {
                         Text("Loading...")
                     }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .frame(height: 300)
-                        .foregroundColor(Color.red)
-                        .border(.red)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(height: 300)
+                    .foregroundColor(Color.red)
+                    .border(.red)
 
                     ActivityGridStats(activityData: nil, placeholder: true)
                 }
             }
         }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button(action: {
-                            print("Edit")
-                        }) {
-                            Label("Edit", systemImage: "pencil")
-                        }
-                        Button(action: {
-                            ActivityUtils.deleteActivity(id: id)
-                        }) {
-                            Label("Delete", systemImage: "trash")
-                        }
-
-                        if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
-                            Button(action: {
-                                print("Banned")
-                            }) {
-                                Label("Ban User", systemImage: "trash")
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: {
+                        print("Edit")
+                    }) {
+                        Label("Edit", systemImage: "pencil")
                     }
+                    Button(action: {
+                        ActivityUtils.deleteActivity(id: id)
+                    }) {
+                        Label("Delete", systemImage: "trash")
+                    }
+
+                    if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
+                        Button(action: {
+                            print("Banned")
+                        }) {
+                            Label("Ban User", systemImage: "trash")
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
                 }
             }
-            .padding()
-            .task {
-                activityData = await activity.withRouteData(id: id)
-            }
+        }
+        .padding()
+        .task {
+            activityData = await activity.withRouteData(id: id)
+        }
     }
 }

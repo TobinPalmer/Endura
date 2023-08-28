@@ -373,20 +373,14 @@ protocol TimestampPoint: Codable {
     var timestamp: Date { get }
 }
 
-extension CadenceData: TimestampPoint {
-}
+extension CadenceData: TimestampPoint {}
 
-extension HeartRateData: TimestampPoint {
-}
+extension HeartRateData: TimestampPoint {}
 
-extension PowerData: TimestampPoint {
-}
+extension PowerData: TimestampPoint {}
 
-extension StrideLengthData: TimestampPoint {
-}
+extension StrideLengthData: TimestampPoint {}
 
-extension GroundContactTimeData: TimestampPoint {
-}
+extension GroundContactTimeData: TimestampPoint {}
 
-extension VerticalOscillationData: TimestampPoint {
-}
+extension VerticalOscillationData: TimestampPoint {}
