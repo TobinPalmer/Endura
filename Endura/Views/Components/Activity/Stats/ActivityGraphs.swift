@@ -34,32 +34,31 @@ struct HoverableChart: View {
                     xStart: .value("Timestamp", workoutStart),
                     xEnd: .value("Timestamp", workoutEnd)
                 )
-                .foregroundStyle(.linearGradient(stops: [
-                    Gradient.Stop(color: color.opacity(0.5), location: 0),
-                    Gradient.Stop(color: color, location: 2 / 4),
-                ], startPoint: .bottom, endPoint: .top)).mask {
-                    var data: [(Date, Double)] = []
-                    var lastTimestamp: Date? = nil
-                    let _ = graph.sorted(by: { $0.0 < $1.0 }).map { point in
-                        if let lastTimestamp = lastTimestamp,
-                           point.0.timeIntervalSince(lastTimestamp) > Double(activityViewModel.interval)
-                        {
-                            data.append((lastTimestamp.addingTimeInterval(1), 0))
-                            data.append((point.0.addingTimeInterval(-1), 0))
+                    .foregroundStyle(.linearGradient(stops: [
+                        Gradient.Stop(color: color.opacity(0.5), location: 0),
+                        Gradient.Stop(color: color, location: 2 / 4),
+                    ], startPoint: .bottom, endPoint: .top)).mask {
+                        var data: [(Date, Double)] = []
+                        var lastTimestamp: Date? = nil
+                        let _ = graph.sorted(by: { $0.0 < $1.0 }).map { point in
+                            if let lastTimestamp = lastTimestamp,
+                               point.0.timeIntervalSince(lastTimestamp) > Double(activityViewModel.interval) {
+                                data.append((lastTimestamp.addingTimeInterval(1), 0))
+                                data.append((point.0.addingTimeInterval(-1), 0))
+                            }
+                            data.append((point.0, point.1))
+                            lastTimestamp = point.0
                         }
-                        data.append((point.0, point.1))
-                        lastTimestamp = point.0
-                    }
 
-                    ForEach(data, id: \.0) { tuple in
-                        AreaMark(
-                            x: .value("Timestamp", tuple.0),
-                            y: .value("Value", tuple.1)
-                        )
-                        .foregroundStyle(color)
-                        .interpolationMethod(.cardinal)
+                        ForEach(data, id: \.0) { tuple in
+                            AreaMark(
+                                x: .value("Timestamp", tuple.0),
+                                y: .value("Value", tuple.1)
+                            )
+                                .foregroundStyle(color)
+                                .interpolationMethod(.cardinal)
+                        }
                     }
-                }
 
                 if let analysisPosition = activityViewModel.analysisPosition {
                     if let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph) {
@@ -67,51 +66,53 @@ struct HoverableChart: View {
                             x: .value("Timestamp", analysisPosition),
                             y: .value("Value", value)
                         )
-                        .foregroundStyle(color)
+                            .foregroundStyle(color)
                     }
                     RectangleMark(x: .value("Timestamp", analysisPosition), width: 1)
                         .foregroundStyle(color)
-                        .annotation(
-                            position: .top,
-                            alignment: .center,
-                            spacing: 0
-                        ) {
-                            let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph)
-                            Text("\(value != nil ? valueModifier(value ?? 0) : "No Data") at \(analysisPosition.formatted(date: .omitted, time: .standard))")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .padding()
-                                .foregroundColor(.white)
-                                .background(color)
-                                .cornerRadius(5)
-                        }
                 }
             }
-            .frame(height: 200)
-            .padding(.horizontal, 10)
-            .border(Color.gray)
-            .chartOverlay { (chartProxy: ChartProxy) in
-                Color.clear
-                    .contentShape(Rectangle())
-                    .gesture(DragGesture()
-                        .onChanged { value in
-                            activityViewModel.analysisPosition = chartProxy.value(
-                                atX: value.location.x
-                            )
-                            if let analysisPosition = activityViewModel.analysisPosition {
-                                if analysisPosition < workoutStart {
-                                    activityViewModel.analysisPosition = workoutStart
-                                } else if analysisPosition > workoutEnd {
-                                    activityViewModel.analysisPosition = workoutEnd
-                                }
+                .frame(height: 200)
+                .padding(.horizontal, 10)
+                .border(Color.gray)
+                .chartOverlay { (chartProxy: ChartProxy) in
+                    ZStack {
+                        if let analysisPosition = activityViewModel.analysisPosition {
+                            if let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph) {
+                                let chartSize = chartProxy.plotAreaSize
+                                let xPosition = (chartProxy.position(forX: analysisPosition) ?? 0) - chartSize.width / 2
+                                Text("\(valueModifier(value))")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .padding()
+                                    .foregroundColor(.white)
+                                    .background(color)
+                                    .cornerRadius(5)
+                                    .offset(x: xPosition, y: -chartSize.height / 2)
                             }
                         }
-                        .onEnded {
-                            _ in
-                            activityViewModel.analysisPosition = nil
-                        }
-                    )
-            }
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .gesture(DragGesture()
+                                .onChanged { value in
+                                    activityViewModel.analysisPosition = chartProxy.value(
+                                        atX: value.location.x
+                                    )
+                                    if let analysisPosition = activityViewModel.analysisPosition {
+                                        if analysisPosition < workoutStart {
+                                            activityViewModel.analysisPosition = workoutStart
+                                        } else if analysisPosition > workoutEnd {
+                                            activityViewModel.analysisPosition = workoutEnd
+                                        }
+                                    }
+                                }
+                                .onEnded {
+                                    _ in
+                                    activityViewModel.analysisPosition = nil
+                                }
+                            )
+                    }
+                }
         }
     }
 }
