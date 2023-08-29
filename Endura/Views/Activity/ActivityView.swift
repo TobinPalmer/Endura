@@ -8,6 +8,8 @@ struct ActivityView: View {
     private var activity: ActivityData
     @State var activityData: ActivityDataWithRoute?
 
+    @State var analysisView: Bool = false
+
     public init(id: String, activity: ActivityData) {
         self.activity = activity
         self.id = id
@@ -30,11 +32,21 @@ struct ActivityView: View {
 
                         ActivityGridStats(activityData: ActivityDataWithRoute.withGridStats(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
 
-                        VStack {
-                            ActivityGraphsView(activityData)
+                        Button(action: {
+                            analysisView = true
+                        }) {
+                            Text("View Analysis")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(Color.blue)
+                                .cornerRadius(5)
                         }
+                            .padding(.top, 10)
+                            .padding(.bottom, 20)
                     }
-                    .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
+                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                 }
             } else {
                 ScrollView {
@@ -48,44 +60,62 @@ struct ActivityView: View {
                     VStack {
                         Text("Loading...")
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .frame(height: 300)
-                    .foregroundColor(Color.red)
-                    .border(.red)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(height: 300)
+                        .foregroundColor(Color.red)
+                        .border(.red)
 
                     ActivityGridStats(activityData: nil, placeholder: true)
                 }
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button(action: {
-                        print("Edit")
-                    }) {
-                        Label("Edit", systemImage: "pencil")
-                    }
-                    Button(action: {
-                        ActivityUtils.deleteActivity(id: id)
-                    }) {
-                        Label("Delete", systemImage: "trash")
-                    }
+            .sheet(isPresented: $analysisView) {
+                if let activityData = activityData {
+                    VStack {
+                        Text(activity.title)
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
 
-                    if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
-                        Button(action: {
-                            print("Banned")
-                        }) {
-                            Label("Ban User", systemImage: "trash")
+                        ActivityMap(activityData.data.routeData)
+                            .frame(height: 300)
+
+                        ScrollView {
+                            ActivityGraphsView(activityData)
                         }
                     }
-                } label: {
-                    Image(systemName: "ellipsis")
+                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                 }
             }
-        }
-        .padding()
-        .task {
-            activityData = await activity.withRouteData(id: id)
-        }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu {
+                        Button(action: {
+                            print("Edit")
+                        }) {
+                            Label("Edit", systemImage: "pencil")
+                        }
+                        Button(action: {
+                            ActivityUtils.deleteActivity(id: id)
+                        }) {
+                            Label("Delete", systemImage: "trash")
+                        }
+
+                        if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
+                            Button(action: {
+                                print("Banned")
+                            }) {
+                                Label("Ban User", systemImage: "trash")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                    }
+                }
+            }
+            .padding()
+            .task {
+                activityData = await activity.withRouteData(id: id)
+            }
     }
 }
