@@ -78,18 +78,22 @@ struct HoverableChart: View {
                 .chartOverlay { (chartProxy: ChartProxy) in
                     ZStack {
                         if let analysisPosition = activityViewModel.analysisPosition {
-                            if let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph) {
-                                let chartSize = chartProxy.plotAreaSize
-                                let xPosition = (chartProxy.position(forX: analysisPosition) ?? 0) - chartSize.width / 2
-                                Text("\(valueModifier(value))")
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .background(color)
-                                    .cornerRadius(5)
-                                    .offset(x: xPosition, y: -chartSize.height / 2)
-                            }
+                            let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph)
+                            let chartSize = chartProxy.plotAreaSize
+                            let overlayWidth = 150.0;
+                            let centerOffset = (chartSize.width / 2)
+                            let xPosition = max(-centerOffset + overlayWidth / 2, min(centerOffset - overlayWidth / 2, (chartProxy.position(forX: analysisPosition) ?? 0) - centerOffset - 6))
+
+                            Text("\(value != nil ? valueModifier(value!) : "No Data")")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .padding()
+                                .foregroundColor(.white)
+                                .frame(width: overlayWidth, height: 50)
+                                .background(color)
+                                .cornerRadius(5)
+                                .offset(x: xPosition, y: -chartSize.height / 2 - 25)
+
                         }
                         Color.clear
                             .contentShape(Rectangle())
