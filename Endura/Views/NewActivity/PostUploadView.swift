@@ -62,10 +62,14 @@ struct PostUploadView: View {
     @Environment(\.dismiss) var dismiss
 
     @StateObject private var viewModel = PostUploadViewModel()
-    private var activityData: ActivityDataWithRoute
+    private let activityData: ActivityDataWithRoute
+    private let mapRef: Binding<(any View)?>
+    private let geometryRef: Binding<GeometryProxy?>
 
-    public init(activityData: ActivityDataWithRoute) {
+    public init(activityData: ActivityDataWithRoute, mapRef: Binding<(any View)?>, geometryRef: Binding<GeometryProxy?>) {
         self.activityData = activityData
+        self.geometryRef = geometryRef
+        self.mapRef = mapRef
     }
 
     public var body: some View {
@@ -83,6 +87,19 @@ struct PostUploadView: View {
                 dismiss()
             }
             .buttonStyle(EnduraButtonStyle())
+        }
+        .task {
+            do {
+//          if let mapRef = mapRef.wrappedValue, let geometryRef = geometryRef.wrappedValue {
+//            if let image = mapRef.takeScreenshot(origin: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.wrappedValue!.size)) {
+//              try await ActivityUtils.uploadActivity(activity: activityData, image: image)
+//            }
+//          } else {
+//            try await ActivityUtils.uploadActivity(activity: activityData)
+//          }
+            } catch {
+                print("Error uploading activity: \(error)")
+            }
         }
     }
 }

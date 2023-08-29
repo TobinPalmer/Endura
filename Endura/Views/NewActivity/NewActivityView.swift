@@ -58,7 +58,7 @@ struct NewActivityView: View {
         }
         List(uploadsViewModel.uploads, id: \.self) { activity in
             if let activity {
-                NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
+                NavigationLink(destination: PreviewWorkoutView2(workout: activity)) {
                     let workoutType = activity.workoutActivityType.name
                     let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0).rounded(toPlaces: 2).removeTrailingZeros()
                     HStack {

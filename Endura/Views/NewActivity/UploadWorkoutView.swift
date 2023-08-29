@@ -153,7 +153,7 @@ struct PreviewWorkoutView: View {
         }
         .fullScreenCover(isPresented: $isShowingSummary) {
             if let activityData = previewWorkoutModel.enduraWorkout {
-                PostUploadView(activityData: activityData)
+//          PostUploadView(activityData: activityData)
             } else {
                 Text("Error uploading workout")
             }
