@@ -1,3 +1,4 @@
+import FirebaseStorage
 import Foundation
 import HealthKit
 import MapKit
@@ -94,6 +95,8 @@ struct PreviewWorkoutView: View {
                     Button {
                         Task {
                             do {
+                                let storage = Storage.storage()
+
                                 if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
                                     if previewWorkoutModel.activityTitle.isEmpty {
                                         activityData.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
@@ -102,7 +105,7 @@ struct PreviewWorkoutView: View {
                                         activityData.description = previewWorkoutModel.activityDescription
                                     }
 
-                                    try ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size))
+                                    try ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size), storage: storage)
                                 } else {
                                     try ActivityUtils.uploadActivity(activity: activityData)
                                 }

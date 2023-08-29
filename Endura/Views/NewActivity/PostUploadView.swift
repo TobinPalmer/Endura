@@ -1,3 +1,4 @@
+import FirebaseStorage
 import Foundation
 import SwiftUI
 
@@ -89,14 +90,16 @@ struct PostUploadView: View {
             .buttonStyle(EnduraButtonStyle())
         }
         .task {
+            let storage = Storage.storage()
+
             do {
-//          if let mapRef = mapRef.wrappedValue, let geometryRef = geometryRef.wrappedValue {
-//            if let image = mapRef.takeScreenshot(origin: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.wrappedValue!.size)) {
-//              try await ActivityUtils.uploadActivity(activity: activityData, image: image)
-//            }
-//          } else {
-//            try await ActivityUtils.uploadActivity(activity: activityData)
-//          }
+                if let mapRef = mapRef.wrappedValue, let geometryRef = geometryRef.wrappedValue {
+                    let image = mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size)
+
+                    try ActivityUtils.uploadActivity(activity: activityData, image: image, storage: storage)
+                } else {
+                    try ActivityUtils.uploadActivity(activity: activityData)
+                }
             } catch {
                 print("Error uploading activity: \(error)")
             }

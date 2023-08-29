@@ -68,13 +68,13 @@ public enum ActivityUtils {
         }
     }
 
-    public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil) throws {
+    public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil, storage: Storage? = nil) throws {
         do {
             let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: activity)
             try activityDoc.collection("data").document("data").setData(from: activity.data)
 
-            if let image = image {
-                uploadImage(image, for: activityDoc)
+            if let image, let storage {
+                uploadImage(image, for: activityDoc, storage: storage)
             }
 
         } catch {
@@ -82,22 +82,30 @@ public enum ActivityUtils {
         }
     }
 
-    private static func uploadImage(_ image: UIImage, for activityDoc: DocumentReference) {
-        let imageRef = Storage.storage().reference().child("activities/\(activityDoc.documentID)/map")
+    private static func uploadImage(_ image: UIImage, for activityDoc: DocumentReference, storage: Storage) {
+        let imageRef = storage.reference().child("activities/\(activityDoc.documentID)/map")
+
         let data = image.pngData()
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"
+
         guard let data else {
             print("Error getting image data")
             return
         }
 
-        imageRef.putData(data, metadata: metadata) { metadata, error in
-            guard metadata != nil else {
-                print("Error uploading image: \(error!)")
-                return
-            }
-            print("Image uploaded successfully")
+        return;
+
+        imageRef.putData(data, metadata: metadata) { _ in
         }
+
+//    imageRef.putData(data, metadata: metadata) { metadata, error in
+//
+//      guard metadata != nil else {
+//        print("Error uploading image: \(error!)")
+//        return
+//      }
+//      print("Image uploaded successfully")
+//    }
     }
 }
