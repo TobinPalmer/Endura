@@ -117,6 +117,7 @@ public enum HealthKitUtils {
 
     public static func getFirstWorkoutRoute(workout: HKWorkout) async throws -> HKWorkoutRoute? {
         let predicate = HKQuery.predicateForObjects(from: workout)
+
         do {
             let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKSample], Error>) in
                 healthStore.execute(HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: 1, resultsHandler: { _, samples, _, _, error in

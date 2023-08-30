@@ -43,10 +43,10 @@ struct ActivityView: View {
                                 .background(Color.blue)
                                 .cornerRadius(5)
                         }
-                            .padding(.top, 10)
-                            .padding(.bottom, 20)
+                        .padding(.top, 10)
+                        .padding(.bottom, 20)
                     }
-                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
+                    .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                 }
             } else {
                 ScrollView {
@@ -60,62 +60,62 @@ struct ActivityView: View {
                     VStack {
                         Text("Loading...")
                     }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .frame(height: 300)
-                        .foregroundColor(Color.red)
-                        .border(.red)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(height: 300)
+                    .foregroundColor(Color.red)
+                    .border(.red)
 
                     ActivityGridStats(activityData: nil, placeholder: true)
                 }
             }
         }
-            .sheet(isPresented: $analysisView) {
-                if let activityData = activityData {
-                    VStack {
-                        Text(activity.title)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+        .sheet(isPresented: $analysisView) {
+            if let activityData = activityData {
+                VStack {
+                    Text(activity.title)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                        ActivityMap(activityData.data.routeData)
-                            .frame(height: 300)
+                    ActivityMap(activityData.data.routeData)
+                        .frame(height: 300)
 
-                        ScrollView {
-                            ActivityGraphsView(activityData)
-                        }
-                    }
-                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button(action: {
-                            print("Edit")
-                        }) {
-                            Label("Edit", systemImage: "pencil")
-                        }
-                        Button(action: {
-                            ActivityUtils.deleteActivity(id: id)
-                        }) {
-                            Label("Delete", systemImage: "trash")
-                        }
-
-                        if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
-                            Button(action: {
-                                print("Banned")
-                            }) {
-                                Label("Ban User", systemImage: "trash")
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
+                    ScrollView {
+                        ActivityGraphsView(activityData)
                     }
                 }
+                .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
             }
-            .padding()
-            .task {
-                activityData = await activity.withRouteData(id: id)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: {
+                        print("Edit")
+                    }) {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    Button(action: {
+                        ActivityUtils.deleteActivity(id: id)
+                    }) {
+                        Label("Delete", systemImage: "trash")
+                    }
+
+                    if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
+                        Button(action: {
+                            print("Banned")
+                        }) {
+                            Label("Ban User", systemImage: "trash")
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
             }
+        }
+        .padding()
+        .task {
+            activityData = await activity.withRouteData(id: id)
+        }
     }
 }

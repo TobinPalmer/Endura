@@ -94,9 +94,11 @@ public enum ActivityUtils {
             return
         }
 
-        return;
-
-        imageRef.putData(data, metadata: metadata) { _ in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            print("Uploading Image outer")
+            imageRef.putData(data, metadata: metadata) { _ in
+                print("Uploading Image")
+            }
         }
 
 //    imageRef.putData(data, metadata: metadata) { metadata, error in
