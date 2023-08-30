@@ -1,9 +1,12 @@
-import Charts
 import Foundation
 import SwiftUI
 
+#if canImport(Charts)
+import Charts
+#endif
+
 @available(iOS 16.0, *)
-struct HoverableChart: View {
+public struct HoverableChart: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
     private let graph: IndexedLineGraphData
@@ -51,13 +54,14 @@ struct HoverableChart: View {
                             lastTimestamp = point.0
                         }
 
-                        ForEach(data, id: \.0) { tuple in
+                        ForEach(data, id: \.0) { point in
                             AreaMark(
-                                x: .value("Timestamp", tuple.0),
-                                y: .value("Value", tuple.1)
+                                x: .value("Timestamp", point.0),
+                                y: .value("Value", point.1)
                             )
                                 .foregroundStyle(color)
                         }
+
                     }
 
                 if let analysisPosition = activityViewModel.analysisPosition {
@@ -73,12 +77,14 @@ struct HoverableChart: View {
                 }
             }
                 .frame(width: UIScreen.main.bounds.width - chartPadding * 2, height: 200)
+                .chartXAxis(.hidden)
+                .chartXScale(domain: workoutStart...workoutEnd)
                 .chartOverlay { (chartProxy: ChartProxy) in
                     ZStack {
                         if let analysisPosition = activityViewModel.analysisPosition {
                             let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph)
                             let chartSize = chartProxy.plotAreaSize
-                            let overlayWidth = 150.0;
+                            let overlayWidth = 150.0
                             let centerOffset = (UIScreen.main.bounds.width - chartPadding * 2) / 2
                             let xPosition = max(-centerOffset + overlayWidth / 2, min(centerOffset - overlayWidth / 2, (chartProxy.position(forX: analysisPosition) ?? 0) - centerOffset))
 
@@ -91,7 +97,6 @@ struct HoverableChart: View {
                                 .background(color)
                                 .cornerRadius(5)
                                 .offset(x: xPosition, y: -chartSize.height / 2 - 25)
-
                         }
                         Color.clear
                             .contentShape(Rectangle())
@@ -115,41 +120,6 @@ struct HoverableChart: View {
                             )
                     }
                 }
-        }
-    }
-}
-
-struct ActivityGraphsView: View {
-    private let activityData: ActivityDataWithRoute
-
-    @State private var timestamp: Date?
-
-    init(_ activityData: ActivityDataWithRoute) {
-        self.activityData = activityData
-    }
-
-    public var body: some View {
-        VStack {
-            let graphData = activityData.getGraphData()
-            let start = activityData.workoutStart
-            let end = activityData.workoutStart + activityData.duration
-
-            if #available(iOS 16.0, *) {
-                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.pace, color: .blue, label: "Pace", valueModifier: ConversionUtils.convertMpsToMpm)
-                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.cadence, color: .red, label: "Cadence")
-                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.elevation, color: .green, label: "Elevation")
-                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.power, color: .purple, label: "Power")
-                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.strideLength, color: .yellow, label: "Stride Length", valueModifier: ConversionUtils.round2)
-                HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.verticalOscillation, color: .pink, label: "Vertical Oscillation", valueModifier: ConversionUtils.round2)
-            } else {
-//                LineGraph(data: graphData.pace, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.convertMpsToMpm, style: PaceLineGraphStyle())
-//                LineGraph(data: graphData.cadence, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: CadenceLineGraphStyle())
-//                LineGraph(data: graphData.elevation, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: ElevationLineGraphStyle())
-//                LineGraph(data: graphData.heartRate, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: HeartRateLineGraphStyle())
-//                LineGraph(data: graphData.power, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: PowerLineGraphStyle())
-//                LineGraph(data: graphData.strideLength, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: StrideLengthLineGraphStyle())
-//                LineGraph(data: graphData.verticalOscillation, step: activityData.data.graphInterval, height: 200, valueModifier: ConversionUtils.round, style: VerticalOscillationLineGraphStyle())
-            }
         }
     }
 }
