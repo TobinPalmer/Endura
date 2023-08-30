@@ -55,7 +55,7 @@ public enum ActivityUtils {
         }
     }
 
-    public static func setActivityUploaded(_ activity: HKWorkout) {
+    public static func setActivityUploaded(for activity: HKWorkout) {
         let context = PersistenceController.shared.container.newBackgroundContext()
         context.perform {
             let newActivity = Activity(context: context)

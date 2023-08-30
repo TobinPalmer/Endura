@@ -74,7 +74,7 @@ struct PreviewWorkoutView2: View {
 //                  try ActivityUtils.uploadActivity(activity: activityData)
                                 }
 
-                                ActivityUtils.setActivityUploaded(workout)
+                                ActivityUtils.setActivityUploaded(for: workout)
                                 isShowingSummary = true
                                 return;
                                 print("setting model to true")
