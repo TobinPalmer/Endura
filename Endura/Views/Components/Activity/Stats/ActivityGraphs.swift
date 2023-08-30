@@ -29,6 +29,7 @@ struct HoverableChart: View {
             Text(label)
                 .font(.title3)
                 .padding()
+            let chartPadding = 10.0
             Chart {
                 RectangleMark(
                     xStart: .value("Timestamp", workoutStart),
@@ -56,7 +57,6 @@ struct HoverableChart: View {
                                 y: .value("Value", tuple.1)
                             )
                                 .foregroundStyle(color)
-                                .interpolationMethod(.cardinal)
                         }
                     }
 
@@ -72,17 +72,15 @@ struct HoverableChart: View {
                         .foregroundStyle(color)
                 }
             }
-                .frame(height: 200)
-                .padding(.horizontal, 10)
-                .border(Color.gray)
+                .frame(width: UIScreen.main.bounds.width - chartPadding * 2, height: 200)
                 .chartOverlay { (chartProxy: ChartProxy) in
                     ZStack {
                         if let analysisPosition = activityViewModel.analysisPosition {
                             let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph)
                             let chartSize = chartProxy.plotAreaSize
                             let overlayWidth = 150.0;
-                            let centerOffset = (chartSize.width / 2)
-                            let xPosition = max(-centerOffset + overlayWidth / 2, min(centerOffset - overlayWidth / 2, (chartProxy.position(forX: analysisPosition) ?? 0) - centerOffset - 6))
+                            let centerOffset = (UIScreen.main.bounds.width - chartPadding * 2) / 2
+                            let xPosition = max(-centerOffset + overlayWidth / 2, min(centerOffset - overlayWidth / 2, (chartProxy.position(forX: analysisPosition) ?? 0) - centerOffset))
 
                             Text("\(value != nil ? valueModifier(value!) : "No Data")")
                                 .font(.title3)
