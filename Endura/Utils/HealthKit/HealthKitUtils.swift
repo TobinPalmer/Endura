@@ -264,9 +264,9 @@ public enum HealthKitUtils {
         var dataRate = 1
 
         func updateGraphData<T: TimestampPoint>(_ data: inout [T], timestamp: Date, updateValue: (T) -> Void) {
-            for j in 0..<data.count where Int(data[j].timestamp.timeIntervalSince1970) == Int(timestamp.timeIntervalSince1970) {
+            for j in 0 ..< data.count where Int(data[j].timestamp.timeIntervalSince1970) == Int(timestamp.timeIntervalSince1970) {
                 updateValue(data[j])
-                data.removeSubrange(0...j)
+                data.removeSubrange(0 ... j)
                 break
             }
         }
@@ -279,7 +279,7 @@ public enum HealthKitUtils {
                 dataRate = Int(data.count / maxPoints)
             }
 
-            data.removeSubrange(0...5)
+            data.removeSubrange(0 ... 5)
 
             var heartRateAtPoint: Double?
             var cadenceAtPoint: Double?
@@ -288,7 +288,7 @@ public enum HealthKitUtils {
             var groundContactTimeAtPoint: Double?
             var strideLengthAtPoint: Double?
 
-            for i in 0..<data.count where i % dataRate == 0 {
+            for i in 0 ..< data.count where i % dataRate == 0 {
                 let point = data[i]
 
                 updateGraphData(&cadence, timestamp: point.timestamp) {
@@ -395,8 +395,8 @@ public enum HealthKitUtils {
             averagePower: power?.isEmpty ?? true
                 ? nil
                 : power!.reduce(0) {
-                $0 + $1.power
-            } / Double(power!.count),
+                    $0 + $1.power
+                } / Double(power!.count),
             calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
             comments: [],
             data: ActivityRouteData(
@@ -441,7 +441,8 @@ public enum HealthKitUtils {
     private static func compileResultsFromWorkoutCumulative<T: TimestampPoint>(_ results: HKStatisticsCollection,
                                                                                workout: HKWorkout,
                                                                                unit _: UnitType,
-                                                                               dataType: T.Type) -> [T] where T: Codable {
+                                                                               dataType: T.Type) -> [T] where T: Codable
+    {
         var dataPoints = [T]()
 
         results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
@@ -471,7 +472,8 @@ public enum HealthKitUtils {
     private static func compileResultsFromWorkoutDiscreteMinMax<T: TimestampPoint>(_ results: HKStatisticsCollection,
                                                                                    workout: HKWorkout,
                                                                                    unit: UnitType,
-                                                                                   dataType: T.Type) -> [T] where T: Codable {
+                                                                                   dataType: T.Type) -> [T] where T: Codable
+    {
         var dataPoints = [T]()
 
         results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
@@ -489,7 +491,8 @@ public enum HealthKitUtils {
             }
 
             if let minValue = minVal,
-               let maxValue = maxVal {
+               let maxValue = maxVal
+            {
                 let average = (minValue + maxValue) / 2
                 let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
 
@@ -517,7 +520,7 @@ public enum HealthKitUtils {
 
         var filledArray = [T]()
 
-        for i in 0..<dataPoints.count {
+        for i in 0 ..< dataPoints.count {
             let currentPoint = dataPoints[i]
 
             if i > 0 {

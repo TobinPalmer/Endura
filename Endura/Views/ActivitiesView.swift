@@ -14,9 +14,9 @@ import SwiftUI
     private static let loadAmount = 5
 
     fileprivate func loadActivities() {
-        let baseQuery = Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: ActivitiesViewModel.loadAmount)
-
-        let query = (lastDocument == nil) ? baseQuery.whereField("time", isLessThan: lastRefresh) : baseQuery.start(afterDocument: lastDocument!)
+        let query = (lastDocument == nil) ?
+            Firestore.firestore().collection("activities").order(by: "uploadTime").order(by: "time", descending: true).whereField("uploadTime", isLessThan: lastRefresh).limit(to: ActivitiesViewModel.loadAmount) :
+            Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: ActivitiesViewModel.loadAmount).start(afterDocument: lastDocument!)
 
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
@@ -33,9 +33,11 @@ import SwiftUI
     }
 
     fileprivate func loadNewActivities() {
-        print("last refresh", lastRefresh)
-
-        let query = Firestore.firestore().collection("activities").order(by: "time", descending: true).whereField("time", isGreaterThan: lastRefresh).whereField("time", isLessThan: Date())
+        let query = Firestore.firestore().collection("activities")
+            .order(by: "uploadTime")
+            .order(by: "time", descending: true)
+            .whereField("uploadTime", isGreaterThan: lastRefresh)
+            .whereField("uploadTime", isLessThan: Date())
 
         lastRefresh = Date()
 

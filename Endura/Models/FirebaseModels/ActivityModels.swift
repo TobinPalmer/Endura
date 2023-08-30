@@ -185,9 +185,9 @@ public struct ActivityDocument: Codable {
     var title: String
     var totalDuration: TimeInterval
     var uid: String
-    var uploadDate: Date
+    var uploadTime: Date
 
-    static func getDocument(for activity: ActivityDataWithRoute, uploadDate: Date) -> ActivityDocument {
+    static func getDocument(for activity: ActivityDataWithRoute, uploadTime: Date) -> ActivityDocument {
         ActivityDocument(
             averagePower: activity.averagePower,
             calories: activity.calories,
@@ -203,7 +203,7 @@ public struct ActivityDocument: Codable {
             title: activity.title,
             totalDuration: activity.totalDuration,
             uid: activity.uid,
-            uploadDate: uploadDate
+            uploadTime: uploadTime
         )
     }
 }

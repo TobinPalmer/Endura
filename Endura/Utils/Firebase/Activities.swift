@@ -70,7 +70,7 @@ public enum ActivityUtils {
 
     public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil, storage: Storage? = nil) throws {
         do {
-            let documentData = ActivityDocument.getDocument(for: activity, uploadDate: Date())
+            let documentData = ActivityDocument.getDocument(for: activity, uploadTime: Date())
             let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: documentData)
             try activityDoc.collection("data").document("data").setData(from: activity.data)
 
