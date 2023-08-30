@@ -163,6 +163,51 @@ extension ActivityDataProtocol {
     }
 }
 
+public enum ActivityType: String, Codable {
+    case long = "Long Run"
+    case hard = "Hard Run"
+    case normal = "Normal Run"
+    case none;
+}
+
+public struct ActivityDocument: Codable {
+    var averagePower: Double?
+    var calories: Double
+    var comments: [ActivityCommentData]
+    var distance: Double
+    var description: String
+    var duration: TimeInterval
+    var likes: [String]
+    var type: ActivityType
+    var startCity: String
+    var startLocation: LocationData
+    var time: Date
+    var title: String
+    var totalDuration: TimeInterval
+    var uid: String
+    var uploadDate: Date
+
+    static func getDocument(for activity: ActivityDataWithRoute, uploadDate: Date) -> ActivityDocument {
+        ActivityDocument(
+            averagePower: activity.averagePower,
+            calories: activity.calories,
+            comments: activity.comments,
+            distance: activity.distance,
+            description: activity.description,
+            duration: activity.duration,
+            likes: activity.likes,
+            type: activity.type,
+            startCity: activity.startCity,
+            startLocation: activity.startLocation,
+            time: activity.time,
+            title: activity.title,
+            totalDuration: activity.totalDuration,
+            uid: activity.uid,
+            uploadDate: uploadDate
+        )
+    }
+}
+
 public struct ActivityData: Codable, ActivityDataProtocol {
     var averagePower: Double?
     var calories: Double
@@ -174,7 +219,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
     var pace: Double {
         distance / duration
     }
-
+    var type: ActivityType
     var startCity: String
     var startLocation: LocationData
     var time: Date
@@ -194,6 +239,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
             duration: duration,
             workoutStart: time,
             likes: likes,
+            type: type,
             startCity: startCity,
             startLocation: startLocation,
             time: time,
@@ -217,7 +263,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     var pace: Double {
         distance / duration
     }
-
+    var type: ActivityType
     var startCity: String
     var startLocation: LocationData
     var time: Date
@@ -234,6 +280,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
             description: description,
             duration: duration,
             likes: likes,
+            type: type,
             startCity: startCity,
             startLocation: startLocation,
             time: time,
@@ -373,14 +420,20 @@ protocol TimestampPoint: Codable {
     var timestamp: Date { get }
 }
 
-extension CadenceData: TimestampPoint {}
+extension CadenceData: TimestampPoint {
+}
 
-extension HeartRateData: TimestampPoint {}
+extension HeartRateData: TimestampPoint {
+}
 
-extension PowerData: TimestampPoint {}
+extension PowerData: TimestampPoint {
+}
 
-extension StrideLengthData: TimestampPoint {}
+extension StrideLengthData: TimestampPoint {
+}
 
-extension GroundContactTimeData: TimestampPoint {}
+extension GroundContactTimeData: TimestampPoint {
+}
 
-extension VerticalOscillationData: TimestampPoint {}
+extension VerticalOscillationData: TimestampPoint {
+}

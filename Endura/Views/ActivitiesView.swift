@@ -53,7 +53,7 @@ import SwiftUI
 
     private func handleActivityDocument(diff: DocumentChange) {
         do {
-            let data = try diff.document.data(as: ActivityData.self)
+            let data = try diff.document.data(as: ActivityDocument.self)
 
             let activity = ActivityData(
                 averagePower: data.averagePower,
@@ -63,6 +63,7 @@ import SwiftUI
                 description: data.description,
                 duration: data.duration,
                 likes: data.likes,
+                type: data.type,
                 startCity: data.startCity,
                 startLocation: data.startLocation,
                 time: data.time,
@@ -105,37 +106,35 @@ struct ActivitiesView: View {
                             }
                         }
                     }
-                    .padding(10)
+                        .padding(10)
                 } else {
                     Text("No activities")
                 }
             }
-            .refreshable {
-                // TODO: Reload the activities (Including map images)
-                print("Refreshing")
-                activityViewModel.loadNewActivities()
-            }
+                .refreshable {
+                    activityViewModel.loadNewActivities()
+                }
         }
-        .enableInjection()
-        .background(Color(.secondarySystemBackground))
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink(destination: NewActivityView()) {
-                    Image(systemName: "plus")
+            .enableInjection()
+            .background(Color(.secondarySystemBackground))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: NewActivityView()) {
+                        Image(systemName: "plus")
+                    }
                 }
-            }
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink(destination: FindUsersView()) {
-                    Image(systemName: "person.2")
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink(destination: FindUsersView()) {
+                        Image(systemName: "person.2")
+                    }
                 }
-            }
 
-            ToolbarItem(placement: .navigationBarTrailing) {
-                UserProfileLink(AuthUtils.getCurrentUID()) {
-                    ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    UserProfileLink(AuthUtils.getCurrentUID()) {
+                        ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                    }
                 }
             }
-        }
     }
 }
 
@@ -145,10 +144,10 @@ class ActivitiesView_Previews: PreviewProvider {
     }
 
     #if DEBUG
-        @objc class func injected() {
-            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            windowScene?.windows.first?.rootViewController =
-                UIHostingController(rootView: InjectedContentView())
-        }
+    @objc class func injected() {
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        windowScene?.windows.first?.rootViewController =
+            UIHostingController(rootView: InjectedContentView())
+    }
     #endif
 }
