@@ -409,6 +409,7 @@ public enum HealthKitUtils {
             duration: workoutDuration,
             workoutStart: workout.startDate,
             likes: [],
+            type: .none,
             startCity: data.first?.fetchCityAndCountry().0 ?? "",
             startLocation: LocationData(latitude: data.first?.coordinate.latitude ?? 0.0, longitude: data.first?.coordinate.longitude ?? 0.0),
             time: workout.startDate,

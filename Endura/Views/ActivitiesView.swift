@@ -53,7 +53,7 @@ import SwiftUI
 
     private func handleActivityDocument(diff: DocumentChange) {
         do {
-            let data = try diff.document.data(as: ActivityData.self)
+            let data = try diff.document.data(as: ActivityDocument.self)
 
             let activity = ActivityData(
                 averagePower: data.averagePower,
@@ -63,6 +63,7 @@ import SwiftUI
                 description: data.description,
                 duration: data.duration,
                 likes: data.likes,
+                type: data.type,
                 startCity: data.startCity,
                 startLocation: data.startLocation,
                 time: data.time,
@@ -111,8 +112,6 @@ struct ActivitiesView: View {
                 }
             }
             .refreshable {
-                // TODO: Reload the activities (Including map images)
-                print("Refreshing")
                 activityViewModel.loadNewActivities()
             }
         }
