@@ -11,5 +11,7 @@ struct SignupFinishedView: View {
         VStack {
             Text("Welcome, \(formInfo.firstName)")
         }
+        .toolbar {}
+        .navigationBarBackButtonHidden(true)
     }
 }

@@ -7,13 +7,24 @@ private final class SignupViewModel: ObservableObject {
 //    }
 }
 
+public enum RunningScheduleType {
+    case FREE
+    case BUSY
+    case MAYBE
+    case PROBABLY
+    case PROBABLY_NOT
+}
+
+public typealias RunningSchedule = (Int, RunningScheduleType)
+
 final class SignupFormInfo: ObservableObject {
-    @Published var firstName: String = ""
-    @Published var lastName: String = ""
-    @Published var email: String = ""
-    @Published var password: String = ""
-    @Published var birthday: Date = .init(timeIntervalSince1970: 946_717_200) // 2000-01-01
-    @Published var gender: String = ""
+    @Published public var firstName: String = ""
+    @Published public var lastName: String = ""
+    @Published public var email: String = ""
+    @Published public var password: String = ""
+    @Published public var birthday: Date = .init(timeIntervalSince1970: 946_717_200) // 2000-01-01
+    @Published public var gender: String = ""
+    @Published public var schedule: [RunningSchedule] = [(1, .FREE), (2, .FREE), (3, .FREE), (4, .FREE), (5, .FREE), (6, .FREE), (7, .FREE)]
 }
 
 struct SignupView: View {

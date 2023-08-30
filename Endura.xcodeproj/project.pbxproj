@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		020C2CEA2A9ED92D008F57F7 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 020C2CE92A9ED92D008F57F7 /* WrappingHStack */; };
 		02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02352F932A6595B200BB68AF /* GoogleService-Info.plist */; };
 		026042BD2A62E27900F4AF88 /* EnduraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026042BC2A62E27900F4AF88 /* EnduraApp.swift */; };
 		026042BF2A62E27900F4AF88 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026042BE2A62E27900F4AF88 /* ContentView.swift */; };
@@ -229,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				026042F02A62E36300F4AF88 /* FirebaseDatabaseSwift in Frameworks */,
+				020C2CEA2A9ED92D008F57F7 /* WrappingHStack in Frameworks */,
 				026042EA2A62E36300F4AF88 /* FirebaseAnalyticsSwift in Frameworks */,
 				026042EC2A62E36300F4AF88 /* FirebaseAuth in Frameworks */,
 				026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */,
@@ -693,6 +695,7 @@
 				026042F92A62E36300F4AF88 /* FirebaseStorage */,
 				E955630B2A6F4F2800AC74DE /* SwiftUICharts */,
 				0267A8062A92CC3D0090E032 /* Inject */,
+				020C2CE92A9ED92D008F57F7 /* WrappingHStack */,
 			);
 			productName = Endura;
 			productReference = 026042B92A62E27900F4AF88 /* Endura.app */;
@@ -770,6 +773,7 @@
 				026042E62A62E36300F4AF88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E955630A2A6F4F2800AC74DE /* XCRemoteSwiftPackageReference "ChartView" */,
 				0267A8052A92CC3D0090E032 /* XCRemoteSwiftPackageReference "Inject" */,
+				020C2CE82A9ED92D008F57F7 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 			);
 			productRefGroup = 026042BA2A62E27900F4AF88 /* Products */;
 			projectDirPath = "";
@@ -1239,6 +1243,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		020C2CE82A9ED92D008F57F7 /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dkk/WrappingHStack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.10;
+			};
+		};
 		026042E62A62E36300F4AF88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -1266,6 +1278,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		020C2CE92A9ED92D008F57F7 /* WrappingHStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 020C2CE82A9ED92D008F57F7 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
+			productName = WrappingHStack;
+		};
 		026042E72A62E36300F4AF88 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 026042E62A62E36300F4AF88 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
