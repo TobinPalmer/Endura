@@ -46,7 +46,7 @@ struct LoginView: View {
                 } label: {
                     Text("Login")
                 }
-                .buttonStyle(EnduraButtonStyle(disabled: viewModel.email.isEmpty || viewModel.password.isEmpty))
+                .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.email.isEmpty || viewModel.password.isEmpty) ? .gray : .accentColor))
                 .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
 
                 NavigationLink(destination: SignupView()) {

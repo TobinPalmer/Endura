@@ -2,17 +2,17 @@ import Foundation
 import SwiftUI
 
 public struct EnduraButtonStyle: ButtonStyle {
-    private let disabled: Bool
+    private let backgroundColor: Color
 
-    init(disabled: Bool = false) {
-        self.disabled = disabled
+    init(backgroundColor: Color = Color.accentColor) {
+        self.backgroundColor = backgroundColor
     }
 
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(disabled ? Color.gray : Color.accentColor)
-            .animation(.easeInOut(duration: 0.1), value: disabled)
+            .background(backgroundColor)
+            .animation(.easeInOut(duration: 0.1), value: backgroundColor)
             .foregroundColor(.white)
             .cornerRadius(5)
     }
