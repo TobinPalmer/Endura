@@ -106,7 +106,6 @@
 		69698FA1FC03637A47E3FA7D /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698626B91694BAD5012252 /* NotificationUtils.swift */; };
 		69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* DashboardView.swift */; };
 		E91E1F782A9827D00095D3E9 /* Activities.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */; };
-		E955630C2A6F4F2800AC74DE /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = E955630B2A6F4F2800AC74DE /* SwiftUICharts */; };
 		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
 /* End PBXBuildFile section */
 
@@ -237,7 +236,6 @@
 				026042F62A62E36300F4AF88 /* FirebaseFunctions in Frameworks */,
 				026042F42A62E36300F4AF88 /* FirebaseFirestoreSwift in Frameworks */,
 				026042EE2A62E36300F4AF88 /* FirebaseDatabase in Frameworks */,
-				E955630C2A6F4F2800AC74DE /* SwiftUICharts in Frameworks */,
 				026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */,
 				026042E82A62E36300F4AF88 /* FirebaseAnalytics in Frameworks */,
 				026042F22A62E36300F4AF88 /* FirebaseFirestore in Frameworks */,
@@ -693,7 +691,6 @@
 				026042F52A62E36300F4AF88 /* FirebaseFunctions */,
 				026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */,
 				026042F92A62E36300F4AF88 /* FirebaseStorage */,
-				E955630B2A6F4F2800AC74DE /* SwiftUICharts */,
 				0267A8062A92CC3D0090E032 /* Inject */,
 				020C2CE92A9ED92D008F57F7 /* WrappingHStack */,
 			);
@@ -1337,11 +1334,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0267A8052A92CC3D0090E032 /* XCRemoteSwiftPackageReference "Inject" */;
 			productName = Inject;
-		};
-		E955630B2A6F4F2800AC74DE /* SwiftUICharts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E955630A2A6F4F2800AC74DE /* XCRemoteSwiftPackageReference "ChartView" */;
-			productName = SwiftUICharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 
