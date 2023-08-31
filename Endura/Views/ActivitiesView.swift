@@ -7,16 +7,16 @@ import Inject
 import SwiftUI
 
 @MainActor private final class ActivitiesViewModel: ObservableObject {
-    @Published fileprivate var activities: [String: ActivityData] = [:]
+    @Published fileprivate var activities: [String: (String, ActivityData)] = [:]
     @Published var lastDocument: DocumentSnapshot? = nil
     @Published private var lastRefresh = Date()
 
-    private static let loadAmount = 5
+    fileprivate static let loadAmount = 5
 
     fileprivate func loadActivities() {
         let query = (lastDocument == nil) ?
             Firestore.firestore().collection("activities").order(by: "uploadTime").order(by: "time", descending: true).whereField("uploadTime", isLessThan: lastRefresh).limit(to: ActivitiesViewModel.loadAmount) :
-            Firestore.firestore().collection("activities").order(by: "time", descending: true).limit(to: ActivitiesViewModel.loadAmount).start(afterDocument: lastDocument!)
+            Firestore.firestore().collection("activities").order(by: "uploadTime").order(by: "time", descending: true).whereField("uploadTime", isLessThan: lastRefresh).limit(to: ActivitiesViewModel.loadAmount).start(afterDocument: lastDocument!)
 
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
@@ -41,9 +41,18 @@ import SwiftUI
 
         lastRefresh = Date()
 
-        query.addSnapshotListener { querySnapshot, error in
+        var listener: ListenerRegistration? = nil
+
+        listener = query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
                 print("Error fetching documents: \(error!)")
+                return
+            }
+
+            if snapshot.documentChanges.isEmpty {
+                if let listener = listener {
+                    listener.remove()
+                }
                 return
             }
 
@@ -75,9 +84,7 @@ import SwiftUI
             )
 
             if diff.type == .added || diff.type == .modified {
-                activities.updateValue(activity, forKey: diff.document.documentID)
-            } else if diff.type == .removed {
-                activities.removeValue(forKey: diff.document.documentID)
+                activities.updateValue((diff.document.documentID, activity), forKey: diff.document.documentID)
             }
         } catch {
             print("Error decoding activity: \(error)")
@@ -97,15 +104,13 @@ struct ActivitiesView: View {
             ScrollView(.vertical) {
                 if !activityViewModel.activities.isEmpty {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
-                        ForEach(activityViewModel.activities.keys.sorted(by: >), id: \.self) { key in
-                            if let activity = activityViewModel.activities[key] {
-                                ActivityPost(id: key, activity: activity)
-                                    .onAppear {
-                                        if key == activityViewModel.activities.keys.sorted(by: >).last {
-                                            activityViewModel.loadActivities()
-                                        }
+                        ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }), id: \.0) { id, activity in
+                            ActivityPost(id: id, activity: activity)
+                                .onAppear {
+                                    if id == activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }).last?.0 && activityViewModel.activities.count >= ActivitiesViewModel.loadAmount {
+                                        activityViewModel.loadActivities()
                                     }
-                            }
+                                }
                         }
                     }
                     .padding(10)
