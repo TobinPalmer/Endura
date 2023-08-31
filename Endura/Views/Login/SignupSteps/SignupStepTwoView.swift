@@ -22,7 +22,7 @@ struct SignupStepTwoView: View {
                     .keyboardType(.emailAddress)
                     .textFieldStyle(EnduraTextFieldStyle())
 
-                TextField("Password", text: $viewModel.password)
+                SecureField("Password", text: $viewModel.password)
                     .autocapitalization(.none)
                     .textFieldStyle(EnduraTextFieldStyle())
 

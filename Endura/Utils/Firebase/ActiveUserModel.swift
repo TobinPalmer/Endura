@@ -32,7 +32,7 @@ import Foundation
     }
 
     public static func fetchInfo() async throws -> UserTrainingData {
-        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("data").document("info").getDocument(as: UserTrainingData.self)
+        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("data").document("training").getDocument(as: UserTrainingData.self)
         return document
     }
 }
