@@ -19,6 +19,11 @@ public typealias IndexedLineGraphData = [Date: Double]
 public typealias IndexedGraphData = [Date: GraphData]
 public typealias IndexedRouteLocationData = [Date: LocationData]
 
+public struct WeeklyGraphData: Hashable, Codable {
+    public var day: Int
+    public var distance: Double
+}
+
 public struct ActivityCommentData: Codable, Hashable {
     let message: String
     let time: Date

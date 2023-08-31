@@ -99,6 +99,7 @@
 		69698B2BDA9046D639E2A0E6 /* NewActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969849C3C4EA502A9EE3634 /* NewActivityView.swift */; };
 		69698B903B0D09249C4AB005 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989E9AE3D7EE9E513FE5C /* Button.swift */; };
 		69698BABDCAEC0A369C6A3FA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969819A8C4285A3E148D771 /* Double.swift */; };
+		69698CCC22527D126CBF9B6D /* WeeklySummaryGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */; };
 		69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986EDB3F87EE749147042 /* AppViewModel.swift */; };
 		69698D9FF474040A16DC04C9 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989BB502C0EDF35A4959D /* SignupView.swift */; };
 		69698E351EF5E934C5440F86 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698F375B8431109FFB3F98 /* TrainingView.swift */; };
@@ -206,6 +207,7 @@
 		696989E9AE3D7EE9E513FE5C /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		69698A52FFC5BD2B47BD4E5F /* SignupStepTwoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepTwoView.swift; sourceTree = "<group>"; };
 		69698B315EDC140451CA74A5 /* HealthKitUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitUtils.swift; sourceTree = "<group>"; };
+		69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklySummaryGraph.swift; sourceTree = "<group>"; };
 		69698C33876AF4895EBEE5F7 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
 		69698D01B022430326F64D83 /* ActivityPostStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPostStats.swift; sourceTree = "<group>"; };
 		69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 				6969879420E49BDC3FE11686 /* Stats */,
 				69698EC86F9A7092017FDF6F /* ActivityHeader.swift */,
 				69698F458E637E5ED12A14F2 /* Loading */,
+				69698DDFA619D90ED487EF68 /* SummaryGraph */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -623,6 +626,14 @@
 				696989C61224E03A0600D800 /* Components */,
 			);
 			path = Styles;
+			sourceTree = "<group>";
+		};
+		69698DDFA619D90ED487EF68 /* SummaryGraph */ = {
+			isa = PBXGroup;
+			children = (
+				69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */,
+			);
+			path = SummaryGraph;
 			sourceTree = "<group>";
 		};
 		69698E3957F37467DBEA8F92 /* Firebase */ = {
@@ -897,6 +908,7 @@
 				69698701102B2554DFC547AD /* UploadWorkoutView2.swift in Sources */,
 				17CC6E3338FB8B8721F2F71F /* HoverableChart.swift in Sources */,
 				17CC6E23D5A6B1EE12259C6E /* ActivityGraphs.swift in Sources */,
+				69698CCC22527D126CBF9B6D /* WeeklySummaryGraph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

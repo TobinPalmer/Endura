@@ -9,16 +9,14 @@ import SwiftUI
 struct DashboardView: View {
     var body: some View {
         VStack {
-            Text("Welcome to the test")
-
-            Button {
-                NotificationUtils.sendNotification(title: "Test", body: "Test", date: Date().addingTimeInterval(5))
-            } label: {
-                Text("Send Notification")
-                    .foregroundColor(.red)
-            }
+            WeeklySummaryGraph(
+                [
+                    WeeklyGraphData(day: 1, distance: 5),
+                    WeeklyGraphData(day: 2, distance: 4),
+                    WeeklyGraphData(day: 3, distance: 5),
+                ]
+            )
         }
-        .enableInjection()
     }
 }
 
