@@ -14,13 +14,13 @@ import Foundation
         return usersCache[uid] as? UserData
     }
 
-    private func fetchUserData(uid: String) async {
+    public func fetchUserData(uid: String, document: UserDocument? = nil) async -> UserData? {
         if usersCache[uid] != nil {
-            return
+            return usersCache[uid] as? UserData
         }
         do {
             usersCache.updateValue(nil, forKey: uid)
-            let document = try await Firestore.firestore().collection("users").document(uid).getDocument(as: UserDocument.self)
+            let document = document == nil ? try await Firestore.firestore().collection("users").document(uid).getDocument(as: UserDocument.self) : document!
 
             // Try loading firebase profile picture
             var image = try UIImage(data: await URLSession.shared.data(from: URL(string: "https://firebasestorage.googleapis.com/v0/b/runningapp-6ee99.appspot.com/o/users%2F\(uid)%2FprofilePicture?alt=media")!).0)
@@ -38,8 +38,10 @@ import Foundation
                 role: document.role
             )
             usersCache.updateValue(userData, forKey: uid)
+            return userData
         } catch {
             print("Error decoding user: \(error)")
         }
+        return nil
     }
 }
