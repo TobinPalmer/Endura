@@ -1,3 +1,4 @@
+import CachedAsyncImage
 import Foundation
 import SwiftUI
 
@@ -10,7 +11,7 @@ struct ActivityMapImage: View {
 
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: "https://firebasestorage.googleapis.com/v0/b/runningapp-6ee99.appspot.com/o/activities%2F\(id)%2Fmap?alt=media")) { phase in
+            CachedAsyncImage(url: URL(string: "https://firebasestorage.googleapis.com/v0/b/runningapp-6ee99.appspot.com/o/activities%2F\(id)%2Fmap?alt=media")) { phase in
                 switch phase {
                 case .empty:
                     ProgressView()
