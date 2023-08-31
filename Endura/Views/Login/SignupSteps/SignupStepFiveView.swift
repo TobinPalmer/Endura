@@ -16,6 +16,7 @@ struct SignupStepFiveView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
+                Text("STEP 5")
                 TextField("Email", text: $viewModel.email)
                     .disableAutocorrection(true)
                     .keyboardType(.emailAddress)

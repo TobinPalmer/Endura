@@ -7,24 +7,45 @@ private final class SignupViewModel: ObservableObject {
 //    }
 }
 
-public enum RunningScheduleType {
-    case FREE
-    case BUSY
-    case MAYBE
-    case PROBABLY
-    case PROBABLY_NOT
+public enum RunningScheduleType: String, Codable {
+    case FREE = "free"
+    case BUSY = "busy"
+    case MAYBE = "maybe"
+    case PROBABLY = "probably"
+    case PROBABLY_NOT = "probably_not"
 }
 
-public typealias RunningSchedule = (Int, RunningScheduleType)
+public struct RunningSchedule: Codable {
+    public var day: Int
+    public var type: RunningScheduleType
+}
 
-final class SignupFormInfo: ObservableObject {
+public final class SignupFormInfo: ObservableObject {
     @Published public var firstName: String = ""
     @Published public var lastName: String = ""
     @Published public var email: String = ""
     @Published public var password: String = ""
     @Published public var birthday: Date = .init(timeIntervalSince1970: 946_717_200) // 2000-01-01
-    @Published public var gender: String = ""
-    @Published public var schedule: [RunningSchedule] = [(1, .FREE), (2, .FREE), (3, .FREE), (4, .FREE), (5, .FREE), (6, .FREE), (7, .FREE)]
+    @Published public var gender: UserGender = .OTHER
+    @Published public var schedule: [RunningSchedule] = (1 ... 7).map { day in
+        RunningSchedule(day: day, type: .FREE)
+    }
+
+    public func toUserDocument() -> UserDocument {
+        UserDocument(
+            firstName: firstName,
+            lastName: lastName,
+            friends: [],
+            role: nil,
+            birthday: birthday,
+            gender: gender,
+            email: email
+        )
+    }
+
+    public func toUserTrainingData() -> UserTrainingData {
+        UserTrainingData(schedule: schedule)
+    }
 }
 
 struct SignupView: View {

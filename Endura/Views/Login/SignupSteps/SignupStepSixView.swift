@@ -65,41 +65,41 @@ struct SignupStepSixView: View {
                                     showingDate = index
                                 }
                                 .fixedSize()
-                                .buttonStyle(EnduraButtonStyle(backgroundColor: stepViewModel.stateToColor(state: viewModel.schedule[index - 1].1)))
+                                .buttonStyle(EnduraButtonStyle(backgroundColor: stepViewModel.stateToColor(state: viewModel.schedule[index - 1].type)))
                                 .padding(.vertical, 3)
                             }
                         }
 
                         VStack {
                             Button("Busy") {
-                                viewModel.schedule[showingDate - 1].1 = .BUSY
+                                viewModel.schedule[showingDate - 1].type = .BUSY
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].1 != .BUSY) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .BUSY) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Probably Not") {
-                                viewModel.schedule[showingDate - 1].1 = .PROBABLY_NOT
+                                viewModel.schedule[showingDate - 1].type = .PROBABLY_NOT
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].1 != .PROBABLY_NOT) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .PROBABLY_NOT) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Maybe") {
-                                viewModel.schedule[showingDate - 1].1 = .MAYBE
+                                viewModel.schedule[showingDate - 1].type = .MAYBE
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].1 != .MAYBE) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .MAYBE) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Probably") {
-                                viewModel.schedule[showingDate - 1].1 = .PROBABLY
+                                viewModel.schedule[showingDate - 1].type = .PROBABLY
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].1 != .PROBABLY) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .PROBABLY) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Free") {
-                                viewModel.schedule[showingDate - 1].1 = .FREE
+                                viewModel.schedule[showingDate - 1].type = .FREE
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].1 != .FREE) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .FREE) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                         }
                     }

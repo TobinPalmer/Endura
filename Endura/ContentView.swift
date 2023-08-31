@@ -7,6 +7,9 @@ struct ContentView: View {
     @EnvironmentObject var navigation: NavigationModel
     @ObservedObject private var IO = Inject.observer
     @State private var settings: SettingsModel?
+    @State private var info: UserTrainingData?
+
+    @State private var isLogoutButtonHidden = false
 
     var body: some View {
         switch navigation.currentView {
@@ -16,7 +19,7 @@ struct ContentView: View {
                     .preferredColorScheme(.light)
             }
         case .HOME:
-            if let settings = settings {
+            if let settings = settings, let info = info {
                 TabView {
                     NavigationView {
                         DashboardView()
@@ -58,17 +61,30 @@ struct ContentView: View {
                         Image(systemName: "person")
                         Text("Profile")
                     }
+
+                    .environmentObject(ActiveUserModel(settings: settings, info: info))
+                    .enableInjection()
                 }
-                .environmentObject(ActiveUserModel(settings: settings))
-                .enableInjection()
             } else {
                 VStack {
                     ProgressView()
                     Text("Loading...")
+
+                    if !isLogoutButtonHidden {
+                        Button("Logout") {
+                            AuthUtils.logout()
+                            isLogoutButtonHidden = true
+                        }
+                    }
                 }
                 .task {
                     do {
                         settings = try await ActiveUserModel.fetchSettings()
+                        info = try await ActiveUserModel.fetchInfo()
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            isLogoutButtonHidden = false
+                        }
                     } catch {
                         print("Error fetching settings: \(error)")
                     }

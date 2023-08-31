@@ -18,10 +18,12 @@ struct SignupStepTwoView: View {
             VStack(alignment: .center, spacing: 20) {
                 TextField("Email", text: $viewModel.email)
                     .disableAutocorrection(true)
+                    .autocapitalization(.none)
                     .keyboardType(.emailAddress)
                     .textFieldStyle(EnduraTextFieldStyle())
 
                 TextField("Password", text: $viewModel.password)
+                    .autocapitalization(.none)
                     .textFieldStyle(EnduraTextFieldStyle())
 
                 HStack {

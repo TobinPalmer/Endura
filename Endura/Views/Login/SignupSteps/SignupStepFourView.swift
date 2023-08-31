@@ -26,7 +26,7 @@ struct SignupStepFourView: View {
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .frame(maxHeight: 400)
 
-                Picker("Flavor", selection: $viewModel.gender) {
+                Picker("Gender", selection: $viewModel.gender) {
                     Text("Male")
                     Text("Female")
                     Text("Other")

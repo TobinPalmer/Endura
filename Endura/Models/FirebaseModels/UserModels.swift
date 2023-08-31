@@ -6,19 +6,33 @@ public enum Roles: String, Codable {
     case USER = "user"
 }
 
+public enum UserGender: String, Codable {
+    case MALE = "male"
+    case FEMALE = "female"
+    case OTHER = "other"
+}
+
 public struct UserData {
-    var uid: String
-    var name: String
-    var firstName: String
-    var lastName: String
-    var profileImage: UIImage?
-    var friends: [String]
-    var role: Roles?
+    public var uid: String
+    public var name: String
+    public var firstName: String
+    public var lastName: String
+    public var profileImage: UIImage?
+    public var friends: [String]
+
+    public var role: Roles?
+}
+
+public struct UserTrainingData: Codable {
+    public var schedule: [RunningSchedule]
 }
 
 public struct UserDocument: Codable {
-    var firstName: String
-    var lastName: String
-    var friends: [String]
-    var role: Roles?
+    public var firstName: String
+    public var lastName: String
+    public var friends: [String]
+    public var role: Roles?
+    public var birthday: Date
+    public var gender: UserGender
+    public var email: String
 }

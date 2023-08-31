@@ -4,14 +4,18 @@ import Foundation
 
 @MainActor public final class ActiveUserModel: ObservableObject {
     private let uid = AuthUtils.getCurrentUID()
+
     @Published public var settings: SettingsModel {
         didSet {
             updateSettings()
         }
     }
 
-    init(settings: SettingsModel) {
+    public var info: UserTrainingData
+
+    public init(settings: SettingsModel, info: UserTrainingData) {
         self.settings = settings
+        self.info = info
     }
 
     private func updateSettings() {
@@ -24,6 +28,11 @@ import Foundation
 
     public static func fetchSettings() async throws -> SettingsModel {
         let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("data").document("settings").getDocument(as: SettingsModel.self)
+        return document
+    }
+
+    public static func fetchInfo() async throws -> UserTrainingData {
+        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("data").document("info").getDocument(as: UserTrainingData.self)
         return document
     }
 }
