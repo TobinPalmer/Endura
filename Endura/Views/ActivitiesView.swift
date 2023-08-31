@@ -85,6 +85,8 @@ import SwiftUI
 
             if diff.type == .added || diff.type == .modified {
                 activities.updateValue((diff.document.documentID, activity), forKey: diff.document.documentID)
+            } else if diff.type == .removed {
+                activities.removeValue(forKey: diff.document.documentID)
             }
         } catch {
             print("Error decoding activity: \(error)")
