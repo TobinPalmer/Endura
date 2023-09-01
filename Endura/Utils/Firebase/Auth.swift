@@ -25,6 +25,27 @@ public enum AuthUtils {
         }
     }
 
+    #if DEBUG
+        public static func generateTestUsers(_ amount: Int) {
+            for i in 0 ... amount {
+                let email = "test\(i)@test.com"
+                let password = "testpass\(i)"
+                let randomNames = ["Adam", "Bob", "Charlie", "David", "Ethan", "Frank", "George", "Henry", "Isaac", "Jack", "Kevin", "Liam", "Michael", "Noah", "Oliver", "Peter", "Quinn", "Robert", "Samuel", "Thomas", "Ulysses", "Victor", "William", "Xavier", "Yuri", "Zachary"]
+                let userData = UserDocument(
+                    firstName: randomNames[Int.random(in: 0 ... randomNames.count - 1)],
+                    lastName: "\(randomNames[Int.random(in: 0 ... randomNames.count - 1)])",
+                    friends: [],
+                    role: .USER,
+                    birthday: Date(),
+                    gender: .OTHER,
+                    email: email
+                )
+                let userTrainingData = UserTrainingData(schedule: [])
+                createUser(email: email, password: password, userData: userData, userTrainingData: userTrainingData)
+            }
+        }
+    #endif
+
     public static func initAuth() {
         if Auth.auth().currentUser !== nil {
             NavigationModel.instance.currentView = .HOME

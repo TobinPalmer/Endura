@@ -7,30 +7,29 @@ private final class FindUsersViewModel: ObservableObject {
     @Published public var users: [(String, UserData)] = []
 
     fileprivate func fetchUsers(usersCache: UsersCacheModel) async {
-        users = []
+        if !users.isEmpty {
+            return
+        }
         let query = Firestore.firestore().collection("users").order(by: "firstName").limit(to: 10)
 
-        query.getDocuments { querySnapshot, error in
-            guard let snapshot = querySnapshot else {
-                print("Error fetching documents: \(error!)")
-                return
-            }
+        do {
+            let querySnapshot = try await query.getDocuments()
 
-            for document in snapshot.documents {
+            for document in querySnapshot.documents {
                 do {
                     let data = try document.data(as: UserDocument.self)
 
-                    Task {
-                        let data = await usersCache.fetchUserData(uid: document.documentID, document: data)
-                        guard let data = data else {
-                            return
-                        }
-                        self.users.append((document.documentID, data))
+                    let userData = await usersCache.fetchUserData(uid: document.documentID, document: data)
+                    guard let userData = userData else {
+                        return
                     }
+                    users.append((document.documentID, userData))
                 } catch {
                     print("Error decoding user: \(error)")
                 }
             }
+        } catch {
+            print("Error fetching documents: \(error)")
         }
     }
 }
