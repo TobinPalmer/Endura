@@ -7,7 +7,8 @@ struct ActivityPost: View {
     private var activity: ActivityData
     private var id: String
 
-    @State var message: String = ""
+    @State private var showingComments = false
+    @State private var message: String = ""
 
     init(id: String, activity: ActivityData) {
         self.activity = activity
@@ -20,7 +21,7 @@ struct ActivityPost: View {
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 VStack(spacing: 10) {
-                    Text(activity.title)
+                    Text(activity.title.isEmpty ? "Untitled Activitiy" : activity.title)
                         .font(.title2)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -35,7 +36,9 @@ struct ActivityPost: View {
                 }
             }
 
-            ActivityPostStats(activityData: activity)
+            NavigationLink(destination: ActivityView(id: id, activity: activity)) {
+                ActivityPostStats(activityData: activity)
+            }
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 ActivityMapImage(id)
@@ -52,32 +55,59 @@ struct ActivityPost: View {
                     Image(systemName: "hand.thumbsup")
                         .font(.title)
                 }
+
                 ForEach(activity.likes, id: \.self) { uid in
                     UserProfileLink(uid) {
                         ProfileImage(uid, size: 30)
                     }
                 }
+
+                Button {
+                    showingComments.toggle()
+                } label: {
+                    Image(systemName: "message")
+                        .font(.title)
+                }
+
+                Spacer()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .popover(isPresented: $showingComments) {
+                VStack {
+                    ForEach(activity.comments, id: \.self) { comment in
+                        ActivityComment(comment)
+                    }
+
+                    HStack {
+                        TextField("Add a comment...", text: $message)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        Button(action: {
+                            let comment = ActivityCommentData(
+                                message: message,
+                                time: Date(),
+                                uid: AuthUtils.getCurrentUID()
+                            )
+                            message = ""
+                            ActivityUtils.addComment(id: id, comment: comment)
+                        }) {
+                            Image(systemName: "paperplane")
+                        }
+                    }
+                }
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    minHeight: 0,
+                    maxHeight: .infinity,
+                    alignment: .topLeading
+                )
+            }
 
             VStack(alignment: .leading) {
-                ForEach(activity.comments, id: \.self) { comment in
-                    ActivityComment(comment)
-                }
-                HStack {
-                    TextField("Add a comment...", text: $message)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    Button(action: {
-                        let comment = ActivityCommentData(
-                            message: message,
-                            time: Date(),
-                            uid: AuthUtils.getCurrentUID()
-                        )
-                        message = ""
-                        ActivityUtils.addComment(id: id, comment: comment)
-                    }) {
-                        Image(systemName: "paperplane")
-                    }
+                let firstComment = activity.comments.last
+
+                if let firstComment = firstComment {
+                    ActivityComment(firstComment)
                 }
             }
         }
