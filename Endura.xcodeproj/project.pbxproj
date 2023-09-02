@@ -103,6 +103,7 @@
 		69698B903B0D09249C4AB005 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989E9AE3D7EE9E513FE5C /* Button.swift */; };
 		69698BABDCAEC0A369C6A3FA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969819A8C4285A3E148D771 /* Double.swift */; };
 		69698CCC22527D126CBF9B6D /* WeeklySummaryGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */; };
+		69698CE9D78FA0FC3992EE86 /* NotificationsBell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */; };
 		69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986EDB3F87EE749147042 /* AppViewModel.swift */; };
 		69698D9FF474040A16DC04C9 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989BB502C0EDF35A4959D /* SignupView.swift */; };
 		69698E351EF5E934C5440F86 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698F375B8431109FFB3F98 /* TrainingView.swift */; };
@@ -223,6 +224,7 @@
 		69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostUploadView.swift; sourceTree = "<group>"; };
 		69698E4D0ADAABE9CEAE6589 /* SignupStepFiveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepFiveView.swift; sourceTree = "<group>"; };
 		69698E6CE08351083301EC53 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsBell.swift; sourceTree = "<group>"; };
 		69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegion.swift; sourceTree = "<group>"; };
 		69698EC86F9A7092017FDF6F /* ActivityHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityHeader.swift; sourceTree = "<group>"; };
 		69698F375B8431109FFB3F98 /* TrainingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 			isa = PBXGroup;
 			children = (
 				17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */,
+				69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -925,6 +928,7 @@
 				17CC6CE9F6F443EBBA9593DA /* Notifications.swift in Sources */,
 				17CC6296791F7FA35E94A296 /* NotificationModels.swift in Sources */,
 				696987AA25F7C61AD6523BFB /* NotificationsView.swift in Sources */,
+				69698CE9D78FA0FC3992EE86 /* NotificationsBell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
