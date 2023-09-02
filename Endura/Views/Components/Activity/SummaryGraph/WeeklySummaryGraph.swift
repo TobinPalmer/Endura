@@ -76,7 +76,6 @@ struct WeeklySummaryGraph: View {
                 )
             }
 
-            let xPosition = viewModel.location.x
             let graphWidth = proxy.plotAreaSize.width
             let textPosition: Double;
             switch viewModel.day {
@@ -103,21 +102,7 @@ struct WeeklySummaryGraph: View {
               )
               .font(.title3)
               .fontWeight(.semibold)
-//              .padding()
-//              .foregroundColor(.white)
-//              .background(.blue)
-//              .cornerRadius(5)
           }
-//          .chartXAxis {
-//            AxisMarks(values: data.map {
-//              $0.day
-//            }) { value in
-//              AxisValueLabel {
-//                VStack {
-//                }
-//              }
-//            }
-//          }
       } else {
         Text("This week you ran 27.8 miles")
       }
