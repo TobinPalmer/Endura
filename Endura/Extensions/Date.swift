@@ -10,4 +10,10 @@ public extension Date {
         let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
         return calendar.date(from: components) ?? self
     }
+
+    func startOfWeek() -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self)
+        return calendar.date(from: components) ?? self
+    }
 }
