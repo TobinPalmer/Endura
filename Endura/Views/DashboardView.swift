@@ -11,9 +11,11 @@ struct DashboardView: View {
         VStack {
             WeeklySummaryGraph(
                 [
-                    WeeklyGraphData(day: 1, distance: 5),
-                    WeeklyGraphData(day: 2, distance: 4),
-                    WeeklyGraphData(day: 3, distance: 5),
+                    WeeklyGraphData(day: .monday, distance: 5),
+                    WeeklyGraphData(day: .monday, distance: 5),
+                    WeeklyGraphData(day: .monday, distance: 5),
+                    WeeklyGraphData(day: .wednesday, distance: 10),
+                    WeeklyGraphData(day: .sunday, distance: 2),
                 ]
             )
         }

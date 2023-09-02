@@ -27,6 +27,27 @@ public enum ConversionUtils {
         return title
     }
 
+    public static func numberToDayOfWeek(day: Int) -> String {
+        switch day {
+        case 1:
+            return "Monday"
+        case 2:
+            return "Tuesday"
+        case 3:
+            return "Wednesday"
+        case 4:
+            return "Thursday"
+        case 5:
+            return "Friday"
+        case 6:
+            return "Saturday"
+        case 7:
+            return "Sunday"
+        default:
+            return "Monday"
+        }
+    }
+
     public static func convertMpsToMpm(_ metersPerSec: Double) -> String {
         if metersPerSec <= 0 {
             return "0:00"

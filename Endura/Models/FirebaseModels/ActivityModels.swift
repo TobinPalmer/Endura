@@ -13,6 +13,16 @@ public enum GraphType: String, Codable {
     case verticalOscillation
 }
 
+public enum Days: String, Codable, CaseIterable {
+    case monday = "Mon"
+    case tuesday = "Tue"
+    case wednesday = "Wed"
+    case thursday = "Thu"
+    case friday = "Fri"
+    case saturday = "Sat"
+    case sunday = "Sun"
+}
+
 public typealias LineGraphData = [(Date, Double)]
 public typealias IndexedLineGraphData = [Date: Double]
 
@@ -20,7 +30,7 @@ public typealias IndexedGraphData = [Date: GraphData]
 public typealias IndexedRouteLocationData = [Date: LocationData]
 
 public struct WeeklyGraphData: Hashable, Codable {
-    public var day: Int
+    public var day: Days
     public var distance: Double
 }
 
