@@ -11,32 +11,33 @@ struct WeeklySummaryGraph: View {
     @StateObject private var viewModel = WeeklySumaryGraphModel()
     private var data: [WeeklyGraphData]
 
-    public init(_ data: [WeeklyGraphData]) {
+    init(_ data: [WeeklyGraphData]) {
         self.data = data
 
-        var mergedData: [WeeklyGraphData] = []
-        for i in 1 ... data.count {
-            if !mergedData.contains(where: { $0.day == data[i - 1].day }) {
-                mergedData.append(WeeklyGraphData(day: data[i - 1].day, distance: data[i - 1].distance))
+        let mergedData = data.reduce(into: [WeeklyGraphData]()) { mergedData, currentData in
+            if let existingIndex = mergedData.firstIndex(where: { $0.day == currentData.day }) {
+                mergedData[existingIndex].distance += currentData.distance
             } else {
-                mergedData[mergedData.firstIndex(where: { $0.day == data[i - 1].day })!].distance += data[i - 1].distance
+                mergedData.append(WeeklyGraphData(day: currentData.day, distance: currentData.distance))
             }
         }
 
-        self.data = mergedData
+        let presentDays = Set(mergedData.map {
+            $0.day
+        })
+        let missingDays = Set(Days.allCases).subtracting(presentDays)
 
-        for i in Days.allCases {
-            if !self.data.contains(where: { $0.day == i }) {
-                self.data.append(WeeklyGraphData(day: i, distance: 0))
-            }
+        let missingData = missingDays.map {
+            WeeklyGraphData(day: $0, distance: 0)
+        }
+        let updatedData = mergedData + missingData
+
+        let dayOrder: [Days] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+        let sortedData = updatedData.sorted {
+            dayOrder.firstIndex(of: $0.day)! < dayOrder.firstIndex(of: $1.day)!
         }
 
-        self.data.sort {
-            let dayOrder: [Days] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
-            return dayOrder.firstIndex(of: $0.day)! < dayOrder.firstIndex(of: $1.day)!
-        }
-
-        print("DATA", self.data.count)
+        self.data = sortedData
     }
 
     public var body: some View {
