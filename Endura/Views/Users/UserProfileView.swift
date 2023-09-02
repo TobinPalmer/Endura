@@ -57,8 +57,7 @@ struct UserProfileView: View {
                 } else {
                     Button("Add Friend") {
                         Task {
-                            await viewModel.addFriend(uid: uid, activeUid: activeUser.data.uid)
-                            activeUser.data.friends.append(uid)
+                            FirebaseNotificationUtils.sendNotification(to: uid, data: NotificationData(type: .friendRequest, uid: activeUser.data.uid, timestamp: Date()))
                         }
                     }
                 }
