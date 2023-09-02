@@ -65,6 +65,7 @@ struct ContentView: View {
                     }
                 }
                 .environmentObject(ActiveUserModel(settings: settings, info: info, data: activeUserData))
+                .environmentObject(NotificationsModel(lastRead: activeUserData.lastNotificationsRead))
                 .enableInjection()
             } else {
                 VStack {

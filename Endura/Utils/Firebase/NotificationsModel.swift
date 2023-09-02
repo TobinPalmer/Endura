@@ -5,6 +5,7 @@ import Foundation
 public final class NotificationsModel: ObservableObject {
     @Published public final var notifications: [NotificationData] = []
     @Published public final var lastRead: Date? = nil
+    @Published public final var unreadCount: Int = 0
 
     init(lastRead: Date?) {
         self.lastRead = lastRead
@@ -27,6 +28,7 @@ public final class NotificationsModel: ObservableObject {
                     do {
                         let data = try diff.document.data(as: NotificationData.self)
                         self.notifications.append(data)
+                        self.unreadCount += 1
                     } catch {
                         print("Error decoding notification: \(error)")
                     }
@@ -34,9 +36,7 @@ public final class NotificationsModel: ObservableObject {
             }
         }
     }
-}
 
-public enum FirebaseNotificationUtils {
     public static func sendNotification(to uid: String, data: NotificationData) {
         do {
             try Firestore.firestore().collection("users").document(uid).collection("notifications").addDocument(from: data)

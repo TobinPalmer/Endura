@@ -28,6 +28,30 @@ import Foundation
         }
     }
 
+    private final func getUserData() {
+        Firestore.firestore().collection("users").document(uid).addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
+            }
+
+            do {
+                let document = try document.data(as: UserDocument.self)
+                self.data = UserData(
+                    uid: self.uid,
+                    name: document.firstName + " " + document.lastName,
+                    firstName: document.firstName,
+                    lastName: document.lastName,
+                    profileImage: nil,
+                    friends: document.friends,
+                    role: document.role
+                )
+            } catch {
+                print("Error decoding settings: \(error)")
+            }
+        }
+    }
+
     public static func fetchUserData() async throws -> UserData {
         let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).getDocument(as: UserDocument.self)
         let userData = UserData(
@@ -37,7 +61,8 @@ import Foundation
             lastName: document.lastName,
             profileImage: nil,
             friends: document.friends,
-            role: document.role
+            role: document.role,
+            lastNotificationsRead: document.lastNotificationsRead
         )
         return userData
     }

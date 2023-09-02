@@ -21,6 +21,7 @@ public struct UserData {
     public var friends: [String]
 
     public var role: Roles?
+    public var lastNotificationsRead: Date?
 }
 
 public struct UserTrainingData: Codable {
@@ -35,4 +36,5 @@ public struct UserDocument: Codable {
     public var birthday: Date
     public var gender: UserGender
     public var email: String
+    public var lastNotificationsRead: Date?
 }
