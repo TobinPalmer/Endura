@@ -5,12 +5,14 @@ import SwiftUI
 
 private final class FindUsersViewModel: ObservableObject {
     @Published public var users: [(String, UserData)] = []
+    @Published public var searchText = ""
 
     fileprivate func fetchUsers(usersCache: UsersCacheModel) async {
         if !users.isEmpty {
             return
         }
-        let query = Firestore.firestore().collection("users").order(by: "firstName").limit(to: 10)
+        print("Fetching users, searchText: \(searchText)")
+        let query = Firestore.firestore().collection("users").whereField("firstName", isGreaterThanOrEqualTo: searchText).whereField("firstName", isLessThanOrEqualTo: searchText + "\u{f8ff}").order(by: "firstName").limit(to: 10)
 
         do {
             let querySnapshot = try await query.getDocuments()
@@ -41,7 +43,26 @@ struct FindUsersView: View {
     var body: some View {
         VStack {
             Text("Find Users View")
-            List(viewModel.users, id: \.0) { uid, user in
+
+            TextField("Search", text: $viewModel.searchText)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+                .onReceive(
+                    viewModel.$searchText
+                        .debounce(for: .seconds(0.25), scheduler: DispatchQueue.main)
+                ) {
+                    viewModel.users = []
+                    Task {
+                        await viewModel.fetchUsers(usersCache: usersCache)
+                    }
+                    guard !$0.isEmpty else {
+                        return
+                    }
+                }
+
+            List(viewModel.users.sorted {
+                $0.1.name < $1.1.name
+            }, id: \.0) { uid, user in
                 UserProfileLink(uid) {
                     HStack {
                         ProfileImage(uid, size: 50)
