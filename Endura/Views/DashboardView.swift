@@ -8,17 +8,52 @@ import SwiftUI
 
 struct DashboardView: View {
     var body: some View {
-        VStack {
-            WeeklySummaryGraph(
-                [
-                    WeeklyGraphData(day: .monday, distance: 5),
-                    WeeklyGraphData(day: .monday, distance: 5),
-                    WeeklyGraphData(day: .monday, distance: 5),
-                    WeeklyGraphData(day: .wednesday, distance: 10),
-                    WeeklyGraphData(day: .sunday, distance: 2),
-                ]
+        ScrollView {
+            VStack {
+                VStack(alignment: .leading) {
+                    WeeklySummaryGraph(
+                        [
+                            WeeklyGraphData(day: .monday, distance: 5),
+                            WeeklyGraphData(day: .monday, distance: 5),
+                            WeeklyGraphData(day: .monday, distance: 5),
+                            WeeklyGraphData(day: .wednesday, distance: 10),
+                            WeeklyGraphData(day: .sunday, distance: 2),
+                        ]
+                    )
+                    .padding()
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+
+                VStack {
+                    HStack(spacing: 10) {
+                        VStack {
+                            GoalRing(.distance)
+                                .frame(maxHeight: 70)
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                        .background(.red)
+                        .cornerRadius(8)
+
+                        VStack {
+                            GoalRing(.distance)
+                                .frame(maxHeight: 70)
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                        .background(.orange)
+                        .cornerRadius(8)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                }
+            }
+            .frame(
+                minWidth: 0,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: .infinity,
+                alignment: .center
             )
         }
+        .padding(5)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink(destination: NewActivityView()) {

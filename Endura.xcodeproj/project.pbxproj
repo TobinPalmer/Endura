@@ -79,6 +79,7 @@
 		696983CDA34BD4646BE2E88D /* ActivityHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EC86F9A7092017FDF6F /* ActivityHeader.swift */; };
 		696983D815E023C30549A7BB /* HealthKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984EE498475DB24E5E333 /* HealthKitErrors.swift */; };
 		69698448F824900E6A820802 /* PostUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */; };
+		6969858DD959CC6C21602B67 /* GoalRings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D4092F13CB6DA29DD34 /* GoalRings.swift */; };
 		6969862795DF6489B7776F59 /* FriendsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969833F0B9CB6C90025B1F5 /* FriendsSettingsView.swift */; };
 		6969862885B67FBCC1A259BC /* PrivacySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698C33876AF4895EBEE5F7 /* PrivacySettingsView.swift */; };
 		6969868831515D393F393036 /* ActivityGridStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698FC39866D068E770C60E /* ActivityGridStats.swift */; };
@@ -218,6 +219,7 @@
 		69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklySummaryGraph.swift; sourceTree = "<group>"; };
 		69698C33876AF4895EBEE5F7 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
 		69698D01B022430326F64D83 /* ActivityPostStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPostStats.swift; sourceTree = "<group>"; };
+		69698D4092F13CB6DA29DD34 /* GoalRings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalRings.swift; sourceTree = "<group>"; };
 		69698D95B8A4C085E1D2E949 /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		69698DB807958E905BF87BDD /* SignupStepSevenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepSevenView.swift; sourceTree = "<group>"; };
 		69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; path = "FlowBlock-Regular.ttf"; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 			isa = PBXGroup;
 			children = (
 				69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */,
+				69698D4092F13CB6DA29DD34 /* GoalRings.swift */,
 			);
 			path = SummaryGraph;
 			sourceTree = "<group>";
@@ -929,6 +932,7 @@
 				17CC6296791F7FA35E94A296 /* NotificationModels.swift in Sources */,
 				696987AA25F7C61AD6523BFB /* NotificationsView.swift in Sources */,
 				69698CE9D78FA0FC3992EE86 /* NotificationsBell.swift in Sources */,
+				6969858DD959CC6C21602B67 /* GoalRings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
