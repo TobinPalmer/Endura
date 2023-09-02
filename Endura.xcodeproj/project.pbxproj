@@ -52,7 +52,7 @@
 		17CC6BD8CFCA13C8952D4534 /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC68FD129A61DF48BD0D4F /* Formatting.swift */; };
 		17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC647C809BFAC3C20DA478 /* Date.swift */; };
 		17CC6CDF590381DF53B49F0D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D93D86A82B085AB91BD /* SettingsView.swift */; };
-		17CC6CE9F6F443EBBA9593DA /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6C88EB9B03F05D0D221E /* Notifications.swift */; };
+		17CC6CE9F6F443EBBA9593DA /* NotificationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6C88EB9B03F05D0D221E /* NotificationsModel.swift */; };
 		17CC6D07ACB8C238CFDC9CC6 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66EA7C715C2776A564D2 /* ProfileImage.swift */; };
 		17CC6DA24BE685BF877EFD7C /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64AE21A3E68ABDCDA24C /* ActivityViewModel.swift */; };
 		17CC6E23D5A6B1EE12259C6E /* ActivityGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6468B0C9C45EBDAAF375 /* ActivityGraphs.swift */; };
@@ -175,7 +175,7 @@
 		17CC6AE64751A45E5995A5F9 /* HoverableChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoverableChart.swift; sourceTree = "<group>"; };
 		17CC6B1555ECC86F1858E844 /* FindUsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindUsersView.swift; sourceTree = "<group>"; };
 		17CC6C296596DA475D462B36 /* ActivitiesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
-		17CC6C88EB9B03F05D0D221E /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		17CC6C88EB9B03F05D0D221E /* NotificationsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsModel.swift; sourceTree = "<group>"; };
 		17CC6D870BA8F7FE33770E38 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		17CC6D92369E862444D0D6E4 /* NotificationModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationModels.swift; sourceTree = "<group>"; };
 		17CC6D93D86A82B085AB91BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -655,7 +655,7 @@
 				17CC6E3C3259ED54F0BF31D1 /* Activities.swift */,
 				17CC6A37858A0F182DF80601 /* UsersCacheModel.swift */,
 				17CC66B87BB1D53138DC7BC5 /* ActiveUserModel.swift */,
-				17CC6C88EB9B03F05D0D221E /* Notifications.swift */,
+				17CC6C88EB9B03F05D0D221E /* NotificationsModel.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -925,7 +925,7 @@
 				17CC6E3338FB8B8721F2F71F /* HoverableChart.swift in Sources */,
 				17CC6E23D5A6B1EE12259C6E /* ActivityGraphs.swift in Sources */,
 				69698CCC22527D126CBF9B6D /* WeeklySummaryGraph.swift in Sources */,
-				17CC6CE9F6F443EBBA9593DA /* Notifications.swift in Sources */,
+				17CC6CE9F6F443EBBA9593DA /* NotificationsModel.swift in Sources */,
 				17CC6296791F7FA35E94A296 /* NotificationModels.swift in Sources */,
 				696987AA25F7C61AD6523BFB /* NotificationsView.swift in Sources */,
 				69698CE9D78FA0FC3992EE86 /* NotificationsBell.swift in Sources */,
