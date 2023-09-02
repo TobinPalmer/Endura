@@ -4,10 +4,12 @@ import Inject
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var usersCache: UsersCacheModel
     @EnvironmentObject var navigation: NavigationModel
     @ObservedObject private var IO = Inject.observer
     @State private var settings: SettingsModel?
     @State private var info: UserTrainingData?
+    @State private var activeUserData: UserData?
 
     @State private var isLogoutButtonHidden = false
 
@@ -19,7 +21,7 @@ struct ContentView: View {
                     .preferredColorScheme(.light)
             }
         case .HOME:
-            if let settings = settings, let info = info {
+            if let settings = settings, let info = info, let activeUserData = activeUserData {
                 TabView {
                     NavigationView {
                         DashboardView()
@@ -61,10 +63,9 @@ struct ContentView: View {
                         Image(systemName: "person")
                         Text("Profile")
                     }
-
-                    .environmentObject(ActiveUserModel(settings: settings, info: info))
-                    .enableInjection()
                 }
+                .environmentObject(ActiveUserModel(settings: settings, info: info, data: activeUserData))
+                .enableInjection()
             } else {
                 VStack {
                     ProgressView()
@@ -81,6 +82,7 @@ struct ContentView: View {
                     do {
                         settings = try await ActiveUserModel.fetchSettings()
                         info = try await ActiveUserModel.fetchInfo()
+                        activeUserData = try await ActiveUserModel.fetchUserData()
 
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             isLogoutButtonHidden = false
