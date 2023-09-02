@@ -7,6 +7,8 @@ import Inject
 import SwiftUI
 
 struct DashboardView: View {
+    @EnvironmentObject var notificationsModel: NotificationsModel
+
     var body: some View {
         ScrollView {
             VStack {
@@ -64,7 +66,7 @@ struct DashboardView: View {
                 NavigationLink(destination: NotificationsView()) {
                     Image(systemName: "bell")
                         .overlay(
-                            NotificationCountView(value: .constant(50))
+                            NotificationCountView(value: $notificationsModel.unreadCount)
                         )
                 }
             }
