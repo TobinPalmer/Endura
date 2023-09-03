@@ -1,4 +1,3 @@
-import FirebaseStorage
 import Foundation
 import HealthKit
 import MapKit
@@ -67,6 +66,7 @@ struct PreviewWorkoutView: View {
 
                 if var activityData = previewWorkoutModel.enduraWorkout {
                     let activityViewModel = ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval)
+
                     if !activityData.data.routeData.isEmpty {
                         VStack {
                             GeometryReader { geometry in
@@ -93,30 +93,11 @@ struct PreviewWorkoutView: View {
                     }
 
                     Button {
-                        Task {
-                            do {
-                                let storage = Storage.storage()
+                        activityData.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
 
-                                if let mapRef = previewWorkoutModel.mapRef, let geometryRef = previewWorkoutModel.geometryRef {
-                                    if previewWorkoutModel.activityTitle.isEmpty {
-                                        activityData.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
-                                    } else {
-                                        activityData.title = previewWorkoutModel.activityTitle
-                                        activityData.description = previewWorkoutModel.activityDescription
-                                    }
+                        ActivityUtils.setActivityUploaded(for: workout)
+                        isShowingSummary = true
 
-                                    try ActivityUtils.uploadActivity(activity: activityData, image: mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size), storage: storage)
-                                } else {
-                                    try ActivityUtils.uploadActivity(activity: activityData)
-                                }
-
-                                ActivityUtils.setActivityUploaded(for: workout)
-                                isShowingSummary = true
-                                print("setting model to true")
-                            } catch {
-                                print("Error uploading workout: \(error)")
-                            }
-                        }
                     } label: {
                         Text("Upload")
                     }
@@ -141,22 +122,11 @@ struct PreviewWorkoutView: View {
                     try await updateEnduraWorkout(workout)
                 }
             }
-
-//        .fullScreenCover(isPresented: Binding(
-//          get: { previewWorkoutModel.isShowingSummary || isShowingSummary },
-//          set: { newValue in
-//            previewWorkoutModel.isShowingSummary = newValue
-//            isShowingSummary = newValue
-//          }
-//        )) {
-//          if let activityData = previewWorkoutModel.enduraWorkout {
-//            PostUploadView(activityData: activityData)
-//          }
-//        }
         }
+
         .fullScreenCover(isPresented: $isShowingSummary) {
             if let activityData = previewWorkoutModel.enduraWorkout {
-//          PostUploadView(activityData: activityData)
+                PostUploadView(activityData: activityData, mapRef: $previewWorkoutModel.mapRef, geometryRef: $previewWorkoutModel.geometryRef)
             } else {
                 Text("Error uploading workout")
             }
