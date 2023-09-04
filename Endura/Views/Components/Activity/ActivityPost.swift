@@ -56,16 +56,15 @@ struct ActivityPost: View {
                         .font(.title)
                 }
 
-//        ZStack {
-//          ForEach(0..<activity.likes.prefix(3).count, id: \.self) { i in
-//            UserProfileLink(activity.likes[i]) {
-//              ProfileImage(activity.likes[i], size: 30)
-//                .offset(x: CGFloat(i) * 20, y: 0)
-//                .shadow(radius: 1, x: -1, y: 0)
-//            }
-//          }
-//        }
-                ActivityLikesList(activity.likes)
+                ZStack {
+                    ForEach(0 ..< activity.likes.prefix(3).count, id: \.self) { i in
+                        UserProfileLink(activity.likes[i]) {
+                            ProfileImage(activity.likes[i], size: 30)
+                                .offset(x: CGFloat(i) * 20, y: 0)
+                                .shadow(radius: 1, x: -1, y: 0)
+                        }
+                    }
+                }
 
                 Spacer()
 
@@ -101,19 +100,23 @@ struct ActivityPost: View {
                             .padding(5)
                         }
                         .zIndex(1)
-
                         VStack {
                             ActivityMapImage(id)
 
-                            Text(activity.title)
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            Spacer()
+                            HStack {
+                                Text(activity.title)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                ForEach(activity.likes, id: \.self) { uid in
+                                    UserProfileLink(uid) {
+                                        ProfileImage(uid, size: 30)
+                                    }
+                                }
+                            }
                         }
                     }
-                }
 
-                VStack {
                     ScrollView {
                         ForEach(activity.comments, id: \.self) { comment in
                             ActivityComment(comment)
@@ -121,9 +124,6 @@ struct ActivityPost: View {
                     }
 
                     Spacer()
-
-                    ActivityLikesList(activity.likes)
-                        .padding(5)
 
                     HStack {
                         TextField("Add a comment...", text: $message)

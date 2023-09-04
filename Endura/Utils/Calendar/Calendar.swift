@@ -11,7 +11,6 @@ public enum CalendarUtils {
     }
 
     public static func generateCurrentMonthDates() -> [Date] {
-        return []
         var dates: [Date] = []
         let calendar = Calendar.current
         let dateComponents = DateComponents(year: calendar.component(.year, from: Date()), month: calendar.component(.month, from: Date()))

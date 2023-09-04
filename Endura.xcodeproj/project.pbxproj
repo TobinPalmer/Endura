@@ -72,7 +72,6 @@
 		696980FB9DBE79E1EA36A768 /* ActivityMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982EE94EC856245965FFD /* ActivityMap.swift */; };
 		6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */; };
 		696981FA92CEA0D45CA25D21 /* SignupStepSixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969873280457DB033BF8C41 /* SignupStepSixView.swift */; };
-		696982459483C07A444E6CDC /* ActivityLikesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698B2A94A54D8BB135DBAE /* ActivityLikesList.swift */; };
 		69698264AD04B1437CE58655 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698354833B838F454F85E8 /* Collection.swift */; };
 		69698267DFD577498FCE901F /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E6CE08351083301EC53 /* TextField.swift */; };
 		6969826CF3BCDFA16EC0B2C2 /* ActivityModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969870866179CC66A7558FB /* ActivityModels.swift */; };
@@ -117,6 +116,7 @@
 		E91E1F782A9827D00095D3E9 /* Activities.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */; };
 		E92549A92AA03AE900776856 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = E92549A82AA03AE900776856 /* CachedAsyncImage */; };
 		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
+		E98AFEF62AA582AB002DB211 /* ObjectCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E98AFEF42AA582AB002DB211 /* ObjectCache.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -220,7 +220,6 @@
 		696989BB502C0EDF35A4959D /* SignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		696989E9AE3D7EE9E513FE5C /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		69698A52FFC5BD2B47BD4E5F /* SignupStepTwoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepTwoView.swift; sourceTree = "<group>"; };
-		69698B2A94A54D8BB135DBAE /* ActivityLikesList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityLikesList.swift; sourceTree = "<group>"; };
 		69698B315EDC140451CA74A5 /* HealthKitUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitUtils.swift; sourceTree = "<group>"; };
 		69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklySummaryGraph.swift; sourceTree = "<group>"; };
 		69698C33876AF4895EBEE5F7 /* PrivacySettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingsView.swift; sourceTree = "<group>"; };
@@ -240,6 +239,7 @@
 		69698FE247BAB2DB0A34EE25 /* SignupStepOneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepOneView.swift; sourceTree = "<group>"; };
 		E91E1F772A9827D00095D3E9 /* Activities.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Activities.xcdatamodel; sourceTree = "<group>"; };
 		E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityMapImage.swift; path = Endura/Views/Components/Activity/ActivityMapImage.swift; sourceTree = SOURCE_ROOT; };
+		E98AFEF52AA582AB002DB211 /* ObjectCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ObjectCache.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,8 +335,8 @@
 				69698BED38E7BC5FB38B4BA0 /* Errors */,
 				69698DD361B3846255EF0F67 /* Styles */,
 				696980F8615E62AFAE8EB590 /* Fonts */,
-				E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */,
 				17CC620E713369BF3ECEA030 /* PersistanceController.swift */,
+				17CC6DC0E14D1A587370E263 /* DataModels */,
 			);
 			path = Endura;
 			sourceTree = "<group>";
@@ -493,6 +493,15 @@
 			path = Activity;
 			sourceTree = "<group>";
 		};
+		17CC6DC0E14D1A587370E263 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */,
+				E98AFEF42AA582AB002DB211 /* ObjectCache.xcdatamodeld */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
 		6969808D7BBD744E99F02404 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -583,7 +592,6 @@
 				69698D01B022430326F64D83 /* ActivityPostStats.swift */,
 				69698FC39866D068E770C60E /* ActivityGridStats.swift */,
 				696986316AB6F45157A56439 /* ActivityStatsComponents.swift */,
-				69698B2A94A54D8BB135DBAE /* ActivityLikesList.swift */,
 			);
 			path = Stats;
 			sourceTree = "<group>";
@@ -884,6 +892,7 @@
 				69698264AD04B1437CE58655 /* Collection.swift in Sources */,
 				17CC6F2D2274313C2825BE5B /* ActivitySchedule.swift in Sources */,
 				17CC63D9EEB53484B6987842 /* ScheduleDay.swift in Sources */,
+				E98AFEF62AA582AB002DB211 /* ObjectCache.xcdatamodeld in Sources */,
 				17CC6EE5F11BB76AD09EDBBF /* Array.swift in Sources */,
 				17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */,
 				17CC6375D0C9879B20E7B30B /* Calendar.swift in Sources */,
@@ -944,7 +953,6 @@
 				17CC67E489A90C6940C1DD21 /* SummaryModels.swift in Sources */,
 				17CC673CACCF972808F56167 /* DataCacheModel.swift in Sources */,
 				17CC6683CAC59352904F9A23 /* CacheUtils.swift in Sources */,
-				696982459483C07A444E6CDC /* ActivityLikesList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1406,6 +1414,16 @@
 			);
 			currentVersion = E91E1F772A9827D00095D3E9 /* Activities.xcdatamodel */;
 			path = Activities.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		E98AFEF42AA582AB002DB211 /* ObjectCache.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E98AFEF52AA582AB002DB211 /* ObjectCache.xcdatamodel */,
+			);
+			currentVersion = E98AFEF52AA582AB002DB211 /* ObjectCache.xcdatamodel */;
+			path = ObjectCache.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
