@@ -10,13 +10,26 @@ import SwiftUI
     @Published fileprivate var activities: [String: (String, ActivityData)] = [:]
     @Published var lastDocument: DocumentSnapshot? = nil
     @Published private var lastRefresh = Date()
+    @Published public var friends: [String]? = nil
 
     fileprivate static let loadAmount = 5
 
+    fileprivate func clearActivities() {
+        activities = [:]
+        lastDocument = nil
+    }
+
     fileprivate func loadActivities() {
+        let baseQuery = Firestore.firestore().collection("activities")
+            .order(by: "uploadTime").order(by: "time", descending: true)
+            .whereField("uploadTime", isLessThan: lastRefresh)
+            .whereField("uid", in: [AuthUtils.getCurrentUID()] + (friends ?? []))
+            .whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
+            .limit(to: ActivitiesViewModel.loadAmount)
+
         let query = (lastDocument == nil) ?
-            Firestore.firestore().collection("activities").order(by: "uploadTime").order(by: "time", descending: true).whereField("uploadTime", isLessThan: lastRefresh).limit(to: ActivitiesViewModel.loadAmount) :
-            Firestore.firestore().collection("activities").order(by: "uploadTime").order(by: "time", descending: true).whereField("uploadTime", isLessThan: lastRefresh).limit(to: ActivitiesViewModel.loadAmount).start(afterDocument: lastDocument!)
+            baseQuery :
+            baseQuery.start(afterDocument: lastDocument!)
 
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
@@ -38,6 +51,8 @@ import SwiftUI
             .order(by: "time", descending: true)
             .whereField("uploadTime", isGreaterThan: lastRefresh)
             .whereField("uploadTime", isLessThan: Date())
+            .whereField("uid", in: [AuthUtils.getCurrentUID()] + (friends ?? []))
+            .whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
 
         lastRefresh = Date()
 
@@ -81,7 +96,8 @@ import SwiftUI
                 time: data.time,
                 title: data.title,
                 totalDuration: data.totalDuration,
-                uid: data.uid
+                uid: data.uid,
+                visibility: data.visibility
             )
 
             if diff.type == .added || diff.type == .modified {
@@ -93,13 +109,10 @@ import SwiftUI
             print("Error decoding activity: \(error)")
         }
     }
-
-    init() {
-        loadActivities()
-    }
 }
 
 struct ActivitiesView: View {
+    @EnvironmentObject var activeUserModel: ActiveUserModel
     @StateObject fileprivate var activityViewModel = ActivitiesViewModel()
 
     var body: some View {
@@ -122,8 +135,22 @@ struct ActivitiesView: View {
                 }
             }
             .refreshable {
+                if let friends = activeUserModel.data?.friends {
+                    if activityViewModel.friends != friends {
+                        activityViewModel.friends = friends
+                        activityViewModel.clearActivities()
+                        activityViewModel.loadActivities()
+                        return
+                    }
+                }
                 activityViewModel.loadNewActivities()
             }
+        }
+        .onAppear {
+            if let friends = activeUserModel.data?.friends {
+                activityViewModel.friends = friends
+            }
+            activityViewModel.loadActivities()
         }
         .background(Color(.secondarySystemBackground))
         .toolbar {

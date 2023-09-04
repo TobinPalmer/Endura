@@ -66,6 +66,7 @@ public struct ActivityDocument: Codable {
     var totalDuration: TimeInterval
     var uid: String
     var uploadTime: Date
+    var visibility: ActivityVisibility
 
     static func getDocument(for activity: ActivityDataWithRoute, uploadTime: Date) -> ActivityDocument {
         ActivityDocument(
@@ -84,7 +85,8 @@ public struct ActivityDocument: Codable {
             title: activity.title,
             totalDuration: activity.totalDuration,
             uid: activity.uid,
-            uploadTime: uploadTime
+            uploadTime: uploadTime,
+            visibility: activity.visibility
         )
     }
 }

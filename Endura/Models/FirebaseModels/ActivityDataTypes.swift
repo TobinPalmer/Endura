@@ -26,6 +26,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
     var title: String
     var totalDuration: TimeInterval
     var uid: String
+    var visibility: ActivityVisibility
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
@@ -46,7 +47,8 @@ public struct ActivityData: Codable, ActivityDataProtocol {
             time: time,
             title: title,
             totalDuration: totalDuration,
-            uid: uid
+            uid: uid,
+            visibility: visibility
         )
     }
 }
@@ -73,6 +75,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     var title: String
     var totalDuration: TimeInterval
     var uid: String
+    var visibility: ActivityVisibility
 
     public func getDataWithoutRoute() -> ActivityData {
         ActivityData(
@@ -90,7 +93,8 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
             time: time,
             title: title,
             totalDuration: totalDuration,
-            uid: uid
+            uid: uid,
+            visibility: visibility
         )
     }
 

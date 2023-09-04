@@ -1,5 +1,11 @@
 import Foundation
 
+public enum ActivityVisibility: String, Codable {
+    case everyone
+    case friends
+    case none
+}
+
 public enum GraphType: String, Codable {
     case cadence
     case elevation

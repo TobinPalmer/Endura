@@ -416,7 +416,8 @@ public enum HealthKitUtils {
             time: workout.startDate,
             title: "",
             totalDuration: workout.startDate.distance(to: workout.endDate),
-            uid: AuthUtils.getCurrentUID()
+            uid: AuthUtils.getCurrentUID(),
+            visibility: .friends
         )
 
         return workoutData
