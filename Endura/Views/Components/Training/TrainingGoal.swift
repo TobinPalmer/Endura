@@ -15,7 +15,7 @@ struct TrainingGoal: View {
             switch type {
             case .running:
                 if let goal = goal as? RunningTrainingGoal {
-                    TrainingGoalListing(type, goal: goal, icon: Image(systemName: "figure.run"))
+                    TrainingGoalListing(type, goal: goal, icon: Image("RunningIcon"))
                 }
 
             case .postRun:
@@ -45,7 +45,7 @@ private struct TrainingGoalListing: View {
         HStack(spacing: 0) {
             HStack {
                 icon
-                    .font(.title2)
+                    .frame(width: 40, height: 40, alignment: .center)
                 VStack {
                     Text("Warm Up")
                     Text("x\(goal.time.removeTrailingZeros())")

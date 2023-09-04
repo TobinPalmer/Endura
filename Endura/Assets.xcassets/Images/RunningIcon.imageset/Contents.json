@@ -1,11 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Running.jpg",
+      "filename" : "icons8-run-50.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "icons8-run-100.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
