@@ -56,9 +56,13 @@ struct ActivityPost: View {
                         .font(.title)
                 }
 
-                ForEach(activity.likes, id: \.self) { uid in
-                    UserProfileLink(uid) {
-                        ProfileImage(uid, size: 30)
+                ZStack {
+                    ForEach(0 ..< activity.likes.prefix(3).count, id: \.self) { i in
+                        UserProfileLink(activity.likes[i]) {
+                            ProfileImage(activity.likes[i], size: 30)
+                                .offset(x: CGFloat(i) * 20, y: 0)
+                                .shadow(radius: 1, x: -1, y: 0)
+                        }
                     }
                 }
 

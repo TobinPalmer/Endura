@@ -34,8 +34,9 @@ private struct MonthView: View {
 
 struct CalendarView: View {
     let months: [[Date]]
-    @State var selectedDate: Date? = nil
     let events: [Date: String]
+
+    @State private var selectedDate: Date? = nil
 
     var body: some View {
         ScrollView {
