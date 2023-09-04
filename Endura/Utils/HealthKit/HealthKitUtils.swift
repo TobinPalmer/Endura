@@ -407,6 +407,7 @@ public enum HealthKitUtils {
             distance: workoutDistance,
             description: "",
             duration: workoutDuration,
+            startCountry: data.first?.fetchCityAndCountry().1 ?? "",
             workoutStart: workout.startDate,
             likes: [],
             type: .none,

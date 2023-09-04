@@ -73,6 +73,7 @@ import SwiftUI
                 distance: data.distance,
                 description: data.description,
                 duration: data.duration,
+                startCountry: data.startCountry,
                 likes: data.likes,
                 type: data.type,
                 startCity: data.startCity,

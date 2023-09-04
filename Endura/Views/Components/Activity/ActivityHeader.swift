@@ -43,8 +43,8 @@ struct ActivityHeader: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
                             if let activityData = activityData {
-                                if let startCity = activityData.startCity {
-                                    Text("\(activityData.startTime.formatted()) • \(startCity)")
+                                if let startCity = activityData.startCity, let startCountry = activityData.startCountry {
+                                    Text("\(activityData.startTime.formatted()) • \(startCity), \(startCountry)")
                                         .font(.system(size: 12))
                                         .foregroundColor(.secondary)
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

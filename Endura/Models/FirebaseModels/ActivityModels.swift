@@ -119,6 +119,7 @@ public struct ActivityGridStatsData: Codable {
 public struct ActivityHeaderData: Codable {
     var startTime: Date
     var startLocation: LocationData?
+    var startCountry: String?
     var startCity: String?
     var uid: String
 }
@@ -131,6 +132,7 @@ protocol ActivityDataProtocol {
     var time: Date { get }
     var totalDuration: TimeInterval { get }
     var uid: String { get }
+    var startCountry: String { get }
     var startCity: String { get }
     var startLocation: LocationData { get }
     var description: String { get }
@@ -145,6 +147,7 @@ extension ActivityDataProtocol {
         ActivityHeaderData(
             startTime: time,
             startLocation: startLocation,
+            startCountry: startCountry,
             startCity: startCity,
             uid: uid
         )
@@ -179,6 +182,7 @@ public struct ActivityDocument: Codable {
     var duration: TimeInterval
     var likes: [String]
     var type: ActivityType
+    var startCountry: String
     var startCity: String
     var startLocation: LocationData
     var time: Date
@@ -197,6 +201,7 @@ public struct ActivityDocument: Codable {
             duration: activity.duration,
             likes: activity.likes,
             type: activity.type,
+            startCountry: activity.startCountry,
             startCity: activity.startCity,
             startLocation: activity.startLocation,
             time: activity.time,
@@ -215,6 +220,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
     var distance: Double
     var description: String
     var duration: TimeInterval
+    var startCountry: String
     var likes: [String]
     var pace: Double {
         distance / duration
@@ -238,6 +244,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
             distance: distance,
             description: description,
             duration: duration,
+            startCountry: startCountry,
             workoutStart: time,
             likes: likes,
             type: type,
@@ -259,6 +266,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     var distance: Double
     var description: String
     var duration: TimeInterval
+    var startCountry: String
     var workoutStart: Date
     var likes: [String]
     var pace: Double {
@@ -281,6 +289,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
             distance: distance,
             description: description,
             duration: duration,
+            startCountry: startCountry,
             likes: likes,
             type: type,
             startCity: startCity,
