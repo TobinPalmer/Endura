@@ -1,13 +1,13 @@
 import Foundation
 
-public struct SettingsModel: Codable {
+public struct SettingsModel: Codable, Cacheable {
     var notifications: Bool
 
-    public init(notifications: Bool) {
-        self.notifications = notifications
+    public func updateCache(_ cache: SettingsCache) {
+        cache.notifications = notifications
     }
 
-    public init() {
-        self.init(notifications: true)
+    public static func fromCache(_ cache: SettingsCache) -> SettingsModel {
+        SettingsModel(notifications: cache.notifications)
     }
 }

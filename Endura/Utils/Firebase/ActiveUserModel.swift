@@ -1,3 +1,4 @@
+import CoreData
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation
@@ -18,14 +19,19 @@ import Foundation
         self.settings = settings
         self.info = info
         self.data = data
+
+        if let cachedSettings = CacheUtils.fetchObject(SettingsCache.self) {
+            self.settings = SettingsModel.fromCache(cachedSettings)
+        }
     }
 
     private func updateSettings() {
-        do {
-            try Firestore.firestore().collection("users").document(uid).collection("data").document("settings").setData(from: settings)
-        } catch {
-            print("Error updating settings: \(error)")
-        }
+        CacheUtils.updateObject(SettingsCache.self, update: settings.updateCache)
+//        do {
+//            try Firestore.firestore().collection("users").document(uid).collection("data").document("settings").setData(from: settings)
+//        } catch {
+//            print("Error updating settings: \(error)")
+//        }
     }
 
     private final func getUserData() {

@@ -14,7 +14,10 @@ public enum AuthUtils {
                 do {
                     try Firestore.firestore().collection("users").document(uid).setData(from: userData)
                     try Firestore.firestore().collection("users").document(uid).collection("data").document("training").setData(from: userTrainingData)
-                    try Firestore.firestore().collection("users").document(uid).collection("data").document("settings").setData(from: SettingsModel())
+                    let defaultSettings = SettingsModel(
+                        notifications: true
+                    )
+                    try Firestore.firestore().collection("users").document(uid).collection("data").document("settings").setData(from: defaultSettings)
                 } catch {
                     print("Error creating user: \(error)")
                 }
