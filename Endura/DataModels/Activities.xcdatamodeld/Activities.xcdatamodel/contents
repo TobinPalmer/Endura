@@ -3,7 +3,4 @@
     <entity name="Activity" representedClassName="Activity" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
-    <entity name="SettingsCache" representedClassName="SettingsCache" syncable="YES" codeGenerationType="class">
-        <attribute name="notifications" optional="YES" attributeType="Boolean" usesScalarValueType="YES" customClassName="SettingsModel"/>
-    </entity>
 </model>

@@ -44,7 +44,7 @@ public enum ActivityUtils {
     }
 
     public static func isActivityUploaded(_ activity: HKWorkout) -> Bool {
-        let context = PersistenceController.shared.container.viewContext
+        let context = PersistenceController.shared.activitiesContainer.viewContext
         let fetchRequest: NSFetchRequest<Activity> = Activity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", activity.uuid as CVarArg)
         do {
@@ -56,14 +56,14 @@ public enum ActivityUtils {
     }
 
     public static func setActivityUploaded(for activity: HKWorkout) {
-        let context = PersistenceController.shared.container.newBackgroundContext()
+        let context = PersistenceController.shared.activitiesContainer.newBackgroundContext()
         context.perform {
             let newActivity = Activity(context: context)
-            newActivity.id = activity.uuid // or any unique identifier for your activity
+            newActivity.id = activity.uuid
             do {
                 try context.save()
             } catch {
-                // handle the Core Data error
+                print("Error saving activity: \(error)")
             }
         }
     }

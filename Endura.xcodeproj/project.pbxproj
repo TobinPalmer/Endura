@@ -116,6 +116,7 @@
 		E91E1F782A9827D00095D3E9 /* Activities.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */; };
 		E92549A92AA03AE900776856 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = E92549A82AA03AE900776856 /* CachedAsyncImage */; };
 		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
+		E98AFEF62AA582AB002DB211 /* ObjectCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E98AFEF42AA582AB002DB211 /* ObjectCache.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -238,6 +239,7 @@
 		69698FE247BAB2DB0A34EE25 /* SignupStepOneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepOneView.swift; sourceTree = "<group>"; };
 		E91E1F772A9827D00095D3E9 /* Activities.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Activities.xcdatamodel; sourceTree = "<group>"; };
 		E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityMapImage.swift; path = Endura/Views/Components/Activity/ActivityMapImage.swift; sourceTree = SOURCE_ROOT; };
+		E98AFEF52AA582AB002DB211 /* ObjectCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ObjectCache.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,8 +335,8 @@
 				69698BED38E7BC5FB38B4BA0 /* Errors */,
 				69698DD361B3846255EF0F67 /* Styles */,
 				696980F8615E62AFAE8EB590 /* Fonts */,
-				E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */,
 				17CC620E713369BF3ECEA030 /* PersistanceController.swift */,
+				17CC6DC0E14D1A587370E263 /* DataModels */,
 			);
 			path = Endura;
 			sourceTree = "<group>";
@@ -489,6 +491,15 @@
 				69698DDFA619D90ED487EF68 /* SummaryGraph */,
 			);
 			path = Activity;
+			sourceTree = "<group>";
+		};
+		17CC6DC0E14D1A587370E263 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				E91E1F762A9827D00095D3E9 /* Activities.xcdatamodeld */,
+				E98AFEF42AA582AB002DB211 /* ObjectCache.xcdatamodeld */,
+			);
+			path = DataModels;
 			sourceTree = "<group>";
 		};
 		6969808D7BBD744E99F02404 /* Notification */ = {
@@ -881,6 +892,7 @@
 				69698264AD04B1437CE58655 /* Collection.swift in Sources */,
 				17CC6F2D2274313C2825BE5B /* ActivitySchedule.swift in Sources */,
 				17CC63D9EEB53484B6987842 /* ScheduleDay.swift in Sources */,
+				E98AFEF62AA582AB002DB211 /* ObjectCache.xcdatamodeld in Sources */,
 				17CC6EE5F11BB76AD09EDBBF /* Array.swift in Sources */,
 				17CC6CC4EBB3F8F4A970C8C5 /* Date.swift in Sources */,
 				17CC6375D0C9879B20E7B30B /* Calendar.swift in Sources */,
@@ -1402,6 +1414,16 @@
 			);
 			currentVersion = E91E1F772A9827D00095D3E9 /* Activities.xcdatamodel */;
 			path = Activities.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		E98AFEF42AA582AB002DB211 /* ObjectCache.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E98AFEF52AA582AB002DB211 /* ObjectCache.xcdatamodel */,
+			);
+			currentVersion = E98AFEF52AA582AB002DB211 /* ObjectCache.xcdatamodel */;
+			path = ObjectCache.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
