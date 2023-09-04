@@ -14,14 +14,14 @@ public enum UserGender: String, Codable {
 
 public struct UserData {
     public var uid: String
-    public var name: String
+    public var name: String {
+        firstName + " " + lastName
+    }
+
     public var firstName: String
     public var lastName: String
     public var profileImage: UIImage?
     public var friends: [String]
-
-    public var role: Roles?
-    public var lastNotificationsRead: Date?
 }
 
 public struct UserTrainingData: Codable {

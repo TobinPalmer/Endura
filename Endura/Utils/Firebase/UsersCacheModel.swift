@@ -30,12 +30,10 @@ import Foundation
 
             let userData = UserData(
                 uid: uid,
-                name: "\(document.firstName) \(document.lastName)",
                 firstName: document.firstName,
                 lastName: document.lastName,
                 profileImage: image,
-                friends: document.friends,
-                role: document.role
+                friends: document.friends
             )
             usersCache.updateValue(userData, forKey: uid)
             return userData

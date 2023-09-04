@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ActivityView: View {
     @EnvironmentObject var databaseCache: UsersCacheModel
+    @EnvironmentObject var activeUserModel: ActiveUserModel
 
     private var id: String
     private var activity: ActivityData
@@ -101,7 +102,7 @@ struct ActivityView: View {
                         Label("Delete", systemImage: "trash")
                     }
 
-                    if databaseCache.getUserData(AuthUtils.getCurrentUID())?.role == .ADMIN {
+                    if activeUserModel.data.role == .ADMIN {
                         Button(action: {
                             print("Banned")
                         }) {
