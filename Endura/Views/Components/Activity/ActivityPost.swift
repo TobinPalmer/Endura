@@ -62,21 +62,64 @@ struct ActivityPost: View {
                     }
                 }
 
+                Spacer()
+
                 Button {
                     showingComments.toggle()
                 } label: {
+                    let commentsBinding = Binding<Int>(
+                        get: { activity.comments.count },
+                        set: { _ in }
+                    )
                     Image(systemName: "message")
                         .font(.title)
+                        .overlay(
+                            NotificationCountView(value: commentsBinding)
+                                .offset(x: 10, y: 3)
+                        )
                 }
-
-                Spacer()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .popover(isPresented: $showingComments) {
+            .sheet(isPresented: $showingComments) {
                 VStack {
-                    ForEach(activity.comments, id: \.self) { comment in
-                        ActivityComment(comment)
+                    ZStack(alignment: .topLeading) {
+                        Button(action: {
+                            showingComments.toggle()
+                        }) {
+                            HStack(spacing: 5) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .medium))
+                                Text("Done")
+                            }
+                            .foregroundColor(.accentColor)
+                            .font(.system(size: 16))
+                            .padding(5)
+                        }
+                        .zIndex(1)
+                        VStack {
+                            ActivityMapImage(id)
+
+                            HStack {
+                                Text(activity.title)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                Spacer()
+                                ForEach(activity.likes, id: \.self) { uid in
+                                    UserProfileLink(uid) {
+                                        ProfileImage(uid, size: 30)
+                                    }
+                                }
+                            }
+                        }
                     }
+
+                    ScrollView {
+                        ForEach(activity.comments, id: \.self) { comment in
+                            ActivityComment(comment)
+                        }
+                    }
+
+                    Spacer()
 
                     HStack {
                         TextField("Add a comment...", text: $message)
@@ -94,24 +137,18 @@ struct ActivityPost: View {
                         }
                     }
                 }
-                .frame(
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    minHeight: 0,
-                    maxHeight: .infinity,
-                    alignment: .topLeading
-                )
-            }
-
-            VStack(alignment: .leading) {
-                let firstComment = activity.comments.last
-
-                if let firstComment = firstComment {
-                    ActivityComment(firstComment)
+                .padding(5)
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button(action: {
+                            showingComments.toggle()
+                        }) {
+                            Text("Done").fontWeight(.semibold)
+                        }
+                    }
                 }
             }
         }
-        .enableInjection()
         .padding(8)
         .cornerRadius(10)
         .foregroundColor(.primary)
