@@ -7,7 +7,7 @@ struct ContentView: View {
     @EnvironmentObject var usersCache: UsersCacheModel
     @EnvironmentObject var navigation: NavigationModel
     @ObservedObject private var IO = Inject.observer
-    @StateObject private var activeUserModel = ActiveUserModel()
+    @State private var activeUserModel: ActiveUserModel?
 
     @State private var isLogoutButtonHidden = false
 
@@ -19,7 +19,7 @@ struct ContentView: View {
                     .preferredColorScheme(.light)
             }
         case .HOME:
-            if activeUserModel.settings != nil {
+            if let activeUserModel = activeUserModel {
                 TabView {
                     NavigationView {
                         DashboardView()
@@ -79,11 +79,14 @@ struct ContentView: View {
                 }
                 .task {
                     do {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            isLogoutButtonHidden = false
-                        }
+                        activeUserModel = try await ActiveUserModel()
                     } catch {
-                        print("Error fetching settings: \(error)")
+                        print("Error creating activeUserModel \(error)")
+                        AuthUtils.logout()
+                    }
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        isLogoutButtonHidden = false
                     }
                 }
             }
