@@ -1,24 +1,7 @@
 import Foundation
 import SwiftUI
 
-private final class SignupViewModel: ObservableObject {
-//    func login() {
-//        AuthUtils.loginWithEmail(email, password)
-//    }
-}
-
-public enum RunningScheduleType: String, Codable {
-    case FREE = "free"
-    case BUSY = "busy"
-    case MAYBE = "maybe"
-    case PROBABLY = "probably"
-    case PROBABLY_NOT = "probably_not"
-}
-
-public struct RunningSchedule: Codable {
-    public var day: Int
-    public var type: RunningScheduleType
-}
+private final class SignupViewModel: ObservableObject {}
 
 public final class SignupFormInfo: ObservableObject {
     @Published public var firstName: String = ""
