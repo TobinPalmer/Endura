@@ -19,7 +19,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
         distance / duration
     }
 
-    var type: ActivityType
+    var type: TrainingRunType
     var startCity: String
     var startLocation: LocationData
     var time: Date
@@ -66,7 +66,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
         distance / duration
     }
 
-    var type: ActivityType
+    var type: TrainingRunType
     var startCity: String
     var startLocation: LocationData
     var time: Date

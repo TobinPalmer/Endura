@@ -109,12 +109,14 @@
 		69698B235EEB9BE761583269 /* SignupStepOneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698FE247BAB2DB0A34EE25 /* SignupStepOneView.swift */; };
 		69698B2BDA9046D639E2A0E6 /* NewActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969849C3C4EA502A9EE3634 /* NewActivityView.swift */; };
 		69698B903B0D09249C4AB005 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989E9AE3D7EE9E513FE5C /* Button.swift */; };
+		69698BA25927B7ADD9CB9E4A /* UtilEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E649EF06BED5C228EF9 /* UtilEnums.swift */; };
 		69698BABDCAEC0A369C6A3FA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969819A8C4285A3E148D771 /* Double.swift */; };
 		69698CCC22527D126CBF9B6D /* WeeklySummaryGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */; };
 		69698CE9D78FA0FC3992EE86 /* NotificationsBell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */; };
 		69698D8125A684D0E6DFC4C2 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986EDB3F87EE749147042 /* AppViewModel.swift */; };
 		69698D9FF474040A16DC04C9 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989BB502C0EDF35A4959D /* SignupView.swift */; };
 		69698E351EF5E934C5440F86 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698F375B8431109FFB3F98 /* TrainingView.swift */; };
+		69698E5A52E0A85E4C5A525C /* TrainingEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969864B8B26535EBF8EE62D /* TrainingEnums.swift */; };
 		69698F0E561C7F4DC1D31BE5 /* ActivityDataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969857EDEFD5DD4CD566F69 /* ActivityDataTypes.swift */; };
 		69698F967DFA9D0303BE96FF /* MKCoordinateRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */; };
 		69698FA1FC03637A47E3FA7D /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698626B91694BAD5012252 /* NotificationUtils.swift */; };
@@ -223,6 +225,7 @@
 		69698626B91694BAD5012252 /* NotificationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationUtils.swift; sourceTree = "<group>"; };
 		696986316AB6F45157A56439 /* ActivityStatsComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityStatsComponents.swift; sourceTree = "<group>"; };
 		69698647FA8CC85C3EA612CB /* UploadWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadWorkoutView.swift; sourceTree = "<group>"; };
+		6969864B8B26535EBF8EE62D /* TrainingEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingEnums.swift; sourceTree = "<group>"; };
 		696986EDB3F87EE749147042 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6969870866179CC66A7558FB /* ActivityModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityModels.swift; sourceTree = "<group>"; };
 		6969873280457DB033BF8C41 /* SignupStepSixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepSixView.swift; sourceTree = "<group>"; };
@@ -242,6 +245,7 @@
 		69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; path = "FlowBlock-Regular.ttf"; sourceTree = "<group>"; };
 		69698DF8486AD52C2CC0EC4B /* PostUploadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostUploadView.swift; sourceTree = "<group>"; };
 		69698E4D0ADAABE9CEAE6589 /* SignupStepFiveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepFiveView.swift; sourceTree = "<group>"; };
+		69698E649EF06BED5C228EF9 /* UtilEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilEnums.swift; sourceTree = "<group>"; };
 		69698E6CE08351083301EC53 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsBell.swift; sourceTree = "<group>"; };
 		69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegion.swift; sourceTree = "<group>"; };
@@ -523,6 +527,7 @@
 			children = (
 				17CC6456ADDCD3B3619C2871 /* SummaryModels.swift */,
 				17CC656E8B60587CA8E876DE /* TrainingModels.swift */,
+				6969864B8B26535EBF8EE62D /* TrainingEnums.swift */,
 			);
 			path = TrainingModels;
 			sourceTree = "<group>";
@@ -543,6 +548,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		696981DF45B15F8A6F6E95A4 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				69698E649EF06BED5C228EF9 /* UtilEnums.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		69698295434F07B0A3B70B02 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -551,6 +564,7 @@
 				17CC60C52B690F82F607C81C /* ViewModels */,
 				17CC6240CAA64B7FBF3CB0CA /* SettingsModels */,
 				17CC6E7FF7285D4AE4B38DA8 /* TrainingModels */,
+				696981DF45B15F8A6F6E95A4 /* Util */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -989,6 +1003,8 @@
 				69698F0E561C7F4DC1D31BE5 /* ActivityDataTypes.swift in Sources */,
 				69698853976D3EE301E577CF /* ActivityTypealiases.swift in Sources */,
 				6969891FF6EC6105C007F8F1 /* ActivityEnums.swift in Sources */,
+				69698E5A52E0A85E4C5A525C /* TrainingEnums.swift in Sources */,
+				69698BA25927B7ADD9CB9E4A /* UtilEnums.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

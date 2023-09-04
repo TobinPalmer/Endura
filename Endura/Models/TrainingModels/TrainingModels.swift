@@ -1,28 +1,26 @@
 import Foundation
 
-public enum Days: String, Codable, CaseIterable {
-    case monday = "Mon"
-    case tuesday = "Tue"
-    case wednesday = "Wed"
-    case thursday = "Thu"
-    case friday = "Fri"
-    case saturday = "Sat"
-    case sunday = "Sun"
+protocol TrainingGoalBase {
+    var type: TrainingGoalType { get }
+    var time: Double { get }
 }
 
-public enum TrainingGoalType: String, Codable {
-    case running
-    case postRun
-}
-
-public struct RunningTrainingGoal: Codable {
-    public var type: TrainingGoalType
+public struct RunningTrainingGoal: Codable, TrainingGoalBase {
+    public var difficulty: TrainingGoalDifficulty
     public var distance: Double
-    public var time: Double
     public var pace: Double
+    public var runType: TrainingRunType
+    public var time: Double
+    public var type: TrainingGoalType
 }
 
-public struct PostRunTrainingGoal: Codable {
+public struct PostRunTrainingGoal: Codable, TrainingGoalBase {
+    public var type: TrainingGoalType
+    public var count: Int
+    public var time: Double
+}
+
+public struct WarmupTrainingGoal: Codable, TrainingGoalBase {
     public var type: TrainingGoalType
     public var count: Int
     public var time: Double

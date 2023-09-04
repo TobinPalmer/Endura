@@ -57,7 +57,7 @@ public struct ActivityDocument: Codable {
     var description: String
     var duration: TimeInterval
     var likes: [String]
-    var type: ActivityType
+    var type: TrainingRunType
     var startCountry: String
     var startCity: String
     var startLocation: LocationData

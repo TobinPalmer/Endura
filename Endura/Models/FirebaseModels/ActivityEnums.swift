@@ -18,10 +18,3 @@ public enum RunningScheduleType: String, Codable {
     case PROBABLY = "probably"
     case PROBABLY_NOT = "probably_not"
 }
-
-public enum ActivityType: String, Codable {
-    case long = "Long Run"
-    case hard = "Hard Run"
-    case normal = "Normal Run"
-    case none
-}
