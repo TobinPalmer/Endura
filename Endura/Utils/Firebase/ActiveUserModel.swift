@@ -5,7 +5,7 @@ import Foundation
 
 @MainActor public final class ActiveUserModel: ObservableObject {
     private let uid = AuthUtils.getCurrentUID()
-    @Published public var data: UserData
+    @Published public var data: ActiveUserData?
 
     @Published public var settings: SettingsModel {
         didSet {
@@ -13,15 +13,19 @@ import Foundation
         }
     }
 
-    public var info: UserTrainingData
+    public var info: UserTrainingData?
 
-    public init(settings: SettingsModel, info: UserTrainingData, data: UserData) {
-        self.settings = settings
-        self.info = info
-        self.data = data
+    public init() {
+        settings = SettingsModel(
+            notifications: true
+        )
 
         if let cachedSettings = CacheUtils.fetchObject(SettingsCache.self) {
-            self.settings = SettingsModel.fromCache(cachedSettings)
+            settings = SettingsModel.fromCache(cachedSettings)
+        }
+
+        if let cachedUserData = CacheUtils.fetchObject(ActiveUserDataCache.self) {
+            data = ActiveUserData.fromCache(cachedUserData)
         }
     }
 
@@ -43,9 +47,8 @@ import Foundation
 
             do {
                 let document = try document.data(as: UserDocument.self)
-                self.data = UserData(
+                self.data = ActiveUserData(
                     uid: self.uid,
-                    name: document.firstName + " " + document.lastName,
                     firstName: document.firstName,
                     lastName: document.lastName,
                     profileImage: nil,

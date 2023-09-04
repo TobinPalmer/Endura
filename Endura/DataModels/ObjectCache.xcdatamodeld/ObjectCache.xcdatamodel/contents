@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G90" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ActiveUserDataCache" representedClassName="ActiveUserDataCache" syncable="YES" codeGenerationType="class">
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="friends" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="lastNotificationsRead" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="role" optional="YES" attributeType="String" customClassName="Roles"/>
+        <attribute name="uid" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="SettingsCache" representedClassName="SettingsCache" syncable="YES" codeGenerationType="class">
         <attribute name="notifications" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>

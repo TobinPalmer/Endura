@@ -7,9 +7,7 @@ struct ContentView: View {
     @EnvironmentObject var usersCache: UsersCacheModel
     @EnvironmentObject var navigation: NavigationModel
     @ObservedObject private var IO = Inject.observer
-    @State private var settings: SettingsModel?
-    @State private var info: UserTrainingData?
-    @State private var activeUserData: UserData?
+    @StateObject private var activeUserModel = ActiveUserModel()
 
     @State private var isLogoutButtonHidden = false
 
@@ -21,7 +19,7 @@ struct ContentView: View {
                     .preferredColorScheme(.light)
             }
         case .HOME:
-            if let settings = settings, let info = info, let activeUserData = activeUserData {
+            if activeUserModel.settings != nil {
                 TabView {
                     NavigationView {
                         DashboardView()
@@ -64,8 +62,8 @@ struct ContentView: View {
                         Text("Profile")
                     }
                 }
-                .environmentObject(ActiveUserModel(settings: settings, info: info, data: activeUserData))
-                .environmentObject(NotificationsModel(lastRead: activeUserData.lastNotificationsRead))
+                .environmentObject(activeUserModel)
+                .environmentObject(NotificationsModel(lastRead: activeUserModel.data?.lastNotificationsRead))
                 .enableInjection()
             } else {
                 VStack {
@@ -81,10 +79,6 @@ struct ContentView: View {
                 }
                 .task {
                     do {
-                        settings = try await ActiveUserModel.fetchSettings()
-                        info = try await ActiveUserModel.fetchInfo()
-                        activeUserData = try await ActiveUserModel.fetchUserData()
-
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             isLogoutButtonHidden = false
                         }

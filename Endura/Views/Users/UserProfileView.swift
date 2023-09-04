@@ -52,12 +52,14 @@ struct UserProfileView: View {
                 Text(user.name)
                     .font(.title)
 
-                if activeUser.data.friends.contains(uid) {
-                    Text("Friends")
-                } else {
-                    Button("Add Friend") {
-                        Task {
-                            NotificationsModel.sendNotification(to: uid, data: NotificationData(type: .friendRequest, uid: activeUser.data.uid, timestamp: Date()))
+                if let activeUser = activeUser.data {
+                    if activeUser.friends.contains(uid) {
+                        Text("Friends")
+                    } else {
+                        Button("Add Friend") {
+                            Task {
+                                NotificationsModel.sendNotification(to: uid, data: NotificationData(type: .friendRequest, uid: activeUser.uid, timestamp: Date()))
+                            }
                         }
                     }
                 }

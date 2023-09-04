@@ -38,3 +38,37 @@ public struct UserDocument: Codable {
     public var email: String
     public var lastNotificationsRead: Date?
 }
+
+public struct ActiveUserData: Cacheable {
+    public var uid: String
+    public var name: String {
+        firstName + " " + lastName
+    }
+
+    public var firstName: String
+    public var lastName: String
+    public var profileImage: UIImage?
+    public var friends: [String]
+    public var role: Roles?
+    public var lastNotificationsRead: Date?
+
+    public func updateCache(_ cache: ActiveUserDataCache) {
+        cache.uid = uid
+        cache.firstName = firstName
+        cache.lastName = lastName
+        cache.friends = friends
+        cache.role = role?.rawValue ?? Roles.USER.rawValue
+        cache.lastNotificationsRead = lastNotificationsRead
+    }
+
+    public static func fromCache(_ cache: ActiveUserDataCache) -> ActiveUserData {
+        ActiveUserData(
+            uid: cache.uid!,
+            firstName: cache.firstName!,
+            lastName: cache.lastName!,
+            friends: cache.friends!,
+            role: Roles(rawValue: cache.role!),
+            lastNotificationsRead: cache.lastNotificationsRead
+        )
+    }
+}
