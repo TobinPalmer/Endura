@@ -53,7 +53,8 @@ struct ActivitySchedule: View {
     var body: some View {
         VStack {
             let currentMonthDates = CalendarUtils.generateCurrentMonthDates()
-            CalendarView(months: [currentMonthDates], events: [Date(): "Event"])
+            Text(currentMonthDates.description)
+//            CalendarView(months: [currentMonthDates], events: [Date(): "Event"])
         }
     }
 }
