@@ -41,6 +41,7 @@
 		17CC65FFF4C4939ED6E24B68 /* MultiStepForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */; };
 		17CC665E4DC7CCF0BA6216D2 /* FindUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6B1555ECC86F1858E844 /* FindUsersView.swift */; };
 		17CC668261B0BC82E6EEDDBA /* ActivityPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69F5F51AE211727A3343 /* ActivityPost.swift */; };
+		17CC6683CAC59352904F9A23 /* CacheUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6104192AE8D5CF51A07A /* CacheUtils.swift */; };
 		17CC66AE951B3D00B9798DFE /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66685EBC6CD75C2599F5 /* SettingsModel.swift */; };
 		17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64CF9FA32EE591326705 /* UIColor.swift */; };
 		17CC673CACCF972808F56167 /* DataCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F445A3F75EF1443D340 /* DataCacheModel.swift */; };
@@ -149,6 +150,7 @@
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		026D06352A7B2A3200A91958 /* Endura.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Endura.entitlements; sourceTree = "<group>"; };
 		02BC053E2A903125007CB32C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		17CC6104192AE8D5CF51A07A /* CacheUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUtils.swift; sourceTree = "<group>"; };
 		17CC6138F9F694BD479D8798 /* MKPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolyline.swift; sourceTree = "<group>"; };
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		17CC61A4C68A0172243AB286 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 				17CC67B24D3875D7D88B08B5 /* Conversion */,
 				17CC674A95679C1DC5E65648 /* Calendar */,
 				6969808D7BBD744E99F02404 /* Notification */,
+				17CC6104192AE8D5CF51A07A /* CacheUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -937,6 +940,7 @@
 				6969858DD959CC6C21602B67 /* GoalRings.swift in Sources */,
 				17CC67E489A90C6940C1DD21 /* SummaryModels.swift in Sources */,
 				17CC673CACCF972808F56167 /* DataCacheModel.swift in Sources */,
+				17CC6683CAC59352904F9A23 /* CacheUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
