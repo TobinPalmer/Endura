@@ -6,17 +6,23 @@ import SwiftUI
 struct UserProfileLink<Content: View>: View {
     private let uid: String
     private let content: Content
+    private let noLink: Bool
 
-    init(_ uid: String, @ViewBuilder content: () -> Content) {
+    init(_ uid: String, noLink: Bool = false, @ViewBuilder content: () -> Content) {
         self.uid = uid
         self.content = content()
+        self.noLink = noLink
     }
 
     var body: some View {
-        NavigationLink(destination: UserProfileView(uid)) {
+        if noLink {
             content
+        } else {
+            NavigationLink(destination: UserProfileView(uid)) {
+                content
+            }
+            .buttonStyle(PlainButtonStyle())
         }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 

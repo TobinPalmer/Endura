@@ -56,15 +56,7 @@ struct ActivityPost: View {
                         .font(.title)
                 }
 
-                ZStack {
-                    ForEach(0 ..< activity.likes.prefix(3).count, id: \.self) { i in
-                        UserProfileLink(activity.likes[i]) {
-                            ProfileImage(activity.likes[i], size: 30)
-                                .offset(x: CGFloat(i) * 20, y: 0)
-                                .shadow(radius: 1, x: -1, y: 0)
-                        }
-                    }
-                }
+                ActivityLikesList(activity.likes)
 
                 Spacer()
 
@@ -85,63 +77,62 @@ struct ActivityPost: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .sheet(isPresented: $showingComments) {
-                VStack {
-                    ZStack(alignment: .topLeading) {
-                        Button(action: {
-                            showingComments.toggle()
-                        }) {
-                            HStack(spacing: 5) {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 20, weight: .medium))
-                                Text("Done")
-                            }
-                            .foregroundColor(.accentColor)
-                            .font(.system(size: 16))
-                            .padding(5)
+                ZStack(alignment: .topLeading) {
+                    Button(action: {
+                        showingComments.toggle()
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .medium))
+                            Text("Done")
                         }
-                        .zIndex(1)
-                        VStack {
-                            ActivityMapImage(id)
-
-                            HStack {
-                                Text(activity.title)
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                                Spacer()
-                                ForEach(activity.likes, id: \.self) { uid in
-                                    UserProfileLink(uid) {
-                                        ProfileImage(uid, size: 30)
-                                    }
-                                }
-                            }
-                        }
+                        .foregroundColor(.accentColor)
+                        .font(.system(size: 16))
+                        .padding(5)
                     }
+                    .zIndex(1)
+                    VStack {
+                        ActivityMapImage(id)
 
-                    ScrollView {
-                        ForEach(activity.comments, id: \.self) { comment in
-                            ActivityComment(comment)
-                        }
-                    }
+                        Spacer(minLength: 0)
+                            .frame(height: 10)
 
-                    Spacer()
+                        HStack {
+                            Text(activity.title.isEmpty ? "Untitled Activity" : activity.title)
+                                .font(.title2)
+                                .fontWeight(.semibold)
 
-                    HStack {
-                        TextField("Add a comment...", text: $message)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        Button(action: {
-                            let comment = ActivityCommentData(
-                                message: message,
-                                time: Date(),
-                                uid: AuthUtils.getCurrentUID()
-                            )
-                            message = ""
-                            ActivityUtils.addComment(id: id, comment: comment)
-                        }) {
-                            Image(systemName: "paperplane")
+                            Spacer()
+
+                            ActivityLikesList(activity.likes, noLink: true, reverse: true)
+                                .padding(.trailing, 10)
                         }
                     }
                 }
-                .padding(5)
+
+                ScrollView {
+                    ForEach(activity.comments, id: \.self) { comment in
+                        ActivityComment(comment)
+                    }
+                }
+
+                Spacer()
+
+                HStack {
+                    TextField("Add a comment...", text: $message)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Button(action: {
+                        let comment = ActivityCommentData(
+                            message: message,
+                            time: Date(),
+                            uid: AuthUtils.getCurrentUID()
+                        )
+                        message = ""
+                        ActivityUtils.addComment(id: id, comment: comment)
+                    }) {
+                        Image(systemName: "paperplane")
+                    }
+                }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Button(action: {
