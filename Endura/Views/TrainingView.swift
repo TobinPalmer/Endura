@@ -6,7 +6,9 @@ struct TrainingView: View {
         VStack {
             Text("Training View")
             TrainingCalender()
-            TrainingDayList()
+            ScrollView {
+                TrainingGoalList()
+            }
         }
     }
 }

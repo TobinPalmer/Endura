@@ -26,34 +26,29 @@ struct DashboardView: View {
                 }
                 .frame(minWidth: 0, maxWidth: .infinity)
 
-                VStack {
-                    HStack(spacing: 10) {
-                        VStack {
-                            GoalRing(.distance)
-                                .frame(maxHeight: 70)
-                        }
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
-                        .background(.red)
-                        .cornerRadius(8)
-
-                        VStack {
-                            GoalRing(.distance)
-                                .frame(maxHeight: 70)
-                        }
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
-                        .background(.orange)
-                        .cornerRadius(8)
+                HStack(spacing: 10) {
+                    VStack {
+                        GoalRing(.distance)
+                            .frame(maxHeight: 70)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                    .background(.red)
+                    .cornerRadius(8)
+
+                    VStack {
+                        GoalRing(.distance)
+                            .frame(maxHeight: 70)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                    .background(.orange)
+                    .cornerRadius(8)
                 }
+                .frame(minWidth: 0, maxWidth: .infinity)
             }
-            .frame(
-                minWidth: 0,
-                maxWidth: .infinity,
-                minHeight: 0,
-                maxHeight: .infinity,
-                alignment: .center
-            )
+
+            Text("Hello world")
+
+            TrainingGoalList()
         }
         .padding(5)
         .toolbar {

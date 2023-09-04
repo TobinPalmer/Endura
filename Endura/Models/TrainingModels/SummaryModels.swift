@@ -1,15 +1,5 @@
 import Foundation
 
-public enum Days: String, Codable, CaseIterable {
-    case monday = "Mon"
-    case tuesday = "Tue"
-    case wednesday = "Wed"
-    case thursday = "Thu"
-    case friday = "Fri"
-    case saturday = "Sat"
-    case sunday = "Sun"
-}
-
 public struct WeeklyGraphData: Hashable, Codable {
     public var day: Days
     public var distance: Double
