@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 import SwiftUICalendar
 
-struct ActivitySchedule: View {
+struct TrainingCalender: View {
     var body: some View {
         VStack {
             CalendarView { date in

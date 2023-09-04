@@ -5,7 +5,8 @@ struct TrainingView: View {
     var body: some View {
         VStack {
             Text("Training View")
-            ActivitySchedule()
+            TrainingCalender()
+            TrainingDayList()
         }
     }
 }
