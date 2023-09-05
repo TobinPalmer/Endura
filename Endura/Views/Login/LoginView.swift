@@ -44,7 +44,10 @@ struct LoginView: View {
                     .resizable()
                     .frame(width: 100, height: 100)
 
-                Text("Login")
+                Spacer()
+                    .frame(height: 3)
+
+                Text("Welcome back!")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color("Text"))
