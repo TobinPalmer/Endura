@@ -55,8 +55,7 @@ public enum AuthUtils {
         }
 
         Auth.auth().addStateDidChangeListener { _, user in
-            if let user = user {
-                print(user)
+            if user != nil {
                 NavigationModel.instance.currentView = .HOME
             }
         }
@@ -75,6 +74,7 @@ public enum AuthUtils {
     public static func logout() {
         do {
             try Auth.auth().signOut()
+            PersistenceController.shared.clearAll()
             NavigationModel.instance.currentView = .LOGIN
         } catch {
             print("Error logging out: \(error)")

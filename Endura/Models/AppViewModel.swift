@@ -16,5 +16,11 @@ public final class NavigationModel: ObservableObject {
 
     private init() {}
 
-    @Published var currentView: PageView = .LOGIN
+    @Published var currentView: PageView = .LOGIN {
+        didSet {
+            refreshID = UUID()
+        }
+    }
+
+    @Published var refreshID: UUID = .init()
 }

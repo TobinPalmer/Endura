@@ -22,4 +22,20 @@ struct PersistenceController {
             }
         }
     }
+
+    func clearAll() {
+        for container in [activitiesContainer, container] {
+            let context = container.viewContext
+            let entities = container.managedObjectModel.entities
+            for entity in entities {
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.name!)
+                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                do {
+                    try context.execute(deleteRequest)
+                } catch {
+                    print("Error clearing cache: \(error)")
+                }
+            }
+        }
+    }
 }

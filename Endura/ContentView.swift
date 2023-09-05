@@ -12,84 +12,90 @@ struct ContentView: View {
     @State private var isLogoutButtonHidden = false
 
     var body: some View {
-        switch navigation.currentView {
-        case .LOGIN:
+        if navigation.currentView == .LOGIN {
             NavigationView {
                 LoginView()
                     .preferredColorScheme(.light)
             }
-        case .HOME:
-            if let activeUserModel = activeUserModel {
-                TabView {
-                    NavigationView {
-                        DashboardView()
-                            .preferredColorScheme(.light)
-                    }
-                    .tabItem {
-                        Image(systemName: "house")
-                        Text("Home")
-                    }
+            .onAppear {
+                activeUserModel = nil
+                isLogoutButtonHidden = false
+            }
+        } else {
+            VStack {
+                if let activeUserModel = activeUserModel {
+                    TabView {
+                        NavigationView {
+                            DashboardView()
+                                .preferredColorScheme(.light)
+                        }
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Home")
+                        }
 
-                    NavigationView {
-                        ActivitiesView()
-                    }
-                    .tabItem {
-                        Image(systemName: "figure.walk")
-                        Text("Activity")
-                    }
+                        NavigationView {
+                            ActivitiesView()
+                        }
+                        .tabItem {
+                            Image(systemName: "figure.walk")
+                            Text("Activity")
+                        }
 
-                    NavigationView {
-                        TrainingView()
-                    }
-                    .tabItem {
-                        Image(systemName: "calendar")
-                        Text("Training")
-                    }
+                        NavigationView {
+                            TrainingView()
+                        }
+                        .tabItem {
+                            Image(systemName: "calendar")
+                            Text("Training")
+                        }
 
-                    NavigationView {
-                        ProgressDashboardView()
-                    }
-                    .tabItem {
-                        Image(systemName: "chart.bar")
-                        Text("Progress")
-                    }
+                        NavigationView {
+                            ProgressDashboardView()
+                        }
+                        .tabItem {
+                            Image(systemName: "chart.bar")
+                            Text("Progress")
+                        }
 
-                    NavigationView {
-                        ProfileView()
+                        NavigationView {
+                            ProfileView()
+                        }
+                        .tabItem {
+                            Image(systemName: "person")
+                            Text("Profile")
+                        }
                     }
-                    .tabItem {
-                        Image(systemName: "person")
-                        Text("Profile")
-                    }
-                }
-                .environmentObject(activeUserModel)
-                .environmentObject(NotificationsModel(lastRead: activeUserModel.data?.lastNotificationsRead))
-                .enableInjection()
-            } else {
-                VStack {
-                    ProgressView()
-                    Text("Loading...")
+                    .environmentObject(activeUserModel)
+                    .environmentObject(NotificationsModel(lastRead: activeUserModel.data?.lastNotificationsRead))
+                    .enableInjection()
+                } else {
+                    VStack {
+                        ProgressView()
+                        Text("Loading...")
 
-                    if !isLogoutButtonHidden {
-                        Button("Logout") {
+                        if !isLogoutButtonHidden {
+                            Button("Logout") {
+                                AuthUtils.logout()
+                                isLogoutButtonHidden = true
+                            }
+                        }
+                    }
+                    .task {
+                        do {
+                            activeUserModel = try await ActiveUserModel()
+                        } catch {
+                            print("Error creating activeUserModel \(error)")
                             AuthUtils.logout()
-                            isLogoutButtonHidden = true
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            isLogoutButtonHidden = false
                         }
                     }
                 }
-                .task {
-                    do {
-                        activeUserModel = try await ActiveUserModel()
-                    } catch {
-                        print("Error creating activeUserModel \(error)")
-                        AuthUtils.logout()
-                    }
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        isLogoutButtonHidden = false
-                    }
-                }
             }
+            .id(navigation.refreshID)
         }
     }
 }

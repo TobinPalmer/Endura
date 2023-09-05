@@ -26,7 +26,9 @@ struct InjectedContentView: View {
     let persistenceController = PersistenceController.shared
 
     var body: some View {
-        ContentView().environment(\.managedObjectContext, persistenceController.activitiesContainer.viewContext).environmentObject(NavigationModel.instance).environmentObject(UsersCacheModel())
+        ContentView()
+            .environment(\.managedObjectContext, persistenceController.activitiesContainer.viewContext)
+            .environmentObject(NavigationModel.instance).environmentObject(UsersCacheModel())
     }
 }
 

@@ -22,7 +22,9 @@ import Foundation
     public init() async throws {
         if let cachedSettings = CacheUtils.fetchObject(SettingsCache.self) {
             settings = SettingsModel.fromCache(cachedSettings)
-
+            fetchSettings { settings in
+                self.settings = settings
+            }
         } else {
             settings = try await fetchSettings()
         }
