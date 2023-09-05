@@ -34,23 +34,26 @@ struct ProgressDashboardView: View {
     @ObservedObject var viewModel = ProgressDashboardViewModel()
 
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.items.indices, id: \.self) { index in
-                    Text("Item Num \(viewModel.items[index])")
-                        .task {
-                            if index == viewModel.items.count - 5 {
-                                do {
-                                    try await viewModel.loadMoreContent()
-                                } catch {
-                                    print("Failed to load more posts", error.localizedDescription)
-                                }
-                            }
-                        }
-                        .frame(height: 250)
-                }
-            }
+        NavigationLink(destination: PostRunView()) {
+            Text("Post Run")
         }
+        //        ScrollView {
+        //            LazyVStack {
+        //                ForEach(viewModel.items.indices, id: \.self) { index in
+        //                    Text("Item Num \(viewModel.items[index])")
+        //                        .task {
+        //                            if index == viewModel.items.count - 5 {
+        //                                do {
+        //                                    try await viewModel.loadMoreContent()
+        //                                } catch {
+        //                                    print("Failed to load more posts", error.localizedDescription)
+        //                                }
+        //                            }
+        //                        }
+        //                        .frame(height: 250)
+        //                }
+        //            }
+        //        }
         .onAppear {
             viewModel.setup()
         }

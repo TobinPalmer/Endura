@@ -77,6 +77,7 @@
 		69698264AD04B1437CE58655 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698354833B838F454F85E8 /* Collection.swift */; };
 		69698267DFD577498FCE901F /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E6CE08351083301EC53 /* TextField.swift */; };
 		6969826CF3BCDFA16EC0B2C2 /* ActivityModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969870866179CC66A7558FB /* ActivityModels.swift */; };
+		69698277AE87B36524904399 /* PostRunTimerRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969896A03AA5A742892A85D /* PostRunTimerRing.swift */; };
 		696982ECE6296AF00DAFE721 /* LineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698520E2FC8C1BAC104A60 /* LineGraph.swift */; };
 		69698328CF7941760398EFE0 /* PostRunConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698967462150B45507ED26 /* PostRunConstants.swift */; };
 		6969835F2DEDBC358B117720 /* SignupFinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698548DD84B25208BBB061 /* SignupFinishedView.swift */; };
@@ -113,6 +114,7 @@
 		69698B903B0D09249C4AB005 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989E9AE3D7EE9E513FE5C /* Button.swift */; };
 		69698BA25927B7ADD9CB9E4A /* UtilEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E649EF06BED5C228EF9 /* UtilEnums.swift */; };
 		69698BABDCAEC0A369C6A3FA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969819A8C4285A3E148D771 /* Double.swift */; };
+		69698C0C8AB1D203D81FEEE9 /* PostRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984270D5D6220D3F0DCA7 /* PostRunView.swift */; };
 		69698C3516BCB611FC7C66C5 /* PostRunModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696988108C470FB5C392AE68 /* PostRunModels.swift */; };
 		69698CCC22527D126CBF9B6D /* WeeklySummaryGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698C0549BF46D5FA128432 /* WeeklySummaryGraph.swift */; };
 		69698CE9D78FA0FC3992EE86 /* NotificationsBell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */; };
@@ -217,6 +219,7 @@
 		696982EE94EC856245965FFD /* ActivityMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMap.swift; sourceTree = "<group>"; };
 		6969833F0B9CB6C90025B1F5 /* FriendsSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsSettingsView.swift; sourceTree = "<group>"; };
 		69698354833B838F454F85E8 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		696984270D5D6220D3F0DCA7 /* PostRunView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRunView.swift; sourceTree = "<group>"; };
 		6969849C3C4EA502A9EE3634 /* NewActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewActivityView.swift; sourceTree = "<group>"; };
 		696984C1906C8DA101564F11 /* DashboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		696984EE498475DB24E5E333 /* HealthKitErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitErrors.swift; sourceTree = "<group>"; };
@@ -236,6 +239,7 @@
 		6969873280457DB033BF8C41 /* SignupStepSixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepSixView.swift; sourceTree = "<group>"; };
 		696988108C470FB5C392AE68 /* PostRunModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRunModels.swift; sourceTree = "<group>"; };
 		69698967462150B45507ED26 /* PostRunConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRunConstants.swift; sourceTree = "<group>"; };
+		6969896A03AA5A742892A85D /* PostRunTimerRing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRunTimerRing.swift; sourceTree = "<group>"; };
 		6969899BCE76C8EFC97E0F3B /* HKWorkoutActivityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKWorkoutActivityType.swift; sourceTree = "<group>"; };
 		696989B3ACC5846606EE527B /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		696989BB502C0EDF35A4959D /* SignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
@@ -408,6 +412,7 @@
 				17CC669024974E7F58F1F1B6 /* ScheduleDay.swift */,
 				17CC6BA3109219CA4E553FAE /* TrainingGoalList.swift */,
 				17CC6212F2153D1DBE379CF5 /* TrainingGoal.swift */,
+				69698739EB42C07DC09B31E9 /* PostRun */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -637,6 +642,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		69698739EB42C07DC09B31E9 /* PostRun */ = {
+			isa = PBXGroup;
+			children = (
+				6969896A03AA5A742892A85D /* PostRunTimerRing.swift */,
+			);
+			path = PostRun;
+			sourceTree = "<group>";
+		};
 		6969875DB203A40C42590253 /* HealthKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -672,6 +685,7 @@
 				17CC6D93D86A82B085AB91BD /* SettingsView.swift */,
 				17CC636CA05F136BDFF8A042 /* Users */,
 				696980A66099595577A3E2B0 /* NotificationsView.swift */,
+				69698F7D840926704A296C70 /* PostRun */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -769,6 +783,14 @@
 				6969855545FA8A408AE6DF1B /* ActivityEnums.swift */,
 			);
 			path = FirebaseModels;
+			sourceTree = "<group>";
+		};
+		69698F7D840926704A296C70 /* PostRun */ = {
+			isa = PBXGroup;
+			children = (
+				696984270D5D6220D3F0DCA7 /* PostRunView.swift */,
+			);
+			path = PostRun;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1029,6 +1051,8 @@
 				69698328CF7941760398EFE0 /* PostRunConstants.swift in Sources */,
 				69698B34CB12C15A0B641EA0 /* PostRunEnum.swift in Sources */,
 				69698E07FA8B291DA55AC82F /* String.swift in Sources */,
+				69698C0C8AB1D203D81FEEE9 /* PostRunView.swift in Sources */,
+				69698277AE87B36524904399 /* PostRunTimerRing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
