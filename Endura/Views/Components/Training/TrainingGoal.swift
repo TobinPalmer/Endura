@@ -15,7 +15,7 @@ struct TrainingGoal: View {
             switch type {
             case .running:
                 if let goal = goal as? RunningTrainingGoal {
-                    TrainingGoalListing(type, goal: goal, icon: Image("RunningIcon"))
+                    TrainingGoalListing(type, goal: goal, icon: Image(systemName: "figure.run"))
                 }
 
             case .postRun:
@@ -42,35 +42,37 @@ private struct TrainingGoalListing: View {
     }
 
     public var body: some View {
-        HStack(spacing: 0) {
-            HStack {
-                icon
-                    .frame(width: 40, height: 40, alignment: .center)
-                VStack {
-                    Text("Warm Up")
-                    Text("x\(goal.time.removeTrailingZeros())")
+        VStack {
+            HStack(spacing: 0) {
+                HStack {
+                    icon
+                    VStack {
+                        Text("Warm Up")
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-            if type == .running {
-                if let goal = goal as? RunningTrainingGoal {
+                if type == .running {
+                    if let goal = goal as? RunningTrainingGoal {
+                        VStack {
+                            Text("\(goal.distance.removeTrailingZeros()) Miles")
+                            Text("\(goal.time.removeTrailingZeros()) Minutes")
+                            Text("\(goal.pace.removeTrailingZeros()) Minutes/Mile")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+                } else {
                     HStack {
-                        Text("\(goal.distance.removeTrailingZeros()) Miles")
+                        Text("\(goal.time.removeTrailingZeros()) Minutes")
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-            } else {
-                HStack {
-                    Text("\(goal.time.removeTrailingZeros()) Minutes")
-                }
-                .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
-        .frame(maxWidth: .infinity)
-        .shadow(radius: 2)
         .padding()
-        .cornerRadius(8)
-        .border(.red)
+        //      .border(.red, width: 1)
+        .background(Color.white
+            .shadow(color: Color.black, radius: 2)
+        )
     }
 }
