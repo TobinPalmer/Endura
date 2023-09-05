@@ -177,7 +177,7 @@ struct LoginView: View {
                 .frame(width: 393, alignment: .top)
             }
             .padding(40)
-            .frame(width: .infinity, height: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
