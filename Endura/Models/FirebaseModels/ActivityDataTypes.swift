@@ -7,26 +7,26 @@ public struct ActivityCommentData: Codable, Hashable {
 }
 
 public struct ActivityData: Codable, ActivityDataProtocol {
-    var averagePower: Double?
-    var calories: Double
-    var comments: [ActivityCommentData]
-    var distance: Double
-    var description: String
-    var duration: TimeInterval
-    var startCountry: String
-    var likes: [String]
-    var pace: Double {
+    public let averagePower: Double?
+    public let calories: Double
+    public let comments: [ActivityCommentData]
+    public let distance: Double
+    public let description: String
+    public let duration: TimeInterval
+    public let startCountry: String
+    public let likes: [String]
+    public var pace: Double {
         distance / duration
     }
 
-    var type: TrainingRunType
-    var startCity: String
-    var startLocation: LocationData
-    var time: Date
-    var title: String
-    var totalDuration: TimeInterval
-    var uid: String
-    var visibility: ActivityVisibility
+    public let type: TrainingRunType
+    public let startCity: String
+    public let startLocation: LocationData
+    public let time: Date
+    public let title: String
+    public let totalDuration: TimeInterval
+    public let uid: String
+    public let visibility: ActivityVisibility
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
@@ -54,28 +54,28 @@ public struct ActivityData: Codable, ActivityDataProtocol {
 }
 
 public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
-    var averagePower: Double?
-    var calories: Double
-    var comments: [ActivityCommentData]
-    var data: ActivityRouteData
-    var distance: Double
-    var description: String
-    var duration: TimeInterval
-    var startCountry: String
-    var workoutStart: Date
-    var likes: [String]
+    public let averagePower: Double?
+    public let calories: Double
+    public let comments: [ActivityCommentData]
+    public let data: ActivityRouteData
+    public let distance: Double
+    public let description: String
+    public let duration: TimeInterval
+    public let startCountry: String
+    public let workoutStart: Date
+    public let likes: [String]
     var pace: Double {
         distance / duration
     }
 
-    var type: TrainingRunType
-    var startCity: String
-    var startLocation: LocationData
-    var time: Date
-    var title: String
-    var totalDuration: TimeInterval
-    var uid: String
-    var visibility: ActivityVisibility
+    public let type: TrainingRunType
+    public let startCity: String
+    public let startLocation: LocationData
+    public let time: Date
+    public var title: String
+    public let totalDuration: TimeInterval
+    public let uid: String
+    public let visibility: ActivityVisibility
 
     public func getDataWithoutRoute() -> ActivityData {
         ActivityData(
@@ -218,100 +218,100 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
 }
 
 public struct RouteData: Codable {
-    var altitude: Double
-    var cadence: Double
-    var heartRate: Double
-    var groundContactTime: Double
-    var location: LocationData
-    var pace: Double
-    var power: Double
-    var strideLength: Double
-    var timestamp: Date
-    var verticalOscillation: Double
+    public let altitude: Double
+    public let cadence: Double
+    public let heartRate: Double
+    public let groundContactTime: Double
+    public let location: LocationData
+    public let pace: Double
+    public let power: Double
+    public let strideLength: Double
+    public let timestamp: Date
+    public let verticalOscillation: Double
 }
 
 /// The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
 public struct GraphData: Codable {
-    var altitude: Double
-    var cadence: Double
-    var heartRate: Double
-    var groundContactTime: Double
-    var pace: Double
-    var power: Double
-    var strideLength: Double
-    var timestamp: Date
-    var verticalOscillation: Double
+    public let altitude: Double
+    public let cadence: Double
+    public let heartRate: Double
+    public let groundContactTime: Double
+    public let pace: Double
+    public let power: Double
+    public let strideLength: Double
+    public let timestamp: Date
+    public let verticalOscillation: Double
 }
 
 public struct ExtractedGraphData {
-    var pace: IndexedLineGraphData
-    var cadence: IndexedLineGraphData
-    var elevation: IndexedLineGraphData
-    var heartRate: IndexedLineGraphData
-    var power: IndexedLineGraphData
-    var strideLength: IndexedLineGraphData
-    var verticalOscillation: IndexedLineGraphData
+    public let pace: IndexedLineGraphData
+    public let cadence: IndexedLineGraphData
+    public let elevation: IndexedLineGraphData
+    public let heartRate: IndexedLineGraphData
+    public let power: IndexedLineGraphData
+    public let strideLength: IndexedLineGraphData
+    public let verticalOscillation: IndexedLineGraphData
 }
 
 public struct ActivityRouteData: Codable {
-    var graphData: [GraphData]
-    var graphInterval: Int
-    var routeData: [RouteData]
+    public let graphData: [GraphData]
+    public let graphInterval: Int
+    public let routeData: [RouteData]
 }
 
 public struct ActivityGridStatsData: Codable {
-    var averagePower: Double?
-    var calories: Double
-    var distance: Double
-    var duration: TimeInterval
+    public var averagePower: Double?
+    public let calories: Double
+    public let distance: Double
+    public let duration: TimeInterval
     var pace: Double {
         distance / duration
     }
 
-    var time: Date
-    var totalDuration: TimeInterval
-    var uid: String
+    public let time: Date
+    public let totalDuration: TimeInterval
+    public let uid: String
 }
 
 public struct ActivityHeaderData: Codable {
-    var startTime: Date
-    var startLocation: LocationData?
-    var startCountry: String?
-    var startCity: String?
-    var uid: String
+    public let startTime: Date
+    public var startLocation: LocationData?
+    public var startCountry: String?
+    public var startCity: String?
+    public let uid: String
 }
 
 public struct LocationData: Codable {
-    let latitude: Double
-    let longitude: Double
+    public let latitude: Double
+    public let longitude: Double
 }
 
 public struct HeartRateData: Codable {
-    var timestamp: Date
-    var heartRate: Double
+    public let timestamp: Date
+    public let heartRate: Double
 }
 
 public struct CadenceData: Codable {
-    var timestamp: Date
-    var cadence: Double
+    public let timestamp: Date
+    public let cadence: Double
 }
 
 public struct PowerData: Codable {
-    var timestamp: Date
-    var power: Double
+    public let timestamp: Date
+    public let power: Double
 }
 
 public struct GroundContactTimeData: Codable {
-    var timestamp: Date
-    var groundContactTime: Double
+    public let timestamp: Date
+    public let groundContactTime: Double
 }
 
 public struct StrideLengthData: Codable {
-    var timestamp: Date
-    var strideLength: Double
+    public let timestamp: Date
+    public let strideLength: Double
 }
 
 public struct VerticalOscillationData: Codable {
-    var timestamp: Date
-    var verticalOscillation: Double
+    public let timestamp: Date
+    public let verticalOscillation: Double
 }

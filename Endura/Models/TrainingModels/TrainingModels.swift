@@ -6,32 +6,32 @@ protocol TrainingGoalBase {
 }
 
 public struct RunningTrainingGoal: Codable, TrainingGoalBase {
-    public var difficulty: TrainingGoalDifficulty
-    public var distance: Double
-    public var pace: Double
-    public var runType: TrainingRunType
-    public var time: Double
-    public var type: TrainingGoalType
+    public let difficulty: TrainingGoalDifficulty
+    public let distance: Double
+    public let pace: Double
+    public let runType: TrainingRunType
+    public let time: Double
+    public let type: TrainingGoalType
 }
 
 public struct PostRunTrainingGoal: Codable, TrainingGoalBase {
-    public var type: TrainingGoalType
-    public var count: Int
-    public var time: Double
+    public let type: TrainingGoalType
+    public let count: Int
+    public let time: Double
 }
 
 public struct WarmupTrainingGoal: Codable, TrainingGoalBase {
-    public var type: TrainingGoalType
-    public var count: Int
-    public var time: Double
+    public let type: TrainingGoalType
+    public let count: Int
+    public let time: Double
 }
 
 public struct DailyTrainingData: Codable {
-    public var day: Days
-    public var completed: Bool
+    public let day: Days
+    public let completed: Bool
 }
 
 public struct WeeklyTrainingData: Codable {
-    public var weekId: String
-    public var scheduledTraining: [DailyTrainingData]
+    public let weekId: String
+    public let scheduledTraining: [DailyTrainingData]
 }

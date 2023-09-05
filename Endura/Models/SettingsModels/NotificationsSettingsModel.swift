@@ -1,15 +1,15 @@
 import Foundation
 
-struct NotificationsSettingsModel {
-    var pushNotifications: Bool
-    var emailNotifications: Bool
-    var activityUpdates: Bool
-    var activityComments: Bool
-    var activityLikes: Bool
-    var trainingUpdates: Bool
-    var trainingComments: Bool
-    var trainingLikes: Bool
-    var friendRequests: Bool
-    var friendComments: Bool
-    var friendLikes: Bool
+public struct NotificationsSettingsModel {
+    public let pushNotifications: Bool
+    public let emailNotifications: Bool
+    public let activityUpdates: Bool
+    public let activityComments: Bool
+    public let activityLikes: Bool
+    public let trainingUpdates: Bool
+    public let trainingComments: Bool
+    public let trainingLikes: Bool
+    public let friendRequests: Bool
+    public let friendComments: Bool
+    public let friendLikes: Bool
 }

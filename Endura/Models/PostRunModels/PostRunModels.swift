@@ -2,16 +2,16 @@ import Foundation
 import SwiftUI
 
 public struct PostRunExerciseInfo {
-    public var easy: PostRunExerciseParameter
-    public var medium: PostRunExerciseParameter
-    public var hard: PostRunExerciseParameter
+    public let easy: PostRunExerciseParameter
+    public let medium: PostRunExerciseParameter
+    public let hard: PostRunExerciseParameter
 
-    public var name: String
-    public var benefit: PostRunExerciseBenifit
-    public var description: String
-    public var exerciseDescription: String
-    public var icon: Image
-    public var reference: String?
+    public let name: String
+    public let benefit: PostRunExerciseBenifit
+    public let description: String
+    public let exerciseDescription: String
+    public let icon: Image
+    public let reference: String?
 }
 
 public struct PostRun {

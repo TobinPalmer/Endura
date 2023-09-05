@@ -13,42 +13,42 @@ public enum UserGender: String, Codable {
 }
 
 public struct UserData {
-    public var uid: String
+    public let uid: String
     public var name: String {
         firstName + " " + lastName
     }
 
-    public var firstName: String
-    public var lastName: String
-    public var profileImage: UIImage?
-    public var friends: [String]
+    public let firstName: String
+    public let lastName: String
+    public let profileImage: UIImage?
+    public let friends: [String]
 }
 
 public struct UserTrainingData: Codable {
-    public var schedule: [RunningSchedule]
+    public let schedule: [RunningSchedule]
 }
 
 public struct UserDocument: Codable {
-    public var firstName: String
-    public var lastName: String
-    public var friends: [String]
-    public var role: Roles?
-    public var birthday: Date
-    public var gender: UserGender
-    public var email: String
+    public let firstName: String
+    public let lastName: String
+    public let friends: [String]
+    public let role: Roles?
+    public let birthday: Date
+    public let gender: UserGender
+    public let email: String
     public var lastNotificationsRead: Date?
 }
 
 public struct ActiveUserData: Cacheable {
-    public var uid: String
+    public let uid: String
     public var name: String {
         firstName + " " + lastName
     }
 
-    public var firstName: String
-    public var lastName: String
+    public let firstName: String
+    public let lastName: String
     public var profileImage: UIImage?
-    public var friends: [String]
+    public let friends: [String]
     public var role: Roles?
     public var lastNotificationsRead: Date?
 
