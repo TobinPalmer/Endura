@@ -24,10 +24,6 @@ public struct UserData {
     public let friends: [String]
 }
 
-public struct UserTrainingData: Codable {
-    public let schedule: [RunningSchedule]
-}
-
 public struct UserDocument: Codable {
     public let firstName: String
     public let lastName: String

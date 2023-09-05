@@ -43,7 +43,7 @@ public enum AuthUtils {
                     gender: .OTHER,
                     email: email
                 )
-                let userTrainingData = UserTrainingData(schedule: [])
+                let userTrainingData = UserTrainingData(weeklyTraining: [:])
                 createUser(email: email, password: password, userData: userData, userTrainingData: userTrainingData)
             }
         }

@@ -17,8 +17,6 @@ import Foundation
         }
     }
 
-    public var info: UserTrainingData?
-
     public init() async throws {
         if let cachedSettings = CacheUtils.fetchObject(SettingsCache.self) {
             settings = SettingsModel.fromCache(cachedSettings)

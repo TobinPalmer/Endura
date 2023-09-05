@@ -1,7 +1,7 @@
 import Foundation
 
 public struct WeeklyGraphData: Hashable, Codable {
-    public let day: Days
+    public let day: Day
     public var distance: Double
 }
 
@@ -13,7 +13,7 @@ public struct WeeklySummaryData: Codable {
 public struct DailySummaryData: Codable {
     public let id: String
     public let date: Date
-    public let day: Days
+    public let day: Day
     public let distance: Double
     public let duration: Double
     public let averageHeartRate: Double

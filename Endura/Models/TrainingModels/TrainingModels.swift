@@ -1,37 +1,34 @@
 import Foundation
 
-protocol TrainingGoalBase {
-    var type: TrainingGoalType { get }
-    var time: Double { get }
-}
-
-public struct RunningTrainingGoal: Codable, TrainingGoalBase {
-    public let difficulty: TrainingGoalDifficulty
-    public let distance: Double
-    public let pace: Double
-    public let runType: TrainingRunType
-    public let time: Double
-    public let type: TrainingGoalType
-}
-
-public struct PostRunTrainingGoal: Codable, TrainingGoalBase {
-    public let type: TrainingGoalType
-    public let count: Int
-    public let time: Double
-}
-
-public struct WarmupTrainingGoal: Codable, TrainingGoalBase {
-    public let type: TrainingGoalType
-    public let count: Int
-    public let time: Double
+public enum TrainingGoalData: Codable {
+    case run(
+        distance: Double,
+        pace: Double,
+        time: Double,
+        difficulty: TrainingGoalDifficulty,
+        runType: TrainingRunType
+    )
+    case postRun(
+        time: Double,
+        count: Int
+    )
+    case warmup(
+        time: Double,
+        count: Int
+    )
 }
 
 public struct DailyTrainingData: Codable {
-    public let day: Days
-    public let completed: Bool
+    public var type: TrainingDayType
+    public var goals: [TrainingGoalData]
 }
 
 public struct WeeklyTrainingData: Codable {
-    public let weekId: String
-    public let scheduledTraining: [DailyTrainingData]
+    public var week: Date
+    public var days: [Day: DailyTrainingData]
+    public var dailySummary: [Day: DailySummaryData]
+}
+
+public struct UserTrainingData: Codable {
+    public let weeklyTraining: [Date: String]
 }

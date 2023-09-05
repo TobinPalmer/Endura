@@ -6,7 +6,7 @@ import Foundation
 import SwiftUI
 
 private final class WeeklySumaryGraphModel: ObservableObject {
-    @Published var day: Days = .monday
+    @Published var day: Day = .monday
     @Published var location: CGPoint = .zero
 }
 
@@ -29,14 +29,14 @@ struct WeeklySummaryGraph: View {
             $0.day
         })
 
-        let missingDays = Set(Days.allCases).subtracting(presentDays)
+        let missingDays = Set(Day.allCases).subtracting(presentDays)
 
         let missingData = missingDays.map {
             WeeklyGraphData(day: $0, distance: 0)
         }
         let updatedData = mergedData + missingData
 
-        let dayOrder: [Days] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+        let dayOrder: [Day] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
         let sortedData = updatedData.sorted {
             dayOrder.firstIndex(of: $0.day)! < dayOrder.firstIndex(of: $1.day)!
         }
@@ -68,7 +68,7 @@ struct WeeklySummaryGraph: View {
                                             y: value.location.y - origin.y
                                         )
                                         let (day, distance) = proxy.value(at: location, as: (String, Double).self) ?? ("", 0)
-                                        viewModel.day = Days(rawValue: day) ?? .monday
+                                        viewModel.day = Day(rawValue: day) ?? .monday
                                         viewModel.location = location
                                         print("Location: \(location), Day: \(day), Distance: \(distance)")
                                     }

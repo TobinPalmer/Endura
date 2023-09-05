@@ -19,3 +19,10 @@ public enum TrainingGoalDifficulty: String, Codable {
     case medium = "Medium"
     case hard = "Hard"
 }
+
+public enum TrainingDayType: String, Codable {
+    case rest = "Rest"
+    case easy = "Easy"
+    case medium = "Medium"
+    case hard = "Hard"
+}

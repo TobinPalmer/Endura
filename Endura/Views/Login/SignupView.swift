@@ -27,7 +27,7 @@ public final class SignupFormInfo: ObservableObject {
     }
 
     public func toUserTrainingData() -> UserTrainingData {
-        UserTrainingData(schedule: schedule)
+        UserTrainingData(weeklyTraining: [:])
     }
 }
 
