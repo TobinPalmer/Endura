@@ -24,6 +24,6 @@ struct EnduraTextFieldStyle: TextFieldStyle {
         .cornerRadius(4)
         .shadow(color: Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.2), radius: 0.5, x: 0, y: 0)
         .shadow(color: Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.08), radius: 1, x: 0, y: 1)
-        .foregroundColor(Color("InputText"))
+//      .foregroundColor(Color("InputText"))
     }
 }

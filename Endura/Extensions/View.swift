@@ -10,4 +10,11 @@ public extension View {
         window.makeKeyAndVisible()
         return hosting.view.renderedImage
     }
+
+    func shadowDefault(disabled: Bool = false) -> some View {
+        let color = Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.2)
+
+        return shadow(color: disabled ? .clear : color, radius: 0.5, x: 0, y: 0)
+            .shadow(color: disabled ? .clear : color, radius: 1, x: 0, y: 1)
+    }
 }
