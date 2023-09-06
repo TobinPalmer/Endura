@@ -8,9 +8,8 @@ private var postRunEasyDay: [PostRunExercise] = [
     PostRunExercise(type: .lunge, parameter: .count(10)),
 ]
 
-private final class PostRunViewModel: ObservableObject {
-    @Published fileprivate var currentTime: TimeInterval = 0
-
+final class PostRunViewModel: ObservableObject {
+    @Published public var currentTime: TimeInterval = 0
     @Published fileprivate var currentExerciseIndex: Int = 0
 
     fileprivate final func startTimer(duration: Double) {
@@ -39,6 +38,7 @@ struct PostRunView: View {
                     Text("Do \(count)")
                 case let .time(time):
                     PostRunTimerRing(duration: time, currentTime: viewModel.currentTime, lineWidth: 10, gradient: Gradient(colors: [.red, .blue]))
+                        .environmentObject(viewModel)
 
                     let _ = DispatchQueue.main.asyncAfter(deadline: .now() + time) {
                         isDoneWithTimerExercise = true
