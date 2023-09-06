@@ -19,7 +19,7 @@ struct PostRunTimerRing: View {
     }
 
     public var body: some View {
-        let progress = self.duration == 0 ? 0 : self.currentTime / self.duration
+        let progress = duration == 0 ? 0 : currentTime / duration
         Circle()
             .rotation(.degrees(-90))
             .trim(from: 0, to: CGFloat(progress))
@@ -31,24 +31,24 @@ struct PostRunTimerRing: View {
                 style: .init(lineWidth: lineWidth, lineCap: .round)
             )
             .overlay(
-                GeometryReader { geometry in
+                GeometryReader { _ in
                     Circle()
-                        .fill(self.gradient.stops[1].color)
-                        .frame(width: self.lineWidth, height: self.lineWidth)
-                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                        .offset(x: min(geometry.size.width, geometry.size.height) / 2)
+                        .fill(gradient.stops[1].color)
+                        .frame(width: lineWidth, height: lineWidth)
+                        //            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        //            .offset(x: min(geometry.size.width, geometry.size.height) / 2)
                         .rotationEffect(.degrees(progress * 360 - 90))
-                        .shadow(color: .black, radius: self.lineWidth / 2, x: 0, y: 0)
+                        .shadow(color: .black, radius: lineWidth / 2, x: 0, y: 0)
                 }
                 .clipShape(
                     Circle()
                         .rotation(.degrees(-90 + progress * 360 - 0.5))
                         .trim(from: 0, to: 0.25)
-                        .stroke(style: .init(lineWidth: self.lineWidth))
+                        .stroke(style: .init(lineWidth: lineWidth))
                 )
             )
             .scaledToFit()
-            .padding(lineWidth / 2)
+            //      .padding(lineWidth / 2)
             .animation(.linear(duration: currentTime), value: currentTime)
             .frame(width: 200, height: 200)
     }
