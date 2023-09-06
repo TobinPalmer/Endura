@@ -65,7 +65,7 @@
 		17CC6E57057675F816CE2456 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC667CC1714144EA4F1172 /* UserModels.swift */; };
 		17CC6ECAF92DDC8FB82BA9B0 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D870BA8F7FE33770E38 /* UIView.swift */; };
 		17CC6EE5F11BB76AD09EDBBF /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6507B9EB6FEDAE6EB719 /* Array.swift */; };
-		17CC6F2D2274313C2825BE5B /* TrainingCalender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66D4EBE24BD79F3FA0F7 /* TrainingCalender.swift */; };
+		17CC6F2D2274313C2825BE5B /* TrainingCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66D4EBE24BD79F3FA0F7 /* TrainingCalendar.swift */; };
 		17CC6F4B78384077758D0334 /* Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FAD8A0AC457723ACD1F /* Conversion.swift */; };
 		17CC6F4DE24D08B1CDEE48A2 /* SummaryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6456ADDCD3B3619C2871 /* SummaryModels.swift */; };
 		6969804B969F900F229CC66D /* LoadingMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969817BEB50BC11806CE62F /* LoadingMap.swift */; };
@@ -188,7 +188,7 @@
 		17CC667CC1714144EA4F1172 /* UserModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		17CC669024974E7F58F1F1B6 /* ScheduleDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDay.swift; sourceTree = "<group>"; };
 		17CC66B87BB1D53138DC7BC5 /* ActiveUserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveUserModel.swift; sourceTree = "<group>"; };
-		17CC66D4EBE24BD79F3FA0F7 /* TrainingCalender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingCalender.swift; sourceTree = "<group>"; };
+		17CC66D4EBE24BD79F3FA0F7 /* TrainingCalendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingCalendar.swift; sourceTree = "<group>"; };
 		17CC66EA7C715C2776A564D2 /* ProfileImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		17CC68FD129A61DF48BD0D4F /* Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatting.swift; sourceTree = "<group>"; };
 		17CC69B387F52E1CA55F3716 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
@@ -408,7 +408,7 @@
 		17CC622A3678940BF56D188E /* Training */ = {
 			isa = PBXGroup;
 			children = (
-				17CC66D4EBE24BD79F3FA0F7 /* TrainingCalender.swift */,
+				17CC66D4EBE24BD79F3FA0F7 /* TrainingCalendar.swift */,
 				17CC669024974E7F58F1F1B6 /* ScheduleDay.swift */,
 				17CC6BA3109219CA4E553FAE /* TrainingGoalList.swift */,
 				17CC6212F2153D1DBE379CF5 /* TrainingGoal.swift */,
@@ -976,7 +976,7 @@
 				17CC621F59B1D4C332521571 /* Activities.swift in Sources */,
 				696982ECE6296AF00DAFE721 /* LineGraph.swift in Sources */,
 				69698264AD04B1437CE58655 /* Collection.swift in Sources */,
-				17CC6F2D2274313C2825BE5B /* TrainingCalender.swift in Sources */,
+				17CC6F2D2274313C2825BE5B /* TrainingCalendar.swift in Sources */,
 				17CC63D9EEB53484B6987842 /* ScheduleDay.swift in Sources */,
 				E98AFEF62AA582AB002DB211 /* ObjectCache.xcdatamodeld in Sources */,
 				17CC6EE5F11BB76AD09EDBBF /* Array.swift in Sources */,
