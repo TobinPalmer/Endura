@@ -13,9 +13,14 @@ public enum PostRunExerciseParameter: Hashable {
     case count(Int)
 }
 
-public enum PostRunExercise: Hashable {
-    case plank(PostRunExerciseParameter = .time(10))
-    case pushup(PostRunExerciseParameter = .count(10))
-    case squat(PostRunExerciseParameter = .count(10))
-    case lunge(PostRunExerciseParameter = .count(10))
+public enum PostRunExerciseType: Hashable {
+    case plank
+    case pushup
+    case squat
+    case lunge
+}
+
+public struct PostRunExercise: Hashable {
+    var type: PostRunExerciseType
+    var parameter: PostRunExerciseParameter?
 }

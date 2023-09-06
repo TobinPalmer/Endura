@@ -32,7 +32,6 @@ struct PostRunTimerRing: View {
             )
             .overlay(
                 GeometryReader { geometry in
-                    // End round butt and shadow
                     Circle()
                         .fill(self.gradient.stops[1].color)
                         .frame(width: self.lineWidth, height: self.lineWidth)
@@ -42,7 +41,6 @@ struct PostRunTimerRing: View {
                         .shadow(color: .black, radius: self.lineWidth / 2, x: 0, y: 0)
                 }
                 .clipShape(
-                    // Clip end round line cap and shadow to front
                     Circle()
                         .rotation(.degrees(-90 + progress * 360 - 0.5))
                         .trim(from: 0, to: 0.25)
@@ -51,5 +49,7 @@ struct PostRunTimerRing: View {
             )
             .scaledToFit()
             .padding(lineWidth / 2)
+            .animation(.linear(duration: currentTime), value: currentTime)
+            .frame(width: 200, height: 200)
     }
 }

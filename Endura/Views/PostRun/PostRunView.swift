@@ -1,17 +1,24 @@
 import Foundation
 import SwiftUI
 
+private var postRunEasyDay: [PostRunExercise] = [
+    PostRunExercise(type: .plank, parameter: .time(10)),
+    PostRunExercise(type: .pushup, parameter: .count(10)),
+    PostRunExercise(type: .squat, parameter: .count(10)),
+    PostRunExercise(type: .lunge, parameter: .count(10)),
+]
+
 private final class PostRunViewModel: ObservableObject {
     @Published fileprivate var currentTime: TimeInterval = 0
 
-    fileprivate func startTimer() {
-        let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            self.currentTime += 1
-        }
-        RunLoop.current.add(timer, forMode: .common)
+    @Published fileprivate var currentExerciseIndex: Int = 0
+
+    fileprivate final func startTimer(duration: Double) {
+        currentTime += duration
+    }
+
+    fileprivate final func clearTimer() {
+        currentTime = 0
     }
 }
 
@@ -20,11 +27,14 @@ struct PostRunView: View {
 
     public var body: some View {
         VStack {
-            PostRunTimerRing(duration: 10, currentTime: viewModel.currentTime, lineWidth: 10, gradient: Gradient(colors: [.red, .blue]))
-                .frame(width: 200, height: 200)
+            let currentExercise = postRunEasyDay[viewModel.currentExerciseIndex]
+            Text("\(String(describing: currentExercise.type)) for \(String(describing: currentExercise.parameter))")
+            Button("Increment Index") {
+                viewModel.currentExerciseIndex += 1
+            }
         }
         .onAppear {
-            viewModel.startTimer()
+            viewModel.startTimer(duration: 10)
         }
     }
 }
