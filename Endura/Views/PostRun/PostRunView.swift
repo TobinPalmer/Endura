@@ -29,6 +29,12 @@ struct PostRunView: View {
         VStack {
             let currentExercise = postRunEasyDay[viewModel.currentExerciseIndex]
             Text("\(String(describing: currentExercise.type)) for \(String(describing: currentExercise.parameter))")
+            switch currentExercise.parameter {
+            case let .count(count):
+                Text("Do \(count)")
+            case let .time(time):
+                Text("Do for \(time)")
+            }
             Button("Increment Index") {
                 viewModel.currentExerciseIndex += 1
             }

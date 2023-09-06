@@ -22,5 +22,5 @@ public enum PostRunExerciseType: Hashable {
 
 public struct PostRunExercise: Hashable {
     var type: PostRunExerciseType
-    var parameter: PostRunExerciseParameter?
+    var parameter: PostRunExerciseParameter
 }
