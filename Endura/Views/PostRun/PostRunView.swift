@@ -16,15 +16,24 @@ final class PostRunViewModel: ObservableObject {
     public final var timer: Timer?
 
     public func startTimer(duration: TimeInterval) {
-        currentTime = 0
+        print("Starting timer")
+        currentTime = 1
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
             guard let self = self else {
                 return
             }
+
             self.currentTime += 1
+
             if self.currentTime >= duration {
-                isDoneWithTimerExercise = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    isDoneWithTimerExercise = true
+                }
                 timer.invalidate()
             }
         }
