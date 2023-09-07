@@ -3,7 +3,7 @@
     <entity name="ActiveUserDataCache" representedClassName="ActiveUserDataCache" syncable="YES" codeGenerationType="class">
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="firstName" optional="YES" attributeType="String"/>
-        <attribute name="friends" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="friends" optional="YES" attributeType="Transformable" valueTransformerName="StringArrayValueTransformer" customClassName="[String]"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="lastNotificationsRead" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -27,7 +27,7 @@
     </entity>
     <entity name="UserDataCache" representedClassName="UserDataCache" syncable="YES" codeGenerationType="class">
         <attribute name="firstName" optional="YES" attributeType="String" customClassName="[String]"/>
-        <attribute name="friends" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="friends" optional="YES" attributeType="Transformable" valueTransformerName="StringArrayValueTransformer" customClassName="[String]"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>

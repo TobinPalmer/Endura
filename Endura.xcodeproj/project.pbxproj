@@ -46,6 +46,7 @@
 		17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64CF9FA32EE591326705 /* UIColor.swift */; };
 		17CC67136F8CC4FD83EE6FD7 /* TrainingGoalList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6BA3109219CA4E553FAE /* TrainingGoalList.swift */; };
 		17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC659A1576329D2B4CB4F2 /* ActivityView.swift */; };
+		17CC68161A37E41AE1DB565F /* StringArrayValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */; };
 		17CC682E88A5BF7A13F60DB5 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */; };
 		17CC686F20DD2B41D0CEA6AE /* ActiveUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66B87BB1D53138DC7BC5 /* ActiveUserModel.swift */; };
 		17CC68DAEFAD7FB41ABA0D99 /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */; };
@@ -179,6 +180,7 @@
 		17CC6507B9EB6FEDAE6EB719 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		17CC656E8B60587CA8E876DE /* TrainingModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
 		17CC659A1576329D2B4CB4F2 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringArrayValueTransformer.swift; sourceTree = "<group>"; };
 		17CC666255DBC8045DFCBCF2 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		17CC66685EBC6CD75C2599F5 /* SettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		17CC666B55C0D3EBEF97E9D3 /* Calendar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
@@ -429,6 +431,14 @@
 			path = Users;
 			sourceTree = "<group>";
 		};
+		17CC650C682E6DBD7D6477A8 /* Transformers */ = {
+			isa = PBXGroup;
+			children = (
+				17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */,
+			);
+			path = Transformers;
+			sourceTree = "<group>";
+		};
 		17CC6582404E72DE489935A8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				E9535FD72AA953D400D19B86 /* DataCache.xcdatamodeld */,
+				17CC650C682E6DBD7D6477A8 /* Transformers */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -1041,6 +1052,7 @@
 				69698C0C8AB1D203D81FEEE9 /* PostRunView.swift in Sources */,
 				69698277AE87B36524904399 /* PostRunTimerRing.swift in Sources */,
 				69698E49D2BC67E1245AF44B /* ImagePicker.swift in Sources */,
+				17CC68161A37E41AE1DB565F /* StringArrayValueTransformer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

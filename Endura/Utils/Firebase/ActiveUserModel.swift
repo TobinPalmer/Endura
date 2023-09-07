@@ -43,7 +43,6 @@ import Foundation
             uid: AuthUtils.getCurrentUID(),
             firstName: document.firstName,
             lastName: document.lastName,
-            profileImage: nil,
             friends: document.friends,
             role: document.role,
             lastNotificationsRead: document.lastNotificationsRead

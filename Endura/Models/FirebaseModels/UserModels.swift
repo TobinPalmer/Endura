@@ -77,7 +77,6 @@ public struct ActiveUserData: Cacheable {
 
     public let firstName: String
     public let lastName: String
-    public var profileImage: UIImage?
     public let friends: [String]
     public var role: Roles?
     public var lastNotificationsRead: Date?
