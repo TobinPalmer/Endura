@@ -26,8 +26,11 @@ struct PostRunTimerRing: View {
     @StateObject private var viewModel = PostRunTimerRingModel()
     @Binding private var progress: Double
 
-    public init(progress: Binding<Double>) {
+    private let size: CGFloat
+
+    public init(progress: Binding<Double>, size: CGFloat = 300) {
         _progress = progress
+        self.size = size
     }
 
     private var colors: [Color] = [Color.darkRed, Color.lightRed]
@@ -37,6 +40,8 @@ struct PostRunTimerRing: View {
         ZStack {
             Circle()
                 .stroke(Color.outlineRed, lineWidth: 20)
+                .frame(width: size, height: size)
+
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
@@ -59,8 +64,8 @@ struct PostRunTimerRing: View {
                 .rotationEffect(Angle.degrees(360 * Double(progress)))
                 .shadow(color: progress > 0.96 ? Color.black.opacity(0.1) : Color.clear, radius: 3, x: 4, y: 0)
         }
-        .frame(width: 300, height: 300)
-        //      .animation(.spring(response: 0.6, dampingFraction: 1.0, blendDuration: 1.0), value: progress)
         .animation(.linear(duration: 1.0), value: progress)
+        .frame(width: size, height: size)
+        .border(.blue)
     }
 }
