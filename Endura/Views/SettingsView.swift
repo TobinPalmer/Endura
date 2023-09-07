@@ -22,22 +22,22 @@ struct SettingsView: View {
                                 }
 
                                 Section(header: Text("Social")) {
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsFriendRequest) {
                                         Label("Friend Request", systemImage: "person.badge.plus")
                                     }
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsFriendRequestAccepted) {
                                         Label("Friend Request Accepted", systemImage: "person.fill.checkmark")
                                     }
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsNewLike) {
                                         Label("New Like", systemImage: "hand.thumbsup")
                                     }
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsNewComment) {
                                         Label("New Comment", systemImage: "bubble.left")
                                     }
                                 }
 
                                 Section(header: Text("Training")) {
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsDailyTrainingPlan) {
                                         VStack(alignment: .leading, spacing: 2) {
                                             Label("Daily Training Plan", systemImage: "calendar")
                                             Text("Receive your daily training plan at the start of each day.")
@@ -45,7 +45,7 @@ struct SettingsView: View {
                                                 .foregroundColor(.gray)
                                         }
                                     }
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsDailySummary) {
                                         VStack(alignment: .leading, spacing: 2) {
                                             Label("Daily Summary", systemImage: "checklist.checked")
                                             Text("Receive a summary of your day at the end of each day.")
@@ -53,10 +53,10 @@ struct SettingsView: View {
                                                 .foregroundColor(.gray)
                                         }
                                     }
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsFinishedActivity) {
                                         Label("Finished Activity", systemImage: "figure.run")
                                     }
-                                    Toggle(isOn: .constant(true)) {
+                                    Toggle(isOn: $activeUser.settings.notificationsPostRunReminder) {
                                         VStack(alignment: .leading, spacing: 2) {
                                             Label("Post Run Reminder", systemImage: "figure.strengthtraining.functional")
                                             Text("Receive a reminder to do your post run exercises after each run.")
@@ -73,10 +73,10 @@ struct SettingsView: View {
                         NavigationLink(destination: VStack {
                             List {
                                 Section {
-                                    Picker(selection: .constant("Public"), label: Text("Default Activity Visibility")) {
-                                        Text("Public").tag(0)
-                                        Text("Friends").tag(1)
-                                        Text("Private").tag(2)
+                                    Picker(selection: $activeUser.settings.defaultActivityVisibility, label: Text("Default Activity Visibility")) {
+                                        Text("Everyone").tag(ActivityVisibility.everyone)
+                                        Text("Friends").tag(ActivityVisibility.friends)
+                                        Text("Private").tag(ActivityVisibility.none)
                                     }
                                 }
                             }

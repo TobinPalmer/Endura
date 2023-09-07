@@ -11,7 +11,16 @@
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>
     <entity name="SettingsCache" representedClassName="SettingsCache" syncable="YES" codeGenerationType="class">
+        <attribute name="defaultActivityVisibility" optional="YES" attributeType="String" customClassName="ActivityVisibility"/>
         <attribute name="notifications" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsDailySummary" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsDailyTrainingPlan" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsFinishedActivity" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsFriendRequest" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsFriendRequestAccepted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsNewComment" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsNewLike" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationsPostRunReminder" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <entity name="UploadedActivityCache" representedClassName="UploadedActivityCache" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
