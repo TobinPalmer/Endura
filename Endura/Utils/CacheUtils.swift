@@ -8,8 +8,9 @@ protocol Cacheable {
 }
 
 public enum CacheUtils {
+    public static let context = PersistenceController.shared.container.viewContext
+
     public static func updateObject<T: NSManagedObject>(_: T.Type, update: (T) -> Void) {
-        let context = PersistenceController.shared.container.viewContext
         let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
         fetchRequest.fetchLimit = 1
         do {
@@ -21,7 +22,6 @@ public enum CacheUtils {
     }
 
     public static func fetchObject<T: NSManagedObject>(_: T.Type) -> T? {
-        let context = PersistenceController.shared.container.viewContext
         let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
         fetchRequest.fetchLimit = 1
         do {
@@ -33,7 +33,6 @@ public enum CacheUtils {
     }
 
     public static func deleteObject<T: NSManagedObject>(_: T.Type) {
-        let context = PersistenceController.shared.container.viewContext
         let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
         fetchRequest.fetchLimit = 1
         do {
@@ -43,6 +42,28 @@ public enum CacheUtils {
             }
         } catch {
             print("Error deleting object: \(error)")
+        }
+    }
+
+    public static func fetchListedObject<T: NSManagedObject>(_: T.Type, predicate: NSPredicate? = nil) -> [T] {
+        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+        fetchRequest.predicate = predicate
+        do {
+            return try context.fetch(fetchRequest)
+        } catch {
+            print("Error fetching query for listed objects: \(error)")
+            return []
+        }
+    }
+
+    public static func addListedObject<T: NSManagedObject>(_ object: T) {
+        context.perform {
+            context.insert(object)
+            do {
+                try context.save()
+            } catch {
+                print("Error saving listed object: \(error)")
+            }
         }
     }
 }

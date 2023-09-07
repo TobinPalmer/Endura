@@ -44,28 +44,13 @@ public enum ActivityUtils {
     }
 
     public static func isActivityUploaded(_ activity: HKWorkout) -> Bool {
-        let context = PersistenceController.shared.container.viewContext
-        let fetchRequest: NSFetchRequest<UploadedActivityCache> = UploadedActivityCache.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", activity.uuid as CVarArg)
-        do {
-            let fetchedActivities = try context.fetch(fetchRequest)
-            return !fetchedActivities.isEmpty
-        } catch {
-            return false
-        }
+        !CacheUtils.fetchListedObject(UploadedActivityCache.self, predicate: NSPredicate(format: "id == %@", activity.uuid as CVarArg)).isEmpty
     }
 
     public static func setActivityUploaded(for activity: HKWorkout) {
-        let context = PersistenceController.shared.container.newBackgroundContext()
-        context.perform {
-            let newActivity = UploadedActivityCache(context: context)
-            newActivity.id = activity.uuid
-            do {
-                try context.save()
-            } catch {
-                print("Error saving activity: \(error)")
-            }
-        }
+        let newActivity = UploadedActivityCache(context: CacheUtils.context)
+        newActivity.id = activity.uuid
+        CacheUtils.addListedObject(newActivity)
     }
 
     public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil, storage: Storage? = nil) throws {
