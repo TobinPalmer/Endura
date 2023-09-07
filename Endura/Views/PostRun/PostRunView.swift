@@ -55,7 +55,7 @@ struct PostRunView: View {
                 case let .count(count):
                     Text("Do \(count)")
                 case .time:
-                    PostRunTimerRing(progress: $viewModel.currentTime, size: 150)
+                    PostRunTimerRing(progress: $viewModel.currentTime, max: 10, size: 150)
                         .environmentObject(viewModel)
                 }
                 Button("Next Exercise") {
