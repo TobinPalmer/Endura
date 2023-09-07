@@ -2,92 +2,65 @@ import Combine
 import Foundation
 import SwiftUI
 
-private final class PostRunTimerRingModel: ObservableObject {
-    @Published fileprivate var timeRemaining = 10
-    fileprivate var timer: AnyCancellable?
+private final class PostRunTimerRingModel: ObservableObject {}
 
-    fileprivate final func startTimer(duration _: Double) {
-        if timer != nil {
-            return
-        }
-
-        if timeRemaining <= 0 {
-            clearTimer()
-        }
-
-        timer = Timer.publish(every: 1, on: .main, in: .common)
-            .autoconnect()
-            .sink { _ in
-                self.timeRemaining -= 1
-                if self.timeRemaining <= 0 {
-                    self.clearTimer()
-                }
-            }
+private extension Color {
+    static var outlineRed: Color {
+        Color(decimalRed: 34, green: 0, blue: 3)
     }
 
-    fileprivate final func clearTimer() {
-        timer?.cancel()
-        timer = nil
+    static var darkRed: Color {
+        Color(decimalRed: 221, green: 31, blue: 59)
+    }
+
+    static var lightRed: Color {
+        Color(decimalRed: 239, green: 54, blue: 128)
+    }
+
+    init(decimalRed red: Double, green: Double, blue: Double) {
+        self.init(red: red / 255, green: green / 255, blue: blue / 255)
     }
 }
 
 struct PostRunTimerRing: View {
     @StateObject private var viewModel = PostRunTimerRingModel()
-    @EnvironmentObject var postRunViewModel: PostRunViewModel
+    @Binding private var progress: Double
 
-    private let duration: TimeInterval
-    private let currentTime: TimeInterval
-    private let lineWidth: CGFloat
-    private let gradient: Gradient
-
-    public init(duration: TimeInterval, currentTime: TimeInterval, lineWidth: CGFloat, gradient: Gradient) {
-        self.duration = duration
-        self.currentTime = currentTime
-        self.lineWidth = lineWidth
-        self.gradient = gradient
+    public init(progress: Binding<Double>) {
+        _progress = progress
     }
 
-    public var body: some View {
-        let progress = duration == 0 ? 0 : currentTime / duration
+    private var colors: [Color] = [Color.darkRed, Color.lightRed]
 
-        if postRunViewModel.currentTime > 0 {
-            let _ = viewModel.startTimer(duration: duration)
-        }
-
+    var body: some View {
+        let progress = progress / 10
         ZStack {
-            Text("\(viewModel.timeRemaining)")
-
             Circle()
-                .rotation(.degrees(-90))
-                .trim(from: 0, to: CGFloat(progress))
+                .stroke(Color.outlineRed, lineWidth: 20)
+            Circle()
+                .trim(from: 0, to: progress)
                 .stroke(
-                    AngularGradient(gradient: gradient,
-                                    center: .center,
-                                    startAngle: .degrees(-90),
-                                    endAngle: .degrees(progress * 360 - 90)),
-                    style: .init(lineWidth: lineWidth, lineCap: .round)
-                )
-                .overlay(
-                    GeometryReader { geometry in
-                        Circle()
-                            .fill(gradient.stops[1].color)
-                            .frame(width: lineWidth, height: lineWidth)
-                            .position(x: progress == 0 ? 0 : geometry.size.width / 2, y: progress == 0 ? 0 : geometry.size.height / 2)
-                            .offset(x: progress == 0 ? 0 : min(geometry.size.width, geometry.size.height) / 2)
-                            .rotationEffect(.degrees(progress * 360 - 90))
-                            .shadow(color: .black, radius: lineWidth / 2, x: 0, y: 0)
-                    }
-                    .clipShape(
-                        Circle()
-                            .rotation(.degrees(-90 + progress * 360 - 0.5))
-                            .trim(from: 0, to: 0.25)
-                            .stroke(style: .init(lineWidth: lineWidth))
-                    )
-                )
-                .scaledToFit()
-                //      .padding(lineWidth / 2)
-                .animation(.linear(duration: currentTime), value: currentTime)
-                .frame(width: 200, height: 200)
+                    AngularGradient(
+                        gradient: Gradient(colors: colors),
+                        center: .center,
+                        startAngle: .degrees(0),
+                        endAngle: .degrees(360)
+                    ),
+                    style: StrokeStyle(lineWidth: 20, lineCap: .round)
+                ).rotationEffect(.degrees(-90))
+            Circle()
+                .frame(width: 20, height: 20)
+                .foregroundColor(Color.darkRed)
+                .offset(y: -150)
+            Circle()
+                .frame(width: 20, height: 20)
+                .foregroundColor(progress > 0.95 ? Color.lightRed : Color.lightRed.opacity(0))
+                .offset(y: -150)
+                .rotationEffect(Angle.degrees(360 * Double(progress)))
+                .shadow(color: progress > 0.96 ? Color.black.opacity(0.1) : Color.clear, radius: 3, x: 4, y: 0)
         }
+        .frame(width: 300, height: 300)
+        //      .animation(.spring(response: 0.6, dampingFraction: 1.0, blendDuration: 1.0), value: progress)
+        .animation(.linear(duration: 1.0), value: progress)
     }
 }
