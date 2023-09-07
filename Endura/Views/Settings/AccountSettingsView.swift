@@ -4,46 +4,24 @@ import Foundation
 import SwiftUI
 import UIKit
 
-struct ImagePicker: UIViewControllerRepresentable {
-    @Binding private var selectedImage: UIImage?
-
-    init(selectedImage: Binding<UIImage?>) {
-        _selectedImage = selectedImage
-    }
-
-    @Environment(\.presentationMode) private var presentationMode
-
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        private let parent: ImagePicker
-
-        init(_ parent: ImagePicker) {
-            self.parent = parent
-        }
-
-        func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.selectedImage = uiImage.crop(to: CGSize(width: 128, height: 128))
-            }
-
-            parent.presentationMode.wrappedValue.dismiss()
-        }
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        return picker
-    }
-
-    func updateUIViewController(_: UIImagePickerController, context _: UIViewControllerRepresentableContext<ImagePicker>) {}
-}
-
 private final class AccountSettingsViewModel: ObservableObject {
-    func uploadProfileImage(imageData: Data) {
+    @Published fileprivate var showingImagePicker = false
+    @Published fileprivate var inputImage: UIImage?
+    @Published fileprivate var image: Image?
+
+    fileprivate func loadImage() {
+        print("Loading image", inputImage.debugDescription)
+
+        guard let inputImage else {
+            return
+        }
+
+        print("Assining image")
+
+        image = Image(uiImage: inputImage)
+    }
+
+    fileprivate func uploadProfileImage(imageData: Data) {
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"
         Storage.storage().reference().child("users/\(AuthUtils.getCurrentUID())/profilePicture").putData(imageData, metadata: metadata) { _, error in
@@ -55,42 +33,88 @@ private final class AccountSettingsViewModel: ObservableObject {
 }
 
 struct AccountSettingsView: View {
-    @ObservedObject private var viewModel = AccountSettingsViewModel()
-    @State private var showingImagePicker = false
-    @State private var inputImage: UIImage?
-    @State private var image: Image?
+    @EnvironmentObject private var activeUser: ActiveUserModel
+    @EnvironmentObject private var usersCache: UsersCacheModel
+
+    @StateObject private var viewModel = AccountSettingsViewModel()
 
     var body: some View {
         VStack {
             Text("Account")
-            image?
-                .resizable()
-                .clipShape(Circle())
-                .frame(width: 30, height: 30)
-                .padding()
-            image?
-                .resizable()
-                .clipShape(Circle())
-                .frame(width: 200, height: 200)
-                .padding()
-            Button("Select Image") {
-                self.showingImagePicker = true
-            }
-            .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
-                ImagePicker(selectedImage: self.$inputImage)
-            }
+
+            ProfilePictureView(image: viewModel.image!)
+
+//      if let image = viewModel.image {
+//        ProfilePictureView(image: image)
+//      } else {
+//        if let profileImage = usersCache.getUserData(AuthUtils.getCurrentUID())?.profileImage {
+//          ProfilePictureView(image: Image(uiImage: profileImage))
+//        } else {
+//          ProfilePictureView()
+//        }
+//      }
+
+//      Button("Select Image") {
+//        viewModel.showingImagePicker = true
+//      }
+
             Button("Save Changes") {
-                if let imageData = inputImage?.pngData() {
+                if let imageData = viewModel.inputImage?.pngData() {
                     viewModel.uploadProfileImage(imageData: imageData)
                 }
             }
         }
+        .onAppear {
+            viewModel.loadImage()
+        }
+    }
+}
+
+private struct ProfilePictureView: View {
+    @StateObject private var viewModel = AccountSettingsViewModel()
+
+    private let imageDimensions = UIScreen.main.bounds.height / 5
+    private let maxDimensions = 128.0
+
+    private let image: Image
+    @State private var hovering = false
+
+    public init(image: Image = Image(systemName: "person.circle")) {
+        self.image = image
     }
 
-    func loadImage() {
-        guard let inputImage = inputImage else {
-            return
+    public var body: some View {
+        VStack {
+            if hovering {
+                ZStack {
+                    image
+                        .resizable()
+                        .clipShape(Circle())
+                        .frame(idealWidth: imageDimensions, maxWidth: maxDimensions, minHeight: imageDimensions, maxHeight: maxDimensions, alignment: .center)
+                        .opacity(0.5)
+
+                    Image(systemName: "camera")
+                }
+            } else {
+                image
+                    .resizable()
+                    .clipShape(Circle())
+//          .frame(idealWidth: imageDimensions, maxWidth: maxDimensions, minHeight: imageDimensions, maxHeight: maxDimensions, alignment: .center)
+            }
         }
-        image = Image(uiImage: inputImage)
+        .onTapGesture {
+            print("Showing is true")
+            viewModel.showingImagePicker = true
+        }
+        .onHover(perform: { hovering in
+            if hovering {
+                self.hovering = true
+            } else {
+                self.hovering = false
+            }
+        })
+        .sheet(isPresented: $viewModel.showingImagePicker, onDismiss: viewModel.loadImage) {
+            ImagePicker(selectedImage: $viewModel.inputImage)
+        }
     }
 }

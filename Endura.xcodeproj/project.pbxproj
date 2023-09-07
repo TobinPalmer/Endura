@@ -119,6 +119,7 @@
 		69698D9FF474040A16DC04C9 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696989BB502C0EDF35A4959D /* SignupView.swift */; };
 		69698E07FA8B291DA55AC82F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986107AD223B98C92E1D1 /* String.swift */; };
 		69698E351EF5E934C5440F86 /* TrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698F375B8431109FFB3F98 /* TrainingView.swift */; };
+		69698E49D2BC67E1245AF44B /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EC55CE8019B02C2224B /* ImagePicker.swift */; };
 		69698E5A52E0A85E4C5A525C /* TrainingEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969864B8B26535EBF8EE62D /* TrainingEnums.swift */; };
 		69698F0E561C7F4DC1D31BE5 /* ActivityDataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969857EDEFD5DD4CD566F69 /* ActivityDataTypes.swift */; };
 		69698F967DFA9D0303BE96FF /* MKCoordinateRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */; };
@@ -253,6 +254,7 @@
 		69698E6CE08351083301EC53 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsBell.swift; sourceTree = "<group>"; };
 		69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCoordinateRegion.swift; sourceTree = "<group>"; };
+		69698EC55CE8019B02C2224B /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		69698EC86F9A7092017FDF6F /* ActivityHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityHeader.swift; sourceTree = "<group>"; };
 		69698F375B8431109FFB3F98 /* TrainingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingView.swift; sourceTree = "<group>"; };
 		69698F535644D0B6E53A20FB /* ActivityTypealiases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTypealiases.swift; sourceTree = "<group>"; };
@@ -692,6 +694,7 @@
 			children = (
 				17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */,
 				69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */,
+				69698EC55CE8019B02C2224B /* ImagePicker.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1037,6 +1040,7 @@
 				69698E07FA8B291DA55AC82F /* String.swift in Sources */,
 				69698C0C8AB1D203D81FEEE9 /* PostRunView.swift in Sources */,
 				69698277AE87B36524904399 /* PostRunTimerRing.swift in Sources */,
+				69698E49D2BC67E1245AF44B /* ImagePicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
