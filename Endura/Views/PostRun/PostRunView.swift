@@ -10,20 +10,29 @@ private var postRunEasyDay: [PostRunExercise] = [
 
 final class PostRunViewModel: ObservableObject {
     @Published public var currentTime: TimeInterval = 0
+    @Published public var isDoneWithTimerExercise = false
     @Published fileprivate var currentExerciseIndex: Int = 0
 
-    fileprivate final func startTimer(duration: Double) {
-        currentTime += duration
-    }
+    public final var timer: Timer?
 
-    fileprivate final func clearTimer() {
+    public func startTimer(duration: TimeInterval) {
         currentTime = 0
+
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            guard let self = self else {
+                return
+            }
+            self.currentTime += 1
+            if self.currentTime >= duration {
+                isDoneWithTimerExercise = true
+                timer.invalidate()
+            }
+        }
     }
 }
 
 struct PostRunView: View {
     @StateObject private var viewModel = PostRunViewModel()
-    @State private var isDoneWithTimerExercise = false
 
     public var body: some View {
         ZStack {
@@ -36,19 +45,15 @@ struct PostRunView: View {
                 switch currentExercise.parameter {
                 case let .count(count):
                     Text("Do \(count)")
-                case let .time(time):
-                    PostRunTimerRing(duration: time, currentTime: viewModel.currentTime, lineWidth: 10, gradient: Gradient(colors: [.red, .blue]))
+                case .time:
+                    PostRunTimerRing(progress: $viewModel.currentTime)
                         .environmentObject(viewModel)
-
-                    let _ = DispatchQueue.main.asyncAfter(deadline: .now() + time) {
-                        isDoneWithTimerExercise = true
-                    }
                 }
                 Button("Next Exercise") {
                     viewModel.currentExerciseIndex += 1
-                    isDoneWithTimerExercise = false
+                    viewModel.isDoneWithTimerExercise = false
                 }
-                .disabled(!isDoneWithTimerExercise)
+                .disabled(!viewModel.isDoneWithTimerExercise)
 
                 if viewModel.currentTime <= 0 {
                     Button("Start") {
