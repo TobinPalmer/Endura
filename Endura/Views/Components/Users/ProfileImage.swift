@@ -34,7 +34,7 @@ struct ProfileImage: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .clipShape(Circle())
-                        .frame(width: 128, height: 128)
+                        .frame(width: size, height: size)
                 }
             } else {
                 Text("Loading...")

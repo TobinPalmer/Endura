@@ -7,7 +7,7 @@ private final class FindUsersViewModel: ObservableObject {
     @Published public var users: [(String, UserData)] = []
     @Published public var searchText = ""
 
-    fileprivate func fetchUsers(usersCache: UsersCacheModel) async {
+    fileprivate func fetchUsers(usersCache _: UsersCacheModel) async {
         if !users.isEmpty {
             return
         }
@@ -21,10 +21,13 @@ private final class FindUsersViewModel: ObservableObject {
                 do {
                     let data = try document.data(as: UserDocument.self)
 
-                    let userData = await usersCache.fetchUserData(uid: document.documentID, document: data)
-                    guard let userData = userData else {
-                        return
-                    }
+                    var userData = UserData(
+                        uid: document.documentID,
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        friends: data.friends
+                    )
+                    userData.profileImage = await userData.fetchProfileImage()
                     users.append((document.documentID, userData))
                 } catch {
                     print("Error decoding user: \(error)")

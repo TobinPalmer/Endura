@@ -14,32 +14,35 @@ import Foundation
         return usersCache[uid] as? UserData
     }
 
-    public func fetchUserData(uid: String, document: UserDocument? = nil) async -> UserData? {
+    public func fetchUserData(uid: String, document: UserDocument? = nil) async {
         if usersCache[uid] != nil {
-            return usersCache[uid] as? UserData
+            return
         }
         do {
-            usersCache.updateValue(nil, forKey: uid)
-            let document = document == nil ? try await Firestore.firestore().collection("users").document(uid).getDocument(as: UserDocument.self) : document!
-
-            // Try loading firebase profile picture
-            var image = try UIImage(data: await URLSession.shared.data(from: URL(string: "https://firebasestorage.googleapis.com/v0/b/runningapp-6ee99.appspot.com/o/users%2F\(uid)%2FprofilePicture?alt=media")!).0)
-            if image == nil { // If firebase profile picture fails, load ui-avatars profile picture
-                image = try UIImage(data: await URLSession.shared.data(from: URL(string: "https://ui-avatars.com/api/?name=\(document.firstName)+\(document.lastName)&background=0D8ABC&color=fff")!).0)
+            // Try loading from cache
+            if let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first {
+                var userData = UserData.fromCache(cachedUserData)
+                usersCache.updateValue(userData, forKey: uid)
+                Task {
+                    userData.profileImage = await userData.fetchProfileImage()
+                    usersCache.updateValue(userData, forKey: uid)
+                }
             }
 
-            let userData = UserData(
+            // Load from firebase, even if cached because it might be outdated
+            let document = document == nil ? try await Firestore.firestore().collection("users").document(uid).getDocument(as: UserDocument.self) : document!
+
+            var userData = UserData(
                 uid: uid,
                 firstName: document.firstName,
                 lastName: document.lastName,
-                profileImage: image,
                 friends: document.friends
             )
+            userData.profileImage = await userData.fetchProfileImage()
             usersCache.updateValue(userData, forKey: uid)
-            return userData
+            CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
         } catch {
             print("Error decoding user: \(error)")
         }
-        return nil
     }
 }

@@ -17,8 +17,8 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
     <entity name="UserDataCache" representedClassName="UserDataCache" syncable="YES" codeGenerationType="class">
-        <attribute name="firstName" optional="YES" attributeType="Transformable" customClassName="[String]"/>
-        <attribute name="friends" optional="YES" attributeType="String"/>
+        <attribute name="firstName" optional="YES" attributeType="String" customClassName="[String]"/>
+        <attribute name="friends" optional="YES" attributeType="Transformable" customClassName="[String]"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>

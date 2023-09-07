@@ -10,6 +10,10 @@ protocol Cacheable {
 public enum CacheUtils {
     public static let context = PersistenceController.shared.container.viewContext
 
+    public static func predicateMatchingField(_ field: String, value: Any) -> NSPredicate {
+        NSPredicate(format: "\(field) == %@", value as! CVarArg)
+    }
+
     public static func updateObject<T: NSManagedObject>(_: T.Type, update: (T) -> Void) {
         let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
         fetchRequest.fetchLimit = 1
@@ -53,6 +57,18 @@ public enum CacheUtils {
         } catch {
             print("Error fetching query for listed objects: \(error)")
             return []
+        }
+    }
+
+    public static func updateListedObject<T: NSManagedObject>(_: T.Type, update: (T) -> Void, predicate: NSPredicate?) {
+        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchLimit = 1
+        do {
+            try update(context.fetch(fetchRequest).first ?? T(context: context))
+            try context.save()
+        } catch {
+            print("Error updating listed object: \(error)")
         }
     }
 
