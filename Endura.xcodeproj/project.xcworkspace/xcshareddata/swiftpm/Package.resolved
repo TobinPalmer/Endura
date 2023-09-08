@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "alertkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sparrowcode/AlertKit",
+      "state" : {
+        "revision" : "1da133b6f630f4e11d141ce5c05d09b68200278e",
+        "version" : "5.0.1"
+      }
+    },
+    {
       "identity" : "chartview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AppPear/ChartView",

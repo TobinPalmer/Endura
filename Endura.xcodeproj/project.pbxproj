@@ -27,6 +27,7 @@
 		026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */; };
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
 		0267A8072A92CC3D0090E032 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 0267A8062A92CC3D0090E032 /* Inject */; };
+		02C6C3F32AAAAB290079B76B /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F22AAAAB290079B76B /* AlertKit */; };
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
 		17CC6078651983C541BA712F /* UsersCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* UsersCacheModel.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
@@ -274,6 +275,7 @@
 			files = (
 				026042F02A62E36300F4AF88 /* FirebaseDatabaseSwift in Frameworks */,
 				020C2CEA2A9ED92D008F57F7 /* WrappingHStack in Frameworks */,
+				02C6C3F32AAAAB290079B76B /* AlertKit in Frameworks */,
 				026042EA2A62E36300F4AF88 /* FirebaseAnalyticsSwift in Frameworks */,
 				026042EC2A62E36300F4AF88 /* FirebaseAuth in Frameworks */,
 				026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */,
@@ -826,6 +828,7 @@
 				020C2CE92A9ED92D008F57F7 /* WrappingHStack */,
 				E92549A82AA03AE900776856 /* CachedAsyncImage */,
 				E98AFF022AA65664002DB211 /* SwiftUICalendar */,
+				02C6C3F22AAAAB290079B76B /* AlertKit */,
 			);
 			productName = Endura;
 			productReference = 026042B92A62E27900F4AF88 /* Endura.app */;
@@ -906,6 +909,7 @@
 				020C2CE82A9ED92D008F57F7 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				E92549A72AA03AE900776856 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				E98AFF012AA65664002DB211 /* XCRemoteSwiftPackageReference "SwiftUICalendar" */,
+				02C6C3F12AAAAB290079B76B /* XCRemoteSwiftPackageReference "AlertKit" */,
 			);
 			productRefGroup = 026042BA2A62E27900F4AF88 /* Products */;
 			projectDirPath = "";
@@ -1420,6 +1424,14 @@
 				minimumVersion = 1.2.4;
 			};
 		};
+		02C6C3F12AAAAB290079B76B /* XCRemoteSwiftPackageReference "AlertKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparrowcode/AlertKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 		E92549A72AA03AE900776856 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
@@ -1506,6 +1518,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0267A8052A92CC3D0090E032 /* XCRemoteSwiftPackageReference "Inject" */;
 			productName = Inject;
+		};
+		02C6C3F22AAAAB290079B76B /* AlertKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02C6C3F12AAAAB290079B76B /* XCRemoteSwiftPackageReference "AlertKit" */;
+			productName = AlertKit;
 		};
 		E92549A82AA03AE900776856 /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;
