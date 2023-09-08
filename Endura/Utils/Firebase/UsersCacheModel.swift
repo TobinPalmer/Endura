@@ -15,7 +15,7 @@ import Foundation
     }
 
     public func fetchUserData(uid: String, document: UserDocument? = nil) async {
-        if usersCache[uid] != nil {
+        guard usersCache[uid] == nil else {
             return
         }
         do {
@@ -23,9 +23,13 @@ import Foundation
             if let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first {
                 var userData = UserData.fromCache(cachedUserData)
                 usersCache.updateValue(userData, forKey: uid)
+                CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
                 Task {
-                    userData.profileImage = await userData.fetchProfileImage()
-                    usersCache.updateValue(userData, forKey: uid)
+                    if let profileImage = await userData.fetchProfileImage() {
+                        userData.profileImage = profileImage
+                        usersCache.updateValue(userData, forKey: uid)
+                        CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
+                    }
                 }
             }
 
@@ -38,7 +42,9 @@ import Foundation
                 lastName: document.lastName,
                 friends: document.friends
             )
-            userData.profileImage = await userData.fetchProfileImage()
+            if let profileImage = await userData.fetchProfileImage() {
+                userData.profileImage = profileImage
+            }
             usersCache.updateValue(userData, forKey: uid)
             CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
         } catch {

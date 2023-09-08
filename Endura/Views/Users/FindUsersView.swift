@@ -27,7 +27,9 @@ private final class FindUsersViewModel: ObservableObject {
                         lastName: data.lastName,
                         friends: data.friends
                     )
-                    userData.profileImage = await userData.fetchProfileImage()
+                    if let profileImage = await userData.fetchProfileImage() {
+                        userData.profileImage = profileImage
+                    }
                     users.append((document.documentID, userData))
                 } catch {
                     print("Error decoding user: \(error)")

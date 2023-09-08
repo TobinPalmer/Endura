@@ -29,6 +29,7 @@
         <attribute name="firstName" optional="YES" attributeType="String" customClassName="[String]"/>
         <attribute name="friends" optional="YES" attributeType="Transformable" valueTransformerName="StringArrayValueTransformer" customClassName="[String]"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="profileImage" optional="YES" attributeType="Binary"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>
 </model>

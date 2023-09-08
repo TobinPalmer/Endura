@@ -45,6 +45,7 @@ public struct UserData: Cacheable {
         cache.firstName = firstName
         cache.lastName = lastName
         cache.friends = friends
+        cache.profileImage = profileImage?.jpegData(compressionQuality: 1.0)
     }
 
     public static func fromCache(_ cache: UserDataCache) -> UserData {
@@ -52,7 +53,7 @@ public struct UserData: Cacheable {
             uid: cache.uid!,
             firstName: cache.firstName!,
             lastName: cache.lastName!,
-            profileImage: nil,
+            profileImage: cache.profileImage != nil ? UIImage(data: cache.profileImage!) : nil,
             friends: cache.friends!
         )
     }
