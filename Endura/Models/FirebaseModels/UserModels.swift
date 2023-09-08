@@ -45,7 +45,13 @@ public struct UserData: Cacheable {
         cache.firstName = firstName
         cache.lastName = lastName
         cache.friends = friends
-        cache.profileImage = profileImage?.jpegData(compressionQuality: 1.0)
+        if let profileImage = profileImage {
+            cache.profileImage = profileImage.jpegData(compressionQuality: 1.0)
+        } else if let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first {
+            cache.profileImage = cachedUserData.profileImage
+        } else {
+            cache.profileImage = nil
+        }
     }
 
     public static func fromCache(_ cache: UserDataCache) -> UserData {

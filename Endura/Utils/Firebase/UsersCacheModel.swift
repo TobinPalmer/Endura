@@ -41,7 +41,8 @@ import Foundation
         }
         do {
             // Try loading from cache
-            if let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first {
+            let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first
+            if let cachedUserData = cachedUserData {
                 setUserData(uid, userData: UserData.fromCache(cachedUserData))
             }
 
@@ -56,6 +57,8 @@ import Foundation
             )
             if let profileImage = await userData.fetchProfileImage() {
                 userData.profileImage = profileImage
+            } else if let profileImage = cachedUserData?.profileImage {
+                userData.profileImage = UIImage(data: profileImage)
             }
             setUserData(uid, userData: userData)
         } catch {
