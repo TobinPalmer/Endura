@@ -8,12 +8,11 @@ import HealthKit
 
 public enum ActivityUtils {
     public static func getActivityRouteData(id: String) async -> ActivityRouteData {
-        print("Getting activity route data...", id)
         do {
             let routeData = try await Firestore.firestore().collection("activities").document(id).collection("data").document("data").getDocument(as: ActivityRouteData.self)
             return routeData
         } catch {
-            print("Error getting activity route data: \(error)")
+            Global.log.error("Error getting activity route data: \(error)")
             return ActivityRouteData(
                 graphData: [],
                 graphInterval: 0,
@@ -64,7 +63,7 @@ public enum ActivityUtils {
             }
 
         } catch {
-            print("Error uploading workout: \(error)")
+            Global.log.error("Error uploading workout: \(error)")
         }
     }
 
@@ -76,24 +75,15 @@ public enum ActivityUtils {
         metadata.contentType = "image/png"
 
         guard let data else {
-            print("Error getting image data")
+            Global.log.error("Error getting image data")
             return
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            print("Uploading Image outer")
-            imageRef.putData(data, metadata: metadata) { _ in
-                print("Uploading Image")
+        imageRef.putData(data, metadata: metadata) { metadata, error in
+            guard metadata != nil else {
+                Global.log.error("Error uploading image: \(error!)")
+                return
             }
         }
-
-//    imageRef.putData(data, metadata: metadata) { metadata, error in
-//
-//      guard metadata != nil else {
-//        print("Error uploading image: \(error!)")
-//        return
-//      }
-//      print("Image uploaded successfully")
-//    }
     }
 }

@@ -48,7 +48,7 @@ import Foundation
             usersCache.updateValue(userData, forKey: uid)
             CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
         } catch {
-            print("Error decoding user: \(error)")
+            Global.log.error("Error decoding user: \(error)")
         }
     }
 }

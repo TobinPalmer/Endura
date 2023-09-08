@@ -28,6 +28,7 @@
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
 		0267A8072A92CC3D0090E032 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 0267A8062A92CC3D0090E032 /* Inject */; };
 		02C6C3F32AAAAB290079B76B /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F22AAAAB290079B76B /* AlertKit */; };
+		02C6C3F62AAAB1DB0079B76B /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */; };
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
 		17CC6078651983C541BA712F /* UsersCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* UsersCacheModel.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
@@ -280,6 +281,7 @@
 				026042EC2A62E36300F4AF88 /* FirebaseAuth in Frameworks */,
 				026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */,
 				026042F62A62E36300F4AF88 /* FirebaseFunctions in Frameworks */,
+				02C6C3F62AAAB1DB0079B76B /* SwiftyBeaver in Frameworks */,
 				026042F42A62E36300F4AF88 /* FirebaseFirestoreSwift in Frameworks */,
 				026042EE2A62E36300F4AF88 /* FirebaseDatabase in Frameworks */,
 				E98AFF032AA65664002DB211 /* SwiftUICalendar in Frameworks */,
@@ -829,6 +831,7 @@
 				E92549A82AA03AE900776856 /* CachedAsyncImage */,
 				E98AFF022AA65664002DB211 /* SwiftUICalendar */,
 				02C6C3F22AAAAB290079B76B /* AlertKit */,
+				02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */,
 			);
 			productName = Endura;
 			productReference = 026042B92A62E27900F4AF88 /* Endura.app */;
@@ -910,6 +913,7 @@
 				E92549A72AA03AE900776856 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				E98AFF012AA65664002DB211 /* XCRemoteSwiftPackageReference "SwiftUICalendar" */,
 				02C6C3F12AAAAB290079B76B /* XCRemoteSwiftPackageReference "AlertKit" */,
+				02C6C3F42AAAB1DB0079B76B /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 			);
 			productRefGroup = 026042BA2A62E27900F4AF88 /* Products */;
 			projectDirPath = "";
@@ -1432,6 +1436,14 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		02C6C3F42AAAB1DB0079B76B /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		E92549A72AA03AE900776856 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
@@ -1523,6 +1535,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 02C6C3F12AAAAB290079B76B /* XCRemoteSwiftPackageReference "AlertKit" */;
 			productName = AlertKit;
+		};
+		02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02C6C3F42AAAB1DB0079B76B /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
 		};
 		E92549A82AA03AE900776856 /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;

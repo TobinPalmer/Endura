@@ -7,191 +7,191 @@ import Inject
 import SwiftUI
 
 @MainActor private final class ActivitiesViewModel: ObservableObject {
-    @Published fileprivate var activities: [String: (String, ActivityData)] = [:]
-    @Published var lastDocument: DocumentSnapshot? = nil
-    @Published private var lastRefresh = Date()
-    @Published public var friends: [String]? = nil
+  @Published fileprivate var activities: [String: (String, ActivityData)] = [:]
+  @Published var lastDocument: DocumentSnapshot? = nil
+  @Published private var lastRefresh = Date()
+  @Published public var friends: [String]? = nil
 
-    fileprivate static let loadAmount = 5
+  fileprivate static let loadAmount = 5
 
-    fileprivate func clearActivities() {
-        activities = [:]
-        lastDocument = nil
+  fileprivate func clearActivities() {
+    activities = [:]
+    lastDocument = nil
+  }
+
+  fileprivate func loadActivities() {
+    let baseQuery = Firestore.firestore().collection("activities")
+      .order(by: "uploadTime").order(by: "time", descending: true)
+      .whereField("uploadTime", isLessThan: lastRefresh)
+      .whereField("uid", in: [AuthUtils.getCurrentUID()] + (friends ?? []))
+      .whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
+      .limit(to: ActivitiesViewModel.loadAmount)
+
+    let query = (lastDocument == nil) ?
+      baseQuery :
+      baseQuery.start(afterDocument: lastDocument!)
+
+    query.addSnapshotListener { querySnapshot, error in
+      guard let snapshot = querySnapshot else {
+        Global.log.error("Error fetching documents: \(error!)")
+        return
+      }
+
+      snapshot.documentChanges.forEach { diff in
+        self.handleActivityDocument(diff: diff)
+      }
+
+      self.lastDocument = snapshot.documents.last
     }
+  }
 
-    fileprivate func loadActivities() {
-        let baseQuery = Firestore.firestore().collection("activities")
-            .order(by: "uploadTime").order(by: "time", descending: true)
-            .whereField("uploadTime", isLessThan: lastRefresh)
-            .whereField("uid", in: [AuthUtils.getCurrentUID()] + (friends ?? []))
-            .whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
-            .limit(to: ActivitiesViewModel.loadAmount)
+  fileprivate func loadNewActivities() {
+    let query = Firestore.firestore().collection("activities")
+      .order(by: "uploadTime")
+      .order(by: "time", descending: true)
+      .whereField("uploadTime", isGreaterThan: lastRefresh)
+      .whereField("uploadTime", isLessThan: Date())
+      .whereField("uid", in: [AuthUtils.getCurrentUID()] + (friends ?? []))
+      .whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
 
-        let query = (lastDocument == nil) ?
-            baseQuery :
-            baseQuery.start(afterDocument: lastDocument!)
+    lastRefresh = Date()
 
-        query.addSnapshotListener { querySnapshot, error in
-            guard let snapshot = querySnapshot else {
-                print("Error fetching documents: \(error!)")
-                return
-            }
+    var listener: ListenerRegistration? = nil
 
-            snapshot.documentChanges.forEach { diff in
-                self.handleActivityDocument(diff: diff)
-            }
+    listener = query.addSnapshotListener { querySnapshot, error in
+      guard let snapshot = querySnapshot else {
+        Global.log.error("Error fetching documents: \(error!)")
+        return
+      }
 
-            self.lastDocument = snapshot.documents.last
+      if snapshot.documentChanges.isEmpty {
+        if let listener = listener {
+          listener.remove()
         }
+        return
+      }
+
+      snapshot.documentChanges.forEach { diff in
+        self.handleActivityDocument(diff: diff)
+      }
     }
+  }
 
-    fileprivate func loadNewActivities() {
-        let query = Firestore.firestore().collection("activities")
-            .order(by: "uploadTime")
-            .order(by: "time", descending: true)
-            .whereField("uploadTime", isGreaterThan: lastRefresh)
-            .whereField("uploadTime", isLessThan: Date())
-            .whereField("uid", in: [AuthUtils.getCurrentUID()] + (friends ?? []))
-            .whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
+  private func handleActivityDocument(diff: DocumentChange) {
+    do {
+      let data = try diff.document.data(as: ActivityDocument.self)
 
-        lastRefresh = Date()
+      let activity = ActivityData(
+        averagePower: data.averagePower,
+        calories: data.calories,
+        comments: data.comments,
+        distance: data.distance,
+        description: data.description,
+        duration: data.duration,
+        startCountry: data.startCountry,
+        likes: data.likes,
+        type: data.type,
+        startCity: data.startCity,
+        startLocation: data.startLocation,
+        time: data.time,
+        title: data.title,
+        totalDuration: data.totalDuration,
+        uid: data.uid,
+        visibility: data.visibility
+      )
 
-        var listener: ListenerRegistration? = nil
-
-        listener = query.addSnapshotListener { querySnapshot, error in
-            guard let snapshot = querySnapshot else {
-                print("Error fetching documents: \(error!)")
-                return
-            }
-
-            if snapshot.documentChanges.isEmpty {
-                if let listener = listener {
-                    listener.remove()
-                }
-                return
-            }
-
-            snapshot.documentChanges.forEach { diff in
-                self.handleActivityDocument(diff: diff)
-            }
-        }
+      if diff.type == .added || diff.type == .modified {
+        activities.updateValue((diff.document.documentID, activity), forKey: diff.document.documentID)
+      } else if diff.type == .removed {
+        activities.removeValue(forKey: diff.document.documentID)
+      }
+    } catch {
+      Global.log.error("Error decoding activity: \(error)")
     }
-
-    private func handleActivityDocument(diff: DocumentChange) {
-        do {
-            let data = try diff.document.data(as: ActivityDocument.self)
-
-            let activity = ActivityData(
-                averagePower: data.averagePower,
-                calories: data.calories,
-                comments: data.comments,
-                distance: data.distance,
-                description: data.description,
-                duration: data.duration,
-                startCountry: data.startCountry,
-                likes: data.likes,
-                type: data.type,
-                startCity: data.startCity,
-                startLocation: data.startLocation,
-                time: data.time,
-                title: data.title,
-                totalDuration: data.totalDuration,
-                uid: data.uid,
-                visibility: data.visibility
-            )
-
-            if diff.type == .added || diff.type == .modified {
-                activities.updateValue((diff.document.documentID, activity), forKey: diff.document.documentID)
-            } else if diff.type == .removed {
-                activities.removeValue(forKey: diff.document.documentID)
-            }
-        } catch {
-            print("Error decoding activity: \(error)")
-        }
-    }
+  }
 }
 
 struct ActivitiesView: View {
-    @EnvironmentObject var activeUserModel: ActiveUserModel
-    @StateObject fileprivate var activityViewModel = ActivitiesViewModel()
+  @EnvironmentObject var activeUserModel: ActiveUserModel
+  @StateObject fileprivate var activityViewModel = ActivitiesViewModel()
 
-    var body: some View {
-        VStack {
-            ScrollView(.vertical) {
-                if !activityViewModel.activities.isEmpty {
-                    LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
-                        ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }), id: \.0) { id, activity in
-                            ActivityPost(id: id, activity: activity)
-                                .onAppear {
-                                    if id == activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }).last?.0 && activityViewModel.activities.count >= ActivitiesViewModel.loadAmount {
-                                        activityViewModel.loadActivities()
-                                    }
-                                }
-                        }
-                    }
-                    .padding(10)
-                } else {
-                    Text("No activities")
+  var body: some View {
+    VStack {
+      ScrollView(.vertical) {
+        if !activityViewModel.activities.isEmpty {
+          LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
+            ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }), id: \.0) { id, activity in
+              ActivityPost(id: id, activity: activity)
+                .onAppear {
+                  if id == activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }).last?.0 && activityViewModel.activities.count >= ActivitiesViewModel.loadAmount {
+                    activityViewModel.loadActivities()
+                  }
                 }
             }
-            .refreshable {
-                if let friends = activeUserModel.data?.friends {
-                    if activityViewModel.friends != friends {
-                        activityViewModel.friends = friends
-                        activityViewModel.clearActivities()
-                        activityViewModel.loadActivities()
-                        return
-                    }
-                }
-                activityViewModel.loadNewActivities()
-            }
+          }
+            .padding(10)
+        } else {
+          Text("No activities")
         }
-        .onAppear {
-            if let friends = activeUserModel.data?.friends {
-                activityViewModel.friends = friends
+      }
+        .refreshable {
+          if let friends = activeUserModel.data?.friends {
+            if activityViewModel.friends != friends {
+              activityViewModel.friends = friends
+              activityViewModel.clearActivities()
+              activityViewModel.loadActivities()
+              return
             }
-            activityViewModel.loadActivities()
-        }
-        .background(Color(.secondarySystemBackground))
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink(destination: NewActivityView()) {
-                    Image(systemName: "plus")
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: NotificationsView()) {
-                    Image(systemName: "bell")
-                        .overlay(
-                            NotificationCountView(value: .constant(50))
-                        )
-                }
-            }
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink(destination: FindUsersView()) {
-                    Image(systemName: "person.2")
-                }
-            }
-
-            ToolbarItem(placement: .navigationBarTrailing) {
-                UserProfileLink(AuthUtils.getCurrentUID()) {
-                    ProfileImage(AuthUtils.getCurrentUID(), size: 30)
-                }
-            }
+          }
+          activityViewModel.loadNewActivities()
         }
     }
+      .onAppear {
+        if let friends = activeUserModel.data?.friends {
+          activityViewModel.friends = friends
+        }
+        activityViewModel.loadActivities()
+      }
+      .background(Color(.secondarySystemBackground))
+      .toolbar {
+        ToolbarItem(placement: .navigationBarLeading) {
+          NavigationLink(destination: NewActivityView()) {
+            Image(systemName: "plus")
+          }
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+          NavigationLink(destination: NotificationsView()) {
+            Image(systemName: "bell")
+              .overlay(
+                NotificationCountView(value: .constant(50))
+              )
+          }
+        }
+        ToolbarItem(placement: .navigationBarLeading) {
+          NavigationLink(destination: FindUsersView()) {
+            Image(systemName: "person.2")
+          }
+        }
+
+        ToolbarItem(placement: .navigationBarTrailing) {
+          UserProfileLink(AuthUtils.getCurrentUID()) {
+            ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+          }
+        }
+      }
+  }
 }
 
 class ActivitiesView_Previews: PreviewProvider {
-    static var previews: some View {
-        InjectedContentView()
-    }
+  static var previews: some View {
+    InjectedContentView()
+  }
 
-    #if DEBUG
-        @objc class func injected() {
-            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            windowScene?.windows.first?.rootViewController =
-                UIHostingController(rootView: InjectedContentView())
-        }
-    #endif
+  #if DEBUG
+  @objc class func injected() {
+    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+    windowScene?.windows.first?.rootViewController =
+      UIHostingController(rootView: InjectedContentView())
+  }
+  #endif
 }

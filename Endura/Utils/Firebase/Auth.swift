@@ -28,11 +28,10 @@ public enum AuthUtils {
                     )
                     try Firestore.firestore().collection("users").document(uid).collection("data").document("settings").setData(from: defaultSettings)
                 } catch {
-                    print("Error creating user: \(error)")
+                    Global.log.error("Error creating user: \(error)")
                 }
-                print("User created successfully")
             } else {
-                print("Error creating user: \(String(describing: error))")
+                Global.log.error("Error creating user: \(String(describing: error))")
             }
         }
     }
@@ -75,7 +74,7 @@ public enum AuthUtils {
             if user != nil {
                 NavigationModel.instance.currentView = .HOME
             } else {
-                print("Error logging in: \(String(describing: error))")
+                Global.log.error("Error logging in: \(String(describing: error))")
             }
         }
     }
@@ -86,7 +85,7 @@ public enum AuthUtils {
             PersistenceController.shared.clearAll()
             NavigationModel.instance.currentView = .LOGIN
         } catch {
-            print("Error logging out: \(error)")
+            Global.log.error("Error logging out: \(error)")
         }
     }
 }

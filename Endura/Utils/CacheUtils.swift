@@ -21,7 +21,7 @@ public enum CacheUtils {
             try update(context.fetch(fetchRequest).first ?? T(context: context))
             try context.save()
         } catch {
-            print("Error updating object: \(error)")
+            Global.log.error("Error updating object: \(error)")
         }
     }
 
@@ -31,7 +31,7 @@ public enum CacheUtils {
         do {
             return try context.fetch(fetchRequest).first
         } catch {
-            print("Error fetching object: \(error)")
+            Global.log.error("Error fetching object: \(error)")
             return nil
         }
     }
@@ -45,7 +45,7 @@ public enum CacheUtils {
                 try context.save()
             }
         } catch {
-            print("Error deleting object: \(error)")
+            Global.log.error("Error deleting object: \(error)")
         }
     }
 
@@ -55,7 +55,7 @@ public enum CacheUtils {
         do {
             return try context.fetch(fetchRequest)
         } catch {
-            print("Error fetching query for listed objects: \(error)")
+            Global.log.error("Error fetching query for listed objects: \(error)")
             return []
         }
     }
@@ -68,7 +68,7 @@ public enum CacheUtils {
             try update(context.fetch(fetchRequest).first ?? T(context: context))
             try context.save()
         } catch {
-            print("Error updating listed object: \(error)")
+            Global.log.error("Error updating listed object: \(error)")
         }
     }
 
@@ -78,7 +78,7 @@ public enum CacheUtils {
             do {
                 try context.save()
             } catch {
-                print("Error saving listed object: \(error)")
+                Global.log.error("Error saving listed object: \(error)")
             }
         }
     }

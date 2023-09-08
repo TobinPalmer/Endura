@@ -85,7 +85,7 @@ struct ContentView: View {
                         do {
                             activeUserModel = try await ActiveUserModel()
                         } catch {
-                            print("Error creating activeUserModel \(error)")
+                            Global.log.error("Error creating activeUserModel \(error)")
                             AuthUtils.logout()
                         }
 

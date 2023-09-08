@@ -1,13 +1,14 @@
 import Foundation
+import SwiftyBeaver
 import UserNotifications
 
 public enum NotificationUtils {
     public static func requestPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
-                print("All set!")
+                print("TODO: Notifications Ready")
             } else if let error = error {
-                print(error.localizedDescription)
+                Global.log.error(error.localizedDescription)
             }
         }
     }

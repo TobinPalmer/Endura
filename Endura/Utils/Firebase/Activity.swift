@@ -16,7 +16,7 @@ public enum ActivityUtils {
                 )
                 activities.append(activity)
             } catch let error as NSError {
-                print("error: \(error.localizedDescription)")
+                Global.log.error("Error: \(error.localizedDescription)")
             }
         }
 

@@ -58,7 +58,7 @@ import Foundation
                     completion(data)
                 }
             } catch {
-                print("Error fetching user data: \(error)")
+                Global.log.error("Error fetching user data: \(error)")
             }
         }
     }
@@ -76,7 +76,7 @@ import Foundation
                     completion(data)
                 }
             } catch {
-                print("Error fetching settings: \(error)")
+                Global.log.error("Error fetching settings: \(error)")
             }
         }
     }

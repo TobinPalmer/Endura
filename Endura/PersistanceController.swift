@@ -28,7 +28,7 @@ struct PersistenceController {
             do {
                 try context.execute(deleteRequest)
             } catch {
-                print("Error clearing cache: \(error)")
+                Global.log.error("Error clearing cache: \(error)")
             }
         }
     }

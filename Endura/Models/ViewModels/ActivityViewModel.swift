@@ -14,7 +14,6 @@ public final class ActivityViewModel: ObservableObject {
         self.activityData = activityData
         self.routeLocationData = routeLocationData
         self.interval = interval
-        print("Interval: \(interval)")
     }
 
     public func getAnalysisValue(for position: Date, graph: IndexedLineGraphData) -> Double? {

@@ -19,7 +19,7 @@ public final class NotificationsModel: ObservableObject {
 
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
-                print("Error fetching documents: \(error!)")
+                Global.log.error("Error fetching documents: \(error!)")
                 return
             }
 
@@ -30,7 +30,7 @@ public final class NotificationsModel: ObservableObject {
                         self.notifications.append(data)
                         self.unreadCount += 1
                     } catch {
-                        print("Error decoding notification: \(error)")
+                        Global.log.error("Error decoding notification: \(error)")
                     }
                 }
             }
@@ -41,7 +41,7 @@ public final class NotificationsModel: ObservableObject {
         do {
             try Firestore.firestore().collection("users").document(uid).collection("notifications").addDocument(from: data)
         } catch {
-            print("Error sending notification: \(error)")
+            Global.log.error("Error sending notification: \(error)")
         }
     }
 }

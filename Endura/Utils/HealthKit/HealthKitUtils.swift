@@ -32,7 +32,7 @@ public enum HealthKitUtils {
 
         healthStore.requestAuthorization(toShare: nil, read: typesToRead) { _, error in
             if let error = error {
-                print("Authorization request failed: \(error.localizedDescription)")
+                Global.log.error("Authorization request failed: \(error.localizedDescription)")
                 return
             }
 
@@ -40,10 +40,10 @@ public enum HealthKitUtils {
 
             healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate) { _, error in
                 if let error = error {
-                    print("Error enabling background delivery: \(error.localizedDescription)")
+                    Global.log.error("Error enabling background delivery: \(error.localizedDescription)")
                     return
                 } else {
-                    print("Enabled background delivery of \(sampleType.identifier)")
+                    print("TODO: Enabled background delivery of \(sampleType.identifier)")
                 }
             }
         }
@@ -83,11 +83,11 @@ public enum HealthKitUtils {
 
         let query = HKObserverQuery(sampleType: sampleType, predicate: nil) { _, completionHandler, errorOrNil in
             if let error = errorOrNil {
-                print("Error in observer query: \(error)")
+                Global.log.error("Error in observer query: \(error)")
                 return
             }
 //            NotificationUtils.sendNotification(title: "New workout", body: "New workout, this is clean", date: Date().addingTimeInterval(5))
-            print("Received new workout")
+            print("TODO: Received new workout")
             completionHandler()
         }
 

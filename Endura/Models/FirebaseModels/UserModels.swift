@@ -35,7 +35,7 @@ public struct UserData: Cacheable {
             }
             return image
         } catch {
-            print("Error fetching profile image: \(error)")
+            Global.log.error("Error fetching profile image: \(error)")
         }
         return nil
     }

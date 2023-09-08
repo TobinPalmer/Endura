@@ -1,5 +1,10 @@
 import FirebaseCore
 import SwiftUI
+import SwiftyBeaver
+
+public enum Global {
+    public static let log = SwiftyBeaver.self
+}
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
@@ -9,9 +14,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
 
         AuthUtils.initAuth()
-
-//        HealthKitUtils.requestAuthorization()
-//        NotificationUtils.requestPermission()
 
         HealthKitUtils.subscribeToNewWorkouts()
 
