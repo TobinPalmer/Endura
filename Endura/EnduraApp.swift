@@ -2,6 +2,10 @@ import FirebaseCore
 import SwiftUI
 import SwiftyBeaver
 
+#if DEBUG
+    @_exported import SwiftyBeaver
+#endif
+
 public enum Global {
     public static let log = SwiftyBeaver.self
 }
@@ -16,6 +20,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         AuthUtils.initAuth()
 
         HealthKitUtils.subscribeToNewWorkouts()
+
+        let console = ConsoleDestination()
+        Global.log.addDestination(console)
 
         #if DEBUG
             Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
