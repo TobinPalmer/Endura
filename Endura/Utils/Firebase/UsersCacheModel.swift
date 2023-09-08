@@ -14,6 +14,27 @@ import Foundation
         return usersCache[uid] as? UserData
     }
 
+    public func refreshUserData(_ uid: String) {
+        if let userData = usersCache[uid] as? UserData {
+            setUserData(uid, userData: userData)
+        }
+    }
+
+    private func setUserData(_ uid: String, userData: UserData) {
+        usersCache.updateValue(userData, forKey: uid)
+        CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
+        if userData.profileImage == nil {
+            Task {
+                if let profileImage = await userData.fetchProfileImage() {
+                    var userData = userData
+                    userData.profileImage = profileImage
+                    usersCache.updateValue(userData, forKey: uid)
+                    CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
+                }
+            }
+        }
+    }
+
     public func fetchUserData(uid: String, document: UserDocument? = nil) async {
         guard usersCache[uid] == nil else {
             return
@@ -21,16 +42,7 @@ import Foundation
         do {
             // Try loading from cache
             if let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first {
-                var userData = UserData.fromCache(cachedUserData)
-                usersCache.updateValue(userData, forKey: uid)
-                CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
-                Task {
-                    if let profileImage = await userData.fetchProfileImage() {
-                        userData.profileImage = profileImage
-                        usersCache.updateValue(userData, forKey: uid)
-                        CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
-                    }
-                }
+                setUserData(uid, userData: UserData.fromCache(cachedUserData))
             }
 
             // Load from firebase, even if cached because it might be outdated
@@ -45,8 +57,7 @@ import Foundation
             if let profileImage = await userData.fetchProfileImage() {
                 userData.profileImage = profileImage
             }
-            usersCache.updateValue(userData, forKey: uid)
-            CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
+            setUserData(uid, userData: userData)
         } catch {
             Global.log.error("Error decoding user: \(error)")
         }
