@@ -26,3 +26,9 @@ public enum TrainingDayType: String, Codable {
     case medium = "Medium"
     case hard = "Hard"
 }
+
+public enum TrainingDayAvailability: String, Codable {
+    case busy = "Busy"
+    case maybe = "Maybe"
+    case free = "Free"
+}
