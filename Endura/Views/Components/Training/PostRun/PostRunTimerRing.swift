@@ -2,7 +2,17 @@ import Combine
 import Foundation
 import SwiftUI
 
-private final class PostRunTimerRingModel: ObservableObject {}
+private final class PostRunTimerRingModel: ObservableObject {
+    fileprivate func formatTime(_ time: Double) -> String {
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        if minutes == 0 {
+            return "\(seconds)"
+        } else {
+            return "\(minutes):\(seconds)"
+        }
+    }
+}
 
 private extension Color {
     static var outlineRed: Color {
@@ -24,22 +34,24 @@ private extension Color {
 
 struct PostRunTimerRing: View {
     @StateObject private var viewModel = PostRunTimerRingModel()
-    @Binding private var progress: Double
-    private let max: Double
+    private var progress: Double {
+        time / duration
+    }
+
+    @Binding private var time: Double
+    private let duration: Double
 
     private let size: CGFloat
 
-    public init(progress: Binding<Double>, max: Double, size: CGFloat = 300) {
-        _progress = progress
+    public init(time: Binding<Double>, duration: Double, size: CGFloat = 300) {
+        _time = time
         self.size = size
-        self.max = max
+        self.duration = duration
     }
 
     private var colors: [Color] = [Color.darkRed, Color.lightRed]
 
     var body: some View {
-        let progress = progress / 10
-        let _ = Global.log.info("Change \(progress)")
         ZStack {
             Circle()
                 .stroke(Color.outlineRed, lineWidth: 20)
@@ -74,8 +86,11 @@ struct PostRunTimerRing: View {
                                 .frame(width: size, height: size)
                         }
                 }
+            Text(viewModel.formatTime(duration - time))
+                .animation(.none)
+                .font(.system(size: 50, weight: .bold, design: .rounded))
         }
-        .animation(.linear(duration: progress == 0 ? 0 : 1.0), value: progress)
+        .animation(.linear(duration: progress == 0 ? 0 : 1.0), value: time)
         .frame(width: size, height: size)
     }
 }

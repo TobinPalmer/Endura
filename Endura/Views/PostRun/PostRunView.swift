@@ -54,10 +54,17 @@ struct PostRunView: View {
                 case let .count(count):
                     Text("Do \(count)")
                 case .time:
-                    PostRunTimerRing(progress: $viewModel.currentTime, max: 10, size: 150)
+                    PostRunTimerRing(time: $viewModel.currentTime, duration: 10, size: 150)
                         .environmentObject(viewModel)
                 }
 
+                if let exerciseInfo = postRunExerciseReference[currentExercise.type] {
+                    Text(exerciseInfo.name)
+                        .font(.title)
+                        .padding()
+                    Text(exerciseInfo.description)
+                        .padding()
+                }
                 Spacer()
 
                 VStack {
