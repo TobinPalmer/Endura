@@ -288,8 +288,30 @@ public enum HealthKitUtils {
             var groundContactTimeAtPoint: Double?
             var strideLengthAtPoint: Double?
 
+            var previousLocation: CLLocation?
+            var totalDistance = 0.0
+            let mileDistance = 1609.34
+            var startTime: Date = data[safe: 0]?.timestamp ?? Date()
+
             for i in 0 ..< data.count where i % dataRate == 0 {
                 let point = data[i]
+
+                if let previousLocation = previousLocation {
+                    let currentLocation = CLLocation(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude)
+                    let distance = previousLocation.distance(from: currentLocation)
+                    totalDistance += distance
+
+                    if totalDistance >= mileDistance {
+                        let endTime = point.timestamp
+                        let durationInSeconds = endTime.timeIntervalSince(startTime)
+                        let durationInMinutes = durationInSeconds / 60
+                        print("Mile split with total time \(durationInMinutes) minutes, with total distance \(totalDistance) meters")
+                        totalDistance -= mileDistance
+                        startTime = endTime
+                    }
+                }
+
+                previousLocation = CLLocation(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude)
 
                 updateGraphData(&cadence, timestamp: point.timestamp) {
                     cadenceAtPoint = $0.cadence
@@ -322,6 +344,7 @@ public enum HealthKitUtils {
                 let routePoint = RouteData(
                     altitude: point.altitude,
                     cadence: cadenceAtPoint ?? 0.0,
+                    distance: 0.0,
                     heartRate: heartRateAtPoint ?? 0.0,
                     groundContactTime: 0.0,
                     location: LocationData(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude),
@@ -337,6 +360,7 @@ public enum HealthKitUtils {
                 let graphPoint = GraphData(
                     altitude: point.altitude,
                     cadence: cadenceAtPoint ?? 0.0,
+                    distance: 0.0,
                     heartRate: heartRateAtPoint ?? 0.0,
                     groundContactTime: 0.0,
                     pace: point.speed,
@@ -373,6 +397,7 @@ public enum HealthKitUtils {
                     let graphSectionPoint = GraphData(
                         altitude: altitudeSum / Double(graphSectionData.2.count),
                         cadence: cadenceSum / 1.0,
+                        distance: 0.0,
                         heartRate: heartRateSum / 1.0,
                         groundContactTime: groundContactTimeAtPoint ?? 0.0,
                         pace: paceSum / 1.0,

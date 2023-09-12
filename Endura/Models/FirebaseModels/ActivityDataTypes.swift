@@ -220,6 +220,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
 public struct RouteData: Codable {
     public let altitude: Double
     public let cadence: Double
+    public let distance: Double
     public let heartRate: Double
     public let groundContactTime: Double
     public let location: LocationData
@@ -234,6 +235,7 @@ public struct RouteData: Codable {
 public struct GraphData: Codable {
     public let altitude: Double
     public let cadence: Double
+    public let distance: Double
     public let heartRate: Double
     public let groundContactTime: Double
     public let pace: Double
