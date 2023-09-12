@@ -2,6 +2,7 @@ import CoreData
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Foundation
+import SwiftUICalendar
 
 @MainActor public final class ActiveUserModel: ObservableObject {
     private let uid = AuthUtils.getCurrentUID()
@@ -16,6 +17,13 @@ import Foundation
             CacheUtils.updateObject(SettingsCache.self, update: settings.updateCache)
         }
     }
+
+    @Published public var training: [YearMonthDay: DailyTrainingData] = [
+        .current: DailyTrainingData(type: .long, goals: []),
+        .current.addDay(value: 1): DailyTrainingData(type: .long, goals: []),
+        .current.addDay(value: 2): DailyTrainingData(type: .workout, goals: []),
+        .current.addDay(value: 3): DailyTrainingData(type: .easy, goals: []),
+    ]
 
     public init() async throws {
         if let cachedSettings = CacheUtils.fetchObject(SettingsCache.self) {

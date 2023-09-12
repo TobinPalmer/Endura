@@ -3,6 +3,7 @@ import SwiftUI
 import SwiftUICalendar
 
 struct TrainingCalender: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
     let controller = CalendarController()
     @Binding var selectedDate: YearMonthDay
 
@@ -18,13 +19,13 @@ struct TrainingCalender: View {
         }, component: { date in
             ZStack {
                 Circle()
-                    .fill(getColor(date).opacity(0.2))
+                    .fill(getDayType(date).getColor().opacity(0.2))
                     .overlay(
                         Circle()
-                            .stroke(getColor(date), lineWidth: selectedDate == date ? 2 : 0)
+                            .stroke(getDayType(date).getColor(), lineWidth: selectedDate == date ? 2 : 0)
                     )
                 Text("\(date.day)")
-                    .foregroundColor(getColor(date))
+                    .foregroundColor(getDayType(date).getColor())
             }
             .padding(5)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -37,13 +38,7 @@ struct TrainingCalender: View {
         .padding(5)
     }
 
-    private func getColor(_ date: YearMonthDay) -> Color {
-        if date.dayOfWeek == .sun {
-            return Color.red
-        } else if date.dayOfWeek == .sat {
-            return Color.blue
-        } else {
-            return Color.accentColor
-        }
+    private func getDayType(_ date: YearMonthDay) -> TrainingDayType {
+        activeUser.training[date]?.type ?? .none
     }
 }

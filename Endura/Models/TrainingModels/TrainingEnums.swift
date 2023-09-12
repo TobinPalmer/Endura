@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 public enum TrainingGoalType: String, Codable {
     case warmup = "Warmup"
@@ -21,10 +22,26 @@ public enum TrainingGoalDifficulty: String, Codable {
 }
 
 public enum TrainingDayType: String, Codable {
+    case none = "None"
     case rest = "Rest"
     case easy = "Easy"
-    case medium = "Medium"
-    case hard = "Hard"
+    case long = "Long"
+    case workout = "Workout"
+
+    public func getColor() -> Color {
+        switch self {
+        case .none:
+            return .gray
+        case .rest:
+            return .blue
+        case .easy:
+            return .green
+        case .long:
+            return .orange
+        case .workout:
+            return .red
+        }
+    }
 }
 
 public enum TrainingDayAvailability: String, Codable {

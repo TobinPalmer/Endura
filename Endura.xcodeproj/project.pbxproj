@@ -32,6 +32,7 @@
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
 		17CC6078651983C541BA712F /* UsersCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A37858A0F182DF80601 /* UsersCacheModel.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
+		17CC61E475691FB9E083105B /* TrainingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6582E0365BB8164BB3CA /* TrainingUtils.swift */; };
 		17CC621F59B1D4C332521571 /* Activities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E3C3259ED54F0BF31D1 /* Activities.swift */; };
 		17CC6296791F7FA35E94A296 /* NotificationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D92369E862444D0D6E4 /* NotificationModels.swift */; };
 		17CC62FFC55BCB9A6AEA355C /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69B387F52E1CA55F3716 /* ProgressView.swift */; };
@@ -181,6 +182,7 @@
 		17CC64CF9FA32EE591326705 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		17CC6507B9EB6FEDAE6EB719 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		17CC656E8B60587CA8E876DE /* TrainingModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
+		17CC6582E0365BB8164BB3CA /* TrainingUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingUtils.swift; sourceTree = "<group>"; };
 		17CC659A1576329D2B4CB4F2 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringArrayValueTransformer.swift; sourceTree = "<group>"; };
 		17CC666255DBC8045DFCBCF2 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -403,6 +405,14 @@
 				17CC64AE21A3E68ABDCDA24C /* ActivityViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		17CC60E01717788113BEAD06 /* Training */ = {
+			isa = PBXGroup;
+			children = (
+				17CC6582E0365BB8164BB3CA /* TrainingUtils.swift */,
+			);
+			path = Training;
 			sourceTree = "<group>";
 		};
 		17CC622A3678940BF56D188E /* Training */ = {
@@ -643,6 +653,7 @@
 				17CC674A95679C1DC5E65648 /* Calendar */,
 				6969808D7BBD744E99F02404 /* Notification */,
 				17CC6104192AE8D5CF51A07A /* CacheUtils.swift */,
+				17CC60E01717788113BEAD06 /* Training */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1061,6 +1072,7 @@
 				69698277AE87B36524904399 /* PostRunTimerRing.swift in Sources */,
 				69698E49D2BC67E1245AF44B /* ImagePicker.swift in Sources */,
 				17CC68161A37E41AE1DB565F /* StringArrayValueTransformer.swift in Sources */,
+				17CC61E475691FB9E083105B /* TrainingUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
