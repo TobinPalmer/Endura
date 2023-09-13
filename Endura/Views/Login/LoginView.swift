@@ -55,72 +55,44 @@ struct LoginView: View {
                 VStack(spacing: 20) {
                     VStack {
                         Text("Email")
-                            //              .font(
-                            //                Font.custom("Inter", size: 14)
-                            //                  .weight(.medium)
-                            //              )
                             .foregroundColor(Color(red: 0.26, green: 0.33, blue: 0.4))
-                            .frame(width: 313, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
 
                         TextField("Email", text: $viewModel.email)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .keyboardType(.emailAddress)
                             .textFieldStyle(EnduraTextFieldStyle())
-                            .cornerRadius(6)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .inset(by: 0.5)
-                                    .stroke(viewModel.validateInput(.email) ? Color("SuccessLight") : .clear, lineWidth: 2)
-                            )
-                            .shadowDefault(disabled: viewModel.validateInput(.email))
-                            //              .font(
-                            //                Font.custom("Inter", size: 15)
-                            //                  .weight(.medium)
-                            //              )
-                            .foregroundColor(Color("InputText"))
                     }
 
                     VStack {
                         Text("Password")
-                            //              .font(
-                            //                Font.custom("Inter", size: 14)
-                            //                  .weight(.medium)
-                            //              )
                             .foregroundColor(Color(red: 0.26, green: 0.33, blue: 0.4))
-                            .frame(width: 313, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
 
                         SecureField("Password", text: $viewModel.password)
                             .textFieldStyle(EnduraTextFieldStyle())
-                            .cornerRadius(6)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .inset(by: 0.5)
-                                    .stroke(viewModel.validateInput(.password) ? Color("SuccessLight") : .clear, lineWidth: 2)
-                            )
-                            .shadowDefault(disabled: viewModel.validateInput(.password))
-                            //              .font(
-                            //                Font.custom("Inter", size: 15)
-                            //                  .weight(.medium)
-                            //              )
-                            .foregroundColor(Color("InputText"))
                     }
 
                     Spacer()
                         .frame(height: 3)
 
                     Button {
-                        viewModel.login()
+//            viewModel.login()
+                        print("Sign in tapped")
                     } label: {
                         Text("Sign in")
                             .foregroundColor(.white)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 16)
-                    .frame(maxWidth: .infinity, alignment: .top)
-                    .background(Color(red: 0, green: 0.68, blue: 0.68))
-                    .cornerRadius(8)
-                    .disabled(!viewModel.validateInput())
+                    .buttonStyle(EnduraButtonStyle2())
+//            .disabled(!viewModel.validateInput())
+//            .padding(.horizontal, 24)
+//            .padding(.vertical, 16)
+//            .frame(maxWidth: .infinity, alignment: .top)
+//            .background(Color(red: 0, green: 0.68, blue: 0.68))
+//            .cornerRadius(8)
+//            .disabled(!viewModel.validateInput())
+//            .shadow(color: Color(hex: "008A8A").opacity(1), radius: 0, x: 0, y: 7)
                 }
                 .padding(40)
 
