@@ -90,19 +90,3 @@ public struct ActivityDocument: Codable {
         )
     }
 }
-
-protocol TimestampPoint: Codable {
-    var timestamp: Date { get }
-}
-
-extension CadenceData: TimestampPoint {}
-
-extension HeartRateData: TimestampPoint {}
-
-extension PowerData: TimestampPoint {}
-
-extension StrideLengthData: TimestampPoint {}
-
-extension GroundContactTimeData: TimestampPoint {}
-
-extension VerticalOscillationData: TimestampPoint {}

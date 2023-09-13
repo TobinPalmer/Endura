@@ -219,16 +219,11 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
 
 public struct RouteData: Codable {
     public let altitude: Double
-    public let cadence: Double
     public let distance: Double
     public let heartRate: Double
-    public let groundContactTime: Double
     public let location: LocationData
     public let pace: Double
-    public let power: Double
-    public let strideLength: Double
     public let timestamp: Date
-    public let verticalOscillation: Double
 }
 
 /// The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
@@ -288,32 +283,36 @@ public struct LocationData: Codable {
     public let longitude: Double
 }
 
-public struct HeartRateData: Codable {
+public struct HeartRateData: Codable, TimestampPoint {
     public let timestamp: Date
     public let heartRate: Double
 }
 
-public struct CadenceData: Codable {
+public struct CadenceData: Codable, TimestampPoint {
     public let timestamp: Date
     public let cadence: Double
 }
 
-public struct PowerData: Codable {
+public struct PowerData: Codable, TimestampPoint {
     public let timestamp: Date
     public let power: Double
 }
 
-public struct GroundContactTimeData: Codable {
+public struct GroundContactTimeData: Codable, TimestampPoint {
     public let timestamp: Date
     public let groundContactTime: Double
 }
 
-public struct StrideLengthData: Codable {
+public struct StrideLengthData: Codable, TimestampPoint {
     public let timestamp: Date
     public let strideLength: Double
 }
 
-public struct VerticalOscillationData: Codable {
+public struct VerticalOscillationData: Codable, TimestampPoint {
     public let timestamp: Date
     public let verticalOscillation: Double
+}
+
+protocol TimestampPoint: Codable {
+    var timestamp: Date { get }
 }
