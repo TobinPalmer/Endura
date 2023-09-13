@@ -234,8 +234,6 @@ public enum HealthKitUtils {
         var routeData = [RouteData]()
         var graphData = [GraphData]()
 
-        var startTime = Date()
-
         let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
 
         var data = [CLLocation]()
@@ -244,11 +242,9 @@ public enum HealthKitUtils {
             let routeData = try await HealthKitUtils.getLocationData(for: route)
             data.append(contentsOf: routeData)
         }
-        print("Getting Route from Apple Time: \(Date().timeIntervalSince(startTime))")
-        startTime = Date()
 
-        var heartRate = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .heartRate, unit: .string("count/min"), dataType: HeartRateData.self)
-        var cadence = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .stepCount, options: [.cumulativeSum, .separateBySource], unit: .unit(.count()), dataType: CadenceData.self)
+        let heartRate = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .heartRate, unit: .string("count/min"), dataType: HeartRateData.self)
+        let cadence = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .stepCount, options: [.cumulativeSum, .separateBySource], unit: .unit(.count()), dataType: CadenceData.self)
 
         var groundContactTime: [GroundContactTimeData]? = nil
         var power: [PowerData]? = nil
@@ -261,28 +257,36 @@ public enum HealthKitUtils {
             verticalOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticalOscillationData.self)
         }
 
-        print("Getting Graph from Apple Time: \(Date().timeIntervalSince(startTime))")
-        startTime = Date()
+        // A dictionary of the combined workout metrics at each second
+        var workoutMetrics: [Int: (
+            heartRate: Double,
+            cadence: Double,
+            power: Double?,
+            verticalOscillation: Double?,
+            groundContactTime: Double?,
+            strideLength: Double?
+        )] = [:]
+
+        // Combine the workout metrics into a dictionary
+        for i in 0 ..< heartRate.count {
+            let heartRatePoint = heartRate[i]
+            let cadencePoint = cadence[safe: i] ?? CadenceData(timestamp: heartRatePoint.timestamp, cadence: 0.0)
+            let powerPoint = power?[safe: i]
+            let verticalOscillationPoint = verticalOscillation?[safe: i]
+            let groundContactTimePoint = groundContactTime?[safe: i]
+            let strideLengthPoint = strideLength?[safe: i]
+
+            workoutMetrics[Int(heartRatePoint.timestamp.timeIntervalSince1970)] = (
+                heartRate: heartRatePoint.heartRate,
+                cadence: cadencePoint.cadence,
+                power: powerPoint?.power,
+                verticalOscillation: verticalOscillationPoint?.verticalOscillation,
+                groundContactTime: groundContactTimePoint?.groundContactTime,
+                strideLength: strideLengthPoint?.strideLength
+            )
+        }
 
         var dataRate = 1
-
-        // 4, 5.5
-
-        func updateGraphData<T: TimestampPoint>(_ data: inout [T], timestamp: Date, updateValue: (T) -> Void) {
-            for j in 0 ..< data.count {
-                if Int(data[j].timestamp.timeIntervalSince1970) == Int(timestamp.timeIntervalSince1970) {
-                    updateValue(data[j])
-                    data.removeSubrange(0 ... j)
-                    break
-                }
-            }
-//            for j in 0..<data.count where Int(data[j].timestamp.timeIntervalSince1970) == Int(timestamp.timeIntervalSince1970) {
-//                print("Updating \(j)")
-//                updateValue(data[j])
-//                data.removeSubrange(0...j)
-//                break
-//            }
-        }
 
         if !data.isEmpty {
             var graphSectionData = (0, data[0].timestamp, [GraphData]())
@@ -326,32 +330,13 @@ public enum HealthKitUtils {
 
                 previousLocation = CLLocation(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude)
 
-                updateGraphData(&cadence, timestamp: point.timestamp) {
-                    cadenceAtPoint = $0.cadence
-                }
-
-                updateGraphData(&heartRate, timestamp: point.timestamp) {
-                    heartRateAtPoint = $0.heartRate
-                }
-
-                if #available(iOS 16.0, *) {
-                    if var power = power, var groundContactTime = groundContactTime, var strideLength = strideLength, var verticalOscillation = verticalOscillation {
-                        updateGraphData(&power, timestamp: point.timestamp) {
-                            powerAtPoint = $0.power
-                        }
-
-                        updateGraphData(&groundContactTime, timestamp: point.timestamp) {
-                            groundContactTimeAtPoint = $0.groundContactTime
-                        }
-
-                        updateGraphData(&strideLength, timestamp: point.timestamp) {
-                            strideLengthAtPoint = $0.strideLength
-                        }
-
-                        updateGraphData(&verticalOscillation, timestamp: point.timestamp) {
-                            verticalOscillationAtPoint = $0.verticalOscillation
-                        }
-                    }
+                if let metricsAtPoint = workoutMetrics[Int(point.timestamp.timeIntervalSince1970)] {
+                    cadenceAtPoint = metricsAtPoint.cadence
+                    heartRateAtPoint = metricsAtPoint.heartRate
+                    powerAtPoint = metricsAtPoint.power
+                    verticalOscillationAtPoint = metricsAtPoint.verticalOscillation
+                    groundContactTimeAtPoint = metricsAtPoint.groundContactTime
+                    strideLengthAtPoint = metricsAtPoint.strideLength
                 }
 
                 let routePoint = RouteData(
@@ -450,10 +435,7 @@ public enum HealthKitUtils {
                     graphSectionData.2.append(graphPoint)
                 }
             }
-            print("Data rate: \(dataRate)")
         }
-        print("Making Route Data Time: \(Date().timeIntervalSince(startTime))")
-        startTime = Date()
 
         let workoutData = try await ActivityDataWithRoute(
             averagePower: power?.isEmpty ?? true
@@ -483,8 +465,6 @@ public enum HealthKitUtils {
             uid: AuthUtils.getCurrentUID(),
             visibility: .friends
         )
-
-        print("Total Time: \(Date().timeIntervalSince(startTime))")
 
         return workoutData
     }
