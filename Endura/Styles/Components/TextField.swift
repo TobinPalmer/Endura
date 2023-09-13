@@ -20,7 +20,8 @@ struct EnduraTextFieldStyle: TextFieldStyle {
         .padding(.leading, 12)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36, alignment: .leading)
-        //      .background(Color("SecondaryBackground"))
+        .accentColor(Color("InputText"))
+        .foregroundColor(Color(red: 0.26, green: 0.33, blue: 0.4))
         .background(Color(red: 0.93, green: 0.95, blue: 0.97))
         .cornerRadius(6)
         .overlay(
