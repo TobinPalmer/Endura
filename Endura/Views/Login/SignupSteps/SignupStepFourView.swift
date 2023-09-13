@@ -39,14 +39,14 @@ struct SignupStepFourView: View {
                             currentStep -= 1
                         }
                     }
-                    .buttonStyle(EnduraButtonStyle())
+                    .buttonStyle(EnduraButtonStyleOld())
 
                     Button("Next") {
                         withAnimation {
                             currentStep += 1
                         }
                     }
-                    .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName.isEmpty) ? .gray : .accentColor))
+                    .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName.isEmpty) ? .gray : .accentColor))
 //                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
                 }
             }

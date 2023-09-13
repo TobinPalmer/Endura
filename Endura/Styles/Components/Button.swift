@@ -1,7 +1,9 @@
 import Foundation
 import SwiftUI
 
-public struct EnduraButtonStyle: ButtonStyle {
+public struct EnduraButtonStyleOld:
+    ButtonStyle
+{
     private let backgroundColor: Color
 
     init(backgroundColor: Color = Color.accentColor) {
@@ -18,7 +20,7 @@ public struct EnduraButtonStyle: ButtonStyle {
     }
 }
 
-struct EnduraButtonStyle2: ButtonStyle {
+struct EnduraButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(.horizontal, 24)

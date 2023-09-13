@@ -76,7 +76,7 @@ struct PostRunView: View {
                             Text("Cancel")
                                 .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(EnduraButtonStyle(backgroundColor: .accentColor))
+                        .buttonStyle(EnduraButtonStyleOld(backgroundColor: .accentColor))
                     }
 
                     if viewModel.currentTime > 0 {
@@ -87,7 +87,7 @@ struct PostRunView: View {
                             Text("Next")
                                 .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(EnduraButtonStyle(backgroundColor: .accentColor))
+                        .buttonStyle(EnduraButtonStyleOld(backgroundColor: .accentColor))
                         .disabled(!viewModel.isDoneWithTimerExercise)
                     }
 
@@ -98,7 +98,7 @@ struct PostRunView: View {
                             Text("Start")
                                 .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(EnduraButtonStyle(backgroundColor: .accentColor))
+                        .buttonStyle(EnduraButtonStyleOld(backgroundColor: .accentColor))
                         .frame(maxWidth: .infinity)
                     }
                 }

@@ -84,7 +84,7 @@ struct LoginView: View {
                         Text("Sign in")
                             .foregroundColor(.white)
                     }
-                    .buttonStyle(EnduraButtonStyle2())
+                    .buttonStyle(EnduraButtonStyle())
 //            .disabled(!viewModel.validateInput())
 //            .padding(.horizontal, 24)
 //            .padding(.vertical, 16)

@@ -101,7 +101,7 @@ struct PreviewWorkoutView: View {
                     } label: {
                         Text("Upload")
                     }
-                    .buttonStyle(EnduraButtonStyle())
+                    .buttonStyle(EnduraButtonStyleOld())
                 } else {
                     LoadingMap()
                     ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: false)

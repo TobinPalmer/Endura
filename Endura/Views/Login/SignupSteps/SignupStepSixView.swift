@@ -44,7 +44,7 @@ struct SignupStepSixView: View {
                                     showingDate = index
                                 }
                                 .fixedSize()
-                                .buttonStyle(EnduraButtonStyle(backgroundColor: stepViewModel.stateToColor(state: viewModel.schedule[index - 1].type)))
+                                .buttonStyle(EnduraButtonStyleOld(backgroundColor: stepViewModel.stateToColor(state: viewModel.schedule[index - 1].type)))
                                 .padding(.vertical, 3)
                             }
                         }
@@ -54,31 +54,31 @@ struct SignupStepSixView: View {
                                 viewModel.schedule[showingDate - 1].type = .BUSY
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .BUSY) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1].type != .BUSY) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Probably Not") {
                                 viewModel.schedule[showingDate - 1].type = .PROBABLY_NOT
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .PROBABLY_NOT) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1].type != .PROBABLY_NOT) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Maybe") {
                                 viewModel.schedule[showingDate - 1].type = .MAYBE
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .MAYBE) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1].type != .MAYBE) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Probably") {
                                 viewModel.schedule[showingDate - 1].type = .PROBABLY
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .PROBABLY) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1].type != .PROBABLY) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                             Button("Free") {
                                 viewModel.schedule[showingDate - 1].type = .FREE
                             }
                             .fixedSize()
-                            .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.schedule[showingDate - 1].type != .FREE) ? .gray : .accentColor))
+                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1].type != .FREE) ? .gray : .accentColor))
                             .padding(.vertical, 3)
                         }
                     }
@@ -90,14 +90,14 @@ struct SignupStepSixView: View {
                             currentStep -= 1
                         }
                     }
-                    .buttonStyle(EnduraButtonStyle())
+                    .buttonStyle(EnduraButtonStyleOld())
 
                     Button("Next") {
                         withAnimation {
                             currentStep += 1
                         }
                     }
-                    .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName.isEmpty) ? .gray : .accentColor))
+                    .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName.isEmpty) ? .gray : .accentColor))
 //            .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
                 }
             }

@@ -54,7 +54,7 @@ struct NotificationRow: View {
                         Button("Accept") {
                             NotificationsActionsUtils.acceptFriendRequest(notification.uid)
                         }
-                        .buttonStyle(EnduraButtonStyle())
+                        .buttonStyle(EnduraButtonStyleOld())
                     }
                 }
             case .friendRequestAccepted:
