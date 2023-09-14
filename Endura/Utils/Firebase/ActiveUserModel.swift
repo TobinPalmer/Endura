@@ -18,7 +18,7 @@ import SwiftUICalendar
         }
     }
 
-    @Published public var training: [YearMonthDay: DailyTrainingData] = [
+    @Published public var trainingDays: [YearMonthDay: DailyTrainingData] = [
         .current: DailyTrainingData(type: .long, goals: []),
         .current.addDay(value: 2): DailyTrainingData(type: .workout, goals: []),
         .current.addDay(value: 3): DailyTrainingData(type: .easy, goals: [TrainingGoalData.run(
@@ -100,6 +100,6 @@ import SwiftUICalendar
     }
 
     public func getTrainingDay(_ date: YearMonthDay) -> DailyTrainingData {
-        training[date] ?? DailyTrainingData(type: .none, goals: [])
+        trainingDays[date] ?? DailyTrainingData(type: .none, goals: [])
     }
 }

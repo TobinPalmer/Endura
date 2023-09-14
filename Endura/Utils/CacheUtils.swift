@@ -82,4 +82,14 @@ public enum CacheUtils {
             }
         }
     }
+
+    public static func addRelationship<T: NSManagedObject, U: NSManagedObject>(from source: T, to destination: U, by relationshipKey: String) {
+        let relationship = source.value(forKey: relationshipKey) as? NSMutableSet
+        relationship?.add(destination)
+        do {
+            try context.save()
+        } catch {
+            Global.log.error("Error saving relationship: \(error)")
+        }
+    }
 }
