@@ -152,7 +152,7 @@ struct ActivitiesView: View {
             }
             activityViewModel.loadActivities()
         }
-        .background(Color(.secondarySystemBackground))
+        //        .background(Color(.secondarySystemBackground))
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink(destination: NewActivityView()) {

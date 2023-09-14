@@ -21,7 +21,8 @@ struct ActivityPost: View {
 
             NavigationLink(destination: ActivityView(id: id, activity: activity)) {
                 VStack(spacing: 10) {
-                    Text(activity.title.isEmpty ? "Untitled Activitiy" : activity.title)
+                    Text(activity.title.isEmpty ? "Untitled Activity" : activity.title)
+                        .foregroundColor(Color("Text"))
                         .font(.title2)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -143,14 +144,14 @@ struct ActivityPost: View {
                 }
             }
         }
-        .padding(8)
-        .cornerRadius(10)
+        .padding(20)
+        .cornerRadius(16)
         .foregroundColor(.primary)
         .frame(maxWidth: .infinity)
-        .padding(8)
-        .background(Color(.systemBackground))
-        .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
-        .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 6)
+                .stroke(Color(hex: "D5D9DE"), lineWidth: 2)
+        )
     }
 }
 

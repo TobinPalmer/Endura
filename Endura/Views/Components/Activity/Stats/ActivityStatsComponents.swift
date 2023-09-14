@@ -23,10 +23,11 @@ struct ActivityStatsDiscriptionText: View {
         if block {
             Text(text)
                 .font(Font.custom("FlowBlock-Regular", size: 12, relativeTo: .title))
+                .foregroundColor(Color("Text"))
                 .minimumScaleFactor(0.5)
         } else {
             Text(text)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color("TextMuted"))
                 .font(.system(size: 12))
                 .minimumScaleFactor(0.5)
         }
@@ -46,11 +47,13 @@ struct ActivityStatsValueText: View {
         if block {
             Text(text)
                 .font(Font.custom("FlowBlock-Regular", size: UIFont.preferredFont(forTextStyle: .body).pointSize, relativeTo: .title))
+                .foregroundColor(Color("Text"))
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
         } else {
             Text(text)
                 .font(.system(size: UIFont.preferredFont(forTextStyle: .body).pointSize))
+                .foregroundColor(Color("Text"))
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
         }
