@@ -78,7 +78,7 @@ struct LoginView: View {
                         .frame(height: 3)
 
                     Button {
-//            viewModel.login()
+                        viewModel.login()
                         print("Sign in tapped")
                     } label: {
                         Text("Sign in")

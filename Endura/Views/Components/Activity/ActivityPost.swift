@@ -45,7 +45,6 @@ struct ActivityPost: View {
                     .cornerRadius(5)
                     .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
             }
-
             .buttonStyle(PlainButtonStyle())
 
             HStack {

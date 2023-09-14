@@ -418,7 +418,11 @@ public enum HealthKitUtils {
                     }
 
                     func avg(_ data: (Double, Double)) -> Double {
-                        data.0 / data.1
+                        if data.1 == 0.0 {
+                            return 0.0
+                        }
+
+                        return data.0 / data.1
                     }
 
                     let graphSectionPoint = GraphData(
