@@ -7,10 +7,6 @@ struct TrainingCalender: View {
     let controller = CalendarController()
     @Binding var selectedDate: YearMonthDay
 
-    init(_ date: Binding<YearMonthDay>) {
-        _selectedDate = date
-    }
-
     var body: some View {
         CalendarView(controller, header: { week in
             Text(week.shortString)
@@ -30,9 +26,7 @@ struct TrainingCalender: View {
             .padding(5)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .onTapGesture {
-                withAnimation {
-                    selectedDate = date
-                }
+                selectedDate = date
             }
         })
         .padding(5)
