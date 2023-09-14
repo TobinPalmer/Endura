@@ -13,15 +13,17 @@ struct TrainingCalender: View {
                 .font(.subheadline)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }, component: { date in
+            let trainingDay = activeUser.getTrainingDay(date)
+
             ZStack {
                 Circle()
-                    .fill(getDayType(date).getColor().opacity(0.2))
+                    .fill(trainingDay.type.getColor().opacity(0.2))
                     .overlay(
                         Circle()
-                            .stroke(getDayType(date).getColor(), lineWidth: selectedDate == date ? 2 : 0)
+                            .stroke(trainingDay.type.getColor(), lineWidth: selectedDate == date ? 2 : 0)
                     )
                 Text("\(date.day)")
-                    .foregroundColor(getDayType(date).getColor())
+                    .foregroundColor(trainingDay.type.getColor())
             }
             .padding(5)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -30,9 +32,5 @@ struct TrainingCalender: View {
             }
         })
         .padding(5)
-    }
-
-    private func getDayType(_ date: YearMonthDay) -> TrainingDayType {
-        activeUser.training[date]?.type ?? .none
     }
 }

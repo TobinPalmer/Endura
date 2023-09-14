@@ -3,6 +3,7 @@ import SwiftUI
 import SwiftUICalendar
 
 struct TrainingGoalList: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
     @Binding var selectedDate: YearMonthDay
 
     init(selectedDate: Binding<YearMonthDay> = .constant(.current)) {
@@ -11,16 +12,20 @@ struct TrainingGoalList: View {
 
     var body: some View {
         VStack {
-            Text("Day: \(selectedDate.day)")
-            TrainingGoal(TrainingGoalData.warmup(time: 10, count: 1))
-            TrainingGoal(TrainingGoalData.run(
-                distance: 5.03,
-                pace: 6,
-                time: 30,
-                difficulty: .hard,
-                runType: .long
-            ))
-            TrainingGoal(TrainingGoalData.postRun(time: 10, count: 1))
+            let trainingDay = activeUser.getTrainingDay(selectedDate)
+            Text("Day: \(trainingDay.type.rawValue)").foregroundColor(trainingDay.type.getColor())
+            ForEach(trainingDay.goals, id: \.self) { goal in
+                TrainingGoal(goal)
+            }
+//            TrainingGoal(TrainingGoalData.warmup(time: 10, count: 1))
+//            TrainingGoal(TrainingGoalData.run(
+//                distance: 5.03,
+//                pace: 6,
+//                time: 30,
+//                difficulty: .hard,
+//                runType: .long
+//            ))
+//            TrainingGoal(TrainingGoalData.postRun(time: 10, count: 1))
         }
     }
 }

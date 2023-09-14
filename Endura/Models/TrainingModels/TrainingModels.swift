@@ -1,6 +1,6 @@
 import Foundation
 
-public enum TrainingGoalData: Codable {
+public enum TrainingGoalData: Codable, Hashable {
     case run(
         distance: Double,
         pace: Double,

@@ -20,9 +20,14 @@ import SwiftUICalendar
 
     @Published public var training: [YearMonthDay: DailyTrainingData] = [
         .current: DailyTrainingData(type: .long, goals: []),
-        .current.addDay(value: 1): DailyTrainingData(type: .long, goals: []),
         .current.addDay(value: 2): DailyTrainingData(type: .workout, goals: []),
-        .current.addDay(value: 3): DailyTrainingData(type: .easy, goals: []),
+        .current.addDay(value: 3): DailyTrainingData(type: .easy, goals: [TrainingGoalData.run(
+            distance: 5.03,
+            pace: 7,
+            time: 32,
+            difficulty: .easy,
+            runType: .normal
+        )]),
     ]
 
     public init() async throws {
@@ -92,5 +97,9 @@ import SwiftUICalendar
     public static func fetchInfo() async throws -> UserTrainingData {
         let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("data").document("training").getDocument(as: UserTrainingData.self)
         return document
+    }
+
+    public func getTrainingDay(_ date: YearMonthDay) -> DailyTrainingData {
+        training[date] ?? DailyTrainingData(type: .none, goals: [])
     }
 }
