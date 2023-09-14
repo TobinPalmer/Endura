@@ -10,8 +10,10 @@ protocol Cacheable {
 public enum CacheUtils {
     public static let context = PersistenceController.shared.container.viewContext
 
-    public static func predicateMatchingField(_ field: String, value: Any) -> NSPredicate {
-        NSPredicate(format: "\(field) == %@", value as! CVarArg)
+    public static func predicateMatchingField<T>(_ field: String, value: T) -> NSPredicate {
+        value is Date
+            ? NSPredicate(format: "\(field) == %@", value as! NSDate)
+            : NSPredicate(format: "\(field) == %@", value as! CVarArg)
     }
 
     public static func updateObject<T: NSManagedObject>(_: T.Type, update: (T) -> Void) {
@@ -83,13 +85,29 @@ public enum CacheUtils {
         }
     }
 
-    public static func addRelationship<T: NSManagedObject, U: NSManagedObject>(from source: T, to destination: U, by relationshipKey: String) {
-        let relationship = source.value(forKey: relationshipKey) as? NSMutableSet
-        relationship?.add(destination)
+    public static func fetchListedObjectWithRelationship<T: NSManagedObject>(_: T.Type, predicate: NSPredicate? = nil, relationshipKey: String) -> [T] {
+        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchLimit = 1
+        fetchRequest.relationshipKeyPathsForPrefetching = [relationshipKey]
         do {
+            return try context.fetch(fetchRequest)
+        } catch {
+            Global.log.error("Error fetching listed object with relationship: \(error)")
+            return []
+        }
+    }
+
+    public static func updateListedObjectWithRelationship<T: NSManagedObject>(_: T.Type, update: (T) -> Void, predicate: NSPredicate?, relationshipKey: String) {
+        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchLimit = 1
+        fetchRequest.relationshipKeyPathsForPrefetching = [relationshipKey]
+        do {
+            try update(context.fetch(fetchRequest).first ?? T(context: context))
             try context.save()
         } catch {
-            Global.log.error("Error saving relationship: \(error)")
+            Global.log.error("Error updating listed object with relationship: \(error)")
         }
     }
 }

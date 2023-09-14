@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUICalendar
 
 public enum TrainingGoalData: Codable, Hashable {
     case run(
@@ -18,12 +19,26 @@ public enum TrainingGoalData: Codable, Hashable {
     )
 }
 
-public struct DailyTrainingData: Codable {
+public struct DailyTrainingData: Cacheable {
+    public var date: YearMonthDay
     public var type: TrainingDayType
     public var goals: [TrainingGoalData]
+
+    func updateCache(_ cache: DailyTrainingCache) {
+        cache.date = date.toCache()
+        cache.type = type.rawValue
+    }
+
+    static func fromCache(_ cache: DailyTrainingCache) -> Self {
+        DailyTrainingData(
+            date: YearMonthDay.fromCache(cache.date ?? ""),
+            type: TrainingDayType(rawValue: cache.type ?? "none") ?? .none,
+            goals: []
+        )
+    }
 }
 
-public struct WeeklyTrainingData: Codable {
+public struct WeeklyTrainingData {
     public var week: Date
     public var days: [Day: DailyTrainingData]
     public var dailySummary: [Day: DailySummaryData]

@@ -10,6 +10,11 @@
         <attribute name="role" optional="YES" attributeType="String" customClassName="Roles"/>
         <attribute name="uid" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="DailyTrainingCache" representedClassName="DailyTrainingCache" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <relationship name="goals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TrainingGoalCache" inverseName="day" inverseEntity="TrainingGoalCache"/>
+    </entity>
     <entity name="SettingsCache" representedClassName="SettingsCache" syncable="YES" codeGenerationType="class">
         <attribute name="defaultActivityVisibility" optional="YES" attributeType="String" customClassName="ActivityVisibility"/>
         <attribute name="notifications" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -22,12 +27,8 @@
         <attribute name="notificationsNewLike" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="notificationsPostRunReminder" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
-    <entity name="TrainingDayCache" representedClassName="TrainingDayCache" syncable="YES" codeGenerationType="class">
-        <attribute name="type" optional="YES" attributeType="String"/>
-        <relationship name="goals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TrainingGoalCache" inverseName="day" inverseEntity="TrainingGoalCache"/>
-    </entity>
     <entity name="TrainingGoalCache" representedClassName="TrainingGoalCache" syncable="YES" codeGenerationType="class">
-        <relationship name="day" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrainingDayCache" inverseName="goals" inverseEntity="TrainingDayCache"/>
+        <relationship name="day" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DailyTrainingCache" inverseName="goals" inverseEntity="DailyTrainingCache"/>
     </entity>
     <entity name="UploadedActivityCache" representedClassName="UploadedActivityCache" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
