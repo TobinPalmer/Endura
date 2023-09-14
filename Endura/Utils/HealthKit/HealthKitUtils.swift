@@ -257,32 +257,38 @@ public enum HealthKitUtils {
             verticalOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticalOscillationData.self)
         }
 
+        let heartRateDict = Dictionary(grouping: heartRate, by: { $0.timestamp })
+        let cadenceDict = Dictionary(grouping: cadence, by: { $0.timestamp })
+        let powerDict = Dictionary(grouping: power ?? [], by: { $0.timestamp })
+        let verticalOscillationDict = Dictionary(grouping: verticalOscillation ?? [], by: { $0.timestamp })
+        let groundContactTimeDict = Dictionary(grouping: groundContactTime ?? [], by: { $0.timestamp })
+        let strideLengthDict = Dictionary(grouping: strideLength ?? [], by: { $0.timestamp })
+
+        let allTimestamps = Array(Set(heartRateDict.keys)
+            .union(cadenceDict.keys)
+            .union(powerDict.keys)
+            .union(verticalOscillationDict.keys)
+            .union(groundContactTimeDict.keys)
+            .union(strideLengthDict.keys))
+
         // A dictionary of the combined workout metrics at each second
-        var workoutMetrics: [Int: (
-            heartRate: Double,
-            cadence: Double,
-            power: Double?,
-            verticalOscillation: Double?,
-            groundContactTime: Double?,
-            strideLength: Double?
-        )] = [:]
+        var workoutMetrics: [Int: ActivityMetricsData] = [:]
 
-        // Combine the workout metrics into a dictionary
-        for i in 0 ..< heartRate.count {
-            let heartRatePoint = heartRate[i]
-            let cadencePoint = cadence[safe: i] ?? CadenceData(timestamp: heartRatePoint.timestamp, cadence: 0.0)
-            let powerPoint = power?[safe: i]
-            let verticalOscillationPoint = verticalOscillation?[safe: i]
-            let groundContactTimePoint = groundContactTime?[safe: i]
-            let strideLengthPoint = strideLength?[safe: i]
+        for timestamp in allTimestamps {
+            let heartRatePoint = heartRateDict[timestamp]?.first
+            let cadencePoint = cadenceDict[timestamp]?.first
+            let powerPoint = powerDict[timestamp]?.first
+            let verticalOscillationPoint = verticalOscillationDict[timestamp]?.first
+            let groundContactTimePoint = groundContactTimeDict[timestamp]?.first
+            let strideLengthPoint = strideLengthDict[timestamp]?.first
 
-            workoutMetrics[Int(heartRatePoint.timestamp.timeIntervalSince1970)] = (
-                heartRate: heartRatePoint.heartRate,
-                cadence: cadencePoint.cadence,
+            workoutMetrics[Int(timestamp.timeIntervalSince1970)] = ActivityMetricsData(
+                heartRate: heartRatePoint?.heartRate ?? 0.0,
+                cadence: cadencePoint?.cadence ?? 0.0,
                 power: powerPoint?.power,
-                verticalOscillation: verticalOscillationPoint?.verticalOscillation,
                 groundContactTime: groundContactTimePoint?.groundContactTime,
-                strideLength: strideLengthPoint?.strideLength
+                strideLength: strideLengthPoint?.strideLength,
+                verticalOscillation: verticalOscillationPoint?.verticalOscillation
             )
         }
 
