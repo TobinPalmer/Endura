@@ -84,30 +84,4 @@ public enum CacheUtils {
             }
         }
     }
-
-    public static func fetchListedObjectWithRelationship<T: NSManagedObject>(_: T.Type, predicate: NSPredicate? = nil, relationshipKey: String) -> [T] {
-        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
-        fetchRequest.predicate = predicate
-        fetchRequest.fetchLimit = 1
-        fetchRequest.relationshipKeyPathsForPrefetching = [relationshipKey]
-        do {
-            return try context.fetch(fetchRequest)
-        } catch {
-            Global.log.error("Error fetching listed object with relationship: \(error)")
-            return []
-        }
-    }
-
-    public static func updateListedObjectWithRelationship<T: NSManagedObject>(_: T.Type, update: (T) -> Void, predicate: NSPredicate?, relationshipKey: String) {
-        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
-        fetchRequest.predicate = predicate
-        fetchRequest.fetchLimit = 1
-        fetchRequest.relationshipKeyPathsForPrefetching = [relationshipKey]
-        do {
-            try update(context.fetch(fetchRequest).first ?? T(context: context))
-            try context.save()
-        } catch {
-            Global.log.error("Error updating listed object with relationship: \(error)")
-        }
-    }
 }
