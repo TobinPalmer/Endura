@@ -4,6 +4,7 @@ import FirebaseFirestoreSwift
 import Foundation
 import HealthKit
 import Inject
+import RiveRuntime
 import SwiftUI
 
 struct DashboardView: View {
@@ -47,6 +48,17 @@ struct DashboardView: View {
             }
 
             Text("Hello world")
+
+            VStack {
+                RiveViewModel(
+                    fileName: "pointandclick"
+                ).view()
+            }
+            .frame(width: 200, height: 200)
+
+//            RiveViewModel(
+//                webURL: "https://cdn.rive.app/animations/off_road_car_v7.riv"
+//            ).view()
 
             TrainingGoalList()
         }

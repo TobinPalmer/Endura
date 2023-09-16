@@ -130,10 +130,13 @@
 		69698F967DFA9D0303BE96FF /* MKCoordinateRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698EB89660B4ECE1D801BD /* MKCoordinateRegion.swift */; };
 		69698FA1FC03637A47E3FA7D /* NotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698626B91694BAD5012252 /* NotificationUtils.swift */; };
 		69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* DashboardView.swift */; };
+		E90CACFD2AB3B55200DC3CF6 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = E90CACFC2AB3B55200DC3CF6 /* RiveRuntime */; };
 		E92549A92AA03AE900776856 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = E92549A82AA03AE900776856 /* CachedAsyncImage */; };
 		E9535FD92AA953D400D19B86 /* DataCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9535FD72AA953D400D19B86 /* DataCache.xcdatamodeld */; };
 		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
 		E98AFF032AA65664002DB211 /* SwiftUICalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E98AFF022AA65664002DB211 /* SwiftUICalendar */; };
+		E9C8EEF12AB62578007DA21B /* bear.riv in Resources */ = {isa = PBXBuildFile; fileRef = E9C8EEF02AB62556007DA21B /* bear.riv */; };
+		E9C8EEF32AB626FB007DA21B /* pointandclick.riv in Resources */ = {isa = PBXBuildFile; fileRef = E9C8EEF22AB626DE007DA21B /* pointandclick.riv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -271,6 +274,8 @@
 		69698FE247BAB2DB0A34EE25 /* SignupStepOneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepOneView.swift; sourceTree = "<group>"; };
 		E9535FD82AA953D400D19B86 /* DataCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataCache.xcdatamodel; sourceTree = "<group>"; };
 		E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActivityMapImage.swift; path = Endura/Views/Components/Activity/ActivityMapImage.swift; sourceTree = SOURCE_ROOT; };
+		E9C8EEF02AB62556007DA21B /* bear.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = bear.riv; sourceTree = "<group>"; };
+		E9C8EEF22AB626DE007DA21B /* pointandclick.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = pointandclick.riv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +293,7 @@
 				02C6C3F62AAAB1DB0079B76B /* SwiftyBeaver in Frameworks */,
 				026042F42A62E36300F4AF88 /* FirebaseFirestoreSwift in Frameworks */,
 				026042EE2A62E36300F4AF88 /* FirebaseDatabase in Frameworks */,
+				E90CACFD2AB3B55200DC3CF6 /* RiveRuntime in Frameworks */,
 				E98AFF032AA65664002DB211 /* SwiftUICalendar in Frameworks */,
 				E92549A92AA03AE900776856 /* CachedAsyncImage in Frameworks */,
 				026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */,
@@ -356,6 +362,7 @@
 		026042BB2A62E27900F4AF88 /* Endura */ = {
 			isa = PBXGroup;
 			children = (
+				E9C8EEED2AB6207C007DA21B /* RiveAssets */,
 				02BC053E2A903125007CB32C /* Info.plist */,
 				026D06352A7B2A3200A91958 /* Endura.entitlements */,
 				0202FC552A67AB2700D28518 /* Extensions */,
@@ -821,6 +828,15 @@
 			path = PostRun;
 			sourceTree = "<group>";
 		};
+		E9C8EEED2AB6207C007DA21B /* RiveAssets */ = {
+			isa = PBXGroup;
+			children = (
+				E9C8EEF22AB626DE007DA21B /* pointandclick.riv */,
+				E9C8EEF02AB62556007DA21B /* bear.riv */,
+			);
+			path = RiveAssets;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -854,6 +870,7 @@
 				E98AFF022AA65664002DB211 /* SwiftUICalendar */,
 				02C6C3F22AAAAB290079B76B /* AlertKit */,
 				02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */,
+				E90CACFC2AB3B55200DC3CF6 /* RiveRuntime */,
 			);
 			productName = Endura;
 			productReference = 026042B92A62E27900F4AF88 /* Endura.app */;
@@ -936,6 +953,7 @@
 				E98AFF012AA65664002DB211 /* XCRemoteSwiftPackageReference "SwiftUICalendar" */,
 				02C6C3F12AAAAB290079B76B /* XCRemoteSwiftPackageReference "AlertKit" */,
 				02C6C3F42AAAB1DB0079B76B /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
+				E90CACFB2AB3B55200DC3CF6 /* XCRemoteSwiftPackageReference "rive-ios" */,
 			);
 			productRefGroup = 026042BA2A62E27900F4AF88 /* Products */;
 			projectDirPath = "";
@@ -953,6 +971,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9C8EEF32AB626FB007DA21B /* pointandclick.riv in Resources */,
+				E9C8EEF12AB62578007DA21B /* bear.riv in Resources */,
 				026042C42A62E27C00F4AF88 /* Preview Assets.xcassets in Resources */,
 				026042C12A62E27C00F4AF88 /* Assets.xcassets in Resources */,
 				02352F942A6595B200BB68AF /* GoogleService-Info.plist in Resources */,
@@ -1468,6 +1488,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		E90CACFB2AB3B55200DC3CF6 /* XCRemoteSwiftPackageReference "rive-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rive-app/rive-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		E92549A72AA03AE900776856 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
@@ -1564,6 +1592,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 02C6C3F42AAAB1DB0079B76B /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
 			productName = SwiftyBeaver;
+		};
+		E90CACFC2AB3B55200DC3CF6 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E90CACFB2AB3B55200DC3CF6 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
 		};
 		E92549A82AA03AE900776856 /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;
