@@ -76,6 +76,7 @@
 		6969809E76BDCFF142A312E4 /* FlowBlock-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */; };
 		696980E261E971DA82234156 /* SignupStepFourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980DCC3207E865D9A2426 /* SignupStepFourView.swift */; };
 		696980FB9DBE79E1EA36A768 /* ActivityMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696982EE94EC856245965FFD /* ActivityMap.swift */; };
+		6969813B0DF1CC24F66901FA /* FormBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969873EC82353D92234F2F3 /* FormBar.swift */; };
 		6969815B27D926708B2ACE4A /* .pre-commit-config.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */; };
 		696981FA92CEA0D45CA25D21 /* SignupStepSixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969873280457DB033BF8C41 /* SignupStepSixView.swift */; };
 		69698264AD04B1437CE58655 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698354833B838F454F85E8 /* Collection.swift */; };
@@ -244,6 +245,7 @@
 		696986EDB3F87EE749147042 /* AppViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		6969870866179CC66A7558FB /* ActivityModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityModels.swift; sourceTree = "<group>"; };
 		6969873280457DB033BF8C41 /* SignupStepSixView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupStepSixView.swift; sourceTree = "<group>"; };
+		6969873EC82353D92234F2F3 /* FormBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormBar.swift; sourceTree = "<group>"; };
 		696988108C470FB5C392AE68 /* PostRunModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRunModels.swift; sourceTree = "<group>"; };
 		69698967462150B45507ED26 /* PostRunConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRunConstants.swift; sourceTree = "<group>"; };
 		6969896A03AA5A742892A85D /* PostRunTimerRing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRunTimerRing.swift; sourceTree = "<group>"; };
@@ -739,6 +741,7 @@
 				17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */,
 				69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */,
 				69698EC55CE8019B02C2224B /* ImagePicker.swift */,
+				6969873EC82353D92234F2F3 /* FormBar.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1105,6 +1108,7 @@
 				17CC68161A37E41AE1DB565F /* StringArrayValueTransformer.swift in Sources */,
 				17CC61E475691FB9E083105B /* TrainingUtils.swift in Sources */,
 				6969849A4E40B1822F60D380 /* Color.swift in Sources */,
+				6969813B0DF1CC24F66901FA /* FormBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
