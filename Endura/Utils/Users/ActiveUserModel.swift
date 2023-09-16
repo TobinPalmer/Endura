@@ -53,7 +53,10 @@ import SwiftUICalendar
             dailyTrainingData[data.date] = data
         }
 
-        dailyTrainingData[.current.addDay(value: -7)] = DailyTrainingData(date: .current.addDay(value: -7), type: .long, goals: [])
+        dailyTrainingData[.current.addDay(value: -7)] = DailyTrainingData(date: .current.addDay(value: -7), type: .long, goals: [TrainingGoalData.warmup(
+            time: 32,
+            count: 1
+        )])
         dailyTrainingData[.current.addDay(value: -6)] = DailyTrainingData(date: .current.addDay(value: -6), type: .workout, goals: [])
         dailyTrainingData[.current.addDay(value: -5)] = DailyTrainingData(date: .current.addDay(value: -5), type: .easy, goals: [TrainingGoalData.run(
             type: .normal,

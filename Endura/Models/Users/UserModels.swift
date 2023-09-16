@@ -1,17 +1,6 @@
 import Foundation
 import SwiftUI
 
-public enum Roles: String, Codable {
-    case ADMIN = "admin"
-    case USER = "user"
-}
-
-public enum UserGender: String, Codable {
-    case MALE = "male"
-    case FEMALE = "female"
-    case OTHER = "other"
-}
-
 public struct UserData: Cacheable {
     public let uid: String
     public var name: String {

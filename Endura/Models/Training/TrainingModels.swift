@@ -105,3 +105,8 @@ public struct WeeklyTrainingData {
 public struct UserTrainingData: Codable {
     public let weeklyTraining: [Date: String]
 }
+
+public struct RunningSchedule: Codable {
+    public var day: Int
+    public var type: RunningScheduleType
+}

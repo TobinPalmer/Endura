@@ -1,11 +1,5 @@
 import Foundation
 
-public struct ActivityCommentData: Codable, Hashable {
-    let message: String
-    let time: Date
-    let uid: String
-}
-
 public struct ActivityData: Codable, ActivityDataProtocol {
     public let averagePower: Double?
     public let calories: Double
@@ -217,111 +211,86 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     }
 }
 
-public struct RouteData: Codable {
-    public let altitude: Double
-    public let distance: Double
-    public let heartRate: Double
-    public let location: LocationData
-    public let pace: Double
-    public let timestamp: Date
+protocol ActivityDataProtocol {
+    var averagePower: Double? { get }
+    var calories: Double { get }
+    var distance: Double { get }
+    var duration: TimeInterval { get }
+    var time: Date { get }
+    var totalDuration: TimeInterval { get }
+    var uid: String { get }
+    var startCountry: String { get }
+    var startCity: String { get }
+    var startLocation: LocationData { get }
+    var description: String { get }
+    var title: String { get }
+
+    func withHeaderStats() -> ActivityHeaderData
+    func withGridStats() -> ActivityGridStatsData
 }
 
-/// The same as RouteData, but with a fraction of the values to be more optimised for graphing and quick preview
-public struct GraphData: Codable {
-    public let altitude: Double
-    public let cadence: Double
-    public let distance: Double
-    public let heartRate: Double
-    public let groundContactTime: Double
-    public let pace: Double
-    public let power: Double
-    public let strideLength: Double
-    public let timestamp: Date
-    public let verticalOscillation: Double
-}
-
-public struct ExtractedGraphData {
-    public let pace: IndexedLineGraphData
-    public let cadence: IndexedLineGraphData
-    public let elevation: IndexedLineGraphData
-    public let heartRate: IndexedLineGraphData
-    public let power: IndexedLineGraphData
-    public let strideLength: IndexedLineGraphData
-    public let verticalOscillation: IndexedLineGraphData
-}
-
-public struct ActivityRouteData: Codable {
-    public let graphData: [GraphData]
-    public let graphInterval: Int
-    public let routeData: [RouteData]
-}
-
-public struct ActivityGridStatsData: Codable {
-    public var averagePower: Double?
-    public let calories: Double
-    public let distance: Double
-    public let duration: TimeInterval
-    var pace: Double {
-        distance / duration
+extension ActivityDataProtocol {
+    public func withHeaderStats() -> ActivityHeaderData {
+        ActivityHeaderData(
+            startTime: time,
+            startLocation: startLocation,
+            startCountry: startCountry,
+            startCity: startCity,
+            uid: uid
+        )
     }
 
-    public let time: Date
-    public let totalDuration: TimeInterval
-    public let uid: String
+    public func withGridStats() -> ActivityGridStatsData {
+        ActivityGridStatsData(
+            averagePower: averagePower,
+            calories: calories,
+            distance: distance,
+            duration: duration,
+            time: time,
+            totalDuration: totalDuration,
+            uid: uid
+        )
+    }
 }
 
-public struct ActivityHeaderData: Codable {
-    public let startTime: Date
-    public var startLocation: LocationData?
-    public var startCountry: String?
-    public var startCity: String?
-    public let uid: String
-}
+public struct ActivityDocument: Codable {
+    var averagePower: Double?
+    var calories: Double
+    var comments: [ActivityCommentData]
+    var distance: Double
+    var description: String
+    var duration: TimeInterval
+    var likes: [String]
+    var type: TrainingRunType
+    var startCountry: String
+    var startCity: String
+    var startLocation: LocationData
+    var time: Date
+    var title: String
+    var totalDuration: TimeInterval
+    var uid: String
+    var uploadTime: Date
+    var visibility: ActivityVisibility
 
-public struct LocationData: Codable {
-    public let latitude: Double
-    public let longitude: Double
-}
-
-public struct HeartRateData: Codable, TimestampPoint {
-    public let timestamp: Date
-    public let heartRate: Double
-}
-
-public struct CadenceData: Codable, TimestampPoint {
-    public let timestamp: Date
-    public let cadence: Double
-}
-
-public struct PowerData: Codable, TimestampPoint {
-    public let timestamp: Date
-    public let power: Double
-}
-
-public struct GroundContactTimeData: Codable, TimestampPoint {
-    public let timestamp: Date
-    public let groundContactTime: Double
-}
-
-public struct StrideLengthData: Codable, TimestampPoint {
-    public let timestamp: Date
-    public let strideLength: Double
-}
-
-public struct VerticalOscillationData: Codable, TimestampPoint {
-    public let timestamp: Date
-    public let verticalOscillation: Double
-}
-
-protocol TimestampPoint: Codable {
-    var timestamp: Date { get }
-}
-
-public struct ActivityMetricsData {
-    public let heartRate: Double
-    public let cadence: Double
-    public let power: Double?
-    public let groundContactTime: Double?
-    public let strideLength: Double?
-    public let verticalOscillation: Double?
+    static func getDocument(for activity: ActivityDataWithRoute, uploadTime: Date) -> ActivityDocument {
+        ActivityDocument(
+            averagePower: activity.averagePower,
+            calories: activity.calories,
+            comments: activity.comments,
+            distance: activity.distance,
+            description: activity.description,
+            duration: activity.duration,
+            likes: activity.likes,
+            type: activity.type,
+            startCountry: activity.startCountry,
+            startCity: activity.startCity,
+            startLocation: activity.startLocation,
+            time: activity.time,
+            title: activity.title,
+            totalDuration: activity.totalDuration,
+            uid: activity.uid,
+            uploadTime: uploadTime,
+            visibility: activity.visibility
+        )
+    }
 }
