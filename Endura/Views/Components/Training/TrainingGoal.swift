@@ -28,15 +28,19 @@ struct TrainingGoal: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             switch goal {
-            case let .run(distance, time, pace, _, _):
+            case let .run(type, distance, time, pace):
                 VStack {
                     Text("\(distance.removeTrailingZeros()) Miles")
                     Text("\(time.removeTrailingZeros()) Minutes")
                     Text("\(pace.removeTrailingZeros()) Minutes/Mile")
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
-            case let .postRun(time, _),
-                 let .warmup(time, _):
+            case let .postRun(type, time, count):
+                HStack {
+                    Text("\(time.removeTrailingZeros()) Minutes")
+                }
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            case let .warmup(time, count):
                 HStack {
                     Text("\(time.removeTrailingZeros()) Minutes")
                 }

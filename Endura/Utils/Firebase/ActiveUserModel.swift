@@ -56,11 +56,10 @@ import SwiftUICalendar
         dailyTrainingData[.current.addDay(value: -7)] = DailyTrainingData(date: .current.addDay(value: -7), type: .long, goals: [])
         dailyTrainingData[.current.addDay(value: -6)] = DailyTrainingData(date: .current.addDay(value: -6), type: .workout, goals: [])
         dailyTrainingData[.current.addDay(value: -5)] = DailyTrainingData(date: .current.addDay(value: -5), type: .easy, goals: [TrainingGoalData.run(
+            type: .normal,
             distance: 5.03,
             pace: 7,
-            time: 32,
-            difficulty: .easy,
-            runType: .normal
+            time: 32
         )])
         dailyTrainingData[.current.addDay(value: -4)] = DailyTrainingData(date: .current.addDay(value: -4), type: .long, goals: [])
         dailyTrainingData[.current.addDay(value: -3)] = DailyTrainingData(date: .current.addDay(value: -3), type: .workout, goals: [])

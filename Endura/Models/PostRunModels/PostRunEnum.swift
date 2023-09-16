@@ -24,3 +24,10 @@ public struct PostRunExercise: Hashable {
     var type: PostRunExerciseType
     var parameter: PostRunExerciseParameter
 }
+
+public enum PostRunType: String, Codable {
+    case easy = "Easy"
+    case medium = "Medium"
+    case hard = "Hard"
+    case none
+}
