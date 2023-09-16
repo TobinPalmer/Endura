@@ -42,6 +42,7 @@ final class PostRunViewModel: ObservableObject {
 
 struct PostRunView: View {
     @StateObject private var viewModel = PostRunViewModel()
+    @State private var isFinished = false
 
     public var body: some View {
         ZStack {
@@ -77,7 +78,7 @@ struct PostRunView: View {
                 VStack {
                     if viewModel.currentExerciseIndex == viewModel.numberOfExercises - 1 {
                         Button {
-                            viewModel.currentExerciseIndex = 0
+                            isFinished = true
                         } label: {
                             Text("Done")
                                 .frame(maxWidth: .infinity)
@@ -131,6 +132,9 @@ struct PostRunView: View {
                     }
                 }
                 .padding()
+                .fullScreenCover(isPresented: $isFinished) {
+                    PostRunFinishedView()
+                }
             }
             .frame(
                 maxWidth: .infinity,
