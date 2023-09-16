@@ -12,6 +12,7 @@ final class PostRunViewModel: ObservableObject {
     @Published public var currentTime: TimeInterval = 0
     @Published public var isDoneWithTimerExercise = false
     @Published fileprivate var currentExerciseIndex: Int = 0
+    fileprivate let numberOfExercises = postRunEasyDay.count
 
     public final var timer: Timer?
 
@@ -52,9 +53,12 @@ struct PostRunView: View {
                 Text("\(String(describing: currentExercise.type)) for \(String(describing: currentExercise.parameter))")
                 switch currentExercise.parameter {
                 case let .count(count):
+                    FormBarView(progress: $viewModel.currentExerciseIndex, steps: viewModel.numberOfExercises)
+                        .frame(width: 300, height: 50)
+
                     Text("Do \(count)")
                 case .time:
-                    FormBarView(progress: $viewModel.currentExerciseIndex, steps: 10)
+                    FormBarView(progress: $viewModel.currentExerciseIndex, steps: viewModel.numberOfExercises)
                         .frame(width: 300, height: 50)
 
                     PostRunTimerRing(time: $viewModel.currentTime, duration: 10, size: 150)
@@ -71,27 +75,48 @@ struct PostRunView: View {
                 Spacer()
 
                 VStack {
-                    if viewModel.currentTime > 0 {
+                    if viewModel.currentExerciseIndex == viewModel.numberOfExercises - 1 {
                         Button {
-                            viewModel.currentTime = 0
-                            viewModel.timer?.invalidate()
+                            viewModel.currentExerciseIndex = 0
                         } label: {
-                            Text("Cancel")
+                            Text("Done")
                                 .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(EnduraButtonStyleOld(backgroundColor: .accentColor))
-                    }
+                        .buttonStyle(EnduraButtonStyle())
+                    } else {
+                        switch currentExercise.parameter {
+                        case .count:
+                            Button {
+                                viewModel.currentExerciseIndex += 1
+                                viewModel.isDoneWithTimerExercise = false
+                            } label: {
+                                Text("Next")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(EnduraButtonStyle())
 
-                    if viewModel.currentTime > 0 {
-                        Button {
-                            viewModel.currentExerciseIndex += 1
-                            viewModel.isDoneWithTimerExercise = false
-                        } label: {
-                            Text("Next")
-                                .frame(maxWidth: .infinity)
+                        case .time:
+                            if viewModel.currentTime > 0 {
+                                Button {
+                                    viewModel.currentTime = 0
+                                    viewModel.timer?.invalidate()
+                                } label: {
+                                    Text("Cancel")
+                                        .frame(maxWidth: .infinity)
+                                }
+                                .buttonStyle(EnduraButtonStyle())
+
+                                Button {
+                                    viewModel.currentExerciseIndex += 1
+                                    viewModel.isDoneWithTimerExercise = false
+                                } label: {
+                                    Text("Next")
+                                        .frame(maxWidth: .infinity)
+                                }
+                                .disabled(!viewModel.isDoneWithTimerExercise)
+                                .buttonStyle(EnduraButtonStyle(disabled: !viewModel.isDoneWithTimerExercise))
+                            }
                         }
-                        .buttonStyle(EnduraButtonStyleOld(backgroundColor: .accentColor))
-                        .disabled(!viewModel.isDoneWithTimerExercise)
                     }
 
                     if viewModel.currentTime <= 0 {
@@ -101,7 +126,7 @@ struct PostRunView: View {
                             Text("Start")
                                 .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(EnduraButtonStyleOld(backgroundColor: .accentColor))
+                        .buttonStyle(EnduraButtonStyle())
                         .frame(maxWidth: .infinity)
                     }
                 }
