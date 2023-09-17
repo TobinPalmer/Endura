@@ -311,30 +311,32 @@ public enum HealthKitUtils {
             var groundContactTimeAtPoint: Double?
             var strideLengthAtPoint: Double?
 
-            var previousLocation: CLLocation?
+            var previousPoint: CLLocation?
             var totalDistance = 0.0
+            var mileTime = 0.0
             let mileDistance = 1609.34
             var startTime: Date = data[safe: 0]?.timestamp ?? workout.startDate
 
             for i in 0 ..< data.count {
                 let point = data[i]
 
-//                if let previousLocation = previousLocation {
-//                    let currentLocation = CLLocation(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude)
-//                    let distance = previousLocation.distance(from: currentLocation)
-//                    totalDistance += distance
-//
-//                    if totalDistance >= mileDistance {
-//                        let endTime = point.timestamp
-//                        let durationInSeconds = endTime.timeIntervalSince(startTime)
-//                        let durationInMinutes = durationInSeconds / 60
-                ////                        print("Mile split with total time \(durationInMinutes) minutes, with total distance \(totalDistance) meters")
-//                        totalDistance -= mileDistance
-//                        startTime = endTime
-//                    }
-//                }
+                if let previousPoint = previousPoint {
+                    let currentLocation = CLLocation(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude)
+                    let distance = previousPoint.distance(from: currentLocation)
+                    let time = point.timestamp.timeIntervalSince(previousPoint.timestamp).rounded()
+                    if time > 0 && time < 5 {
+                        totalDistance += distance
+                        mileTime += time
+                    }
 
-                previousLocation = CLLocation(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude)
+                    if totalDistance >= mileDistance {
+                        print("Mile split with total time \(FormattingUtils.secondsToFormattedTime(mileTime)) minutes, with total distance \(totalDistance) meters")
+                        totalDistance -= mileDistance
+                        mileTime = 0
+                    }
+                }
+
+                previousPoint = point
 
                 if let metricsAtPoint = workoutMetrics[Int(point.timestamp.timeIntervalSince1970)] {
                     cadenceAtPoint = metricsAtPoint.cadence
