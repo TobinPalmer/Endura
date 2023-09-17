@@ -44,20 +44,19 @@ struct EnduraButtonStyle: ButtonStyle {
 
 struct EnduraCircleButtonStyle: ButtonStyle {
     private let backgroundColor: Color
-    private let disabled: Bool
+    private let shadowColor: Color
 
-    init(backgroundColor: Color = Color.accentColor, disabled: Bool = false) {
+    init(backgroundColor: Color = Color.accentColor, shadowColor: Color = Color("008A8A")) {
         self.backgroundColor = backgroundColor
-        self.disabled = disabled
+        self.shadowColor = shadowColor
     }
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(8)
-            //      .frame(maxWidth: .infinity, alignment: .top)
-            .background(disabled ? Color.gray : backgroundColor)
+            .background(backgroundColor)
             .cornerRadius(50)
-            .shadow(color: backgroundColor == Color.accentColor ? Color(hex: "008A8A") : Color(hex: "777777"), radius: 0, x: 0, y: configuration.isPressed ? 0 : 7)
+            .shadow(color: shadowColor, radius: 0, x: 0, y: configuration.isPressed ? 0 : 7)
             .offset(y: configuration.isPressed ? 7 : 0)
             .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }

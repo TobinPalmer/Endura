@@ -55,7 +55,7 @@ struct ActivityPost: View {
                     Image(systemName: "hand.thumbsup")
                         .font(.title)
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activity.likes.contains(AuthUtils.getCurrentUID()) ? Color.accentColor : Color(.systemGray5)))
+                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activity.likes.contains(AuthUtils.getCurrentUID()) ? Color.accentColor : Color(.systemGray5), shadowColor: activity.likes.contains(AuthUtils.getCurrentUID()) ? Color("AccentColorShade") : Color(.systemGray4)))
 
                 ActivityLikesList(activity.likes)
 
@@ -75,7 +75,7 @@ struct ActivityPost: View {
                                 .offset(x: 10, y: 3)
                         )
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: Color(.systemGray5)))
+                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: Color(.systemGray5), shadowColor: Color(.systemGray4)))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .sheet(isPresented: $showingComments) {
