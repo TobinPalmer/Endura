@@ -10,6 +10,8 @@ public struct HoverableChart: View {
     @EnvironmentObject var activityViewModel: ActivityViewModel
 
     private let graph: IndexedLineGraphData
+    private let minY: Double
+    private let maxY: Double
     private let color: Color
     private let label: String
     private let valueModifier: (Double) -> String
@@ -25,6 +27,9 @@ public struct HoverableChart: View {
         self.color = color
         self.label = label
         self.valueModifier = valueModifier
+
+        minY = graph.map { $0.1 }.min() ?? 0
+        maxY = graph.map { $0.1 }.max() ?? 1
     }
 
     public var body: some View {
@@ -79,6 +84,7 @@ public struct HoverableChart: View {
             .frame(width: UIScreen.main.bounds.width - chartPadding * 2, height: 200)
             .chartXAxis(.hidden)
             .chartXScale(domain: workoutStart ... workoutEnd)
+            .chartYScale(domain: (minY - (maxY - minY) * 0.1) ... (maxY + (maxY - minY) * 0.1))
             .chartOverlay { (chartProxy: ChartProxy) in
                 ZStack {
                     if let analysisPosition = activityViewModel.analysisPosition {
