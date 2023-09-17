@@ -27,10 +27,11 @@ struct ActivityLikesList: View {
                                 .shadow(radius: 1, x: shadow, y: 0)
                         }
                     }
+                    Text("\(likes.count) likes")
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
+                        .offset(x: CGFloat(CGFloat(likes.prefix(3).count) * number) + 15, y: 0)
                 }
-                Text("\(likes.count) likes")
-                    .font(.system(size: 12))
-                    .foregroundColor(.secondary)
             }
         }
     }
