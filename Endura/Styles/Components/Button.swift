@@ -57,7 +57,7 @@ struct EnduraCircleButtonStyle: ButtonStyle {
             //      .frame(maxWidth: .infinity, alignment: .top)
             .background(disabled ? Color.gray : backgroundColor)
             .cornerRadius(50)
-            .shadow(color: disabled ? Color(hex: "777777") : Color(hex: "008A8A"), radius: 0, x: 0, y: configuration.isPressed ? 0 : 7)
+            .shadow(color: backgroundColor == Color.accentColor ? Color(hex: "008A8A") : Color(hex: "777777"), radius: 0, x: 0, y: configuration.isPressed ? 0 : 7)
             .offset(y: configuration.isPressed ? 7 : 0)
             .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
