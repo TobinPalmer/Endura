@@ -67,7 +67,7 @@ public struct ActivityHeaderData: Codable {
     public let uid: String
 }
 
-public struct ActivitySplitsData: Codable {
+public struct ActivitySplitsData: Codable, Hashable {
     public let distance: Double
     public let time: TimeInterval
     public let pace: TimeInterval

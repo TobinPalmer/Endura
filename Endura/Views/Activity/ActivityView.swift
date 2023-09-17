@@ -46,6 +46,17 @@ struct ActivityView: View {
                         }
                         .padding(.top, 10)
                         .padding(.bottom, 20)
+
+                        VStack {
+                            ForEach(activity.splits, id: \.self) { split in
+                                HStack {
+                                    Text("\(split.distance.removeTrailingZeros()) mi")
+                                    Text("Pace: \(FormattingUtils.secondsToFormattedTime(split.pace))")
+                                    Text("Time: \(FormattingUtils.secondsToFormattedTime(split.time))")
+                                }
+                                .padding(.bottom, 10)
+                            }
+                        }
                     }
                     .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                 }
