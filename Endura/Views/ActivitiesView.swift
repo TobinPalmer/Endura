@@ -116,11 +116,13 @@ struct ActivitiesView: View {
     @EnvironmentObject var activeUserModel: ActiveUserModel
     @StateObject fileprivate var activityViewModel = ActivitiesViewModel()
 
+    let padding: CGFloat = 20
+
     var body: some View {
         VStack {
             ScrollView(.vertical) {
                 if !activityViewModel.activities.isEmpty {
-                    LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 1), spacing: 20) {
+                    LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 0), count: 1), spacing: padding) {
                         ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }), id: \.0) { id, activity in
                             ActivityPost(id: id, activity: activity)
                                 .onAppear {
@@ -130,7 +132,7 @@ struct ActivitiesView: View {
                                 }
                         }
                     }
-                    .padding(10)
+                    .padding(.horizontal, padding)
                 } else {
                     Text("No activities")
                 }

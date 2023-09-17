@@ -55,6 +55,7 @@ struct ActivityPost: View {
                     Image(systemName: "hand.thumbsup")
                         .font(.title)
                 }
+                .buttonStyle(EnduraCircleButtonStyle())
 
                 ActivityLikesList(activity.likes)
 
@@ -74,6 +75,7 @@ struct ActivityPost: View {
                                 .offset(x: 10, y: 3)
                         )
                 }
+                .buttonStyle(EnduraCircleButtonStyle())
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .sheet(isPresented: $showingComments) {

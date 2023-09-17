@@ -17,13 +17,20 @@ struct ActivityLikesList: View {
     }
 
     public var body: some View {
-        ZStack {
-            ForEach(0 ..< likes.prefix(3).count, id: \.self) { i in
-                UserProfileLink(likes[i], noLink: noLink) {
-                    ProfileImage(likes[i], size: 30)
-                        .offset(x: CGFloat(i) * number, y: 0)
-                        .shadow(radius: 1, x: shadow, y: 0)
+        HStack {
+            if !likes.isEmpty {
+                ZStack {
+                    ForEach(0 ..< likes.prefix(3).count, id: \.self) { i in
+                        UserProfileLink(likes[i], noLink: noLink) {
+                            ProfileImage(likes[i], size: 30)
+                                .offset(x: CGFloat(i) * number, y: 0)
+                                .shadow(radius: 1, x: shadow, y: 0)
+                        }
+                    }
                 }
+                Text("\(likes.count) likes")
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
             }
         }
     }
