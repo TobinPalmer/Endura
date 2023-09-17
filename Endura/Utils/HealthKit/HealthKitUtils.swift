@@ -233,6 +233,7 @@ public enum HealthKitUtils {
         let workoutDuration = workout.duration
         var routeData = [RouteData]()
         var graphData = [GraphData]()
+        var mileSplits = [ActivitySplitsData]()
 
         let routes = try await HealthKitUtils.getWorkoutRoute(workout: workout)
 
@@ -315,7 +316,6 @@ public enum HealthKitUtils {
             var totalDistance = 0.0
             var mileTime = 0.0
             let mileDistance = 1609.34
-            var startTime: Date = data[safe: 0]?.timestamp ?? workout.startDate
 
             for i in 0 ..< data.count {
                 let point = data[i]
@@ -330,9 +330,15 @@ public enum HealthKitUtils {
                     }
 
                     if totalDistance >= mileDistance {
-                        print("Mile split with total time \(FormattingUtils.secondsToFormattedTime(mileTime)) minutes, with total distance \(totalDistance) meters")
+                        mileSplits.append(ActivitySplitsData(distance: 1, time: mileTime, pace: mileTime))
                         totalDistance -= mileDistance
                         mileTime = 0
+                    } else if i == data.count - 1 {
+                        let partialDistance = (totalDistance / 1609.34).rounded(toPlaces: 1)
+                        if partialDistance > 0.1 {
+                            let estimatedPace = (mileTime / partialDistance).rounded()
+                            mileSplits.append(ActivitySplitsData(distance: partialDistance, time: mileTime, pace: estimatedPace))
+                        }
                     }
                 }
 
@@ -462,6 +468,7 @@ public enum HealthKitUtils {
                 graphInterval: dataRate,
                 routeData: routeData
             ),
+            splits: mileSplits,
             distance: workoutDistance,
             description: "",
             duration: workoutDuration,

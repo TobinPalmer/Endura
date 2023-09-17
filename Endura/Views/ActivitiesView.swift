@@ -85,6 +85,7 @@ import SwiftUI
                 averagePower: data.averagePower,
                 calories: data.calories,
                 comments: data.comments,
+                splits: data.splits,
                 distance: data.distance,
                 description: data.description,
                 duration: data.duration,

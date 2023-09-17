@@ -4,6 +4,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
     public let averagePower: Double?
     public let calories: Double
     public let comments: [ActivityCommentData]
+    public let splits: [ActivitySplitsData]
     public let distance: Double
     public let description: String
     public let duration: TimeInterval
@@ -29,6 +30,7 @@ public struct ActivityData: Codable, ActivityDataProtocol {
             calories: calories,
             comments: comments,
             data: routeData,
+            splits: splits,
             distance: distance,
             description: description,
             duration: duration,
@@ -52,6 +54,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     public let calories: Double
     public let comments: [ActivityCommentData]
     public let data: ActivityRouteData
+    public let splits: [ActivitySplitsData]
     public let distance: Double
     public let description: String
     public let duration: TimeInterval
@@ -76,6 +79,7 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
             averagePower: averagePower,
             calories: calories,
             comments: comments,
+            splits: splits,
             distance: distance,
             description: description,
             duration: duration,
@@ -257,6 +261,7 @@ public struct ActivityDocument: Codable {
     var averagePower: Double?
     var calories: Double
     var comments: [ActivityCommentData]
+    var splits: [ActivitySplitsData]
     var distance: Double
     var description: String
     var duration: TimeInterval
@@ -277,6 +282,7 @@ public struct ActivityDocument: Codable {
             averagePower: activity.averagePower,
             calories: activity.calories,
             comments: activity.comments,
+            splits: activity.splits,
             distance: activity.distance,
             description: activity.description,
             duration: activity.duration,

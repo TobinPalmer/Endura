@@ -67,6 +67,12 @@ public struct ActivityHeaderData: Codable {
     public let uid: String
 }
 
+public struct ActivitySplitsData: Codable {
+    public let distance: Double
+    public let time: TimeInterval
+    public let pace: TimeInterval
+}
+
 public struct LocationData: Codable {
     public let latitude: Double
     public let longitude: Double
