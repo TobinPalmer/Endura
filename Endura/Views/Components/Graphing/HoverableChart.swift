@@ -39,8 +39,8 @@ public struct HoverableChart: View {
                     xEnd: .value("Timestamp", workoutEnd)
                 )
                 .foregroundStyle(.linearGradient(stops: [
-                    Gradient.Stop(color: color.opacity(0.5), location: 0),
-                    Gradient.Stop(color: color, location: 2 / 4),
+                    Gradient.Stop(color: color, location: 0),
+                    Gradient.Stop(color: color.opacity(0.5), location: 1),
                 ], startPoint: .bottom, endPoint: .top)).mask {
                     var data: [(Date, Double)] = []
                     var lastTimestamp: Date? = nil
@@ -60,7 +60,7 @@ public struct HoverableChart: View {
                             x: .value("Timestamp", point.0),
                             y: .value("Value", point.1)
                         )
-                        .foregroundStyle(color)
+                        .foregroundStyle(.red)
                     }
                 }
 
