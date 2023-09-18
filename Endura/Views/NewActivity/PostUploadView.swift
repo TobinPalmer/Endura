@@ -100,6 +100,8 @@ struct PostUploadView: View {
                 } else {
                     try ActivityUtils.uploadActivity(activity: activityData)
                 }
+
+                TrainingUtils.processUploadedActivity(activityData)
             } catch {
                 Global.log.error("Error uploading activity: \(error)")
             }

@@ -6,6 +6,16 @@ public extension Date {
         Calendar.current.component(.weekday, from: self)
     }
 
+    func toYearMonthDay() -> YearMonthDay {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: self)
+        return YearMonthDay(
+            year: components.year ?? 0,
+            month: components.month ?? 0,
+            day: components.day ?? 0
+        )
+    }
+
     func roundedToNearestSecond() -> Date {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)

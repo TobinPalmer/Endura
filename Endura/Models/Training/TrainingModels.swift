@@ -73,6 +73,7 @@ public struct DailyTrainingData: Cacheable {
     public var date: YearMonthDay
     public var type: TrainingDayType
     public var goals: [TrainingGoalData]
+    public var summary: DailySummaryData?
 
     func updateCache(_ cache: DailyTrainingCache) {
         cache.date = date.toCache()

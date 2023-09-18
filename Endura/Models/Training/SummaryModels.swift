@@ -11,11 +11,7 @@ public struct WeeklySummaryData: Codable {
 }
 
 public struct DailySummaryData: Codable {
-    public let id: String
-    public let date: Date
-    public let day: Day
     public let distance: Double
     public let duration: Double
-    public let averageHeartRate: Double
-    public let elevation: Double
+    public let activities: [String]
 }
