@@ -60,26 +60,41 @@ struct ActivityMap: View {
 }
 
 private struct MapView: UIViewRepresentable {
-    @ObservedObject var mapViewContainer: MapViewContainer
-    public var routeData: [RouteData]
+    @ObservedObject private var mapViewContainer: MapViewContainer
+    private let routeData: [RouteData]
+
+    private let averagePace: Double
+
+    fileprivate init(mapViewContainer: MapViewContainer, routeData: [RouteData]) {
+        self.mapViewContainer = mapViewContainer
+        self.routeData = routeData
+
+        averagePace = routeData.reduce(0.0) { pace, data in
+            pace + 26.8224 / data.pace
+        } / Double(routeData.count)
+
+        print("AVE PACE", averagePace)
+    }
 
     fileprivate func colorForPace(_ pace: Double) -> UIColor {
         var pace = 26.8224 / pace
-        let maxPace = 10.0
+        let maxPace = averagePace * 1.4
         let minPace = 0.0
         let maxHue = 0.7
         pace = max(min(pace, maxPace), minPace)
+
         var roundedPace = 0.0
         if pace > 7.0 {
             roundedPace = pace.rounded()
         } else {
             roundedPace = (pace * 2).rounded() / 2
         }
-        // Take the rounded pace and convert it to a percentage of the max pace in the hue format which is 0...1
         let hue = maxHue - (roundedPace * (maxHue / maxPace))
+
         if hue > 1 || hue < 0 {
             return UIColor(hue: 0.0, saturation: 1.0, lightness: 0.5, alpha: 1.0)
         }
+
         return UIColor(hue: CGFloat(hue), saturation: 1.0, lightness: 0.5, alpha: 1.0)
     }
 
