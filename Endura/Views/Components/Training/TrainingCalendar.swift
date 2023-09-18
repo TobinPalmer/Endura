@@ -9,14 +9,25 @@ private final class TrainingViewModel: ObservableObject {
 struct TrainingCalender: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     @StateObject private var viewModel = TrainingViewModel()
-    let controller = CalendarController()
+    @ObservedObject var controller: CalendarController
     @Binding var selectedDate: YearMonthDay
 
     var body: some View {
-        Text("\(controller.yearMonth.monthShortString)")
-            .font(.title)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(5)
+        HStack(alignment: .center, spacing: 0) {
+            Button("Prev") {
+                controller.scrollTo(controller.yearMonth.addMonth(value: -1), isAnimate: true)
+            }
+            .padding(8)
+            Spacer()
+            Text("\(controller.yearMonth.monthShortString), \(String(controller.yearMonth.year))")
+                .font(.title)
+                .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+            Spacer()
+            Button("Next") {
+                controller.scrollTo(controller.yearMonth.addMonth(value: 1), isAnimate: true)
+            }
+            .padding(8)
+        }
         CalendarView(controller, startWithMonday: true, header: { week in
             Text(week.shortString)
                 .font(.subheadline)
@@ -42,7 +53,9 @@ struct TrainingCalender: View {
             }
         })
         .onChange(of: controller.yearMonth) { newMonth in
-            print("Month Changed to \(newMonth)")
+            if !viewModel.loadedMonths.contains(newMonth) {
+                viewModel.loadedMonths.append(newMonth)
+            }
         }
         .padding(5)
     }
