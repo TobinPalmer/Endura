@@ -97,10 +97,25 @@ public struct DailyTrainingData: Cacheable {
     }
 }
 
-public struct WeeklyTrainingData {
-    public var week: Date
+public struct DailyTrainingDataDocument: Codable {
+    public var date: Date
+    public var type: TrainingDayType
+    public var goals: [TrainingGoalData]
+    public var summary: DailySummaryData?
+}
+
+public struct MonthlyTrainingData {
+    public var totalDistance: Double
+    public var totalDuration: Double
     public var days: [Day: DailyTrainingData]
-    public var dailySummary: [Day: DailySummaryData]
+    public var weeklySummaries: [WeeklySummaryData]
+}
+
+public struct MonthlyTrainingDataDocument: Codable {
+    public var totalDistance: Double
+    public var totalDuration: Double
+    public var days: [Day: DailyTrainingDataDocument]
+    public var weeklySummaries: [WeeklySummaryData]
 }
 
 public struct UserTrainingData: Codable {
