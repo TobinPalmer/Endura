@@ -25,10 +25,6 @@ public final class SignupFormInfo: ObservableObject {
             email: email
         )
     }
-
-    public func toUserTrainingData() -> UserTrainingData {
-        UserTrainingData(weeklyTraining: [:])
-    }
 }
 
 struct SignupView: View {

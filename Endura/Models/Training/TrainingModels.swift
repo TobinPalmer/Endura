@@ -104,22 +104,40 @@ public struct DailyTrainingDataDocument: Codable {
     public var summary: DailySummaryData?
 }
 
-public struct MonthlyTrainingData {
+public struct MonthlyTrainingData: Cacheable {
+    public var date: YearMonth
     public var totalDistance: Double
     public var totalDuration: Double
-    public var days: [Day: DailyTrainingData]
-    public var weeklySummaries: [WeeklySummaryData]
+    public var days: [YearMonthDay: DailyTrainingData]
+
+    func updateCache(_ cache: MonthlyTrainingCache) {
+        cache.date = date.toCache()
+        cache.totalDistance = totalDistance
+        cache.totalDuration = totalDuration
+        cache.removeFromDays(cache.days ?? NSSet())
+        cache.addToDays(NSSet(array: days.map { _, data in
+            let cache = DailyTrainingCache(context: cache.managedObjectContext!)
+            data.updateCache(cache)
+            return cache
+        }))
+    }
+
+    static func fromCache(_ cache: MonthlyTrainingCache) -> Self {
+        MonthlyTrainingData(
+            date: YearMonth.fromCache(cache.date ?? ""),
+            totalDistance: cache.totalDistance,
+            totalDuration: cache.totalDuration,
+            days: cache.days?.reduce(into: [:]) { dict, day in
+                dict[YearMonthDay.fromCache((day as! DailyTrainingCache).date ?? "")] = DailyTrainingData.fromCache(day as! DailyTrainingCache)
+            } ?? [:]
+        )
+    }
 }
 
 public struct MonthlyTrainingDataDocument: Codable {
     public var totalDistance: Double
     public var totalDuration: Double
-    public var days: [Day: DailyTrainingDataDocument]
-    public var weeklySummaries: [WeeklySummaryData]
-}
-
-public struct UserTrainingData: Codable {
-    public let weeklyTraining: [Date: String]
+    public var days: [String: DailyTrainingDataDocument]
 }
 
 public struct RunningSchedule: Codable {

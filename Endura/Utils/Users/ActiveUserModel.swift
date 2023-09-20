@@ -18,12 +18,10 @@ import SwiftUICalendar
         }
     }
 
-    @Published public var dailyTrainingData: [YearMonthDay: DailyTrainingData] = [:] {
+    @Published public var monthlyTrainingData: [YearMonth: MonthlyTrainingData] = [:] {
         didSet {
-            for (date, data) in dailyTrainingData {
-                if data.type != .none {
-                    CacheUtils.updateListedObject(DailyTrainingCache.self, update: data.updateCache, predicate: CacheUtils.predicateMatchingField("date", value: date.toCache()))
-                }
+            for (date, data) in monthlyTrainingData {
+                CacheUtils.updateListedObject(MonthlyTrainingCache.self, update: data.updateCache, predicate: CacheUtils.predicateMatchingField("date", value: date.toCache()))
             }
         }
     }
@@ -47,25 +45,25 @@ import SwiftUICalendar
             data = try await fetchUserData()
         }
 
-        let cachedDailyTrainingData = CacheUtils.fetchListedObject(DailyTrainingCache.self)
-        for cachedData in cachedDailyTrainingData {
-            let data = DailyTrainingData.fromCache(cachedData)
-            dailyTrainingData[data.date] = data
+        let cachedMonthlyTrainingData = CacheUtils.fetchListedObject(MonthlyTrainingCache.self)
+        for cachedData in cachedMonthlyTrainingData {
+            let data = MonthlyTrainingData.fromCache(cachedData)
+            monthlyTrainingData[data.date] = data
         }
 
-        dailyTrainingData[.current.addDay(value: -7)] = DailyTrainingData(date: .current.addDay(value: -7), type: .long, goals: [TrainingGoalData.warmup(
-            time: 32,
-            count: 1
-        )])
-        dailyTrainingData[.current.addDay(value: -6)] = DailyTrainingData(date: .current.addDay(value: -6), type: .workout, goals: [])
-        dailyTrainingData[.current.addDay(value: -5)] = DailyTrainingData(date: .current.addDay(value: -5), type: .easy, goals: [TrainingGoalData.run(
-            type: .normal,
-            distance: 5.03,
-            pace: 7,
-            time: 32
-        )])
-        dailyTrainingData[.current.addDay(value: -4)] = DailyTrainingData(date: .current.addDay(value: -4), type: .long, goals: [])
-        dailyTrainingData[.current.addDay(value: -3)] = DailyTrainingData(date: .current.addDay(value: -3), type: .workout, goals: [])
+        monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days: [
+            .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.warmup(
+                time: 32,
+                count: 1
+            )]),
+            .current.addDay(value: -6): DailyTrainingData(date: .current.addDay(value: -6), type: .workout, goals: []),
+            .current.addDay(value: -5): DailyTrainingData(date: .current.addDay(value: -5), type: .easy, goals: [TrainingGoalData.run(
+                type: .normal,
+                distance: 5.03,
+                pace: 7,
+                time: 32
+            )]),
+        ])
     }
 
     private func fetchUserData() async throws -> ActiveUserData {
@@ -112,12 +110,11 @@ import SwiftUICalendar
         }
     }
 
-    public static func fetchInfo() async throws -> UserTrainingData {
-        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("data").document("training").getDocument(as: UserTrainingData.self)
-        return document
-    }
-
     public func getTrainingDay(_ date: YearMonthDay) -> DailyTrainingData {
-        dailyTrainingData[date] ?? DailyTrainingData(date: date, type: .none, goals: [])
+        if let data = monthlyTrainingData[date.getYearMonth()]?.days[date] {
+            return data
+        } else {
+            return DailyTrainingData(date: date, type: .none, goals: [])
+        }
     }
 }

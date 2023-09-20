@@ -29,7 +29,25 @@ public extension Date {
     }
 }
 
+public extension YearMonth {
+    func toCache() -> String {
+        "\(year)-\(month)"
+    }
+
+    static func fromCache(_ cachedDate: String) -> YearMonth {
+        let components = cachedDate.split(separator: "-")
+        return YearMonth(
+            year: Int(components[0]) ?? 0,
+            month: Int(components[1]) ?? 0
+        )
+    }
+}
+
 public extension YearMonthDay {
+    func getYearMonth() -> YearMonth {
+        YearMonth(year: year, month: month)
+    }
+
     func toCache() -> String {
         "\(year)-\(month)-\(day)"
     }

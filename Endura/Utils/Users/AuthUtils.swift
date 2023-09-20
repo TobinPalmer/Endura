@@ -7,13 +7,12 @@ public enum AuthUtils {
         Auth.auth().currentUser!.uid
     }
 
-    public static func createUser(email: String, password: String, userData: UserDocument, userTrainingData: UserTrainingData) {
+    public static func createUser(email: String, password: String, userData: UserDocument) {
         Auth.auth().createUser(withEmail: email, password: password) { user, error in
             if error == nil, let user = user?.user {
                 let uid = user.uid
                 do {
                     try Firestore.firestore().collection("users").document(uid).setData(from: userData)
-                    try Firestore.firestore().collection("users").document(uid).collection("data").document("training").setData(from: userTrainingData)
                     let defaultSettings = SettingsModel(
                         notifications: true,
                         notificationsFriendRequest: true,
@@ -51,8 +50,7 @@ public enum AuthUtils {
                     gender: .OTHER,
                     email: email
                 )
-                let userTrainingData = UserTrainingData(weeklyTraining: [:])
-                createUser(email: email, password: password, userData: userData, userTrainingData: userTrainingData)
+                createUser(email: email, password: password, userData: userData)
             }
         }
     #endif
