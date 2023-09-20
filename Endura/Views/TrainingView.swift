@@ -14,9 +14,6 @@ struct TrainingView: View {
         VStack {
             Text("Training View")
             TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
-            Text("\(FormattingUtils.dateToFormattedDay(viewModel.selectedDate))")
-                .font(.title)
-                .padding()
             ScrollView {
                 TrainingGoalList(selectedDate: $viewModel.selectedDate)
             }
