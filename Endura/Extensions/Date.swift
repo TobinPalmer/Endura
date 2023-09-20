@@ -48,6 +48,12 @@ public extension YearMonthDay {
         YearMonth(year: year, month: month)
     }
 
+    func getDate() -> Date {
+        let calendar = Calendar.current
+        let components = DateComponents(calendar: calendar, year: year, month: month, day: day)
+        return calendar.date(from: components) ?? Date()
+    }
+
     func toCache() -> String {
         "\(year)-\(month)-\(day)"
     }
