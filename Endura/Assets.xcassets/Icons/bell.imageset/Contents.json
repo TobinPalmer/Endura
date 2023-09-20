@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Bell_pin_fill@512x.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

@@ -71,7 +71,9 @@ struct DashboardView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: NotificationsView()) {
-                    Image(systemName: "bell")
+                    Image("bell")
+                        .resizable()
+                        .frame(width: 50, height: 50)
                         .overlay(
                             NotificationCountView(value: $notificationsModel.unreadCount)
                         )
