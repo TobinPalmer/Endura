@@ -147,13 +147,8 @@ struct ActivityPost: View {
             }
         }
         .padding(20)
-        .cornerRadius(16)
-        .foregroundColor(.primary)
         .frame(maxWidth: .infinity)
-        .overlay(
-            RoundedRectangle(cornerRadius: 6)
-                .stroke(Color(hex: "D5D9DE"), lineWidth: 2)
-        )
+        .EnduraDefaultBox()
     }
 }
 

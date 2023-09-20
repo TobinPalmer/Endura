@@ -47,9 +47,7 @@ struct TrainingGoal: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
-        .padding()
-        .background(Color.white)
-        .compositingGroup()
-        .shadow(color: Color.black, radius: 2)
+        .padding(20)
+        .EnduraDefaultBox()
     }
 }

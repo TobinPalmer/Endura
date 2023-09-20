@@ -17,4 +17,12 @@ public extension View {
         return shadow(color: disabled ? .clear : color, radius: 0.5, x: 0, y: 0)
             .shadow(color: disabled ? .clear : color, radius: 1, x: 0, y: 1)
     }
+
+    func EnduraDefaultBox() -> some View {
+        cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(Color(hex: "D5D9DE"), lineWidth: 2)
+            )
+    }
 }

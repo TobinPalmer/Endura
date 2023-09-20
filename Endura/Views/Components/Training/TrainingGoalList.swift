@@ -29,9 +29,14 @@ struct TrainingGoalList: View {
             if trainingDay.goals.isEmpty {
                 Text("No goals for \(isToday ? "today" : "this day")")
             } else {
-                ForEach(trainingDay.goals, id: \.self) { goal in
-                    TrainingGoal(goal)
+                VStack {
+                    ScrollView {
+                        ForEach(trainingDay.goals, id: \.self) { goal in
+                            TrainingGoal(goal)
+                        }
+                    }
                 }
+                .padding(20)
             }
 //            TrainingGoal(TrainingGoalData.warmup(time: 10, count: 1))
 //            TrainingGoal(TrainingGoalData.run(

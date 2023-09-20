@@ -14,9 +14,7 @@ struct TrainingView: View {
         VStack {
             Text("Training View")
             TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
-            ScrollView {
-                TrainingGoalList(selectedDate: $viewModel.selectedDate)
-            }
+            TrainingGoalList(selectedDate: $viewModel.selectedDate)
         }
     }
 }
