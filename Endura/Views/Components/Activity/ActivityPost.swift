@@ -75,7 +75,7 @@ struct ActivityPost: View {
                                 .offset(x: 10, y: 3)
                         )
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: Color(.systemGray5), shadowColor: Color(.systemGray4)))
+                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: .clear, shadowColor: Color(.systemGray4)))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .sheet(isPresented: $showingComments) {
