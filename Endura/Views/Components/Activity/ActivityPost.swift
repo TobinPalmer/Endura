@@ -52,10 +52,10 @@ struct ActivityPost: View {
                 Button(action: {
                     ActivityUtils.toggleLike(id: id, activity: activity)
                 }) {
-                    Image(systemName: "hand.thumbsup")
+                    Text("🎉")
                         .font(.title)
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activity.likes.contains(AuthUtils.getCurrentUID()) ? Color.accentColor : Color(.systemGray5), shadowColor: activity.likes.contains(AuthUtils.getCurrentUID()) ? Color("AccentColorShade") : Color(.systemGray4)))
+                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activity.likes.contains(AuthUtils.getCurrentUID()) ? Color(.systemGray5) : .clear))
 
                 ActivityLikesList(activity.likes)
 

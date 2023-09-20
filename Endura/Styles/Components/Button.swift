@@ -55,9 +55,11 @@ struct EnduraCircleButtonStyle: ButtonStyle {
         configuration.label
             .padding(8)
             .background(backgroundColor)
-            .cornerRadius(50)
-            .shadow(color: shadowColor, radius: 0, x: 0, y: configuration.isPressed ? 0 : 7)
-            .offset(y: configuration.isPressed ? 7 : 0)
+            .cornerRadius(500)
+            .overlay(
+                RoundedRectangle(cornerRadius: 500)
+                    .stroke(Color("Border"), lineWidth: 1)
+            )
             .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }
