@@ -47,30 +47,44 @@ struct ActivityView: View {
                         .padding(.top, 10)
                         .padding(.bottom, 20)
 
-                        VStack {
-                            let fastestSplit = activity.splits.min {
-                                $0.pace < $1.pace
-                            }
-                            ForEach(activity.splits, id: \.self) { split in
-                                HStack {
-//                  Text("\(split.distance.removeTrailingZeros()) mi")
-//                                    Text("Pace: \(FormattingUtils.secondsToFormattedTime(split.pace))")
-//                  Text("Time: \(FormattingUtils.secondsToFormattedTime(split.time))")
+//            VStack {
+//              let fastestSplit = activity.splits.min {
+//                $0.pace < $1.pace
+//              }
+//              ForEach(activity.splits, id: \.self) { split in
+//                HStack {
+//                  VStack {
+//                    Text("\(split.distance.removeTrailingZeros()) mi")
+//                    Text("Time: \(FormattingUtils.secondsToFormattedTime(split.time))")
+//                  }
+//                    .border(.red)
+//
+//                  ActivitySplitGraph(split: split, fastestSplit: fastestSplit)
+//                }
+//                  .padding(.bottom, 10)
+//              }
+//            }
+//              .border(.blue)
 
-                                    ZStack(alignment: .leading) {
-                                        Rectangle()
-                                            .frame(width: 200, height: 20)
-                                            .foregroundColor(.red)
-
-                                        let width = min(200, 200 * CGFloat(fastestSplit!.pace / split.pace))
-                                        let _ = print(width)
-
-                                        Rectangle()
-                                            .frame(maxWidth: width)
-                                            .foregroundColor(.green)
+                        Grid {
+                            ForEach(Array(activity.splits.enumerated()), id: \.1) { index, split in
+                                GridRow {
+                                    GridRow {
+                                        if split.distance.removeTrailingZeros() == "1" {
+                                            Text("\(index + 1)")
+                                        } else {
+                                            Text("\(split.distance.removeTrailingZeros()) mi")
+                                        }
                                     }
+
+                                    GridRow {
+                                        Text("\(FormattingUtils.secondsToFormattedTime(split.time))")
+                                    }
+
+                                    ActivitySplitGraph(split: split, fastestSplit: activity.splits.min {
+                                        $0.pace < $1.pace
+                                    })
                                 }
-                                .padding(.bottom, 10)
                             }
                         }
                     }
