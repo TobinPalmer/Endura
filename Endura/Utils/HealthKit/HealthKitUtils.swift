@@ -19,16 +19,13 @@ public enum HealthKitUtils {
             HKObjectType.quantityType(forIdentifier: .stepCount)!,
             HKObjectType.quantityType(forIdentifier: .heartRate)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKObjectType.quantityType(forIdentifier: .runningPower)!,
+            HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!,
+            HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!,
+            HKObjectType.quantityType(forIdentifier: .runningStrideLength)!,
         ]
 
         var typesToRead: Set<HKObjectType> = baseTypesToRead
-
-        if #available(iOS 16.0, *) {
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningPower)!)
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!)
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!)
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningStrideLength)!)
-        }
 
         healthStore.requestAuthorization(toShare: nil, read: typesToRead) { _, error in
             if let error = error {
