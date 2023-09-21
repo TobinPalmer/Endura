@@ -14,28 +14,28 @@ struct SettingsView: View {
 
                     NavigationLink(destination: List {
                         Section(footer: Text("This will disable all notifications from Endura.")) {
-                            Toggle(isOn: $activeUser.settings.notifications) {
+                            Toggle(isOn: $activeUser.settings.data.notifications) {
                                 Label("Notifications", systemImage: "bell")
                             }
                         }
 
                         Section(header: Text("Social")) {
-                            Toggle(isOn: $activeUser.settings.notificationsFriendRequest) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsFriendRequest) {
                                 Label("Friend Request", systemImage: "person.badge.plus")
                             }
-                            Toggle(isOn: $activeUser.settings.notificationsFriendRequestAccepted) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsFriendRequestAccepted) {
                                 Label("Friend Request Accepted", systemImage: "person.fill.checkmark")
                             }
-                            Toggle(isOn: $activeUser.settings.notificationsNewLike) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsNewLike) {
                                 Label("New Like", systemImage: "hand.thumbsup")
                             }
-                            Toggle(isOn: $activeUser.settings.notificationsNewComment) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsNewComment) {
                                 Label("New Comment", systemImage: "bubble.left")
                             }
                         }
 
                         Section(header: Text("Training")) {
-                            Toggle(isOn: $activeUser.settings.notificationsDailyTrainingPlan) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsDailyTrainingPlan) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Label("Daily Training Plan", systemImage: "calendar")
                                     Text("Receive your daily training plan at the start of each day.")
@@ -43,7 +43,7 @@ struct SettingsView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
-                            Toggle(isOn: $activeUser.settings.notificationsDailySummary) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsDailySummary) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Label("Daily Summary", systemImage: "checklist.checked")
                                     Text("Receive a summary of your day at the end of each day.")
@@ -51,10 +51,10 @@ struct SettingsView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
-                            Toggle(isOn: $activeUser.settings.notificationsFinishedActivity) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsFinishedActivity) {
                                 Label("Finished Activity", systemImage: "figure.run")
                             }
-                            Toggle(isOn: $activeUser.settings.notificationsPostRunReminder) {
+                            Toggle(isOn: $activeUser.settings.data.notificationsPostRunReminder) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Label("Post Run Reminder", systemImage: "figure.strengthtraining.functional")
                                     Text("Receive a reminder to do your post run exercises after each run.")
@@ -97,7 +97,7 @@ struct SettingsView: View {
                     NavigationLink(destination: VStack {
                         List {
                             Section {
-                                Picker(selection: $activeUser.settings.defaultActivityVisibility, label: Text("Default Activity Visibility")) {
+                                Picker(selection: $activeUser.settings.data.defaultActivityVisibility, label: Text("Default Activity Visibility")) {
                                     Text("Everyone").tag(ActivityVisibility.everyone)
                                     Text("Friends").tag(ActivityVisibility.friends)
                                     Text("Private").tag(ActivityVisibility.none)

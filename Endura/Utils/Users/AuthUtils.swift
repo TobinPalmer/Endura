@@ -13,7 +13,7 @@ public enum AuthUtils {
                 let uid = user.uid
                 do {
                     try Firestore.firestore().collection("users").document(uid).setData(from: userData)
-                    let defaultSettings = SettingsModel(
+                    let defaultSettings = SettingsDataModel(
                         notifications: true,
                         notificationsFriendRequest: true,
                         notificationsFriendRequestAccepted: true,

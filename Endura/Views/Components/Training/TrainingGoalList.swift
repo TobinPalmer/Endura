@@ -24,7 +24,7 @@ struct TrainingGoalList: View {
                 }
             }
             .padding()
-            let trainingDay = activeUser.getTrainingDay(selectedDate)
+            let trainingDay = activeUser.training.getTrainingDay(selectedDate)
             Text("Day: \(trainingDay.type.rawValue)").foregroundColor(trainingDay.type.getColor())
             if trainingDay.goals.isEmpty {
                 Text("No goals for \(isToday ? "today" : "this day")")

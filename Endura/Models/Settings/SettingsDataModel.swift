@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SettingsModel: Codable, Cacheable {
+public struct SettingsDataModel: Codable, Cacheable {
     public var notifications: Bool
     public var notificationsFriendRequest: Bool
     public var notificationsFriendRequestAccepted: Bool
@@ -25,8 +25,8 @@ public struct SettingsModel: Codable, Cacheable {
         cache.defaultActivityVisibility = defaultActivityVisibility.rawValue
     }
 
-    public static func fromCache(_ cache: SettingsCache) -> SettingsModel {
-        SettingsModel(
+    public static func fromCache(_ cache: SettingsCache) -> SettingsDataModel {
+        SettingsDataModel(
             notifications: cache.notifications,
             notificationsFriendRequest: cache.notificationsFriendRequest,
             notificationsFriendRequestAccepted: cache.notificationsFriendRequestAccepted,
