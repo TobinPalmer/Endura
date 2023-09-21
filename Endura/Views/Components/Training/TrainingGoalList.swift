@@ -30,10 +30,8 @@ struct TrainingGoalList: View {
                 Text("No goals for \(isToday ? "today" : "this day")")
             } else {
                 VStack {
-                    ScrollView {
-                        ForEach(trainingDay.goals, id: \.self) { goal in
-                            TrainingGoal(goal)
-                        }
+                    ForEach(trainingDay.goals, id: \.self) { goal in
+                        TrainingGoal(goal)
                     }
                 }
                 .padding(20)

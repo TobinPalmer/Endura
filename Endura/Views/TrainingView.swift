@@ -11,10 +11,10 @@ struct TrainingView: View {
     @ObservedObject var controller = CalendarController()
 
     var body: some View {
-        VStack {
-            Text("Training View")
+        ScrollView {
             TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
             TrainingGoalList(selectedDate: $viewModel.selectedDate)
         }
+        .navigationBarTitle("Training")
     }
 }
