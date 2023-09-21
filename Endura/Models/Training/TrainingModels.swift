@@ -8,15 +8,35 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
         pace: Double,
         time: Double
     )
-    case postRun(
-        type: PostRunType,
+    case routine(
+        type: RoutineType,
+        difficulty: RoutineDifficulty,
         time: Double,
         count: Int
     )
-    case warmup(
-        time: Double,
-        count: Int
-    )
+
+    public func getTitle() -> String {
+        switch self {
+        case let .run(type, _, _, _):
+            return type.rawValue
+        case let .routine(type, _, _, _):
+            return type.rawValue
+        }
+    }
+
+    public func getIcon() -> String {
+        switch self {
+        case .run:
+            return "figure.run"
+        case let .routine(type, _, _, _):
+            switch type {
+            case .warmup:
+                return "figure.cooldown"
+            case .postrun:
+                return "figure.strengthtraining.functional"
+            }
+        }
+    }
 
     func updateCache(_ cache: TrainingGoalCache) {
         switch self {
@@ -26,13 +46,10 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
             cache.distance = distance
             cache.pace = pace
             cache.time = time
-        case let .postRun(type, time, count):
-            cache.goalType = "postRun"
+        case let .routine(type, difficulty, time, count):
+            cache.goalType = "routine"
             cache.type = type.rawValue
-            cache.time = time
-            cache.count = Int16(count)
-        case let .warmup(time, count):
-            cache.type = "warmup"
+            cache.difficulty = difficulty.rawValue
             cache.time = time
             cache.count = Int16(count)
         }
@@ -47,14 +64,10 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
                 pace: cache.pace,
                 time: cache.time
             )
-        case "postRun":
-            return .postRun(
-                type: PostRunType(rawValue: cache.type ?? "none") ?? .none,
-                time: cache.time,
-                count: Int(cache.count)
-            )
-        case "warmup":
-            return .warmup(
+        case "routine":
+            return .routine(
+                type: RoutineType(rawValue: cache.type ?? "none") ?? .postrun,
+                difficulty: RoutineDifficulty(rawValue: cache.difficulty ?? "none") ?? .medium,
                 time: cache.time,
                 count: Int(cache.count)
             )

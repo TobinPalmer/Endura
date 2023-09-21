@@ -25,7 +25,12 @@ public struct PostRunExercise: Hashable {
     var parameter: PostRunExerciseParameter
 }
 
-public enum PostRunType: String, Codable {
+public enum RoutineType: String, Codable {
+    case warmup = "Warm Up"
+    case postrun = "Post Run"
+}
+
+public enum RoutineDifficulty: String, Codable {
     case easy = "Easy"
     case medium = "Medium"
     case hard = "Hard"

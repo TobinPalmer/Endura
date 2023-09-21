@@ -11,47 +11,27 @@ struct TrainingGoal: View {
     var body: some View {
         HStack {
             ZStack {
-                switch goal {
-                case .warmup:
-                    Image(systemName: "figure.cooldown")
-                case .run:
-                    Image(systemName: "figure.run")
-                case .postRun:
-                    Image(systemName: "figure.strengthtraining.functional")
-                }
+                Image(systemName: goal.getIcon())
             }
             VStack(alignment: .leading) {
-                switch goal {
-                case .run:
-                    Text("Run")
-                case .postRun:
-                    Text("Post Run")
-                case .warmup:
-                    Text("Warm Up")
-                }
+                Text(goal.getTitle())
 
                 switch goal {
-                case let .run(dificulty, distance, time, pace):
-                    VStack {
+                case let .run(type, distance, time, pace):
+                    VStack(alignment: .leading) {
                         Text("\(distance.removeTrailingZeros()) Miles")
                         Text("\(time.removeTrailingZeros()) Minutes")
                         Text("\(pace.removeTrailingZeros()) Minutes/Mile")
-                        Text("\(dificulty.rawValue)")
+                        Text("\(type.rawValue)")
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                case let .postRun(_, time, _):
-                    HStack {
+                case let .routine(_, _, time, _):
+                    VStack(alignment: .leading) {
                         Text("\(time.removeTrailingZeros()) Minutes")
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                case let .warmup(time, _):
-                    HStack {
-                        Text("\(time.removeTrailingZeros()) Minutes")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(26)
         .EnduraDefaultBox()
     }

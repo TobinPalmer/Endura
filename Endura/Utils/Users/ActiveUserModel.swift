@@ -52,17 +52,20 @@ import SwiftUICalendar
         }
 
         monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days: [
-            .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.warmup(
-                    time: 32,
-                    count: 1
+            .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.routine(
+                    type: .warmup,
+                    difficulty: .easy,
+                    time: 4,
+                    count: 5
                 ),
                 .run(type: .normal,
                      distance: 5.03,
                      pace: 7,
                      time: 32),
-                .postRun(type: .medium,
-                         time: 32,
-                         count: 1)]),
+                .routine(type: .postrun,
+                         difficulty: .easy,
+                         time: 8,
+                         count: 10)]),
             .current.addDay(value: -6): DailyTrainingData(date: .current.addDay(value: -6), type: .workout, goals: []),
             .current.addDay(value: -5): DailyTrainingData(date: .current.addDay(value: -5), type: .easy, goals: [TrainingGoalData.run(
                 type: .normal,
