@@ -91,6 +91,8 @@ struct ActivityGridStats: View {
                         ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
                     }
 
+                    ActivityStatsVLine()
+
                     ActivityStatsSection {
                         ActivityStatsDiscriptionText("Calories")
                         ActivityStatsValueText("\(activityData.calories.truncate(places: 0).removeTrailingZeros()) cal")
@@ -101,6 +103,10 @@ struct ActivityGridStats: View {
                     ActivityStatsSection {
                         ActivityStatsDiscriptionText("Elapsed Time")
                         ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.totalDuration))")
+                    }
+
+                    if let averagePower = activityData.averagePower, averagePower > 0 {
+                        ActivityStatsVLine()
                     }
 
                     ActivityStatsSection {
