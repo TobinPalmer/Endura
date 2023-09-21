@@ -51,24 +51,22 @@ struct ActivityView: View {
                             let fastestSplit = activity.splits.min {
                                 $0.pace < $1.pace
                             }
-                            let slowestSplit = activity.splits.max {
-                                $0.pace < $1.pace
-                            }
                             ForEach(activity.splits, id: \.self) { split in
                                 HStack {
-                                    Text("\(split.distance.removeTrailingZeros()) mi")
+//                  Text("\(split.distance.removeTrailingZeros()) mi")
 //                                    Text("Pace: \(FormattingUtils.secondsToFormattedTime(split.pace))")
-//                                    Text("Time: \(FormattingUtils.secondsToFormattedTime(split.time))")
+//                  Text("Time: \(FormattingUtils.secondsToFormattedTime(split.time))")
 
-                                    ZStack {
+                                    ZStack(alignment: .leading) {
                                         Rectangle()
                                             .frame(width: 200, height: 20)
                                             .foregroundColor(.red)
 
                                         let width = min(200, 200 * CGFloat(fastestSplit!.pace / split.pace))
+                                        let _ = print(width)
 
                                         Rectangle()
-                                            .frame(width: width, height: 20, alignment: .leading)
+                                            .frame(maxWidth: width)
                                             .foregroundColor(.green)
                                     }
                                 }
