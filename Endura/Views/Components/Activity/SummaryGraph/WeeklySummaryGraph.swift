@@ -47,62 +47,58 @@ struct WeeklySummaryGraph: View {
     public var body: some View {
         VStack {
             Text("Weekly Summary Graph")
-            if #available(iOS 16.0, *) {
-                Chart {
-                    ForEach(data, id: \.self) { data in
-                        BarMark(
-                            x: .value("Week", data.day.rawValue),
-                            y: .value("Miles", data.distance)
-                        )
-                    }
+            Chart {
+                ForEach(data, id: \.self) { data in
+                    BarMark(
+                        x: .value("Week", data.day.rawValue),
+                        y: .value("Miles", data.distance)
+                    )
                 }
-                .chartOverlay { proxy in
-                    GeometryReader { geometry in
-                        Rectangle().fill(.clear).contentShape(Rectangle())
-                            .gesture(
-                                DragGesture()
-                                    .onChanged { value in
-                                        let origin = geometry[proxy.plotAreaFrame].origin
-                                        let location = CGPoint(
-                                            x: value.location.x - origin.x,
-                                            y: value.location.y - origin.y
-                                        )
-                                        let (day, distance) = proxy.value(at: location, as: (String, Double).self) ?? ("", 0)
-                                        viewModel.day = Day(rawValue: day) ?? .monday
-                                        viewModel.location = location
-                                    }
-                            )
-                    }
+            }
+            .chartOverlay { proxy in
+                GeometryReader { geometry in
+                    Rectangle().fill(.clear).contentShape(Rectangle())
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    let origin = geometry[proxy.plotAreaFrame].origin
+                                    let location = CGPoint(
+                                        x: value.location.x - origin.x,
+                                        y: value.location.y - origin.y
+                                    )
+                                    let (day, _) = proxy.value(at: location, as: (String, Double).self) ?? ("", 0)
+                                    viewModel.day = Day(rawValue: day) ?? .monday
+                                    viewModel.location = location
+                                }
+                        )
+                }
 
-                    let graphWidth = proxy.plotAreaSize.width
-                    let textPosition: Double
-                    switch viewModel.day {
-                    case .monday:
-                        let _ = textPosition = graphWidth / 7 * 2
-                    case .tuesday:
-                        let _ = textPosition = graphWidth / 7 * 2
-                    case .wednesday:
-                        let _ = textPosition = graphWidth / 7 * 2
-                    case .thursday:
-                        let _ = textPosition = graphWidth / 7 * 3
-                    case .friday:
-                        let _ = textPosition = graphWidth / 7 * 4
-                    case .saturday:
-                        let _ = textPosition = graphWidth / 7 * 5
-                    case .sunday:
-                        let _ = textPosition = graphWidth / 7 * 5.5
-                    }
-                    Text("\(viewModel.day.rawValue): \(data.first(where: { $0.day == viewModel.day })?.distance ?? 0, specifier: "%.2f") miles")
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .position(
-                            x: textPosition,
-                            y: 50
-                        )
-                        .font(.title3)
-                        .fontWeight(.semibold)
+                let graphWidth = proxy.plotAreaSize.width
+                let textPosition: Double
+                switch viewModel.day {
+                case .monday:
+                    let _ = textPosition = graphWidth / 7 * 2
+                case .tuesday:
+                    let _ = textPosition = graphWidth / 7 * 2
+                case .wednesday:
+                    let _ = textPosition = graphWidth / 7 * 2
+                case .thursday:
+                    let _ = textPosition = graphWidth / 7 * 3
+                case .friday:
+                    let _ = textPosition = graphWidth / 7 * 4
+                case .saturday:
+                    let _ = textPosition = graphWidth / 7 * 5
+                case .sunday:
+                    let _ = textPosition = graphWidth / 7 * 5.5
                 }
-            } else {
-                Text("This week you ran 27.8 miles")
+                Text("\(viewModel.day.rawValue): \(data.first(where: { $0.day == viewModel.day })?.distance ?? 0, specifier: "%.2f") miles")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .position(
+                        x: textPosition,
+                        y: 50
+                    )
+                    .font(.title3)
+                    .fontWeight(.semibold)
             }
         }
     }

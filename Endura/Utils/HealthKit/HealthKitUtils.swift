@@ -13,7 +13,7 @@ public enum HealthKitUtils {
     private static let healthStore = HKHealthStore()
 
     public static func requestAuthorization() {
-        let baseTypesToRead: Set<HKObjectType> = [
+        let typesToRead: Set<HKObjectType> = [
             HKObjectType.workoutType(),
             HKSeriesType.workoutRoute(),
             HKObjectType.quantityType(forIdentifier: .stepCount)!,
@@ -24,8 +24,6 @@ public enum HealthKitUtils {
             HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!,
             HKObjectType.quantityType(forIdentifier: .runningStrideLength)!,
         ]
-
-        var typesToRead: Set<HKObjectType> = baseTypesToRead
 
         healthStore.requestAuthorization(toShare: nil, read: typesToRead) { _, error in
             if let error = error {
@@ -47,20 +45,17 @@ public enum HealthKitUtils {
     }
 
     public static func isAuthorized() -> Bool {
-        var typesToRead: Set<HKObjectType> = [
+        let typesToRead: Set<HKObjectType> = [
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKObjectType.quantityType(forIdentifier: .heartRate)!,
+            HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!,
+            HKObjectType.quantityType(forIdentifier: .runningPower)!,
+            HKObjectType.quantityType(forIdentifier: .runningStrideLength)!,
+            HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!,
+            HKObjectType.quantityType(forIdentifier: .stepCount)!,
             HKObjectType.workoutType(),
             HKSeriesType.workoutRoute(),
-            HKObjectType.quantityType(forIdentifier: .stepCount)!,
-            HKObjectType.quantityType(forIdentifier: .heartRate)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
         ]
-
-        if #available(iOS 16.0, *) {
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningPower)!)
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!)
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!)
-            typesToRead.insert(HKObjectType.quantityType(forIdentifier: .runningStrideLength)!)
-        }
 
         for type in typesToRead {
             if healthStore.authorizationStatus(for: type) == .notDetermined {
@@ -244,23 +239,21 @@ public enum HealthKitUtils {
         let heartRate = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .heartRate, unit: .string("count/min"), dataType: HeartRateData.self)
         let cadence = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .stepCount, options: [.cumulativeSum, .separateBySource], unit: .unit(.count()), dataType: CadenceData.self)
 
-        var groundContactTime: [GroundContactTimeData]? = nil
-        var power: [PowerData]? = nil
-        var strideLength: [StrideLengthData]? = nil
-        var verticalOscillation: [VerticalOscillationData]? = nil
-        if #available(iOS 16.0, *) {
-            groundContactTime = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningGroundContactTime, unit: .unit(.secondUnit(with: .milli)), dataType: GroundContactTimeData.self)
-            power = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningPower, unit: .unit(.watt()), dataType: PowerData.self)
-            strideLength = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningStrideLength, unit: .unit(.meter()), dataType: StrideLengthData.self)
-            verticalOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticalOscillationData.self)
-        }
+//    var groundContactTime: [GroundContactTimeData]? = nil
+//    var power: [PowerData]? = nil
+//    var strideLength: [StrideLengthData]? = nil
+//    var verticalOscillation: [VerticalOscillationData]? = nil
+        let groundContactTime = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningGroundContactTime, unit: .unit(.secondUnit(with: .milli)), dataType: GroundContactTimeData.self)
+        let power = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningPower, unit: .unit(.watt()), dataType: PowerData.self)
+        let strideLength = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningStrideLength, unit: .unit(.meter()), dataType: StrideLengthData.self)
+        let verticalOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticalOscillationData.self)
 
         let heartRateDict = Dictionary(grouping: heartRate, by: { $0.timestamp })
         let cadenceDict = Dictionary(grouping: cadence, by: { $0.timestamp })
-        let powerDict = Dictionary(grouping: power ?? [], by: { $0.timestamp })
-        let verticalOscillationDict = Dictionary(grouping: verticalOscillation ?? [], by: { $0.timestamp })
-        let groundContactTimeDict = Dictionary(grouping: groundContactTime ?? [], by: { $0.timestamp })
-        let strideLengthDict = Dictionary(grouping: strideLength ?? [], by: { $0.timestamp })
+        let powerDict = Dictionary(grouping: power, by: { $0.timestamp })
+        let verticalOscillationDict = Dictionary(grouping: verticalOscillation, by: { $0.timestamp })
+        let groundContactTimeDict = Dictionary(grouping: groundContactTime, by: { $0.timestamp })
+        let strideLengthDict = Dictionary(grouping: strideLength, by: { $0.timestamp })
 
         let allTimestamps = Array(Set(heartRateDict.keys)
             .union(cadenceDict.keys)
@@ -452,12 +445,11 @@ public enum HealthKitUtils {
             }
         }
 
-        let workoutData = try await ActivityDataWithRoute(
-            averagePower: power?.isEmpty ?? true
-                ? nil
-                : power!.reduce(0) {
-                    $0 + $1.power
-                } / Double(power!.count),
+        let workoutData = try await ActivityDataWithRoute(averagePower: power.isEmpty
+            ? nil
+            : power.reduce(0) {
+                $0 + $1.power
+            } / Double(power.count),
             calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
             comments: [],
             data: ActivityRouteData(
@@ -479,8 +471,7 @@ public enum HealthKitUtils {
             title: "",
             totalDuration: workout.startDate.distance(to: workout.endDate),
             uid: AuthUtils.getCurrentUID(),
-            visibility: .friends
-        )
+            visibility: .friends)
 
         return workoutData
     }
