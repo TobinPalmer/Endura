@@ -56,10 +56,6 @@ struct DashboardView: View {
             }
             .frame(width: 200, height: 200)
 
-//            RiveViewModel(
-//                webURL: "https://cdn.rive.app/animations/off_road_car_v7.riv"
-//            ).view()
-
             TrainingGoalList()
         }
         .padding(5)
@@ -73,7 +69,7 @@ struct DashboardView: View {
                 NavigationLink(destination: NotificationsView()) {
                     Image("bell")
                         .resizable()
-                        .frame(width: 50, height: 50)
+                        .frame(width: 35, height: 35)
                         .overlay(
                             NotificationCountView(value: $notificationsModel.unreadCount)
                         )

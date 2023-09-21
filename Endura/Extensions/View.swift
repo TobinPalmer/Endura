@@ -21,8 +21,9 @@ public extension View {
     func EnduraDefaultBox() -> some View {
         cornerRadius(16)
             .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .stroke(Color(hex: "D5D9DE"), lineWidth: 2)
+                RoundedRectangle(cornerRadius: 16)
+                    .inset(by: 1)
+                    .strokeBorder(Color(hex: "D5D9DE"), lineWidth: 2, antialiased: true)
             )
     }
 }
