@@ -47,25 +47,6 @@ struct ActivityView: View {
                         .padding(.top, 10)
                         .padding(.bottom, 20)
 
-//            VStack {
-//              let fastestSplit = activity.splits.min {
-//                $0.pace < $1.pace
-//              }
-//              ForEach(activity.splits, id: \.self) { split in
-//                HStack {
-//                  VStack {
-//                    Text("\(split.distance.removeTrailingZeros()) mi")
-//                    Text("Time: \(FormattingUtils.secondsToFormattedTime(split.time))")
-//                  }
-//                    .border(.red)
-//
-//                  ActivitySplitGraph(split: split, fastestSplit: fastestSplit)
-//                }
-//                  .padding(.bottom, 10)
-//              }
-//            }
-//              .border(.blue)
-
                         Grid {
                             ForEach(Array(activity.splits.enumerated()), id: \.1) { index, split in
                                 GridRow {
