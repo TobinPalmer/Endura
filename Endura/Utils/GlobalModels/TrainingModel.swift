@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUICalendar
 
-public final class TrainingModel: ObservableObject {
+@MainActor public final class TrainingModel: ObservableObject {
     @Published public var monthlyTrainingData: [YearMonth: MonthlyTrainingData] = [:] {
         didSet {
             for (date, data) in monthlyTrainingData {
@@ -43,7 +43,7 @@ public final class TrainingModel: ObservableObject {
             )]),
         ])
 
-        loadMonth(.current)
+//        loadMonth(.current)
     }
 
     public func loadMonth(_ date: YearMonth) {
