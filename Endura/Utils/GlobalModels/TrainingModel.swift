@@ -43,7 +43,7 @@ import SwiftUICalendar
             )]),
         ])
 
-//        loadMonth(.current)
+        loadMonth(.current)
     }
 
     public func loadMonth(_ date: YearMonth) {
@@ -54,7 +54,11 @@ import SwiftUICalendar
                 Task {
                     let data = await TrainingUtils.getTrainingMonthData(date)
                     DispatchQueue.main.async {
-                        self.monthlyTrainingData[date] = data
+                        if let data = data {
+                            self.monthlyTrainingData[data.date] = data
+                        } else if self.monthlyTrainingData[date] == nil {
+                            self.monthlyTrainingData[date] = MonthlyTrainingData(date: date, totalDistance: 0, totalDuration: 0, days: [:])
+                        }
                     }
                 }
             }

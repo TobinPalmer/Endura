@@ -10,11 +10,11 @@ public enum TrainingUtils {
         let summaryData = DailySummaryData(distance: activity.distance, duration: activity.duration, activities: [activity.uid])
     }
 
-    public static func getTrainingMonthData(_ date: YearMonth) async -> MonthlyTrainingData {
+    public static func getTrainingMonthData(_ date: YearMonth) async -> MonthlyTrainingData? {
         do {
             let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training").document("\(date.year)-\(date.month)").getDocument()
             if !document.exists {
-                return MonthlyTrainingData(date: date, totalDistance: 0, totalDuration: 0, days: [:])
+                return nil
             }
 
             let monthDocument = try document.data(as: MonthlyTrainingDataDocument.self)
@@ -38,6 +38,6 @@ public enum TrainingUtils {
         } catch {
             Global.log.error("Error getting training month data: \(error)")
         }
-        return MonthlyTrainingData(date: date, totalDistance: 0, totalDuration: 0, days: [:])
+        return nil
     }
 }
