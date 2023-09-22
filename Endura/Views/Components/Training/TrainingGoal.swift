@@ -10,24 +10,36 @@ struct TrainingGoal: View {
 
     var body: some View {
         HStack {
-            ZStack {
-                Image(systemName: goal.getIcon())
-            }
-            VStack(alignment: .leading) {
-                Text(goal.getTitle())
-
+            Image(systemName: goal.getIcon())
+                .background(
+                    RoundedRectangle(cornerRadius: 50)
+                        .foregroundColor(goal.getColor())
+                        .frame(width: 50, height: 50)
+                )
+                .frame(width: 50, height: 50)
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(goal.getTitle())
+                    switch goal {
+                    case let .run(_, distance, _, _):
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("\(distance.removeTrailingZeros()) Miles")
+                            }
+                        }
+                    case let .routine(_, _, time, _):
+                        VStack(alignment: .leading) {
+                            Text("\(time.removeTrailingZeros()) Minutes")
+                        }
+                    }
+                }
+                Spacer()
                 switch goal {
-                case let .run(type, distance, time, pace):
-                    VStack(alignment: .leading) {
-                        Text("\(distance.removeTrailingZeros()) Miles")
-                        Text("\(time.removeTrailingZeros()) Minutes")
-                        Text("\(pace.removeTrailingZeros()) Minutes/Mile")
-                        Text("\(type.rawValue)")
-                    }
-                case let .routine(_, _, time, _):
-                    VStack(alignment: .leading) {
-                        Text("\(time.removeTrailingZeros()) Minutes")
-                    }
+                case let .routine(_, _, time, _),
+                     let .run(_, _, time, _):
+                    Text("\(time.removeTrailingZeros()) Minutes")
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 50).foregroundColor(.blue))
                 }
             }
         }

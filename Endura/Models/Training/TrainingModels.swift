@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import SwiftUICalendar
 
 public enum TrainingGoalData: Codable, Hashable, Cacheable {
@@ -34,6 +35,20 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
                 return "figure.cooldown"
             case .postrun:
                 return "figure.strengthtraining.functional"
+            }
+        }
+    }
+
+    public func getColor() -> Color {
+        switch self {
+        case .run:
+            return .blue
+        case let .routine(type, _, _, _):
+            switch type {
+            case .warmup:
+                return .green
+            case .postrun:
+                return .red
             }
         }
     }
