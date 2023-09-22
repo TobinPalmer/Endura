@@ -67,6 +67,7 @@ public enum CacheUtils {
         fetchRequest.predicate = predicate
         fetchRequest.fetchLimit = 1
         do {
+            context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
             try update(context.fetch(fetchRequest).first ?? T(context: context))
             try context.save()
         } catch {

@@ -19,8 +19,6 @@ public final class TrainingModel: ObservableObject {
             monthlyTrainingData[data.date] = data
         }
 
-        loadMonth(.current)
-
         monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days: [
             .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.routine(
                     type: .warmup,
@@ -44,6 +42,8 @@ public final class TrainingModel: ObservableObject {
                 time: 32
             )]),
         ])
+
+        loadMonth(.current)
     }
 
     public func loadMonth(_ date: YearMonth) {
