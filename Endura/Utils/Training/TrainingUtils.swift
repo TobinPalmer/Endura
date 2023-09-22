@@ -12,7 +12,12 @@ public enum TrainingUtils {
 
     public static func getTrainingMonthData(_ date: YearMonth) async -> MonthlyTrainingData {
         do {
-            let monthDocument = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training").document("\(date.year)-\(date.month)").getDocument(as: MonthlyTrainingDataDocument.self)
+            let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training").document("\(date.year)-\(date.month)").getDocument()
+            if !document.exists {
+                return MonthlyTrainingData(date: date, totalDistance: 0, totalDuration: 0, days: [:])
+            }
+
+            let monthDocument = try document.data(as: MonthlyTrainingDataDocument.self)
 
             var dailyTrainingData: [YearMonthDay: DailyTrainingData] = [:]
             for (day, dailyData) in monthDocument.days {

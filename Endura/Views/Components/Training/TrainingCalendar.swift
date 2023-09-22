@@ -54,12 +54,10 @@ struct TrainingCalender: View {
                 }
             })
             .onChange(of: controller.yearMonth) { newMonth in
-                if !viewModel.loadedMonths.contains(newMonth) {
-                    viewModel.loadedMonths.append(newMonth)
-                }
+                activeUser.training.loadMonth(newMonth)
             }
             .padding(5)
         }
-        .frame(width: .infinity, height: 400)
+        .frame(maxWidth: .infinity, minHeight: 400, maxHeight: 400)
     }
 }

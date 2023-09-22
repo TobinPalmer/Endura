@@ -10,12 +10,16 @@ public final class TrainingModel: ObservableObject {
         }
     }
 
+    @Published private var loadedMonths: [YearMonth] = []
+
     init() async throws {
         let cachedMonthlyTrainingData = CacheUtils.fetchListedObject(MonthlyTrainingCache.self)
         for cachedData in cachedMonthlyTrainingData {
             let data = MonthlyTrainingData.fromCache(cachedData)
             monthlyTrainingData[data.date] = data
         }
+
+        loadMonth(.current)
 
         monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days: [
             .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.routine(
@@ -42,6 +46,21 @@ public final class TrainingModel: ObservableObject {
         ])
     }
 
+    public func loadMonth(_ date: YearMonth) {
+        for i in -1 ... 1 {
+            let date = date.addMonth(value: i)
+            if !loadedMonths.contains(date) {
+                loadedMonths.append(date)
+                Task {
+                    let data = await TrainingUtils.getTrainingMonthData(date)
+                    DispatchQueue.main.async {
+                        self.monthlyTrainingData[date] = data
+                    }
+                }
+            }
+        }
+    }
+
     public func getTrainingDay(_ date: YearMonthDay) -> DailyTrainingData {
         if let data = monthlyTrainingData[date.getYearMonth()]?.days[date] {
             return data
@@ -49,4 +68,6 @@ public final class TrainingModel: ObservableObject {
             return DailyTrainingData(date: date, type: .none, goals: [])
         }
     }
+
+    public func processNewActivity(_: ActivityDataWithRoute) {}
 }

@@ -60,6 +60,7 @@ private final class PostUploadViewModel: ObservableObject {
 }
 
 struct PostUploadView: View {
+    @EnvironmentObject var activeUser: ActiveUserModel
     @Environment(\.dismiss) var dismiss
 
     @StateObject private var viewModel = PostUploadViewModel()
@@ -101,7 +102,7 @@ struct PostUploadView: View {
                     try ActivityUtils.uploadActivity(activity: activityData)
                 }
 
-                TrainingUtils.processUploadedActivity(activityData)
+                activeUser.training.processNewActivity(activityData)
             } catch {
                 Global.log.error("Error uploading activity: \(error)")
             }
