@@ -53,6 +53,10 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
         }
     }
 
+    public func getBackgroundColor() -> Color {
+        getColor().opacity(0.2)
+    }
+
     func updateCache(_ cache: TrainingGoalCache) {
         switch self {
         case let .run(type, distance, pace, time):

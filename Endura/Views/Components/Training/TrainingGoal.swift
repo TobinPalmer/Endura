@@ -13,8 +13,12 @@ struct TrainingGoal: View {
             Image(systemName: goal.getIcon())
                 .background(
                     RoundedRectangle(cornerRadius: 50)
-                        .foregroundColor(goal.getColor())
+                        .foregroundColor(goal.getBackgroundColor())
                         .frame(width: 50, height: 50)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 50)
+                                .stroke(goal.getColor(), lineWidth: 2)
+                        )
                 )
                 .frame(width: 50, height: 50)
             HStack {
@@ -39,7 +43,7 @@ struct TrainingGoal: View {
                      let .run(_, _, time, _):
                     Text("\(time.removeTrailingZeros()) Minutes")
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 50).foregroundColor(.blue))
+                        .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
                 }
             }
         }
