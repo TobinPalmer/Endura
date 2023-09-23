@@ -16,6 +16,16 @@ struct ProfileView: View {
     public var body: some View {
         VStack {
             HStack {
+                ProfileImage(AuthUtils.getCurrentUID(), size: 128)
+                    .padding(.horizontal, 8)
+
+                Text("Tobin Palmer")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            Divider()
+
+            HStack {
                 Button(action: {
                     viewModel.currentPage = .activities
                 }, label: {
@@ -35,18 +45,11 @@ struct ProfileView: View {
                 })
             }
 
-            Divider()
-
-            if viewModel.currentPage == .activities {
+            switch viewModel.currentPage {
+            case .activities:
                 Text("Activities")
-            } else {
-                HStack {
-                    ProfileImage(AuthUtils.getCurrentUID(), size: 128)
-                        .padding(.horizontal, 8)
-
-                    Text("Tobin Palmer")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
+            case .progress:
+                Text("Progress")
             }
 
             Spacer()
