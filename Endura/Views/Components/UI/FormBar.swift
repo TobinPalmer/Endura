@@ -11,12 +11,25 @@ struct FormBarView: View {
     }
 
     public var body: some View {
-        HStack {
-            ForEach(0 ..< steps, id: \.self) { index in
-                Circle()
-                    .frame(width: 10, height: 10)
-                    .foregroundColor(index <= progress ? .black : .gray)
+        ZStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(Color("BorderLight"))
+
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(Color.accentColor)
+                    .frame(width: 200 * CGFloat(progress) / CGFloat(steps), height: 30)
+                    .animation(.easeInOut, value: progress)
+
+                // Form bar highlight
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundColor(Color.white.opacity(0.2))
+                    .frame(width: (200 * CGFloat(progress) / CGFloat(steps)) - 20, height: 7)
+                    .offset(y: -5)
+                    .zIndex(1)
+                    .animation(.easeInOut, value: progress)
             }
         }
+        .frame(width: 200, height: 30)
     }
 }

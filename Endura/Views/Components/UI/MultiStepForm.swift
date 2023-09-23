@@ -1,20 +1,21 @@
 import Foundation
 import SwiftUI
 
-struct MultiStepForm: View {
-    @ObservedObject private var viewModel: SignupFormInfo
-    private let steps: [AnyView]
+struct MultiStepForm<T>: View where T: ObservableObject {
+    @ObservedObject private var viewModel: T
     @Binding private var currentPage: Int
 
-    init(_ steps: [AnyView], viewModel: SignupFormInfo, currentPage: Binding<Int>) {
+    private let steps: [AnyView]
+
+    init(_ steps: [AnyView], viewModel: T, currentPage: Binding<Int>) {
         self.steps = steps
         self.viewModel = viewModel
         _currentPage = currentPage
     }
 
-    var body: some View {
+    public var body: some View {
         VStack {
-            ProgressView(value: Double(currentPage), total: Double(steps.count))
+            FormBarView(progress: $currentPage, steps: steps.count)
 
             Spacer()
 
@@ -24,10 +25,6 @@ struct MultiStepForm: View {
                         steps[index]
                             .transition(.opacity)
                     }
-                }
-                if currentPage == steps.count {
-                    SignupFinishedView()
-                        .environmentObject(viewModel)
                 }
             }
         }
