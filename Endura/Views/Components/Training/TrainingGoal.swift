@@ -31,9 +31,9 @@ struct TrainingGoal: View {
                                 Text("\(distance.removeTrailingZeros()) Miles")
                             }
                         }
-                    case let .routine(_, _, time, _):
+                    case let .routine(_, _, _, count):
                         VStack(alignment: .leading) {
-                            Text("\(time.removeTrailingZeros()) Minutes")
+                            Text("\(count) Exercises")
                         }
                     }
                 }
