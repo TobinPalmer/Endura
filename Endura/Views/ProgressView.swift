@@ -43,6 +43,14 @@ struct ExampleStepView: View {
                     currentStep += 1
                 }
             }
+            .buttonStyle(EnduraButtonStyle(backgroundColor: .accentColor))
+
+            Button("Back") {
+                withAnimation {
+                    currentStep -= 1
+                }
+            }
+            .buttonStyle(EnduraButtonStyle(backgroundColor: .accentColor))
         }
     }
 }
