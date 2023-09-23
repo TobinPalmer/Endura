@@ -26,9 +26,16 @@ struct TrainingCalender: View {
                 }
                 .padding(8)
                 Spacer()
-                Text("\(controller.yearMonth.monthShortString), \(String(controller.yearMonth.year))")
-                    .font(.title)
-                    .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                HStack {
+                    Button {
+                        controller.scrollTo(.current, isAnimate: true)
+                    } label: {
+                        Image(systemName: "calendar").font(.title2)
+                    }
+                    Text("\(controller.yearMonth.monthShortString), \(String(controller.yearMonth.year))")
+                        .font(.title)
+                }
+                .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
                 Spacer()
                 Button("Next") {
                     controller.scrollTo(controller.yearMonth.addMonth(value: 1), isAnimate: true)
