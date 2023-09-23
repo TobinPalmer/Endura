@@ -40,7 +40,7 @@ struct TrainingCalender: View {
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }, component: { date in
-                let trainingDay = activeUser.training.getTrainingDay(date) ?? DailyTrainingData(date: date, type: .none, goals: [])
+                let trainingDay = activeUser.training.getTrainingDay(date)
 
                 ZStack {
                     Circle()
