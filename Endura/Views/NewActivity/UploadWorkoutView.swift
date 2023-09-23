@@ -88,6 +88,8 @@ struct PreviewWorkoutView: View {
 
                     ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: !activityData.data.routeData.isEmpty)
 
+                    ActivitySplitGraph(splits: activityData.splits)
+
                     VStack {
                         ActivityGraphsView(activityData).environmentObject(activityViewModel)
                     }

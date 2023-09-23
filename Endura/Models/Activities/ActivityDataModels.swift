@@ -108,6 +108,11 @@ public struct VerticalOscillationData: Codable, TimestampPoint {
     public let verticalOscillation: Double
 }
 
+public struct DistanceData: Codable, TimestampPoint {
+    public let timestamp: Date
+    public let distance: Double
+}
+
 protocol TimestampPoint: Codable {
     var timestamp: Date { get }
 }
@@ -115,8 +120,9 @@ protocol TimestampPoint: Codable {
 public struct ActivityMetricsData {
     public let heartRate: Double
     public let cadence: Double
-    public let power: Double?
-    public let groundContactTime: Double?
-    public let strideLength: Double?
-    public let verticalOscillation: Double?
+    public let power: Double
+    public let groundContactTime: Double
+    public let strideLength: Double
+    public let verticalOscillation: Double
+    public let distance: Double
 }

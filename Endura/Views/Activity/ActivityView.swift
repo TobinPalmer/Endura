@@ -47,27 +47,7 @@ struct ActivityView: View {
                         .padding(.top, 10)
                         .padding(.bottom, 20)
 
-                        Grid {
-                            ForEach(Array(activity.splits.enumerated()), id: \.1) { index, split in
-                                GridRow {
-                                    GridRow {
-                                        if split.distance.removeTrailingZeros() == "1" {
-                                            Text("\(index + 1)")
-                                        } else {
-                                            Text("\(split.distance.removeTrailingZeros()) mi")
-                                        }
-                                    }
-
-                                    GridRow {
-                                        Text("\(FormattingUtils.secondsToFormattedTime(split.time))")
-                                    }
-
-                                    ActivitySplitGraph(split: split, fastestSplit: activity.splits.min {
-                                        $0.pace < $1.pace
-                                    })
-                                }
-                            }
-                        }
+                        ActivitySplitGraph(splits: activityData.splits)
                     }
                     .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                 }
@@ -93,21 +73,34 @@ struct ActivityView: View {
             }
         }
         .sheet(isPresented: $analysisView) {
-            if let activityData = activityData {
+            NavigationView {
                 VStack {
-                    Text(activity.title)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if let activityData = activityData {
+                        VStack {
+                            Text(activity.title)
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .frame(maxWidth: .infinity, alignment: .leading)
 
-                    ActivityMap(activityData.data.routeData)
-                        .frame(height: 300)
+                            ActivityMap(activityData.data.routeData)
+                                .frame(height: 300)
 
-                    ScrollView {
-                        ActivityGraphsView(activityData)
+                            ScrollView {
+                                ActivityGraphsView(activityData)
+                            }
+                        }
+                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
                     }
                 }
-                .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            analysisView = false
+                        }) {
+                            Text("Done")
+                        }
+                    }
+                }
             }
         }
         .toolbar {

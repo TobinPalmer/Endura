@@ -12,20 +12,21 @@ private enum UnitType {
 public enum HealthKitUtils {
     private static let healthStore = HKHealthStore()
 
-    public static func requestAuthorization() {
-        let typesToRead: Set<HKObjectType> = [
-            HKObjectType.workoutType(),
-            HKSeriesType.workoutRoute(),
-            HKObjectType.quantityType(forIdentifier: .stepCount)!,
-            HKObjectType.quantityType(forIdentifier: .heartRate)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKObjectType.quantityType(forIdentifier: .runningPower)!,
-            HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!,
-            HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!,
-            HKObjectType.quantityType(forIdentifier: .runningStrideLength)!,
-        ]
+    private static let healthDataTypes: Set<HKObjectType> = [
+        HKObjectType.workoutType(),
+        HKSeriesType.workoutRoute(),
+        HKObjectType.quantityType(forIdentifier: .stepCount)!,
+        HKObjectType.quantityType(forIdentifier: .heartRate)!,
+        HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+        HKObjectType.quantityType(forIdentifier: .runningPower)!,
+        HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!,
+        HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!,
+        HKObjectType.quantityType(forIdentifier: .runningStrideLength)!,
+        HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+    ]
 
-        healthStore.requestAuthorization(toShare: nil, read: typesToRead) { _, error in
+    public static func requestAuthorization() {
+        healthStore.requestAuthorization(toShare: nil, read: healthDataTypes) { _, error in
             if let error = error {
                 Global.log.error("Authorization request failed: \(error.localizedDescription)")
                 return
@@ -45,19 +46,7 @@ public enum HealthKitUtils {
     }
 
     public static func isAuthorized() -> Bool {
-        let typesToRead: Set<HKObjectType> = [
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKObjectType.quantityType(forIdentifier: .heartRate)!,
-            HKObjectType.quantityType(forIdentifier: .runningGroundContactTime)!,
-            HKObjectType.quantityType(forIdentifier: .runningPower)!,
-            HKObjectType.quantityType(forIdentifier: .runningStrideLength)!,
-            HKObjectType.quantityType(forIdentifier: .runningVerticalOscillation)!,
-            HKObjectType.quantityType(forIdentifier: .stepCount)!,
-            HKObjectType.workoutType(),
-            HKSeriesType.workoutRoute(),
-        ]
-
-        for type in typesToRead {
+        for type in healthDataTypes {
             if healthStore.authorizationStatus(for: type) == .notDetermined {
                 return false
             }
@@ -247,6 +236,7 @@ public enum HealthKitUtils {
         let power = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningPower, unit: .unit(.watt()), dataType: PowerData.self)
         let strideLength = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningStrideLength, unit: .unit(.meter()), dataType: StrideLengthData.self)
         let verticalOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticalOscillationData.self)
+        let distance = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .distanceWalkingRunning, options: [.cumulativeSum], unit: .unit(.meter()), dataType: DistanceData.self)
 
         let heartRateDict = Dictionary(grouping: heartRate, by: { $0.timestamp })
         let cadenceDict = Dictionary(grouping: cadence, by: { $0.timestamp })
@@ -254,13 +244,15 @@ public enum HealthKitUtils {
         let verticalOscillationDict = Dictionary(grouping: verticalOscillation, by: { $0.timestamp })
         let groundContactTimeDict = Dictionary(grouping: groundContactTime, by: { $0.timestamp })
         let strideLengthDict = Dictionary(grouping: strideLength, by: { $0.timestamp })
+        let distanceDict = Dictionary(grouping: distance, by: { $0.timestamp })
 
         let allTimestamps = Array(Set(heartRateDict.keys)
             .union(cadenceDict.keys)
             .union(powerDict.keys)
             .union(verticalOscillationDict.keys)
             .union(groundContactTimeDict.keys)
-            .union(strideLengthDict.keys))
+            .union(strideLengthDict.keys)
+            .union(distanceDict.keys))
 
         // A dictionary of the combined workout metrics at each second
         var workoutMetrics: [Int: ActivityMetricsData] = [:]
@@ -272,14 +264,16 @@ public enum HealthKitUtils {
             let verticalOscillationPoint = verticalOscillationDict[timestamp]?.first
             let groundContactTimePoint = groundContactTimeDict[timestamp]?.first
             let strideLengthPoint = strideLengthDict[timestamp]?.first
+            let distancePoint = distanceDict[timestamp]?.first
 
             workoutMetrics[Int(timestamp.timeIntervalSince1970)] = ActivityMetricsData(
                 heartRate: heartRatePoint?.heartRate ?? 0.0,
                 cadence: cadencePoint?.cadence ?? 0.0,
-                power: powerPoint?.power,
-                groundContactTime: groundContactTimePoint?.groundContactTime,
-                strideLength: strideLengthPoint?.strideLength,
-                verticalOscillation: verticalOscillationPoint?.verticalOscillation
+                power: powerPoint?.power ?? 0.0,
+                groundContactTime: groundContactTimePoint?.groundContactTime ?? 0.0,
+                strideLength: strideLengthPoint?.strideLength ?? 0.0,
+                verticalOscillation: verticalOscillationPoint?.verticalOscillation ?? 0.0,
+                distance: distancePoint?.distance ?? 0.0
             )
         }
 
@@ -301,9 +295,10 @@ public enum HealthKitUtils {
             var verticalOscillationAtPoint: Double?
             var groundContactTimeAtPoint: Double?
             var strideLengthAtPoint: Double?
+            var distanceAtPoint: Double?
 
             var previousPoint: CLLocation?
-            var totalDistance = 0.0
+            var distanceValue = 0.0
             var mileTime = 0.0
             let mileDistance = 1609.34
 
@@ -315,17 +310,17 @@ public enum HealthKitUtils {
                     let distance = previousPoint.distance(from: currentLocation)
                     let time = point.timestamp.timeIntervalSince(previousPoint.timestamp).rounded()
                     if time > 0 && time < 5 {
-                        totalDistance += distance
+                        distanceValue += distance
                         mileTime += time
                     }
 
-                    if totalDistance >= mileDistance {
+                    if distanceValue >= mileDistance {
                         mileSplits.append(ActivitySplitsData(distance: 1, time: mileTime, pace: mileTime))
-                        totalDistance -= mileDistance
+                        distanceValue -= mileDistance
                         mileTime = 0
                     } else if i == data.count - 1 {
-                        let partialDistance = (totalDistance / 1609.34).rounded(toPlaces: 1)
-                        if partialDistance > 0.1 {
+                        let partialDistance = (distanceValue / 1609.34).rounded(toPlaces: 2)
+                        if partialDistance >= 0.1 {
                             let estimatedPace = (mileTime / partialDistance).rounded()
                             mileSplits.append(ActivitySplitsData(distance: partialDistance, time: mileTime, pace: estimatedPace))
                         }
@@ -341,6 +336,7 @@ public enum HealthKitUtils {
                     verticalOscillationAtPoint = metricsAtPoint.verticalOscillation
                     groundContactTimeAtPoint = metricsAtPoint.groundContactTime
                     strideLengthAtPoint = metricsAtPoint.strideLength
+                    distanceAtPoint = metricsAtPoint.distance
                 }
 
                 let routePoint = RouteData(
@@ -504,7 +500,6 @@ public enum HealthKitUtils {
         results.enumerateStatistics(from: workout.startDate, to: workout.endDate) { statistics, _ in
             if let sumQuantity = statistics.sumQuantity() {
                 let duration = statistics.endDate.timeIntervalSince(statistics.startDate)
-                let averageCadence = sumQuantity.doubleValue(for: HKUnit.count()) / (duration / 60)
 
                 let startDate = statistics.startDate
                 let endDate = statistics.endDate
@@ -513,7 +508,12 @@ public enum HealthKitUtils {
                 while currentDate < endDate {
                     switch dataType {
                     case is CadenceData.Type:
+                        let averageCadence = sumQuantity.doubleValue(for: HKUnit.count()) / (duration / 60)
                         dataPoints.append(CadenceData(timestamp: currentDate, cadence: averageCadence) as! T)
+                        currentDate = Calendar.current.date(byAdding: .second, value: 1, to: currentDate)!
+                    case is DistanceData.Type:
+                        let distance = sumQuantity.doubleValue(for: HKUnit.meter())
+                        dataPoints.append(DistanceData(timestamp: currentDate, distance: distance) as! T)
                         currentDate = Calendar.current.date(byAdding: .second, value: 1, to: currentDate)!
                     default:
                         break
