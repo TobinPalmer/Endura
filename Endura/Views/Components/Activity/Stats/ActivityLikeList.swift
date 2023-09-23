@@ -27,7 +27,7 @@ struct ActivityLikesList: View {
                                 .shadow(radius: 1, x: shadow, y: 0)
                         }
                     }
-                    Text("\(likes.count) likes")
+                    Text("\(likes.count) like\(likes.count == 1 ? "" : "s")")
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                         .offset(x: CGFloat(CGFloat(likes.prefix(3).count) * number) + 15, y: 0)
