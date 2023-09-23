@@ -14,6 +14,12 @@ struct TrainingCalender: View {
 
     var body: some View {
         VStack {
+            Button {
+                activeUser.training.monthlyTrainingData[.current]?.days.updateValue(DailyTrainingData(date: selectedDate.addDay(value: 1), type: .workout, goals: []), forKey: selectedDate.addDay(value: 1))
+            } label: {
+                Text("test")
+            }
+
             HStack(alignment: .center, spacing: 0) {
                 Button("Prev") {
                     controller.scrollTo(controller.yearMonth.addMonth(value: -1), isAnimate: true)
@@ -34,7 +40,7 @@ struct TrainingCalender: View {
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }, component: { date in
-                let trainingDay = activeUser.training.getTrainingDay(date)
+                let trainingDay = activeUser.training.getTrainingDay(date) ?? DailyTrainingData(date: date, type: .none, goals: [])
 
                 ZStack {
                     Circle()

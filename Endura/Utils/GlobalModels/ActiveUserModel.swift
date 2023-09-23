@@ -1,3 +1,4 @@
+import Combine
 import CoreData
 import FirebaseFirestore
 import FirebaseFirestoreSwift
@@ -16,6 +17,8 @@ import SwiftUICalendar
 
     @Published public var training: TrainingModel
 
+    private var anyCancellable: AnyCancellable? = nil
+
     public init() async throws {
         settings = try await SettingsModel()
 
@@ -28,6 +31,17 @@ import SwiftUICalendar
             }
         } else {
             data = try await fetchUserData()
+        }
+
+        initPublishedUpdates()
+    }
+
+    private func initPublishedUpdates() {
+        anyCancellable = settings.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }
+        anyCancellable = training.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
         }
     }
 

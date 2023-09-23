@@ -65,12 +65,8 @@ import SwiftUICalendar
         }
     }
 
-    public func getTrainingDay(_ date: YearMonthDay) -> DailyTrainingData {
-        if let data = monthlyTrainingData[date.getYearMonth()]?.days[date] {
-            return data
-        } else {
-            return DailyTrainingData(date: date, type: .none, goals: [])
-        }
+    public func getTrainingDay(_ date: YearMonthDay) -> DailyTrainingData? {
+        monthlyTrainingData[date.getYearMonth()]?.days[date]
     }
 
     public func processNewActivity(_: ActivityDataWithRoute) {}
