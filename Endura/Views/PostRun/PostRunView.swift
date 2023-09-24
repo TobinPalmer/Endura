@@ -58,6 +58,36 @@ private final class PostRunViewModel: ObservableObject {
 
 private final class PostRunExerciseViewModel: ObservableObject {
     @Published public var exercise: PostRunExercise
+    @Published public var currentTime: TimeInterval = 0
+
+    public var timer: Timer?
+
+    public func startTimer(duration: TimeInterval) {
+        if timer != nil {
+            timer?.invalidate()
+        }
+
+        currentTime = 1
+
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            guard let self = self else {
+                return
+            }
+
+            self.currentTime += 1
+
+            if self.currentTime >= duration {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.exercise.parameter = .count(10)
+                }
+                timer.invalidate()
+            }
+        }
+    }
 
     init(exercise: PostRunExercise) {
         self.exercise = exercise
@@ -76,6 +106,18 @@ struct PostRunExerciseView: View {
     public var body: some View {
         VStack {
             Text(String(describing: viewModel.exercise.type))
+
+            switch viewModel.exercise.parameter {
+            case let .count(count):
+                Text("Do \(count)")
+            case .time:
+                PostRunTimerRing(time: $viewModel.currentTime, duration: 10, size: 150)
+                    .environmentObject(viewModel)
+
+                Button("Start Time") {
+                    viewModel.startTimer(duration: 10)
+                }
+            }
 
             Button("Next") {
                 withAnimation {
