@@ -105,7 +105,7 @@ public struct DailyTrainingData: Cacheable {
     public var date: YearMonthDay
     public var type: TrainingDayType
     public var goals: [TrainingGoalData]
-    public var summary: DailySummaryData = .init(distance: 5 * 1609, duration: 70, activities: 0)
+    public var summary: DailySummaryData = .init(distance: 0, duration: 70, activities: 0)
 
     func updateCache(_ cache: DailyTrainingCache) {
         cache.date = date.toCache()

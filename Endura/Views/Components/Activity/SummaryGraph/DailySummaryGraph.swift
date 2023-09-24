@@ -16,7 +16,7 @@ struct DailySummaryGraph: View {
                         x: .value("Day", day.getShortName()),
                         y: .value("Miles", miles)
                     )
-                    //            .foregroundStyle(selectedDay == day ? .red : .blue)
+                    .foregroundStyle(selectedDay == day ? .red : .blue)
                     .annotation {
                         if selectedDay == day {
                             Text("\(ConversionUtils.round(miles)) mi")
