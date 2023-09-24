@@ -104,17 +104,11 @@ struct PostRunView: View {
             Color.white
                 .ignoresSafeArea()
 
-            MultiStepForm([
-                AnyView(PostRunExerciseView(viewModel: PostRunExerciseViewModel(exercise: postRunEasyDay[0]), currentStep: $currentPage)),
-                AnyView(PostRunExerciseView(viewModel: PostRunExerciseViewModel(exercise: postRunEasyDay[1]), currentStep: $currentPage)),
-                AnyView(PostRunExerciseView(viewModel: PostRunExerciseViewModel(exercise: postRunEasyDay[2]), currentStep: $currentPage)),
-            ], viewModel: SignupFormInfo(), currentPage: $currentPage)
+            let views: [AnyView] = postRunEasyDay.map { exercise in
+                AnyView(PostRunExerciseView(viewModel: PostRunExerciseViewModel(exercise: exercise), currentStep: $currentPage))
+            }
 
-//            Text(String(describing: viewModel.currentExercise.type))
-//
-//            Button("Next") {
-//                viewModel.nextExercise()
-//            }
+            MultiStepForm(views, viewModel: SignupFormInfo(), currentPage: $currentPage)
         }
     }
 
