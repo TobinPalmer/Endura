@@ -15,16 +15,7 @@ struct DashboardView: View {
         ScrollView {
             VStack {
                 VStack(alignment: .leading) {
-                    WeeklySummaryGraph(
-                        [
-                            WeeklyGraphData(day: .saturday, distance: activeUserModel.training.getTrainingDay(.current).summary.getMiles()),
-//                            WeeklyGraphData(day: .monday, distance: 5),
-//                            WeeklyGraphData(day: .monday, distance: 5),
-//                            WeeklyGraphData(day: .wednesday, distance: 10),
-//                            WeeklyGraphData(day: .sunday, distance: 2),
-                        ]
-                    )
-                    .padding()
+                    DailySummaryGraph()
                 }
                 .frame(minWidth: 0, maxWidth: .infinity)
 

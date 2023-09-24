@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import SwiftUICalendar
 
 public enum TrainingGoalType: String, Codable {
     case warmup = "Warmup"

@@ -75,6 +75,10 @@ import SwiftUICalendar
         monthlyTrainingData[date.getYearMonth()]?.days[date] ?? DailyTrainingData(date: date, type: .none, goals: [])
     }
 
+    public func getTrainingDay(_ date: WeekDay) -> DailyTrainingData {
+        getTrainingDay(date.toYearMonthDay())
+    }
+
     private func setTrainingDay(_ date: YearMonthDay, _ data: DailyTrainingData) {
         monthlyTrainingData[date.getYearMonth()]?.days[date] = data
     }
