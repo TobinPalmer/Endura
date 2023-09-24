@@ -6,10 +6,13 @@ struct ActivityLikesList: View {
     private let noLink: Bool
     private var number: CGFloat = 25
     private var shadow: CGFloat = -1
+    private let reverse: Bool
 
     public init(_ likes: [String], noLink: Bool = false, reverse: Bool = false) {
         self.likes = likes
         self.noLink = noLink
+        self.reverse = reverse
+
         if reverse {
             number = -25
             shadow = 1
@@ -27,10 +30,12 @@ struct ActivityLikesList: View {
                                 .shadow(radius: 1, x: shadow, y: 0)
                         }
                     }
-                    Text("\(likes.count) like\(likes.count == 1 ? "" : "s")")
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
-                        .offset(x: CGFloat(CGFloat(likes.prefix(3).count) * number) + 15, y: 0)
+                    if !reverse {
+                        Text("\(likes.count) like\(likes.count == 1 ? "" : "s")")
+                            .font(.system(size: 12))
+                            .foregroundColor(.secondary)
+                            .offset(x: CGFloat(CGFloat(likes.prefix(3).count) * number) + 15, y: 0)
+                    }
                 }
             }
         }
