@@ -6,7 +6,11 @@ public struct WeeklyGraphData: Hashable, Codable {
 }
 
 public struct DailySummaryData: Codable {
-    public let distance: Double
-    public let duration: Double
-    public let activities: [String]
+    public var distance: Double
+    public var duration: Double
+    public var activities: Int
+
+    public func getMiles() -> Double {
+        distance * 0.000621371
+    }
 }

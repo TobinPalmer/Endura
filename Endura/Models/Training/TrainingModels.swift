@@ -105,7 +105,7 @@ public struct DailyTrainingData: Cacheable {
     public var date: YearMonthDay
     public var type: TrainingDayType
     public var goals: [TrainingGoalData]
-    public var summary: DailySummaryData?
+    public var summary: DailySummaryData = .init(distance: 0, duration: 0, activities: 0)
 
     func updateCache(_ cache: DailyTrainingCache) {
         cache.date = date.toCache()
@@ -116,6 +116,9 @@ public struct DailyTrainingData: Cacheable {
             goal.updateCache(cache)
             return cache
         }))
+        cache.summaryDistance = summary.distance
+        cache.summaryDuration = summary.duration
+        cache.summaryActivities = Int16(summary.activities)
     }
 
     static func fromCache(_ cache: DailyTrainingCache) -> Self {
@@ -124,7 +127,8 @@ public struct DailyTrainingData: Cacheable {
             type: TrainingDayType(rawValue: cache.type ?? "none") ?? .none,
             goals: cache.goals?.map { goal in
                 TrainingGoalData.fromCache(goal as! TrainingGoalCache)
-            } ?? []
+            } ?? [],
+            summary: DailySummaryData(distance: cache.summaryDistance, duration: cache.summaryDuration, activities: Int(cache.summaryActivities))
         )
     }
 }
@@ -170,6 +174,14 @@ public struct MonthlyTrainingDataDocument: Codable {
     public var totalDistance: Double
     public var totalDuration: Double
     public var days: [String: DailyTrainingDataDocument]
+
+    public init(_ data: MonthlyTrainingData) {
+        totalDistance = data.totalDistance
+        totalDuration = data.totalDuration
+        days = data.days.reduce(into: [:]) { dict, day in
+            dict[day.key.toCache()] = DailyTrainingDataDocument(date: day.value.date.getDate(), type: day.value.type, goals: day.value.goals, summary: day.value.summary)
+        }
+    }
 }
 
 public struct RunningSchedule: Codable {

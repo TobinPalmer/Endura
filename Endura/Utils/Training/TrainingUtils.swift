@@ -4,10 +4,12 @@ import Foundation
 import SwiftUICalendar
 
 public enum TrainingUtils {
-    public static func processUploadedActivity(_ activity: ActivityDataWithRoute) {
-        print("Processing uploaded activity")
-
-        let summaryData = DailySummaryData(distance: activity.distance, duration: activity.duration, activities: [activity.uid])
+    public static func saveTrainingMonthData(_ data: MonthlyTrainingData) {
+        do {
+            try Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training").document("\(data.date.year)-\(data.date.month)").setData(from: MonthlyTrainingDataDocument(data))
+        } catch {
+            Global.log.error("Error saving training month data: \(error)")
+        }
     }
 
     public static func getTrainingMonthData(_ date: YearMonth) async -> MonthlyTrainingData? {
@@ -25,7 +27,7 @@ public enum TrainingUtils {
                     date: YearMonthDay.fromCache(day),
                     type: dailyData.type,
                     goals: dailyData.goals,
-                    summary: dailyData.summary
+                    summary: dailyData.summary ?? DailySummaryData(distance: 0, duration: 0, activities: 0)
                 )
             }
 
