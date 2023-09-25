@@ -18,7 +18,7 @@ struct DailySummaryGraph: View {
                     )
                     .foregroundStyle(selectedDay == day ? .red : .blue)
                     .annotation {
-                        if selectedDay == day {
+                        if selectedDay == day && miles > 0 {
                             Text("\(ConversionUtils.round(miles)) mi")
                                 .font(.title3)
                         } else {
@@ -32,7 +32,7 @@ struct DailySummaryGraph: View {
                 GeometryReader { geometry in
                     Rectangle().fill(.clear).contentShape(Rectangle())
                         .gesture(
-                            DragGesture()
+                            DragGesture(minimumDistance: 0)
                                 .onChanged { value in
                                     let origin = geometry[proxy.plotAreaFrame].origin
                                     if let day = proxy.value(atX: value.location.x - origin.x, as: String.self) {
