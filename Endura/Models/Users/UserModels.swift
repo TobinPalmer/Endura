@@ -18,9 +18,21 @@ public struct UserData: Cacheable {
         }
         do {
             // Try loading firebase profile picture
-            let image = try UIImage(data: await URLSession.shared.data(from: URL(string: "https://firebasestorage.googleapis.com/v0/b/runningapp-6ee99.appspot.com/o/users%2F\(uid)%2FprofilePicture?alt=media")!).0)
+            let image = try UIImage(data: await URLSession.shared
+                .data(
+                    from: URL(
+                        string: "https://firebasestorage.googleapis.com/v0/b/runningapp-6ee99.appspot.com/o/users%2F\(uid)%2FprofilePicture?alt=media"
+                    )!
+                )
+                .0)
             if image == nil { // If firebase profile picture fails, load ui-avatars profile picture
-                return try UIImage(data: await URLSession.shared.data(from: URL(string: "https://ui-avatars.com/api/?name=\(firstName)+\(lastName)&background=0D8ABC&color=fff")!).0)
+                return try UIImage(data: await URLSession.shared
+                    .data(
+                        from: URL(
+                            string: "https://ui-avatars.com/api/?name=\(firstName)+\(lastName)&background=0D8ABC&color=fff"
+                        )!
+                    )
+                    .0)
             }
             return image
         } catch {
@@ -36,7 +48,10 @@ public struct UserData: Cacheable {
         cache.friends = friends
         if let profileImage = profileImage {
             cache.profileImage = profileImage.jpegData(compressionQuality: 1.0)
-        } else if let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first {
+        } else if let cachedUserData = CacheUtils.fetchListedObject(
+            UserDataCache.self,
+            predicate: CacheUtils.predicateMatchingField("uid", value: uid)
+        ).first {
             cache.profileImage = cachedUserData.profileImage
         } else {
             cache.profileImage = nil

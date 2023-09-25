@@ -76,7 +76,10 @@ public enum HealthKitUtils {
     }
 
     public static func getLocationData(for route: HKWorkoutRoute) async throws -> [CLLocation] {
-        let locations = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[CLLocation], Error>) in
+        let locations = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<
+            [CLLocation],
+            Error
+        >) in
             var allLocations: [CLLocation] = []
             let query = HKWorkoutRouteQuery(route: route) { _, locationsOrNil, done, errorOrNil in
                 if let error = errorOrNil {
@@ -100,18 +103,27 @@ public enum HealthKitUtils {
         let predicate = HKQuery.predicateForObjects(from: workout)
 
         do {
-            let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKSample], Error>) in
-                healthStore.execute(HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: 1, resultsHandler: { _, samples, _, _, error in
-                    if let hasError = error {
-                        continuation.resume(throwing: hasError)
-                        return
-                    }
+            let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<
+                [HKSample],
+                Error
+            >) in
+                healthStore.execute(HKAnchoredObjectQuery(
+                    type: HKSeriesType.workoutRoute(),
+                    predicate: predicate,
+                    anchor: nil,
+                    limit: 1,
+                    resultsHandler: { _, samples, _, _, error in
+                        if let hasError = error {
+                            continuation.resume(throwing: hasError)
+                            return
+                        }
 
-                    guard let samples = samples else {
-                        return
+                        guard let samples = samples else {
+                            return
+                        }
+                        continuation.resume(returning: samples)
                     }
-                    continuation.resume(returning: samples)
-                }))
+                ))
             }
             guard let workouts = samples as? [HKWorkoutRoute] else {
                 throw HealthKitErrors.workoutFailedCast
@@ -126,18 +138,27 @@ public enum HealthKitUtils {
     public static func getWorkoutRoute(workout: HKWorkout) async throws -> [HKWorkoutRoute] {
         let predicate = HKQuery.predicateForObjects(from: workout)
         do {
-            let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKSample], Error>) in
-                healthStore.execute(HKAnchoredObjectQuery(type: HKSeriesType.workoutRoute(), predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit, resultsHandler: { _, samples, _, _, error in
-                    if let hasError = error {
-                        continuation.resume(throwing: hasError)
-                        return
-                    }
+            let samples = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<
+                [HKSample],
+                Error
+            >) in
+                healthStore.execute(HKAnchoredObjectQuery(
+                    type: HKSeriesType.workoutRoute(),
+                    predicate: predicate,
+                    anchor: nil,
+                    limit: HKObjectQueryNoLimit,
+                    resultsHandler: { _, samples, _, _, error in
+                        if let hasError = error {
+                            continuation.resume(throwing: hasError)
+                            return
+                        }
 
-                    guard let samples = samples else {
-                        return
+                        guard let samples = samples else {
+                            return
+                        }
+                        continuation.resume(returning: samples)
                     }
-                    continuation.resume(returning: samples)
-                }))
+                ))
             }
             guard let workouts = samples as? [HKWorkoutRoute] else {
                 throw HealthKitErrors.workoutFailedCast
@@ -203,7 +224,10 @@ public enum HealthKitUtils {
 
         return try await ActivityHeaderData(
             startTime: workout.startDate,
-            startLocation: firstRoute == nil ? nil : LocationData(latitude: firstLocation?.first?.coordinate.latitude ?? 0.0, longitude: firstLocation?.first?.coordinate.longitude ?? 0.0),
+            startLocation: firstRoute == nil ? nil : LocationData(
+                latitude: firstLocation?.first?.coordinate.latitude ?? 0.0,
+                longitude: firstLocation?.first?.coordinate.longitude ?? 0.0
+            ),
             startCity: firstLocation?.first?.fetchCityAndCountry().0 ?? nil,
             uid: AuthUtils.getCurrentUID()
         )
@@ -225,18 +249,55 @@ public enum HealthKitUtils {
             data.append(contentsOf: routeData)
         }
 
-        let heartRate = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .heartRate, unit: .string("count/min"), dataType: HeartRateData.self)
-        let cadence = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .stepCount, options: [.cumulativeSum, .separateBySource], unit: .unit(.count()), dataType: CadenceData.self)
+        let heartRate = try await HealthKitUtils.getGraph(
+            for: workout,
+            quantityTypeIdentifier: .heartRate,
+            unit: .string("count/min"),
+            dataType: HeartRateData.self
+        )
+        let cadence = try await HealthKitUtils.getGraph(
+            for: workout,
+            quantityTypeIdentifier: .stepCount,
+            options: [.cumulativeSum, .separateBySource],
+            unit: .unit(.count()),
+            dataType: CadenceData.self
+        )
 
 //    var groundContactTime: [GroundContactTimeData]? = nil
 //    var power: [PowerData]? = nil
 //    var strideLength: [StrideLengthData]? = nil
 //    var verticalOscillation: [VerticalOscillationData]? = nil
-        let groundContactTime = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningGroundContactTime, unit: .unit(.secondUnit(with: .milli)), dataType: GroundContactTimeData.self)
-        let power = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningPower, unit: .unit(.watt()), dataType: PowerData.self)
-        let strideLength = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningStrideLength, unit: .unit(.meter()), dataType: StrideLengthData.self)
-        let verticalOscillation = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .runningVerticalOscillation, unit: .unit(.meter()), dataType: VerticalOscillationData.self)
-        let distance = try await HealthKitUtils.getGraph(for: workout, quantityTypeIdentifier: .distanceWalkingRunning, options: [.cumulativeSum], unit: .unit(.meter()), dataType: DistanceData.self)
+        let groundContactTime = try await HealthKitUtils.getGraph(
+            for: workout,
+            quantityTypeIdentifier: .runningGroundContactTime,
+            unit: .unit(.secondUnit(with: .milli)),
+            dataType: GroundContactTimeData.self
+        )
+        let power = try await HealthKitUtils.getGraph(
+            for: workout,
+            quantityTypeIdentifier: .runningPower,
+            unit: .unit(.watt()),
+            dataType: PowerData.self
+        )
+        let strideLength = try await HealthKitUtils.getGraph(
+            for: workout,
+            quantityTypeIdentifier: .runningStrideLength,
+            unit: .unit(.meter()),
+            dataType: StrideLengthData.self
+        )
+        let verticalOscillation = try await HealthKitUtils.getGraph(
+            for: workout,
+            quantityTypeIdentifier: .runningVerticalOscillation,
+            unit: .unit(.meter()),
+            dataType: VerticalOscillationData.self
+        )
+        let distance = try await HealthKitUtils.getGraph(
+            for: workout,
+            quantityTypeIdentifier: .distanceWalkingRunning,
+            options: [.cumulativeSum],
+            unit: .unit(.meter()),
+            dataType: DistanceData.self
+        )
 
         let heartRateDict = Dictionary(grouping: heartRate, by: { $0.timestamp })
         let cadenceDict = Dictionary(grouping: cadence, by: { $0.timestamp })
@@ -306,7 +367,10 @@ public enum HealthKitUtils {
                 let point = data[i]
 
                 if let previousPoint = previousPoint {
-                    let currentLocation = CLLocation(latitude: point.coordinate.latitude, longitude: point.coordinate.longitude)
+                    let currentLocation = CLLocation(
+                        latitude: point.coordinate.latitude,
+                        longitude: point.coordinate.longitude
+                    )
                     let distance = previousPoint.distance(from: currentLocation)
                     let time = point.timestamp.timeIntervalSince(previousPoint.timestamp).rounded()
                     if time > 0 && time < 5 {
@@ -322,7 +386,11 @@ public enum HealthKitUtils {
                         let partialDistance = (distanceValue / 1609.34).rounded(toPlaces: 2)
                         if partialDistance >= 0.1 {
                             let estimatedPace = (mileTime / partialDistance).rounded()
-                            mileSplits.append(ActivitySplitsData(distance: partialDistance, time: mileTime, pace: estimatedPace))
+                            mileSplits.append(ActivitySplitsData(
+                                distance: partialDistance,
+                                time: mileTime,
+                                pace: estimatedPace
+                            ))
                         }
                     }
                 }
@@ -446,7 +514,9 @@ public enum HealthKitUtils {
             : power.reduce(0) {
                 $0 + $1.power
             } / Double(power.count),
-            calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
+            calories: workout.totalEnergyBurned?.doubleValue(
+                for: .kilocalorie()
+            ) ?? 0.0,
             comments: [],
             data: ActivityRouteData(
                 graphData: graphData,
@@ -462,10 +532,15 @@ public enum HealthKitUtils {
             likes: [],
             type: .none,
             startCity: data.first?.fetchCityAndCountry().0 ?? "",
-            startLocation: LocationData(latitude: data.first?.coordinate.latitude ?? 0.0, longitude: data.first?.coordinate.longitude ?? 0.0),
+            startLocation: LocationData(
+                latitude: data.first?.coordinate.latitude ?? 0.0,
+                longitude: data.first?.coordinate.longitude ?? 0.0
+            ),
             time: workout.startDate,
             title: "",
-            totalDuration: workout.startDate.distance(to: workout.endDate),
+            totalDuration: workout.startDate.distance(
+                to: workout.endDate
+            ),
             uid: AuthUtils.getCurrentUID(),
             visibility: .friends)
 
@@ -478,7 +553,11 @@ public enum HealthKitUtils {
         quantityType: HKQuantityType,
         options: HKStatisticsOptions = [.discreteMax, .discreteMin]
     ) async -> HKStatisticsCollectionQuery {
-        let predicate = HKQuery.predicateForSamples(withStart: workout.startDate, end: workout.endDate, options: .strictStartDate)
+        let predicate = HKQuery.predicateForSamples(
+            withStart: workout.startDate,
+            end: workout.endDate,
+            options: .strictStartDate
+        )
 
         return HKStatisticsCollectionQuery(
             quantityType: quantityType,
@@ -551,7 +630,8 @@ public enum HealthKitUtils {
                let maxValue = maxVal
             {
                 let average = (minValue + maxValue) / 2
-                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000).rounded() / 1_000_000)
+                let date = Date(timeIntervalSince1970: (statistics.startDate.timeIntervalSince1970 * 1_000_000)
+                    .rounded() / 1_000_000)
 
                 switch dataType {
                 case is PowerData.Type:
@@ -583,25 +663,47 @@ public enum HealthKitUtils {
             if i > 0 {
                 let previousPoint = dataPoints[i - 1]
 
-                if let missingSeconds = Calendar.current.dateComponents([.second], from: previousPoint.timestamp, to: currentPoint.timestamp).second, missingSeconds > 1 {
-                    let missingRange = sequence(first: previousPoint.timestamp.addingTimeInterval(1), next: { $0.addingTimeInterval(1) }).prefix(while: { $0 < currentPoint.timestamp })
+                if let missingSeconds = Calendar.current.dateComponents(
+                    [.second],
+                    from: previousPoint.timestamp,
+                    to: currentPoint.timestamp
+                ).second, missingSeconds > 1 {
+                    let missingRange = sequence(
+                        first: previousPoint.timestamp.addingTimeInterval(1),
+                        next: { $0.addingTimeInterval(1) }
+                    ).prefix(while: { $0 < currentPoint.timestamp })
 
                     for missingSecond in missingRange {
                         switch dataType {
                         case is PowerData.Type:
-                            let dataPoint = PowerData(timestamp: missingSecond, power: (previousPoint as! PowerData).power)
+                            let dataPoint = PowerData(
+                                timestamp: missingSecond,
+                                power: (previousPoint as! PowerData).power
+                            )
                             filledArray.append(dataPoint as! T)
                         case is StrideLengthData.Type:
-                            let dataPoint = StrideLengthData(timestamp: missingSecond, strideLength: (previousPoint as! StrideLengthData).strideLength)
+                            let dataPoint = StrideLengthData(
+                                timestamp: missingSecond,
+                                strideLength: (previousPoint as! StrideLengthData).strideLength
+                            )
                             filledArray.append(dataPoint as! T)
                         case is VerticalOscillationData.Type:
-                            let dataPoint = VerticalOscillationData(timestamp: missingSecond, verticalOscillation: (previousPoint as! VerticalOscillationData).verticalOscillation)
+                            let dataPoint = VerticalOscillationData(
+                                timestamp: missingSecond,
+                                verticalOscillation: (previousPoint as! VerticalOscillationData).verticalOscillation
+                            )
                             filledArray.append(dataPoint as! T)
                         case is GroundContactTimeData.Type:
-                            let dataPoint = GroundContactTimeData(timestamp: missingSecond, groundContactTime: (previousPoint as! GroundContactTimeData).groundContactTime)
+                            let dataPoint = GroundContactTimeData(
+                                timestamp: missingSecond,
+                                groundContactTime: (previousPoint as! GroundContactTimeData).groundContactTime
+                            )
                             filledArray.append(dataPoint as! T)
                         case is HeartRateData.Type:
-                            let dataPoint = HeartRateData(timestamp: missingSecond, heartRate: (previousPoint as! HeartRateData).heartRate)
+                            let dataPoint = HeartRateData(
+                                timestamp: missingSecond,
+                                heartRate: (previousPoint as! HeartRateData).heartRate
+                            )
                             filledArray.append(dataPoint as! T)
                         default:
                             break
@@ -624,7 +726,12 @@ public enum HealthKitUtils {
         dataType: T.Type
     ) async throws -> [T] where T: Codable {
         let interval = DateComponents(second: 1)
-        let query = await createWorkoutQuery(for: workout, with: interval, quantityType: HKObjectType.quantityType(forIdentifier: quantityTypeIdentifier)!, options: options)
+        let query = await createWorkoutQuery(
+            for: workout,
+            with: interval,
+            quantityType: HKObjectType.quantityType(forIdentifier: quantityTypeIdentifier)!,
+            options: options
+        )
 
         let results = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[T], Error>) in
             query.initialResultsHandler = { _, results, error in
@@ -632,10 +739,20 @@ public enum HealthKitUtils {
                     continuation.resume(throwing: error)
                 } else if let results = results {
                     if options.contains(.cumulativeSum) {
-                        let data = compileResultsFromWorkoutCumulative(results, workout: workout, unit: unit, dataType: dataType)
+                        let data = compileResultsFromWorkoutCumulative(
+                            results,
+                            workout: workout,
+                            unit: unit,
+                            dataType: dataType
+                        )
                         continuation.resume(returning: data)
                     } else {
-                        let data = compileResultsFromWorkoutDiscreteMinMax(results, workout: workout, unit: unit, dataType: dataType)
+                        let data = compileResultsFromWorkoutDiscreteMinMax(
+                            results,
+                            workout: workout,
+                            unit: unit,
+                            dataType: dataType
+                        )
                         continuation.resume(returning: data)
                     }
                 } else {

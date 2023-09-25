@@ -15,7 +15,10 @@ struct TrainingCalender: View {
     var body: some View {
         VStack {
             Button {
-                activeUser.training.monthlyTrainingData[.current]?.days.updateValue(DailyTrainingData(date: selectedDate.addDay(value: 1), type: .workout, goals: []), forKey: selectedDate.addDay(value: 1))
+                activeUser.training.monthlyTrainingData[.current]?.days.updateValue(
+                    DailyTrainingData(date: selectedDate.addDay(value: 1), type: .workout, goals: []),
+                    forKey: selectedDate.addDay(value: 1)
+                )
             } label: {
                 Text("test")
             }
@@ -24,7 +27,7 @@ struct TrainingCalender: View {
                 Button("Prev") {
                     controller.scrollTo(controller.yearMonth.addMonth(value: -1), isAnimate: true)
                 }
-                .padding(8)
+                .padding(26)
                 Spacer()
                 HStack {
                     Button {
@@ -40,13 +43,13 @@ struct TrainingCalender: View {
                 Button("Next") {
                     controller.scrollTo(controller.yearMonth.addMonth(value: 1), isAnimate: true)
                 }
-                .padding(8)
+                .padding(26)
             }
             CalendarView(controller, startWithMonday: true, header: { week in
                 Text(week.shortString)
                     .font(.subheadline)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-            }, component: { date in
+            },
+            component: { date in
                 let trainingDay = activeUser.training.getTrainingDay(date)
 
                 ZStack {
@@ -69,7 +72,7 @@ struct TrainingCalender: View {
             .onChange(of: controller.yearMonth) { newMonth in
                 activeUser.training.loadMonth(newMonth)
             }
-            .padding(5)
+            .padding(26)
         }
         .frame(maxWidth: .infinity, minHeight: 400, maxHeight: 400)
     }

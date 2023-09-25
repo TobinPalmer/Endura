@@ -5,7 +5,11 @@ import SwiftUICalendar
     @Published public var monthlyTrainingData: [YearMonth: MonthlyTrainingData] = [:] {
         didSet {
             for (date, data) in monthlyTrainingData {
-                CacheUtils.updateListedObject(MonthlyTrainingCache.self, update: data.updateCache, predicate: CacheUtils.predicateMatchingField("date", value: date.toCache()))
+                CacheUtils.updateListedObject(
+                    MonthlyTrainingCache.self,
+                    update: data.updateCache,
+                    predicate: CacheUtils.predicateMatchingField("date", value: date.toCache())
+                )
             }
         }
     }
@@ -19,7 +23,8 @@ import SwiftUICalendar
             monthlyTrainingData[data.date] = data
         }
 
-//        monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days: [
+//        monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days:
+//        [
 //            .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.routine(
 //                type: .warmup,
 //                difficulty: .easy,
@@ -57,7 +62,12 @@ import SwiftUICalendar
                         if let data = data {
                             self.monthlyTrainingData[data.date] = data
                         } else if self.monthlyTrainingData[date] == nil {
-                            self.monthlyTrainingData[date] = MonthlyTrainingData(date: date, totalDistance: 0, totalDuration: 0, days: [:])
+                            self.monthlyTrainingData[date] = MonthlyTrainingData(
+                                date: date,
+                                totalDistance: 0,
+                                totalDuration: 0,
+                                days: [:]
+                            )
                         }
                     }
                 }

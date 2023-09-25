@@ -26,7 +26,10 @@ struct FormBarView: View {
                 // Form bar highlight
                 RoundedRectangle(cornerRadius: 15)
                     .foregroundColor(Color.white.opacity(0.2))
-                    .frame(width: (width * CGFloat(progress) / CGFloat(steps)) - 20, height: progress == 0 ? (7 / 2) : 7)
+                    .frame(
+                        width: (width * CGFloat(progress) / CGFloat(steps)) - 20,
+                        height: progress == 0 ? (7 / 2) : 7
+                    )
                     .offset(y: progress == 0 ? -(5 / 2) : -5)
                     .zIndex(1)
                     .animation(.easeInOut(duration: 0.5), value: progress)

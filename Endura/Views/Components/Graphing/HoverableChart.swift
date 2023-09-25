@@ -18,9 +18,16 @@ public struct HoverableChart: View {
     private let workoutStart: Date
     private let workoutEnd: Date
 
-    public init(workoutStart: Date, workoutEnd: Date, graph: IndexedLineGraphData, color: Color, label: String, valueModifier: @escaping (Double) -> String = {
-        ConversionUtils.round($0)
-    }) {
+    public init(
+        workoutStart: Date,
+        workoutEnd: Date,
+        graph: IndexedLineGraphData,
+        color: Color,
+        label: String,
+        valueModifier: @escaping (Double) -> String = {
+            ConversionUtils.round($0)
+        }
+    ) {
         self.workoutStart = workoutStart
         self.workoutEnd = workoutEnd
         self.graph = graph
@@ -92,7 +99,13 @@ public struct HoverableChart: View {
                         let chartSize = chartProxy.plotAreaSize
                         let overlayWidth = 150.0
                         let centerOffset = (UIScreen.main.bounds.width - chartPadding * 2) / 2
-                        let xPosition = max(-centerOffset + overlayWidth / 2, min(centerOffset - overlayWidth / 2, (chartProxy.position(forX: analysisPosition) ?? 0) - centerOffset))
+                        let xPosition = max(
+                            -centerOffset + overlayWidth / 2,
+                            min(
+                                centerOffset - overlayWidth / 2,
+                                (chartProxy.position(forX: analysisPosition) ?? 0) - centerOffset
+                            )
+                        )
 
                         Text("\(value != nil ? valueModifier(value!) : "No Data")")
                             .font(.title3)
@@ -122,8 +135,7 @@ public struct HoverableChart: View {
                             .onEnded {
                                 _ in
                                 activityViewModel.analysisPosition = nil
-                            }
-                        )
+                            })
                 }
             }
         }

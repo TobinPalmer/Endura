@@ -64,7 +64,10 @@ struct UserProfileView: View {
                     } else {
                         Button("Add Friend") {
                             Task {
-                                NotificationsModel.sendNotification(to: uid, data: NotificationData(type: .friendRequest, uid: activeUser.uid, timestamp: Date()))
+                                NotificationsModel.sendNotification(
+                                    to: uid,
+                                    data: NotificationData(type: .friendRequest, uid: activeUser.uid, timestamp: Date())
+                                )
                             }
                         }
                     }

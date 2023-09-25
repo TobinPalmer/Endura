@@ -65,7 +65,11 @@ struct PreviewWorkoutView: View {
                     .padding(.bottom, 10)
 
                 if var activityData = previewWorkoutModel.enduraWorkout {
-                    let activityViewModel = ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval)
+                    let activityViewModel = ActivityViewModel(
+                        activityData: activityData.getIndexedGraphData(),
+                        routeLocationData: activityData.getIndexedRouteLocationData(),
+                        interval: activityData.data.graphInterval
+                    )
 
                     if !activityData.data.routeData.isEmpty {
                         VStack {
@@ -86,7 +90,10 @@ struct PreviewWorkoutView: View {
                         .frame(height: 300)
                     }
 
-                    ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: !activityData.data.routeData.isEmpty)
+                    ActivityGridStats(
+                        activityData: previewWorkoutModel.workoutStats,
+                        topSpace: !activityData.data.routeData.isEmpty
+                    )
 
                     ActivitySplitGraph(splits: activityData.splits)
 
@@ -128,7 +135,11 @@ struct PreviewWorkoutView: View {
 
         .fullScreenCover(isPresented: $isShowingSummary) {
             if let activityData = previewWorkoutModel.enduraWorkout {
-                PostUploadView(activityData: activityData, mapRef: $previewWorkoutModel.mapRef, geometryRef: $previewWorkoutModel.geometryRef)
+                PostUploadView(
+                    activityData: activityData,
+                    mapRef: $previewWorkoutModel.mapRef,
+                    geometryRef: $previewWorkoutModel.geometryRef
+                )
             } else {
                 Text("Error uploading workout")
             }

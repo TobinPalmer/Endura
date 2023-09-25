@@ -46,7 +46,9 @@ struct ActivityHeader: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
                             if let activityData = activityData {
-                                if let startCity = activityData.startCity, let startCountry = activityData.startCountry {
+                                if let startCity = activityData.startCity,
+                                   let startCountry = activityData.startCountry
+                                {
                                     Text("\(activityData.startTime.formatted()) • \(startCity), \(startCountry)")
                                         .foregroundColor(Color("TextMuted"))
                                         .font(.system(size: 12))

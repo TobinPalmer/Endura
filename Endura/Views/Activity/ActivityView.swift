@@ -31,7 +31,10 @@ struct ActivityView: View {
                         ActivityMap(activityData.data.routeData)
                             .frame(height: 300)
 
-                        ActivityGridStats(activityData: ActivityDataWithRoute.withGridStats(activityData)(), topSpace: !activityData.data.routeData.isEmpty)
+                        ActivityGridStats(
+                            activityData: ActivityDataWithRoute.withGridStats(activityData)(),
+                            topSpace: !activityData.data.routeData.isEmpty
+                        )
 
                         Button(action: {
                             analysisView = true
@@ -49,7 +52,11 @@ struct ActivityView: View {
 
                         ActivitySplitGraph(splits: activityData.splits)
                     }
-                    .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
+                    .environmentObject(ActivityViewModel(
+                        activityData: activityData.getIndexedGraphData(),
+                        routeLocationData: activityData.getIndexedRouteLocationData(),
+                        interval: activityData.data.graphInterval
+                    ))
                 }
             } else {
                 ScrollView {
@@ -89,7 +96,11 @@ struct ActivityView: View {
                                 ActivityGraphsView(activityData)
                             }
                         }
-                        .environmentObject(ActivityViewModel(activityData: activityData.getIndexedGraphData(), routeLocationData: activityData.getIndexedRouteLocationData(), interval: activityData.data.graphInterval))
+                        .environmentObject(ActivityViewModel(
+                            activityData: activityData.getIndexedGraphData(),
+                            routeLocationData: activityData.getIndexedRouteLocationData(),
+                            interval: activityData.data.graphInterval
+                        ))
                     }
                 }
                 .toolbar {

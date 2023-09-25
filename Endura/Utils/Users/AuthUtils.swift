@@ -25,7 +25,8 @@ public enum AuthUtils {
                         notificationsPostRunReminder: true,
                         defaultActivityVisibility: .friends
                     )
-                    try Firestore.firestore().collection("users").document(uid).collection("data").document("settings").setData(from: defaultSettings)
+                    try Firestore.firestore().collection("users").document(uid).collection("data").document("settings")
+                        .setData(from: defaultSettings)
                 } catch {
                     Global.log.error("Error creating user: \(error)")
                 }
@@ -40,7 +41,34 @@ public enum AuthUtils {
             for i in 0 ... amount {
                 let email = "test\(i)@test.com"
                 let password = "testpass\(i)"
-                let randomNames = ["Adam", "Bob", "Charlie", "David", "Ethan", "Frank", "George", "Henry", "Isaac", "Jack", "Kevin", "Liam", "Michael", "Noah", "Oliver", "Peter", "Quinn", "Robert", "Samuel", "Thomas", "Ulysses", "Victor", "William", "Xavier", "Yuri", "Zachary"]
+                let randomNames = [
+                    "Adam",
+                    "Bob",
+                    "Charlie",
+                    "David",
+                    "Ethan",
+                    "Frank",
+                    "George",
+                    "Henry",
+                    "Isaac",
+                    "Jack",
+                    "Kevin",
+                    "Liam",
+                    "Michael",
+                    "Noah",
+                    "Oliver",
+                    "Peter",
+                    "Quinn",
+                    "Robert",
+                    "Samuel",
+                    "Thomas",
+                    "Ulysses",
+                    "Victor",
+                    "William",
+                    "Xavier",
+                    "Yuri",
+                    "Zachary",
+                ]
                 let userData = UserDocument(
                     firstName: randomNames[Int.random(in: 0 ... randomNames.count - 1)],
                     lastName: "\(randomNames[Int.random(in: 0 ... randomNames.count - 1)])",

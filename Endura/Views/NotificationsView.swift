@@ -3,7 +3,10 @@ import SwiftUI
 
 private enum NotificationsActionsUtils {
     fileprivate static func acceptFriendRequest(_ uid: String) {
-        NotificationsModel.sendNotification(to: uid, data: NotificationData(type: .friendRequestAccepted, uid: AuthUtils.getCurrentUID(), timestamp: Date()))
+        NotificationsModel.sendNotification(
+            to: uid,
+            data: NotificationData(type: .friendRequestAccepted, uid: AuthUtils.getCurrentUID(), timestamp: Date())
+        )
     }
 }
 

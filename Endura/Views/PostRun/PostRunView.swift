@@ -147,7 +147,10 @@ struct PostRunView: View {
                 .ignoresSafeArea()
 
             let views: [AnyView] = postRunEasyDay.map { exercise in
-                AnyView(PostRunExerciseView(viewModel: PostRunExerciseViewModel(exercise: exercise), currentStep: $currentPage))
+                AnyView(PostRunExerciseView(
+                    viewModel: PostRunExerciseViewModel(exercise: exercise),
+                    currentStep: $currentPage
+                ))
             }
 
             MultiStepForm(views, viewModel: SignupFormInfo(), currentPage: $currentPage)

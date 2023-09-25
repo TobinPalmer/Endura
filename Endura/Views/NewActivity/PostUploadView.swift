@@ -68,7 +68,11 @@ struct PostUploadView: View {
     private let mapRef: Binding<(any View)?>
     private let geometryRef: Binding<GeometryProxy?>
 
-    public init(activityData: ActivityDataWithRoute, mapRef: Binding<(any View)?>, geometryRef: Binding<GeometryProxy?>) {
+    public init(
+        activityData: ActivityDataWithRoute,
+        mapRef: Binding<(any View)?>,
+        geometryRef: Binding<GeometryProxy?>
+    ) {
         self.activityData = activityData
         self.geometryRef = geometryRef
         self.mapRef = mapRef
@@ -95,7 +99,10 @@ struct PostUploadView: View {
 
             do {
                 if let mapRef = mapRef.wrappedValue, let geometryRef = geometryRef.wrappedValue {
-                    let image = mapRef.takeScreenshot(origin: geometryRef.frame(in: .global).origin, size: geometryRef.size)
+                    let image = mapRef.takeScreenshot(
+                        origin: geometryRef.frame(in: .global).origin,
+                        size: geometryRef.size
+                    )
 
                     try ActivityUtils.uploadActivity(activity: activityData, image: image, storage: storage)
                 } else {

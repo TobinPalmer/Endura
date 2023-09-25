@@ -22,14 +22,22 @@ import Foundation
 
     private func setUserData(_ uid: String, userData: UserData) {
         usersCache.updateValue(userData, forKey: uid)
-        CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
+        CacheUtils.updateListedObject(
+            UserDataCache.self,
+            update: userData.updateCache,
+            predicate: CacheUtils.predicateMatchingField("uid", value: uid)
+        )
         if userData.profileImage == nil {
             Task {
                 if let profileImage = await userData.fetchProfileImage() {
                     var userData = userData
                     userData.profileImage = profileImage
                     usersCache.updateValue(userData, forKey: uid)
-                    CacheUtils.updateListedObject(UserDataCache.self, update: userData.updateCache, predicate: CacheUtils.predicateMatchingField("uid", value: uid))
+                    CacheUtils.updateListedObject(
+                        UserDataCache.self,
+                        update: userData.updateCache,
+                        predicate: CacheUtils.predicateMatchingField("uid", value: uid)
+                    )
                 }
             }
         }
@@ -41,13 +49,17 @@ import Foundation
         }
         do {
             // Try loading from cache
-            let cachedUserData = CacheUtils.fetchListedObject(UserDataCache.self, predicate: CacheUtils.predicateMatchingField("uid", value: uid)).first
+            let cachedUserData = CacheUtils.fetchListedObject(
+                UserDataCache.self,
+                predicate: CacheUtils.predicateMatchingField("uid", value: uid)
+            ).first
             if let cachedUserData = cachedUserData {
                 setUserData(uid, userData: UserData.fromCache(cachedUserData))
             }
 
             // Load from firebase, even if cached because it might be outdated
-            let document = document == nil ? try await Firestore.firestore().collection("users").document(uid).getDocument(as: UserDocument.self) : document!
+            let document = document == nil ? try await Firestore.firestore().collection("users").document(uid)
+                .getDocument(as: UserDocument.self) : document!
 
             var userData = UserData(
                 uid: uid,

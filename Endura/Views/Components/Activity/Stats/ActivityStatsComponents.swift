@@ -46,7 +46,11 @@ struct ActivityStatsValueText: View {
     var body: some View {
         if block {
             Text(text)
-                .font(Font.custom("FlowBlock-Regular", size: UIFont.preferredFont(forTextStyle: .body).pointSize, relativeTo: .title))
+                .font(Font.custom(
+                    "FlowBlock-Regular",
+                    size: UIFont.preferredFont(forTextStyle: .body).pointSize,
+                    relativeTo: .title
+                ))
                 .foregroundColor(Color("Text"))
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)

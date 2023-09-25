@@ -6,7 +6,8 @@ import SwiftUICalendar
 public enum TrainingUtils {
     public static func saveTrainingMonthData(_ data: MonthlyTrainingData) {
         do {
-            try Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training").document("\(data.date.year)-\(data.date.month)").setData(from: MonthlyTrainingDataDocument(data))
+            try Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training")
+                .document("\(data.date.year)-\(data.date.month)").setData(from: MonthlyTrainingDataDocument(data))
         } catch {
             Global.log.error("Error saving training month data: \(error)")
         }
@@ -14,7 +15,8 @@ public enum TrainingUtils {
 
     public static func getTrainingMonthData(_ date: YearMonth) async -> MonthlyTrainingData? {
         do {
-            let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training").document("\(date.year)-\(date.month)").getDocument()
+            let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID())
+                .collection("training").document("\(date.year)-\(date.month)").getDocument()
             if !document.exists {
                 return nil
             }

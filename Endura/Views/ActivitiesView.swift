@@ -123,10 +123,15 @@ struct ActivitiesView: View {
             ScrollView(.vertical) {
                 if !activityViewModel.activities.isEmpty {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 0), count: 1), spacing: padding) {
-                        ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }), id: \.0) { id, activity in
+                        ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }),
+                                id: \.0)
+                        { id, activity in
                             ActivityPost(id: id, activity: activity)
                                 .onAppear {
-                                    if id == activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }).last?.0 && activityViewModel.activities.count >= ActivitiesViewModel.loadAmount {
+                                    if id == activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time })
+                                        .last?.0 && activityViewModel.activities.count >= ActivitiesViewModel
+                                        .loadAmount
+                                    {
                                         activityViewModel.loadActivities()
                                     }
                                 }

@@ -39,7 +39,8 @@ struct SignupStepTwoView: View {
                             currentStep += 1
                         }
                     }
-                    .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName.isEmpty) ? .gray : .accentColor))
+                    .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel
+                            .lastName.isEmpty) ? .gray : .accentColor))
 //                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
                 }
             }

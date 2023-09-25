@@ -128,7 +128,11 @@ public struct DailyTrainingData: Cacheable {
             goals: cache.goals?.map { goal in
                 TrainingGoalData.fromCache(goal as! TrainingGoalCache)
             } ?? [],
-            summary: DailySummaryData(distance: cache.summaryDistance, duration: cache.summaryDuration, activities: Int(cache.summaryActivities))
+            summary: DailySummaryData(
+                distance: cache.summaryDistance,
+                duration: cache.summaryDuration,
+                activities: Int(cache.summaryActivities)
+            )
         )
     }
 }
@@ -164,7 +168,8 @@ public struct MonthlyTrainingData: Cacheable {
             totalDistance: cache.totalDistance,
             totalDuration: cache.totalDuration,
             days: cache.days?.reduce(into: [:]) { dict, day in
-                dict[YearMonthDay.fromCache((day as! DailyTrainingCache).date ?? "")] = DailyTrainingData.fromCache(day as! DailyTrainingCache)
+                dict[YearMonthDay.fromCache((day as! DailyTrainingCache).date ?? "")] = DailyTrainingData
+                    .fromCache(day as! DailyTrainingCache)
             } ?? [:]
         )
     }
@@ -179,7 +184,12 @@ public struct MonthlyTrainingDataDocument: Codable {
         totalDistance = data.totalDistance
         totalDuration = data.totalDuration
         days = data.days.reduce(into: [:]) { dict, day in
-            dict[day.key.toCache()] = DailyTrainingDataDocument(date: day.value.date.getDate(), type: day.value.type, goals: day.value.goals, summary: day.value.summary)
+            dict[day.key.toCache()] = DailyTrainingDataDocument(
+                date: day.value.date.getDate(),
+                type: day.value.type,
+                goals: day.value.goals,
+                summary: day.value.summary
+            )
         }
     }
 }

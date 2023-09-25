@@ -147,7 +147,15 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                 ZStack {
                     GeometryReader { geometry in
                         let frame = geometry.frame(in: .local)
-                        let paths = createPaths(from: data, in: frame, with: step, minVal: minVal, range: range, minTimestamp: minTimestamp, timestampRange: timestampRange)
+                        let paths = createPaths(
+                            from: data,
+                            in: frame,
+                            with: step,
+                            minVal: minVal,
+                            range: range,
+                            minTimestamp: minTimestamp,
+                            timestampRange: timestampRange
+                        )
 
                         ForEach(0 ..< paths.endIndex, id: \.self) { i in
                             let path = paths[i]
@@ -155,18 +163,22 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                                 .foregroundColor(style.color.opacity(0.5))
                                 .opacity(activityViewModel.analysisValue != nil ? 0.75 : 1) // 75% of original (0.5)
                                 .overlay(
-                                    LineSegment(start: CGPoint(x: activityViewModel.analysisValue ?? 0, y: 0), end: CGPoint(x: activityViewModel.analysisValue ?? 0, y: frame.height))
-                                        .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                                        .foregroundColor(.black)
-                                        .opacity(activityViewModel.analysisValue != nil ? 1 : 0)
-                                        .animation(.easeInOut(duration: 0.5), value: activityViewModel.analysisValue)
+                                    LineSegment(
+                                        start: CGPoint(x: activityViewModel.analysisValue ?? 0, y: 0),
+                                        end: CGPoint(x: activityViewModel.analysisValue ?? 0, y: frame.height)
+                                    )
+                                    .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                                    .foregroundColor(.black)
+                                    .opacity(activityViewModel.analysisValue != nil ? 1 : 0)
+                                    .animation(.easeInOut(duration: 0.5), value: activityViewModel.analysisValue)
                                 )
                                 .frame(maxWidth: .infinity)
                         }
                     }
 
                     if activityViewModel.analysisValue != nil {
-                        let proportionOfTimestampInRange = activityViewModel.analysisValue! / geometry.frame(in: .local).width
+                        let proportionOfTimestampInRange = activityViewModel.analysisValue! / geometry.frame(in: .local)
+                            .width
                         let xPosition = geometry.frame(in: .local).width * CGFloat(proportionOfTimestampInRange)
                         let yPosition = geometry.frame(in: .local).height * CGFloat((data.first(where: { point in
                             let proportionOfTimestampInRange = point.0.timeIntervalSince(minTimestamp) / timestampRange
@@ -215,8 +227,7 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
                     .onEnded { _ in
                         activityViewModel.analysisValue = nil
                         activityViewModel.analysisPosition = nil
-                    }
-                )
+                    })
             }
             .frame(height: CGFloat(height))
         } else {
@@ -224,7 +235,8 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         }
     }
 
-//    func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> Path {
+//    func createPath(from data: [(Date, Double)], in frame: CGRect, with step: Int, minVal: Double, range: Double,
+//    minTimestamp: Date, timestampRange: Double) -> Path {
 //        var path = Path()
 //        var previousDate: Date?
 //        for index in data.indices {
@@ -250,7 +262,15 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
 //        return path
 //    }
 
-    func createPath(from data: LineGraphData, in frame: CGRect, with step: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
+    func createPath(
+        from data: LineGraphData,
+        in frame: CGRect,
+        with step: Int,
+        minVal: Double,
+        range: Double,
+        minTimestamp: Date,
+        timestampRange: Double
+    ) -> [Path] {
         var paths = [Path]()
         var previousDate: Date?
         for index in data.indices {
@@ -278,7 +298,15 @@ struct LineGraph<Style>: View where Style: LineGraphStyle {
         return paths
     }
 
-    func createPaths(from data: LineGraphData, in frame: CGRect, with _: Int, minVal: Double, range: Double, minTimestamp: Date, timestampRange: Double) -> [Path] {
+    func createPaths(
+        from data: LineGraphData,
+        in frame: CGRect,
+        with _: Int,
+        minVal: Double,
+        range: Double,
+        minTimestamp: Date,
+        timestampRange: Double
+    ) -> [Path] {
         var paths: [Path] = []
         var previousPoint: CGPoint?
         for index in data.indices {

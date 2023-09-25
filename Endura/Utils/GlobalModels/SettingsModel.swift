@@ -21,7 +21,8 @@ public final class SettingsModel: ObservableObject {
     }
 
     private func fetchSettings() async throws -> SettingsDataModel {
-        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("data").document("settings").getDocument(as: SettingsDataModel.self)
+        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID())
+            .collection("data").document("settings").getDocument(as: SettingsDataModel.self)
         return document
     }
 

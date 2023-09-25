@@ -18,7 +18,11 @@ struct SignupFinishedView: View {
         .toolbar {}
         .navigationBarBackButtonHidden(true)
         .task {
-            AuthUtils.createUser(email: formInfo.email, password: formInfo.password, userData: formInfo.toUserDocument())
+            AuthUtils.createUser(
+                email: formInfo.email,
+                password: formInfo.password,
+                userData: formInfo.toUserDocument()
+            )
         }
     }
 }

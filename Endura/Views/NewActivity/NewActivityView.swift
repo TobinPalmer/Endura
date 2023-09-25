@@ -77,14 +77,18 @@ struct NewActivityView: View {
                         ForEach(groupedActivities[key]!, id: \.self) { activity in
                             NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
                                 let workoutType = activity.workoutActivityType.name
-                                let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0).rounded(toPlaces: 2).removeTrailingZeros()
+                                let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0)
+                                    .rounded(toPlaces: 2).removeTrailingZeros()
                                 Label {
-                                    Text("\(activity.startDate.formatted(date: .omitted, time: .shortened)) • \(workoutDistance) mi")
+                                    Text(
+                                        "\(activity.startDate.formatted(date: .omitted, time: .shortened)) • \(workoutDistance) mi"
+                                    )
                                 } icon: {
                                     if ActivityUtils.isActivityUploaded(activity) {
                                         Image(systemName: "checkmark").font(.title2).foregroundColor(.green)
                                     } else {
-                                        Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType)).font(.title2)
+                                        Image(systemName: uploadsViewModel.activityToIcon(activityName: workoutType))
+                                            .font(.title2)
                                     }
                                 }
                             }

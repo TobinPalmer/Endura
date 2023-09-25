@@ -55,7 +55,8 @@ struct ActivityPost: View {
                     Text("🎉")
                         .font(.title)
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activity.likes.contains(AuthUtils.getCurrentUID()) ? Color(.systemGray5) : .clear))
+                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activity.likes
+                        .contains(AuthUtils.getCurrentUID()) ? Color(.systemGray5) : .clear))
 
                 ActivityLikesList(activity.likes)
 

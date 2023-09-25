@@ -34,7 +34,8 @@ struct SignupStepOneView: View {
                         currentStep += 1
                     }
                 }
-                .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName.isEmpty) ? .gray : .accentColor))
+                .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
+                        .isEmpty) ? .gray : .accentColor))
 //                .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
             }
             .padding(40)

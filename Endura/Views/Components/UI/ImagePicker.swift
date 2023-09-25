@@ -17,7 +17,10 @@ struct ImagePicker: UIViewControllerRepresentable {
             self.parent = parent
         }
 
-        func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        func imagePickerController(
+            _: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+        ) {
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.selectedImage = uiImage.crop(to: CGSize(width: 128, height: 128))
             }
@@ -36,5 +39,8 @@ struct ImagePicker: UIViewControllerRepresentable {
         return picker
     }
 
-    func updateUIViewController(_: UIImagePickerController, context _: UIViewControllerRepresentableContext<ImagePicker>) {}
+    func updateUIViewController(
+        _: UIImagePickerController,
+        context _: UIViewControllerRepresentableContext<ImagePicker>
+    ) {}
 }

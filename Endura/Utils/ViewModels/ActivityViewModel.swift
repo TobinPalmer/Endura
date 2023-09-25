@@ -19,11 +19,13 @@ public final class ActivityViewModel: ObservableObject {
     public func getAnalysisValue(for position: Date, graph: IndexedLineGraphData) -> Double? {
         let position = position.roundedToNearestSecond()
         var value = graph[position]
-        // Get closest value using the interval because the graph is not always 1 second intervals and for longer runs then searching for closest value is needed
+        // Get closest value using the interval because the graph is not always 1 second intervals and for longer runs
+        // then searching for closest value is needed
         if interval > 1 {
             for i in 1 ... interval / 2 {
                 if value == nil {
-                    value = graph[position.addingTimeInterval(-1 * Double(i))] ?? graph[position.addingTimeInterval(Double(i))]
+                    value = graph[position.addingTimeInterval(-1 * Double(i))] ??
+                        graph[position.addingTimeInterval(Double(i))]
                 } else {
                     break
                 }

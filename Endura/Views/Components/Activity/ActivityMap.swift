@@ -47,7 +47,10 @@ struct ActivityMap: View {
                         .onChange(of: activityViewModel.analysisPosition) { timePosition in
                             if let timePosition = timePosition {
                                 if let location = activityViewModel.getAnalysisLocation(for: timePosition) {
-                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+                                    mapViewContainer.updateAnnotation(position: CLLocationCoordinate2D(
+                                        latitude: location.latitude,
+                                        longitude: location.longitude
+                                    ))
                                 }
                             } else {
                                 mapViewContainer.removeAnnotation()
@@ -113,16 +116,24 @@ private struct MapView: UIViewRepresentable {
         if !routeData.isEmpty {
             for data in routeData {
                 let paceColor = colorForPace(data.pace)
-                let currentCoordinate = CLLocationCoordinate2D(latitude: data.location.latitude, longitude: data.location.longitude)
+                let currentCoordinate = CLLocationCoordinate2D(
+                    latitude: data.location.latitude,
+                    longitude: data.location.longitude
+                )
 
                 if paceColor != currentPaceColor {
                     if !currentPolylineCoordinates.isEmpty {
-                        currentPolylineCoordinates.append(currentCoordinate) // Add the start point of the next polyline to the current one
+                        currentPolylineCoordinates
+                            .append(currentCoordinate) // Add the start point of the next polyline to the current one
 
-                        let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
+                        let polyline = MKPolyline(
+                            coordinates: currentPolylineCoordinates,
+                            count: currentPolylineCoordinates.count
+                        )
 
                         overlaysToAdd.append(ColoredPolyline(color: paceColor, polyline: polyline))
-                        currentPolylineCoordinates = [currentCoordinate] // Start new polyline with the color changing point
+                        currentPolylineCoordinates =
+                            [currentCoordinate] // Start new polyline with the color changing point
                     }
                     currentPaceColor = paceColor
                 } else {
@@ -131,7 +142,10 @@ private struct MapView: UIViewRepresentable {
             }
 
             if !currentPolylineCoordinates.isEmpty {
-                let polyline = MKPolyline(coordinates: currentPolylineCoordinates, count: currentPolylineCoordinates.count)
+                let polyline = MKPolyline(
+                    coordinates: currentPolylineCoordinates,
+                    count: currentPolylineCoordinates.count
+                )
                 var color = UIColor.yellow
 
                 color = currentPaceColor

@@ -14,8 +14,11 @@ public final class NotificationsModel: ObservableObject {
     }
 
     private final func loadNotifications() {
-        let query = lastRead != nil ? Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("notifications").order(by: "timestamp", descending: true).whereField("timestamp", isGreaterThan: lastRead!) :
-            Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("notifications").order(by: "timestamp", descending: true)
+        let query = lastRead != nil ? Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID())
+            .collection("notifications").order(by: "timestamp", descending: true)
+            .whereField("timestamp", isGreaterThan: lastRead!) :
+            Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("notifications")
+            .order(by: "timestamp", descending: true)
 
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
@@ -39,7 +42,8 @@ public final class NotificationsModel: ObservableObject {
 
     public static func sendNotification(to uid: String, data: NotificationData) {
         do {
-            try Firestore.firestore().collection("users").document(uid).collection("notifications").addDocument(from: data)
+            try Firestore.firestore().collection("users").document(uid).collection("notifications")
+                .addDocument(from: data)
         } catch {
             Global.log.error("Error sending notification: \(error)")
         }

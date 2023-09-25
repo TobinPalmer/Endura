@@ -11,7 +11,9 @@ import SwiftUI
         if !users.isEmpty {
             return
         }
-        let query = Firestore.firestore().collection("users").whereField("firstName", isGreaterThanOrEqualTo: searchText).whereField("firstName", isLessThanOrEqualTo: searchText + "\u{f8ff}").order(by: "firstName").limit(to: 10)
+        let query = Firestore.firestore().collection("users")
+            .whereField("firstName", isGreaterThanOrEqualTo: searchText)
+            .whereField("firstName", isLessThanOrEqualTo: searchText + "\u{f8ff}").order(by: "firstName").limit(to: 10)
 
         do {
             let querySnapshot = try await query.getDocuments()

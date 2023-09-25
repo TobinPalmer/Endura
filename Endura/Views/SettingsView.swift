@@ -64,14 +64,15 @@ struct SettingsView: View {
                             }
                         }
                     }
-                    .navigationBarTitle("Notifications")
-
-                    ) {
+                    .navigationBarTitle("Notifications")) {
                         Label("Notifications", systemImage: "bell")
                     }
 
                     NavigationLink(destination: List {
-                        Section(header: Text("Availability"), footer: Text("This will be used to determine what are the options for your training plan.")) {
+                        Section(
+                            header: Text("Availability"),
+                            footer: Text("This will be used to determine what are the options for your training plan.")
+                        ) {
                             let options = VStack {
                                 Text("Busy").tag(TrainingDayAvailability.busy)
                                 Text("Maybe").tag(TrainingDayAvailability.maybe)
@@ -83,21 +84,27 @@ struct SettingsView: View {
                             })
                             .pickerStyle(.menu)
 
-                            Picker(selection: .constant(TrainingDayAvailability.free), label: Text("Tuesday"), content: {
-                                options
-                            })
+                            Picker(
+                                selection: .constant(TrainingDayAvailability.free),
+                                label: Text("Tuesday"),
+                                content: {
+                                    options
+                                }
+                            )
                             .pickerStyle(.menu)
                         }
                     }
-                    .navigationBarTitle("Training")
-                    ) {
+                    .navigationBarTitle("Training")) {
                         Label("Training", systemImage: "calendar")
                     }
 
                     NavigationLink(destination: VStack {
                         List {
                             Section {
-                                Picker(selection: $activeUser.settings.data.defaultActivityVisibility, label: Text("Default Activity Visibility")) {
+                                Picker(
+                                    selection: $activeUser.settings.data.defaultActivityVisibility,
+                                    label: Text("Default Activity Visibility")
+                                ) {
                                     Text("Everyone").tag(ActivityVisibility.everyone)
                                     Text("Friends").tag(ActivityVisibility.friends)
                                     Text("Private").tag(ActivityVisibility.none)

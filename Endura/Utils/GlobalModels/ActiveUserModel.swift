@@ -46,7 +46,8 @@ import SwiftUICalendar
     }
 
     private func fetchUserData() async throws -> ActiveUserData {
-        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).getDocument(as: UserDocument.self)
+        let document = try await Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID())
+            .getDocument(as: UserDocument.self)
         let userData = ActiveUserData(
             uid: AuthUtils.getCurrentUID(),
             firstName: document.firstName,

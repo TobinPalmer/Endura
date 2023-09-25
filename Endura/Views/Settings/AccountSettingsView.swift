@@ -40,11 +40,12 @@ private final class AccountSettingsViewModel: ObservableObject {
     private func uploadProfileImage(_ imageData: Data) {
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"
-        Storage.storage().reference().child("users/\(AuthUtils.getCurrentUID())/profilePicture").putData(imageData, metadata: metadata) { _, error in
-            if let error = error {
-                Global.log.error("Error uploading profile image: \(error)")
+        Storage.storage().reference().child("users/\(AuthUtils.getCurrentUID())/profilePicture")
+            .putData(imageData, metadata: metadata) { _, error in
+                if let error = error {
+                    Global.log.error("Error uploading profile image: \(error)")
+                }
             }
-        }
     }
 }
 

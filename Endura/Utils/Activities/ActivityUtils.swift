@@ -9,7 +9,8 @@ import HealthKit
 public enum ActivityUtils {
     public static func getActivityRouteData(id: String) async -> ActivityRouteData {
         do {
-            let routeData = try await Firestore.firestore().collection("activities").document(id).collection("data").document("data").getDocument(as: ActivityRouteData.self)
+            let routeData = try await Firestore.firestore().collection("activities").document(id).collection("data")
+                .document("data").getDocument(as: ActivityRouteData.self)
             return routeData
         } catch {
             Global.log.error("Error getting activity route data: \(error)")
@@ -43,7 +44,10 @@ public enum ActivityUtils {
     }
 
     public static func isActivityUploaded(_ activity: HKWorkout) -> Bool {
-        !CacheUtils.fetchListedObject(UploadedActivityCache.self, predicate: NSPredicate(format: "id == %@", activity.uuid as CVarArg)).isEmpty
+        !CacheUtils.fetchListedObject(
+            UploadedActivityCache.self,
+            predicate: NSPredicate(format: "id == %@", activity.uuid as CVarArg)
+        ).isEmpty
     }
 
     public static func setActivityUploaded(for activity: HKWorkout) {
@@ -52,7 +56,11 @@ public enum ActivityUtils {
         CacheUtils.addListedObject(newActivity)
     }
 
-    public static func uploadActivity(activity: ActivityDataWithRoute, image: UIImage? = nil, storage: Storage? = nil) throws {
+    public static func uploadActivity(
+        activity: ActivityDataWithRoute,
+        image: UIImage? = nil,
+        storage: Storage? = nil
+    ) throws {
         do {
             let documentData = ActivityDocument.getDocument(for: activity, uploadTime: Date())
             let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: documentData)

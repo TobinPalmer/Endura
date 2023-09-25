@@ -7,7 +7,12 @@ struct ActivityGridStats: View {
     private let bottomSpace: Bool
     private let placeholder: Bool
 
-    public init(activityData: ActivityGridStatsData?, bottomSpace: Bool = false, topSpace: Bool = false, placeholder: Bool = false) {
+    public init(
+        activityData: ActivityGridStatsData?,
+        bottomSpace: Bool = false,
+        topSpace: Bool = false,
+        placeholder: Bool = false
+    ) {
         self.activityData = activityData
         self.bottomSpace = bottomSpace
         self.topSpace = topSpace
@@ -74,7 +79,9 @@ struct ActivityGridStats: View {
                 ActivityGridSection {
                     ActivityStatsSection {
                         ActivityStatsDiscriptionText("Distance")
-                        ActivityStatsValueText("\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2)) miles")
+                        ActivityStatsValueText(
+                            "\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2)) miles"
+                        )
                     }
 
                     ActivityStatsVLine()
