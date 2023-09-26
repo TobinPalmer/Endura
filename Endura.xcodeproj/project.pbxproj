@@ -78,6 +78,7 @@
 		17CC6F4DE24D08B1CDEE48A2 /* SummaryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6456ADDCD3B3619C2871 /* SummaryModels.swift */; };
 		17CC6F542EDA27F51A70EB97 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6843280A704676A963ED /* AuthUtils.swift */; };
 		17CC6F99C6B477ABB1414BA4 /* ActiveUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61971638850704C3759E /* ActiveUserModel.swift */; };
+		17CC6F9EBF6E6177129EF05A /* TrainingGoalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F3AC8B1DE5044FFAC30 /* TrainingGoalModels.swift */; };
 		6969804B969F900F229CC66D /* LoadingMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969817BEB50BC11806CE62F /* LoadingMap.swift */; };
 		6969809E76BDCFF142A312E4 /* FlowBlock-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69698DF0EB75AAA07F4CD689 /* FlowBlock-Regular.ttf */; };
 		696980E261E971DA82234156 /* SignupStepFourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696980DCC3207E865D9A2426 /* SignupStepFourView.swift */; };
@@ -222,6 +223,7 @@
 		17CC6D870BA8F7FE33770E38 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		17CC6D93D86A82B085AB91BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		17CC6E5C876813CE440700AC /* ActivityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
+		17CC6F3AC8B1DE5044FFAC30 /* TrainingGoalModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGoalModels.swift; sourceTree = "<group>"; };
 		17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsModel.swift; sourceTree = "<group>"; };
 		17CC6FAD8A0AC457723ACD1F /* Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversion.swift; sourceTree = "<group>"; };
 		17CC6FDB47061EA0B1158098 /* NotificationModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationModels.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				17CC656E8B60587CA8E876DE /* TrainingModels.swift */,
 				6969864B8B26535EBF8EE62D /* TrainingEnums.swift */,
 				17CC6A9B8DA59441836A95B4 /* WeekDayEnum.swift */,
+				17CC6F3AC8B1DE5044FFAC30 /* TrainingGoalModels.swift */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -1165,6 +1168,7 @@
 				17CC6F99C6B477ABB1414BA4 /* ActiveUserModel.swift in Sources */,
 				17CC6B7A497E6D7D4D086659 /* SettingsModel.swift in Sources */,
 				17CC634917C591A1A876D670 /* WeekDayEnum.swift in Sources */,
+				17CC6F9EBF6E6177129EF05A /* TrainingGoalModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

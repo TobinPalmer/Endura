@@ -70,7 +70,7 @@ struct TrainingCalender: View {
                 }
             })
             .onChange(of: controller.yearMonth) { newMonth in
-                activeUser.training.loadMonth(newMonth)
+                activeUser.training.loadTrainingMonth(newMonth)
             }
             .padding(26)
         }

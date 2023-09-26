@@ -23,6 +23,21 @@ import SwiftUICalendar
             monthlyTrainingData[data.date] = data
         }
 
+        loadTrainingMonth(.current)
+
+        var today = getTrainingDay(.current)
+        today.goals = [TrainingGoalData.run(
+            data: RunningTrainingGoalData(
+                type: .normal,
+                distance: 2.5,
+                pace: 8,
+                time: 45,
+                progress: TrainingGoalProgressData(completed: true, activity: nil)
+            )
+        )]
+        setTrainingDay(.current, today)
+        saveTrainingMonth(.current)
+
 //        monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days:
 //        [
 //            .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.routine(
@@ -47,11 +62,9 @@ import SwiftUICalendar
 //                time: 32
 //            )]),
 //        ])
-
-        loadMonth(.current)
     }
 
-    public func loadMonth(_ date: YearMonth) {
+    public func loadTrainingMonth(_ date: YearMonth) {
         for i in -1 ... 1 {
             let date = date.addMonth(value: i)
             if !loadedMonths.contains(date) {
@@ -82,7 +95,7 @@ import SwiftUICalendar
     }
 
     public func getTrainingDay(_ date: YearMonthDay) -> DailyTrainingData {
-        monthlyTrainingData[date.getYearMonth()]?.days[date] ?? DailyTrainingData(date: date, type: .none, goals: [])
+        monthlyTrainingData[date.getYearMonth()]?.days[date] ?? DailyTrainingData(date: date, type: .none)
     }
 
     public func getTrainingDay(_ date: WeekDay) -> DailyTrainingData {
@@ -95,6 +108,9 @@ import SwiftUICalendar
 
     public func processNewActivity(_ activity: ActivityDataWithRoute) {
         updateSummaryData(for: activity.workoutStart.toYearMonthDay(), with: activity)
+
+        var trainingDay = getTrainingDay(activity.workoutStart.toYearMonthDay())
+        trainingDay.goals = TrainingUtils.updateTrainingGoals(trainingDay.goals, activity)
     }
 
     public func updateSummaryData(for date: YearMonthDay, with activity: ActivityDataWithRoute) {

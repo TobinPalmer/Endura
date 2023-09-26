@@ -25,30 +25,42 @@ struct TrainingGoal: View {
                 VStack(alignment: .leading) {
                     Text(goal.getTitle())
                     switch goal {
-                    case let .run(_, distance, _, _):
+                    case let .run(data):
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("\(distance.removeTrailingZeros()) Miles")
+                                Text("\(data.distance.removeTrailingZeros()) Miles")
                             }
                         }
-                    case let .routine(_, _, _, count):
+                    case let .routine(data):
                         VStack(alignment: .leading) {
-                            Text("\(count) Exercises")
+                            Text("\(data.count) Exercises")
                         }
                     }
                 }
                 Spacer()
                 switch goal {
-                case let .routine(_, _, time, _),
-                     let .run(_, _, time, _):
-                    Text("\(time.removeTrailingZeros()) Minutes")
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
+                case let .routine(data):
+                    timeAndProgressView(time: data.time, progress: data.progress)
+                case let .run(data):
+                    timeAndProgressView(time: data.time, progress: data.progress)
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(26)
         .EnduraDefaultBox()
+    }
+
+    func timeAndProgressView(time: Double, progress: TrainingGoalProgressData) -> some View {
+        HStack {
+            if progress.completed {
+                Image(systemName: "checkmark")
+                    .foregroundColor(.green)
+            } else {
+                Text("\(time.removeTrailingZeros()) Minutes")
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
+            }
+        }
     }
 }

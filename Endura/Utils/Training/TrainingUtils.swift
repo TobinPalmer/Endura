@@ -4,6 +4,8 @@ import Foundation
 import SwiftUICalendar
 
 public enum TrainingUtils {
+    private static let trainingDistanceTolerance = 0.2
+
     public static func saveTrainingMonthData(_ data: MonthlyTrainingData) {
         do {
             try Firestore.firestore().collection("users").document(AuthUtils.getCurrentUID()).collection("training")
@@ -43,5 +45,24 @@ public enum TrainingUtils {
             Global.log.error("Error getting training month data: \(error)")
         }
         return nil
+    }
+
+    public static func updateTrainingGoals(
+        _ goals: [TrainingGoalData],
+        _ activity: ActivityDataWithRoute
+    ) -> [TrainingGoalData] {
+        let updatedGoals = goals
+        for goal in updatedGoals {
+            switch goal {
+            case var .run(data):
+                if activity.distance >= data.distance - trainingDistanceTolerance, !data.progress.completed {
+                    data.progress.completed = true
+                    print("Run goal completed: \(data.distance)")
+                }
+            case .routine:
+                break
+            }
+        }
+        return updatedGoals
     }
 }
