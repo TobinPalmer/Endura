@@ -48,6 +48,13 @@
             ReferencedContainer = "container:Endura.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "PALM_API_KEY"
+            value = "AIzaSyChzuUYAlkk0W_RvvaZffiD0UVO3OGGhzo"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

@@ -1,8 +1,5 @@
-import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import Foundation
-import HealthKit
+import GoogleGenerativeAI
 import Inject
 import RiveRuntime
 import SwiftUI
@@ -10,6 +7,8 @@ import SwiftUI
 struct DashboardView: View {
     @EnvironmentObject var notificationsModel: NotificationsModel
     @EnvironmentObject var activeUserModel: ActiveUserModel
+
+    @State var response: String?
 
     var body: some View {
         ScrollView {
@@ -39,14 +38,22 @@ struct DashboardView: View {
                 .frame(minWidth: 0, maxWidth: .infinity)
             }
 
-            Text("Hello world")
+            Text(response ?? "no response yet").task {
+                let palmClient = GenerativeLanguage(apiKey: ProcessInfo.processInfo.environment["PALM_API_KEY"]!)
+                do {
+                    print("Sending message")
+                    let prompt = "What ai are you? Can you tell me about yourself?"
 
-            VStack {
-                RiveViewModel(
-                    fileName: "pointandclick"
-                ).view()
+                    let response = try await palmClient.generateText(with: prompt)
+                    print("Got response \(response)")
+
+                    if let candidate = response.candidates?.first, let text = candidate.output {
+                        self.response = text
+                    }
+                } catch {
+                    print("Error with palm response: \(error)")
+                }
             }
-            .frame(width: 200, height: 200)
 
             TrainingGoalList()
         }

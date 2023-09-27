@@ -143,6 +143,7 @@
 		E9535FD92AA953D400D19B86 /* DataCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9535FD72AA953D400D19B86 /* DataCache.xcdatamodeld */; };
 		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
 		E98AFF032AA65664002DB211 /* SwiftUICalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E98AFF022AA65664002DB211 /* SwiftUICalendar */; };
+		E9A307482AC3B28000AB32BF /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = E9A307472AC3B28000AB32BF /* GoogleGenerativeAI */; };
 		E9C8EEF12AB62578007DA21B /* bear.riv in Resources */ = {isa = PBXBuildFile; fileRef = E9C8EEF02AB62556007DA21B /* bear.riv */; };
 		E9C8EEF32AB626FB007DA21B /* pointandclick.riv in Resources */ = {isa = PBXBuildFile; fileRef = E9C8EEF22AB626DE007DA21B /* pointandclick.riv */; };
 /* End PBXBuildFile section */
@@ -314,6 +315,7 @@
 				E92549A92AA03AE900776856 /* CachedAsyncImage in Frameworks */,
 				026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */,
 				026042E82A62E36300F4AF88 /* FirebaseAnalytics in Frameworks */,
+				E9A307482AC3B28000AB32BF /* GoogleGenerativeAI in Frameworks */,
 				026042F22A62E36300F4AF88 /* FirebaseFirestore in Frameworks */,
 				0267A8072A92CC3D0090E032 /* Inject in Frameworks */,
 			);
@@ -927,6 +929,7 @@
 				02C6C3F22AAAAB290079B76B /* AlertKit */,
 				02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */,
 				E90CACFC2AB3B55200DC3CF6 /* RiveRuntime */,
+				E9A307472AC3B28000AB32BF /* GoogleGenerativeAI */,
 			);
 			productName = Endura;
 			productReference = 026042B92A62E27900F4AF88 /* Endura.app */;
@@ -1010,6 +1013,7 @@
 				02C6C3F12AAAAB290079B76B /* XCRemoteSwiftPackageReference "AlertKit" */,
 				02C6C3F42AAAB1DB0079B76B /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 				E90CACFB2AB3B55200DC3CF6 /* XCRemoteSwiftPackageReference "rive-ios" */,
+				E9A307462AC3B28000AB32BF /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			productRefGroup = 026042BA2A62E27900F4AF88 /* Products */;
 			projectDirPath = "";
@@ -1584,6 +1588,14 @@
 				minimumVersion = 0.1.14;
 			};
 		};
+		E9A307462AC3B28000AB32BF /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1671,6 +1683,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E98AFF012AA65664002DB211 /* XCRemoteSwiftPackageReference "SwiftUICalendar" */;
 			productName = SwiftUICalendar;
+		};
+		E9A307472AC3B28000AB32BF /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9A307462AC3B28000AB32BF /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 
