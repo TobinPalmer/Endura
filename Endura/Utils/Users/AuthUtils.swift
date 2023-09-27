@@ -14,15 +14,18 @@ public enum AuthUtils {
                 do {
                     try Firestore.firestore().collection("users").document(uid).setData(from: userData)
                     let defaultSettings = SettingsDataModel(
-                        notifications: true,
-                        notificationsFriendRequest: true,
-                        notificationsFriendRequestAccepted: true,
-                        notificationsNewLike: true,
-                        notificationsNewComment: true,
-                        notificationsDailyTrainingPlan: true,
-                        notificationsDailySummary: true,
-                        notificationsFinishedActivity: true,
-                        notificationsPostRunReminder: true,
+                        notifications: NotificationsSettingsDataModel(
+                            enabled: true,
+                            friendRequest: true,
+                            friendRequestAccepted: true,
+                            newLike: true,
+                            newComment: true,
+                            dailyTrainingPlan: true,
+                            dailySummary: true,
+                            finishedActivity: true,
+                            postRunReminder: true
+                        ),
+                        training: TrainingSettingsDataModel(),
                         defaultActivityVisibility: .friends
                     )
                     try Firestore.firestore().collection("users").document(uid).collection("data").document("settings")

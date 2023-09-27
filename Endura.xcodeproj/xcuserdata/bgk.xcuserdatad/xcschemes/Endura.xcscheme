@@ -51,7 +51,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "PALM_API_KEY"
-            value = "AIzaSyChzuUYAlkk0W_RvvaZffiD0UVO3OGGhzo"
+            value = "AIzaSyC2YFXL3fGUA_iTcTg8FQDb94feH1X0bPs"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

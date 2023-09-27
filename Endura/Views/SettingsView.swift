@@ -14,28 +14,28 @@ struct SettingsView: View {
 
                     NavigationLink(destination: List {
                         Section(footer: Text("This will disable all notifications from Endura.")) {
-                            Toggle(isOn: $activeUser.settings.data.notifications) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.enabled) {
                                 Label("Notifications", systemImage: "bell")
                             }
                         }
 
                         Section(header: Text("Social")) {
-                            Toggle(isOn: $activeUser.settings.data.notificationsFriendRequest) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.friendRequest) {
                                 Label("Friend Request", systemImage: "person.badge.plus")
                             }
-                            Toggle(isOn: $activeUser.settings.data.notificationsFriendRequestAccepted) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.friendRequestAccepted) {
                                 Label("Friend Request Accepted", systemImage: "person.fill.checkmark")
                             }
-                            Toggle(isOn: $activeUser.settings.data.notificationsNewLike) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.newLike) {
                                 Label("New Like", systemImage: "hand.thumbsup")
                             }
-                            Toggle(isOn: $activeUser.settings.data.notificationsNewComment) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.newComment) {
                                 Label("New Comment", systemImage: "bubble.left")
                             }
                         }
 
                         Section(header: Text("Training")) {
-                            Toggle(isOn: $activeUser.settings.data.notificationsDailyTrainingPlan) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.dailyTrainingPlan) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Label("Daily Training Plan", systemImage: "calendar")
                                     Text("Receive your daily training plan at the start of each day.")
@@ -43,7 +43,7 @@ struct SettingsView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
-                            Toggle(isOn: $activeUser.settings.data.notificationsDailySummary) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.dailySummary) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Label("Daily Summary", systemImage: "checklist.checked")
                                     Text("Receive a summary of your day at the end of each day.")
@@ -51,10 +51,10 @@ struct SettingsView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
-                            Toggle(isOn: $activeUser.settings.data.notificationsFinishedActivity) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.finishedActivity) {
                                 Label("Finished Activity", systemImage: "figure.run")
                             }
-                            Toggle(isOn: $activeUser.settings.data.notificationsPostRunReminder) {
+                            Toggle(isOn: $activeUser.settings.data.notifications.postRunReminder) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Label("Post Run Reminder", systemImage: "figure.strengthtraining.functional")
                                     Text("Receive a reminder to do your post run exercises after each run.")
