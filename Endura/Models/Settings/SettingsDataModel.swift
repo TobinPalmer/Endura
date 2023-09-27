@@ -36,6 +36,24 @@ public struct SettingsDataModel: Codable, Cacheable {
             defaultActivityVisibility: ActivityVisibility(rawValue: cache.defaultActivityVisibility ?? "none") ?? .none
         )
     }
+
+    public static func getDefault() -> SettingsDataModel {
+        SettingsDataModel(
+            notifications: NotificationsSettingsDataModel(
+                enabled: true,
+                friendRequest: true,
+                friendRequestAccepted: true,
+                newLike: true,
+                newComment: true,
+                dailyTrainingPlan: true,
+                dailySummary: true,
+                finishedActivity: true,
+                postRunReminder: true
+            ),
+            training: TrainingSettingsDataModel(),
+            defaultActivityVisibility: .friends
+        )
+    }
 }
 
 public struct NotificationsSettingsDataModel: Codable {

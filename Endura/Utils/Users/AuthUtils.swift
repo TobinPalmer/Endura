@@ -13,23 +13,8 @@ public enum AuthUtils {
                 let uid = user.uid
                 do {
                     try Firestore.firestore().collection("users").document(uid).setData(from: userData)
-                    let defaultSettings = SettingsDataModel(
-                        notifications: NotificationsSettingsDataModel(
-                            enabled: true,
-                            friendRequest: true,
-                            friendRequestAccepted: true,
-                            newLike: true,
-                            newComment: true,
-                            dailyTrainingPlan: true,
-                            dailySummary: true,
-                            finishedActivity: true,
-                            postRunReminder: true
-                        ),
-                        training: TrainingSettingsDataModel(),
-                        defaultActivityVisibility: .friends
-                    )
                     try Firestore.firestore().collection("users").document(uid).collection("data").document("settings")
-                        .setData(from: defaultSettings)
+                        .setData(from: SettingsDataModel.getDefault())
                 } catch {
                     Global.log.error("Error creating user: \(error)")
                 }
