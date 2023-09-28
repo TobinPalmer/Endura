@@ -18,64 +18,49 @@ struct ActivityView: View {
 
     var body: some View {
         VStack {
-            if let activityData = activityData {
-                ScrollView(.vertical) {
-                    VStack {
-                        ActivityHeader(uid: activity.uid, activityData: activity)
+            ScrollView(.vertical) {
+                VStack {
+                    ActivityHeader(uid: activity.uid, activityData: activity)
 
-                        Text(activity.social.title)
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-
-                        ActivityMap(activityData.data.routeData)
-                            .frame(height: 300)
-
-                        ActivityGridStats(
-                            activityData: activity,
-                            topSpace: !activityData.data.routeData.isEmpty
-                        )
-
-                        Button(action: {
-                            analysisView = true
-                        }) {
-                            Text("View Analysis")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .padding()
-                                .foregroundColor(.white)
-                                .background(Color.blue)
-                                .cornerRadius(5)
-                        }
-                        .padding(.top, 10)
-                        .padding(.bottom, 20)
-
-                        ActivitySplitGraph(splits: activityData.stats.splits)
-                    }
-                    .environmentObject(ActivityViewModel(
-                        activityData: activityData.getIndexedGraphData(),
-                        routeLocationData: activityData.getIndexedRouteLocationData(),
-                        interval: activityData.data.graphInterval
-                    ))
-                }
-            } else {
-                ScrollView {
-                    ActivityHeader(uid: "", activityData: nil, placeholder: true)
-
-                    Text("-----------------------")
-                        .font(Font.custom("FlowBlock-Regular", size: 30, relativeTo: .title))
+                    Text(activity.social.title)
+                        .font(.title)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    VStack {
-                        Text("Loading...")
+                    if let activityData = activityData {
+                        ActivityMap(activityData.data.routeData)
+                            .frame(height: 300)
+                            .environmentObject(ActivityViewModel(
+                                activityData: activityData.getIndexedGraphData(),
+                                routeLocationData: activityData.getIndexedRouteLocationData(),
+                                interval: activityData.data.graphInterval
+                            ))
+                    } else {
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(height: 300)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .frame(height: 300)
-                    .foregroundColor(Color.red)
-                    .border(.red)
 
-                    ActivityGridStats(activityData: nil, placeholder: true)
+                    ActivityGridStats(
+                        activityData: activity,
+                        topSpace: !(activityData?.data.routeData.isEmpty ?? false)
+                    )
+
+                    Button(action: {
+                        analysisView = true
+                    }) {
+                        Text("View Analysis")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(Color.blue)
+                            .cornerRadius(5)
+                    }
+                    .padding(.top, 10)
+                    .padding(.bottom, 20)
+
+                    ActivitySplitGraph(splits: activity.stats.splits)
                 }
             }
         }
@@ -142,7 +127,10 @@ struct ActivityView: View {
         }
         .padding()
         .task {
-            activityData = await activity.withRouteData(id: id)
+            let activityDataWithRoute = await activity.withRouteData(id: id)
+            withAnimation {
+                activityData = activityDataWithRoute
+            }
         }
     }
 }
