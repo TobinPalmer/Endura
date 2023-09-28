@@ -509,41 +509,40 @@ public enum HealthKitUtils {
             }
         }
 
-        let workoutData = try await ActivityDataWithRoute(averagePower: power.isEmpty
-            ? nil
-            : power.reduce(0) {
-                $0 + $1.power
-            } / Double(power.count),
-            calories: workout.totalEnergyBurned?.doubleValue(
-                for: .kilocalorie()
-            ) ?? 0.0,
-            comments: [],
+        let startLocation = try await data.first?.fetchCityAndCountry()
+
+        let workoutData = ActivityDataWithRoute(
+            uid: AuthUtils.getCurrentUID(),
+            time: workout.startDate,
+            visibility: .friends,
+            type: .none,
+            distance: workoutDistance,
+            duration: workoutDuration,
+            totalDuration: workout.startDate.distance(to: workout.endDate),
+            stats: ActivityStatsData(
+                calories: workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0.0,
+                averageHeartRate: heartRate.isEmpty ? nil : heartRate.reduce(0) {
+                    $0 + $1.heartRate
+                } / Double(heartRate.count),
+                averagePower: power.isEmpty ? nil : power.reduce(0) {
+                    $0 + $1.power
+                } / Double(power.count),
+                splits: mileSplits
+            ),
+            social: ActivityPostData(
+                title: "",
+                description: "",
+                startCity: startLocation?.0 ?? "",
+                startCountry: startLocation?.1 ?? "",
+                likes: [],
+                comments: []
+            ),
             data: ActivityRouteData(
                 graphData: graphData,
                 graphInterval: dataRate,
                 routeData: routeData
-            ),
-            splits: mileSplits,
-            distance: workoutDistance,
-            description: "",
-            duration: workoutDuration,
-            startCountry: data.first?.fetchCityAndCountry().1 ?? "",
-            workoutStart: workout.startDate,
-            likes: [],
-            type: .none,
-            startCity: data.first?.fetchCityAndCountry().0 ?? "",
-            startLocation: LocationData(
-                latitude: data.first?.coordinate.latitude ?? 0.0,
-                longitude: data.first?.coordinate.longitude ?? 0.0
-            ),
-            time: workout.startDate,
-            title: "",
-            totalDuration: workout.startDate.distance(
-                to: workout.endDate
-            ),
-            uid: AuthUtils.getCurrentUID(),
-            visibility: .friends)
-
+            )
+        )
         return workoutData
     }
 

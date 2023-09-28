@@ -4,31 +4,31 @@ import SwiftUI
 
 struct ActivityPost: View {
     @EnvironmentObject var databaseCache: UsersCacheModel
-    private var activity: ActivityData
+    private var activityData: ActivityData
     private var id: String
 
     @State private var showingComments = false
     @State private var message: String = ""
 
     init(id: String, activity: ActivityData) {
-        self.activity = activity
+        activityData = activity
         self.id = id
     }
 
     var body: some View {
         VStack(spacing: 14) {
-            ActivityHeader(uid: activity.uid, activityData: activity.withHeaderStats())
+            ActivityHeader(uid: activityData.uid, activityData: activityData)
 
-            NavigationLink(destination: ActivityView(id: id, activity: activity)) {
+            NavigationLink(destination: ActivityView(id: id, activity: activityData)) {
                 VStack(spacing: 10) {
-                    Text(activity.title.isEmpty ? "Untitled Activity" : activity.title)
+                    Text(activityData.social.title.isEmpty ? "Untitled Activity" : activityData.social.title)
                         .foregroundColor(Color("Text"))
                         .font(.title2)
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    if !activity.description.isEmpty {
-                        Text(activity.description)
+                    if !activityData.social.description.isEmpty {
+                        Text(activityData.social.description)
                             .multilineTextAlignment(.leading)
                             .font(.system(size: 12))
                             .foregroundColor(.secondary)
@@ -37,11 +37,11 @@ struct ActivityPost: View {
                 }
             }
 
-            NavigationLink(destination: ActivityView(id: id, activity: activity)) {
-                ActivityPostStats(activityData: activity)
+            NavigationLink(destination: ActivityView(id: id, activity: activityData)) {
+                ActivityPostStats(activityData: activityData)
             }
 
-            NavigationLink(destination: ActivityView(id: id, activity: activity)) {
+            NavigationLink(destination: ActivityView(id: id, activity: activityData)) {
                 ActivityMapImage(id)
                     .cornerRadius(5)
                     .shadow(color: Color(.systemGray5), radius: 5, x: 0, y: 0)
@@ -50,15 +50,15 @@ struct ActivityPost: View {
 
             HStack {
                 Button(action: {
-                    ActivityUtils.toggleLike(id: id, activity: activity)
+                    ActivityUtils.toggleLike(id: id, activity: activityData)
                 }) {
                     Text("🎉")
                         .font(.title)
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activity.likes
+                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activityData.social.likes
                         .contains(AuthUtils.getCurrentUID()) ? Color(.systemGray5) : .clear))
 
-                ActivityLikesList(activity.likes)
+                ActivityLikesList(activityData.social.likes)
 
                 Spacer()
 
@@ -66,7 +66,7 @@ struct ActivityPost: View {
                     showingComments.toggle()
                 } label: {
                     let commentsBinding = Binding<Int>(
-                        get: { activity.comments.count },
+                        get: { activityData.social.comments.count },
                         set: { _ in }
                     )
                     Image(systemName: "message")
@@ -101,20 +101,21 @@ struct ActivityPost: View {
                             .frame(height: 10)
 
                         HStack {
-                            Text(activity.title.isEmpty ? "Untitled Activity" : activity.title)
+                            Text(activityData.social.title.isEmpty ? "Untitled Activity" : activityData.social
+                                .title)
                                 .font(.title2)
                                 .fontWeight(.semibold)
 
                             Spacer()
 
-                            ActivityLikesList(activity.likes, noLink: true, reverse: true)
+                            ActivityLikesList(activityData.social.likes, noLink: true, reverse: true)
                                 .padding(.trailing, 10)
                         }
                     }
                 }
 
                 ScrollView {
-                    ForEach(activity.comments, id: \.self) { comment in
+                    ForEach(activityData.social.comments, id: \.self) { comment in
                         ActivityComment(comment)
                     }
                 }

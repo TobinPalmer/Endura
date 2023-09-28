@@ -81,25 +81,7 @@ import SwiftUI
         do {
             let data = try diff.document.data(as: ActivityDocument.self)
 
-            let activity = ActivityData(
-                averagePower: data.averagePower,
-                calories: data.calories,
-                comments: data.comments,
-                splits: data.splits,
-                distance: data.distance,
-                description: data.description,
-                duration: data.duration,
-                startCountry: data.startCountry,
-                likes: data.likes,
-                type: data.type,
-                startCity: data.startCity,
-                startLocation: data.startLocation,
-                time: data.time,
-                title: data.title,
-                totalDuration: data.totalDuration,
-                uid: data.uid,
-                visibility: data.visibility
-            )
+            let activity = data.getActivityData()
 
             if diff.type == .added || diff.type == .modified {
                 activities.updateValue((diff.document.documentID, activity), forKey: diff.document.documentID)
@@ -160,7 +142,6 @@ struct ActivitiesView: View {
             }
             activityViewModel.loadActivities()
         }
-        //        .background(Color(.secondarySystemBackground))
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink(destination: NewActivityView()) {

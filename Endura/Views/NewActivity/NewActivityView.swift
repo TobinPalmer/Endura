@@ -75,7 +75,7 @@ struct NewActivityView: View {
                 ForEach(sortedKeys, id: \.self) { key in
                     Section(header: Text("\(key.formatted(date: .abbreviated, time: .omitted))")) {
                         ForEach(groupedActivities[key]!, id: \.self) { activity in
-                            NavigationLink(destination: PreviewWorkoutView(workout: activity)) {
+                            NavigationLink(destination: UploadWorkoutView(workout: activity)) {
                                 let workoutType = activity.workoutActivityType.name
                                 let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0)
                                     .rounded(toPlaces: 2).removeTrailingZeros()

@@ -3,16 +3,12 @@ import HealthKit
 import MapKit
 import SwiftUI
 
-@MainActor private final class PreviewWorkoutModel: ObservableObject {
+@MainActor private final class UploadWorkoutViewModel: ObservableObject {
     @Published fileprivate var mapRef: (any View)?
     @Published fileprivate var geometryRef: GeometryProxy?
-    @Published fileprivate var enduraWorkout: ActivityDataWithRoute?
-    @Published fileprivate var workoutStats: ActivityGridStatsData?
-    @Published fileprivate var workoutHeader: ActivityHeaderData?
-    @Published fileprivate var activityTitle: String = ""
-    @Published fileprivate var activityDescription: String = ""
+    @Published fileprivate var activityData: ActivityDataWithRoute?
 
-    fileprivate final func getEnduraWorkout(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
+    fileprivate final func getActivityData(_ workout: HKWorkout) async throws -> ActivityDataWithRoute {
         do {
             return try await HealthKitUtils.workoutToActivityDataWithRoute(for: workout)
         } catch {
@@ -21,20 +17,14 @@ import SwiftUI
     }
 }
 
-struct PreviewWorkoutView: View {
-    @StateObject fileprivate var previewWorkoutModel = PreviewWorkoutModel()
+struct UploadWorkoutView: View {
+    @StateObject fileprivate var viewModel = UploadWorkoutViewModel()
     @State private var isShowingSummary = false
+    @State var activityTitle: String = ""
+    @State var activityDescription: String = ""
 
-    @MainActor func updateWorkoutStats(_ workout: HKWorkout) {
-        previewWorkoutModel.workoutStats = HealthKitUtils.getWorkoutGridStatsData(for: workout)
-    }
-
-    @MainActor func updateWorkoutHeader(_ workout: HKWorkout) async throws {
-        previewWorkoutModel.workoutHeader = try await HealthKitUtils.getWorkoutHeaderData(for: workout)
-    }
-
-    @MainActor func updateEnduraWorkout(_ workout: HKWorkout) async throws {
-        previewWorkoutModel.enduraWorkout = try await previewWorkoutModel.getEnduraWorkout(workout)
+    @MainActor func updateActivityData(_ workout: HKWorkout) async throws {
+        viewModel.activityData = try await viewModel.getActivityData(workout)
     }
 
     private var workout: HKWorkout
@@ -46,25 +36,25 @@ struct PreviewWorkoutView: View {
     var body: some View {
         VStack {
             ScrollView {
-                if let workoutHeader = previewWorkoutModel.workoutHeader {
-                    ActivityHeader(uid: workoutHeader.uid, activityData: workoutHeader)
+                if let activityData = viewModel.activityData {
+                    ActivityHeader(uid: activityData.uid, activityData: activityData.getDataWithoutRoute())
                 } else {
                     ActivityHeader(uid: "", activityData: nil, placeholder: true)
                 }
 
-                TextField("Title", text: $previewWorkoutModel.activityTitle)
+                TextField("Title", text: $activityTitle)
                     .font(.title)
                     .textFieldStyle(EnduraTextFieldStyle())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
 
-                TextField("Description", text: $previewWorkoutModel.activityDescription)
+                TextField("Description", text: $activityDescription)
                     .font(.body)
                     .textFieldStyle(EnduraTextFieldStyle())
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
 
-                if var activityData = previewWorkoutModel.enduraWorkout {
+                if var activityData = viewModel.activityData {
                     let activityViewModel = ActivityViewModel(
                         activityData: activityData.getIndexedGraphData(),
                         routeLocationData: activityData.getIndexedRouteLocationData(),
@@ -82,27 +72,29 @@ struct PreviewWorkoutView: View {
                                     map
                                 }
                                 .onAppear {
-                                    previewWorkoutModel.mapRef = map
-                                    previewWorkoutModel.geometryRef = geometry
+                                    viewModel.mapRef = map
+                                    viewModel.geometryRef = geometry
                                 }
                             }
                         }
                         .frame(height: 300)
                     }
 
-                    ActivityGridStats(
-                        activityData: previewWorkoutModel.workoutStats,
-                        topSpace: !activityData.data.routeData.isEmpty
-                    )
+                    if let activityData = viewModel.activityData {
+                        ActivityGridStats(
+                            activityData: activityData.getDataWithoutRoute(),
+                            topSpace: !activityData.data.routeData.isEmpty
+                        )
+                    } else {}
 
-                    ActivitySplitGraph(splits: activityData.splits)
+                    ActivitySplitGraph(splits: activityData.stats.splits)
 
                     VStack {
                         ActivityGraphsView(activityData).environmentObject(activityViewModel)
                     }
 
                     Button {
-                        activityData.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
+                        activityData.social.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
 
                         ActivityUtils.setActivityUploaded(for: workout)
                         isShowingSummary = true
@@ -113,32 +105,37 @@ struct PreviewWorkoutView: View {
                     .buttonStyle(EnduraButtonStyleOld())
                 } else {
                     LoadingMap()
-                    ActivityGridStats(activityData: previewWorkoutModel.workoutStats, topSpace: false)
+                    if let activityData = viewModel.activityData {
+                        ActivityGridStats(
+                            activityData: activityData.getDataWithoutRoute(),
+                            topSpace: !activityData.data.routeData.isEmpty
+                        )
+                    } else {
+                        ActivityGridStats(
+                            activityData: nil,
+                            topSpace: false,
+                            placeholder: true
+                        )
+                    }
                 }
             }
         }
         .padding()
         .frame(maxHeight: .infinity)
         .task {
-            await withThrowingTaskGroup(of: Void.self) { group in
-                group.addTask {
-                    await updateWorkoutStats(workout)
-                }
-                group.addTask {
-                    try await updateWorkoutHeader(workout)
-                }
-                group.addTask {
-                    try await updateEnduraWorkout(workout)
-                }
+            do {
+                try await updateActivityData(workout)
+            } catch {
+                print("Error getting activity data: \(error)")
             }
         }
 
         .fullScreenCover(isPresented: $isShowingSummary) {
-            if let activityData = previewWorkoutModel.enduraWorkout {
+            if let activityData = viewModel.activityData {
                 PostUploadView(
                     activityData: activityData,
-                    mapRef: $previewWorkoutModel.mapRef,
-                    geometryRef: $previewWorkoutModel.geometryRef
+                    mapRef: $viewModel.mapRef,
+                    geometryRef: $viewModel.geometryRef
                 )
             } else {
                 Text("Error uploading workout")

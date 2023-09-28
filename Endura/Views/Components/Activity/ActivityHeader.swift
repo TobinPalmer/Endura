@@ -4,11 +4,11 @@ import SwiftUI
 struct ActivityHeader: View {
     @EnvironmentObject var databaseCache: UsersCacheModel
     private let uid: String
-    private let activityData: ActivityHeaderData?
+    private let activityData: ActivityData?
     private let bottomSpace: Bool
     private let placeholder: Bool
 
-    public init(uid: String, activityData: ActivityHeaderData?, bottomSpace: Bool = false, placeholder: Bool = false) {
+    public init(uid: String, activityData: ActivityData?, bottomSpace: Bool = false, placeholder: Bool = false) {
         self.uid = uid
         self.placeholder = placeholder
         self.activityData = activityData
@@ -33,7 +33,7 @@ struct ActivityHeader: View {
                 .frame(maxHeight: .infinity, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, maxHeight: 50, alignment: .topLeading)
-        } else {
+        } else if let activityData = activityData {
             UserProfileLink(uid) {
                 HStack {
                     ProfileImage(uid, size: 50)
@@ -45,23 +45,13 @@ struct ActivityHeader: View {
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
-                            if let activityData = activityData {
-                                if let startCity = activityData.startCity,
-                                   let startCountry = activityData.startCountry
-                                {
-                                    Text("\(activityData.startTime.formatted()) • \(startCity), \(startCountry)")
-                                        .foregroundColor(Color("TextMuted"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(.secondary)
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                                }
-                            } else {
-                                let startTime = String(activityData?.startTime.formatted() ?? "")
-                                Text(startTime)
-                                    .font(.system(size: 12))
-                                    .foregroundColor(.secondary)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                            }
+                            Text(
+                                "\(activityData.time.formatted()) • \(activityData.social.startCity), \(activityData.social.startCountry)"
+                            )
+                            .foregroundColor(Color("TextMuted"))
+                            .font(.system(size: 12))
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         }
                         .frame(maxHeight: 50, alignment: .topLeading)
                     } else {

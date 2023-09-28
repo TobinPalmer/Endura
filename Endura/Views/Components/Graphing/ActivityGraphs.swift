@@ -13,8 +13,8 @@ struct ActivityGraphsView: View {
     public var body: some View {
         VStack {
             let graphData = activityData.getGraphData()
-            let start = activityData.workoutStart
-            let end = activityData.workoutStart.addingTimeInterval(activityData.totalDuration)
+            let start = activityData.time
+            let end = activityData.time.addingTimeInterval(activityData.totalDuration)
 
             HoverableChart(
                 workoutStart: start,

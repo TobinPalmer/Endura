@@ -107,9 +107,9 @@ import SwiftUICalendar
     }
 
     public func processNewActivity(_ activity: ActivityDataWithRoute) {
-        updateSummaryData(for: activity.workoutStart.toYearMonthDay(), with: activity)
+        updateSummaryData(for: activity.time.toYearMonthDay(), with: activity)
 
-        var trainingDay = getTrainingDay(activity.workoutStart.toYearMonthDay())
+        var trainingDay = getTrainingDay(activity.time.toYearMonthDay())
         trainingDay.goals = TrainingUtils.updateTrainingGoals(trainingDay.goals, activity)
     }
 
