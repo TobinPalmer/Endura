@@ -2,13 +2,13 @@ import Foundation
 import SwiftUI
 
 struct ActivityGridStats: View {
-    private let activityData: ActivityGridStatsData?
+    private let activityData: ActivityData?
     private let topSpace: Bool
     private let bottomSpace: Bool
     private let placeholder: Bool
 
     public init(
-        activityData: ActivityGridStatsData?,
+        activityData: ActivityData?,
         bottomSpace: Bool = false,
         topSpace: Bool = false,
         placeholder: Bool = false
@@ -72,9 +72,7 @@ struct ActivityGridStats: View {
                     Spacer(minLength: 10)
                 }
             }
-        }
-
-        if let activityData {
+        } else if let activityData = activityData {
             VStack {
                 ActivityGridSection {
                     ActivityStatsSection {
@@ -102,7 +100,9 @@ struct ActivityGridStats: View {
 
                     ActivityStatsSection {
                         ActivityStatsDiscriptionText("Calories")
-                        ActivityStatsValueText("\(activityData.calories.truncate(places: 0).removeTrailingZeros()) cal")
+                        ActivityStatsValueText(
+                            "\(activityData.stats.calories.truncate(places: 0).removeTrailingZeros()) cal"
+                        )
                     }
                 }
 
@@ -112,14 +112,14 @@ struct ActivityGridStats: View {
                         ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.totalDuration))")
                     }
 
-                    if let averagePower = activityData.averagePower, averagePower > 0 {
+                    if let averageHeartRate = activityData.stats.averageHeartRate, averageHeartRate > 0 {
                         ActivityStatsVLine()
                     }
 
                     ActivityStatsSection {
-                        if let averagePower = activityData.averagePower, averagePower > 0 {
-                            ActivityStatsDiscriptionText("Average Power")
-                            ActivityStatsValueText("\(ConversionUtils.round(averagePower)) W")
+                        if let averageHeartRate = activityData.stats.averageHeartRate, averageHeartRate > 0 {
+                            ActivityStatsDiscriptionText("Average Heart Rate")
+                            ActivityStatsValueText("\(ConversionUtils.round(averageHeartRate)) bpm")
                         }
                     }
                 }

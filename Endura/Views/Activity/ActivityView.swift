@@ -21,9 +21,9 @@ struct ActivityView: View {
             if let activityData = activityData {
                 ScrollView(.vertical) {
                     VStack {
-                        ActivityHeader(uid: activity.uid, activityData: activityData.withHeaderStats())
+                        ActivityHeader(uid: activity.uid, activityData: activity)
 
-                        Text(activity.title)
+                        Text(activity.social.title)
                             .font(.title)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -32,7 +32,7 @@ struct ActivityView: View {
                             .frame(height: 300)
 
                         ActivityGridStats(
-                            activityData: ActivityDataWithRoute.withGridStats(activityData)(),
+                            activityData: activity,
                             topSpace: !activityData.data.routeData.isEmpty
                         )
 
@@ -50,7 +50,7 @@ struct ActivityView: View {
                         .padding(.top, 10)
                         .padding(.bottom, 20)
 
-                        ActivitySplitGraph(splits: activityData.splits)
+                        ActivitySplitGraph(splits: activityData.stats.splits)
                     }
                     .environmentObject(ActivityViewModel(
                         activityData: activityData.getIndexedGraphData(),
@@ -84,7 +84,7 @@ struct ActivityView: View {
                 VStack {
                     if let activityData = activityData {
                         VStack {
-                            Text(activity.title)
+                            Text(activity.social.title)
                                 .font(.title)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, alignment: .leading)

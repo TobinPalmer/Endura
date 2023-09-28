@@ -1,98 +1,85 @@
 import Foundation
 
-public struct ActivityData: Codable, ActivityDataProtocol {
-    public let averagePower: Double?
-    public let calories: Double
-    public let comments: [ActivityCommentData]
-    public let splits: [ActivitySplitsData]
-    public let distance: Double
-    public let description: String
-    public let duration: TimeInterval
+public struct ActivityPostData: Codable {
+    public var title: String
+    public var description: String
+    public let startCity: String
     public let startCountry: String
-    public let likes: [String]
+    public var likes: [String]
+    public var comments: [ActivityCommentData]
+}
+
+public struct ActivityStatsData: Codable {
+    public let calories: Double
+    public let averageHeartRate: Double?
+    public let averagePower: Double?
+    public let splits: [ActivitySplitsData]
+}
+
+public struct ActivityData: Codable {
+    public let uid: String
+    public let time: Date
+    public let visibility: ActivityVisibility
+
+    public let type: TrainingRunType
+    public let distance: Double
+    public let duration: TimeInterval
+    public let totalDuration: TimeInterval
     public var pace: Double {
         distance / duration
     }
 
-    public let type: TrainingRunType
-    public let startCity: String
-    public let startLocation: LocationData
-    public let time: Date
-    public let title: String
-    public let totalDuration: TimeInterval
-    public let uid: String
-    public let visibility: ActivityVisibility
+    public let stats: ActivityStatsData
+
+    public var social: ActivityPostData
 
     public func withRouteData(id: String) async -> ActivityDataWithRoute {
         let routeData = await ActivityUtils.getActivityRouteData(id: id)
         return ActivityDataWithRoute(
-            averagePower: averagePower,
-            calories: calories,
-            comments: comments,
-            data: routeData,
-            splits: splits,
-            distance: distance,
-            description: description,
-            duration: duration,
-            startCountry: startCountry,
-            workoutStart: time,
-            likes: likes,
-            type: type,
-            startCity: startCity,
-            startLocation: startLocation,
-            time: time,
-            title: title,
-            totalDuration: totalDuration,
             uid: uid,
-            visibility: visibility
+            time: time,
+            visibility: visibility,
+            type: type,
+            distance: distance,
+            duration: duration,
+            totalDuration: totalDuration,
+            stats: stats,
+            social: social,
+            data: routeData
         )
     }
 }
 
-public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
-    public let averagePower: Double?
-    public let calories: Double
-    public let comments: [ActivityCommentData]
-    public let data: ActivityRouteData
-    public let splits: [ActivitySplitsData]
+public struct ActivityDataWithRoute: Codable {
+    public let uid: String
+    public let time: Date
+    public let visibility: ActivityVisibility
+
+    public let type: TrainingRunType
     public let distance: Double
-    public let description: String
     public let duration: TimeInterval
-    public let startCountry: String
-    public let workoutStart: Date
-    public let likes: [String]
-    var pace: Double {
+    public let totalDuration: TimeInterval
+    public var pace: Double {
         distance / duration
     }
 
-    public let type: TrainingRunType
-    public let startCity: String
-    public let startLocation: LocationData
-    public let time: Date
-    public var title: String
-    public let totalDuration: TimeInterval
-    public let uid: String
-    public let visibility: ActivityVisibility
+    public let stats: ActivityStatsData
+
+    public var social: ActivityPostData
+
+    public let data: ActivityRouteData
 
     public func getDataWithoutRoute() -> ActivityData {
         ActivityData(
-            averagePower: averagePower,
-            calories: calories,
-            comments: comments,
-            splits: splits,
-            distance: distance,
-            description: description,
-            duration: duration,
-            startCountry: startCountry,
-            likes: likes,
-            type: type,
-            startCity: startCity,
-            startLocation: startLocation,
-            time: time,
-            title: title,
-            totalDuration: totalDuration,
             uid: uid,
-            visibility: visibility
+            time: time,
+            visibility: visibility,
+            type: type,
+            distance: distance,
+            duration: duration,
+            totalDuration: totalDuration,
+            stats: stats,
+            social: social
         )
     }
 
@@ -215,88 +202,50 @@ public struct ActivityDataWithRoute: Codable, ActivityDataProtocol {
     }
 }
 
-protocol ActivityDataProtocol {
-    var averagePower: Double? { get }
-    var calories: Double { get }
-    var distance: Double { get }
-    var duration: TimeInterval { get }
-    var time: Date { get }
-    var totalDuration: TimeInterval { get }
-    var uid: String { get }
-    var startCountry: String { get }
-    var startCity: String { get }
-    var startLocation: LocationData { get }
-    var description: String { get }
-    var title: String { get }
+public struct ActivityDocument: Codable {
+    public let uid: String
+    public let time: Date
+    public let uploadTime: Date
+    public let visibility: ActivityVisibility
 
-    func withHeaderStats() -> ActivityHeaderData
-    func withGridStats() -> ActivityGridStatsData
-}
+    public let type: TrainingRunType
+    public let distance: Double
+    public let duration: TimeInterval
+    public let totalDuration: TimeInterval
+    public var pace: Double {
+        distance / duration
+    }
 
-extension ActivityDataProtocol {
-    public func withHeaderStats() -> ActivityHeaderData {
-        ActivityHeaderData(
-            startTime: time,
-            startLocation: startLocation,
-            startCountry: startCountry,
-            startCity: startCity,
-            uid: uid
+    public let stats: ActivityStatsData
+
+    public let social: ActivityPostData
+
+    public static func getDocument(for activity: ActivityDataWithRoute, uploadTime: Date) -> ActivityDocument {
+        ActivityDocument(
+            uid: activity.uid,
+            time: activity.time,
+            uploadTime: uploadTime,
+            visibility: activity.visibility,
+            type: activity.type,
+            distance: activity.distance,
+            duration: activity.duration,
+            totalDuration: activity.totalDuration,
+            stats: activity.stats,
+            social: activity.social
         )
     }
 
-    public func withGridStats() -> ActivityGridStatsData {
-        ActivityGridStatsData(
-            averagePower: averagePower,
-            calories: calories,
+    public func getActivityData() -> ActivityData {
+        ActivityData(
+            uid: uid,
+            time: time,
+            visibility: visibility,
+            type: type,
             distance: distance,
             duration: duration,
-            time: time,
             totalDuration: totalDuration,
-            uid: uid
-        )
-    }
-}
-
-public struct ActivityDocument: Codable {
-    var averagePower: Double?
-    var calories: Double
-    var comments: [ActivityCommentData]
-    var splits: [ActivitySplitsData]
-    var distance: Double
-    var description: String
-    var duration: TimeInterval
-    var likes: [String]
-    var type: TrainingRunType
-    var startCountry: String
-    var startCity: String
-    var startLocation: LocationData
-    var time: Date
-    var title: String
-    var totalDuration: TimeInterval
-    var uid: String
-    var uploadTime: Date
-    var visibility: ActivityVisibility
-
-    static func getDocument(for activity: ActivityDataWithRoute, uploadTime: Date) -> ActivityDocument {
-        ActivityDocument(
-            averagePower: activity.averagePower,
-            calories: activity.calories,
-            comments: activity.comments,
-            splits: activity.splits,
-            distance: activity.distance,
-            description: activity.description,
-            duration: activity.duration,
-            likes: activity.likes,
-            type: activity.type,
-            startCountry: activity.startCountry,
-            startCity: activity.startCity,
-            startLocation: activity.startLocation,
-            time: activity.time,
-            title: activity.title,
-            totalDuration: activity.totalDuration,
-            uid: activity.uid,
-            uploadTime: uploadTime,
-            visibility: activity.visibility
+            stats: stats,
+            social: social
         )
     }
 }
