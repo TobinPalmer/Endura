@@ -58,6 +58,8 @@ struct ActivityPost: View {
                 .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activityData.social.likes
                         .contains(AuthUtils.getCurrentUID()) ? Color(.systemGray5) : .clear))
 
+                Text(activityData.social.likes.count.description)
+
                 ActivityLikesList(activityData.social.likes)
 
                 Spacer()
@@ -150,6 +152,7 @@ struct ActivityPost: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity)
+        .background(.white)
         .EnduraDefaultBox()
     }
 }
