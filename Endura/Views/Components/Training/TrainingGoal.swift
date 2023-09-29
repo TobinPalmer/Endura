@@ -9,46 +9,48 @@ struct TrainingGoal: View {
     }
 
     var body: some View {
-        HStack {
-            Image(systemName: goal.getIcon())
-                .background(
-                    RoundedRectangle(cornerRadius: 50)
-                        .foregroundColor(goal.getBackgroundColor())
-                        .frame(width: 50, height: 50)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 50)
-                                .stroke(goal.getColor(), lineWidth: 2)
-                        )
-                )
-                .frame(width: 50, height: 50)
+        NavigationLink(destination: TrainingGoalDetails(goal)) {
             HStack {
-                VStack(alignment: .leading) {
-                    Text(goal.getTitle())
-                    switch goal {
-                    case let .run(data):
-                        VStack(alignment: .leading) {
-                            HStack {
-                                Text("\(data.distance.removeTrailingZeros()) Miles")
+                Image(systemName: goal.getIcon())
+                    .background(
+                        RoundedRectangle(cornerRadius: 50)
+                            .foregroundColor(goal.getBackgroundColor())
+                            .frame(width: 50, height: 50)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 50)
+                                    .stroke(goal.getColor(), lineWidth: 2)
+                            )
+                    )
+                    .frame(width: 50, height: 50)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(goal.getTitle())
+                        switch goal {
+                        case let .run(data):
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("\(data.distance.removeTrailingZeros()) Miles")
+                                }
+                            }
+                        case let .routine(data):
+                            VStack(alignment: .leading) {
+                                Text("\(data.count) Exercises")
                             }
                         }
+                    }
+                    Spacer()
+                    switch goal {
                     case let .routine(data):
-                        VStack(alignment: .leading) {
-                            Text("\(data.count) Exercises")
-                        }
+                        timeAndProgressView(time: data.time, progress: data.progress)
+                    case let .run(data):
+                        timeAndProgressView(time: data.time, progress: data.progress)
                     }
                 }
-                Spacer()
-                switch goal {
-                case let .routine(data):
-                    timeAndProgressView(time: data.time, progress: data.progress)
-                case let .run(data):
-                    timeAndProgressView(time: data.time, progress: data.progress)
-                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(26)
+            .EnduraDefaultBox()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(26)
-        .EnduraDefaultBox()
     }
 
     func timeAndProgressView(time: Double, progress: TrainingGoalProgressData) -> some View {

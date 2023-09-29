@@ -42,6 +42,7 @@
 		17CC63F9D54BDE639775ACAB /* NotificationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FDB47061EA0B1158098 /* NotificationModels.swift */; };
 		17CC640A19D58CF7163C099B /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FE8496937628D610F98 /* UserProfileView.swift */; };
 		17CC644E71F8B897D238BF31 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */; };
+		17CC651C6C01B5818FFF9027 /* TrainingGoalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC609E501A0F5E0F670AE7 /* TrainingGoalDetails.swift */; };
 		17CC652A7B3A0CCDD3138626 /* TrainingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC607A7A216D39B0646F45 /* TrainingModel.swift */; };
 		17CC655BAE51AD4BD72A7D49 /* MKPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6138F9F694BD479D8798 /* MKPolyline.swift */; };
 		17CC65FFF4C4939ED6E24B68 /* MultiStepForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */; };
@@ -181,6 +182,7 @@
 		026D06352A7B2A3200A91958 /* Endura.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Endura.entitlements; sourceTree = "<group>"; };
 		02BC053E2A903125007CB32C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		17CC607A7A216D39B0646F45 /* TrainingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingModel.swift; sourceTree = "<group>"; };
+		17CC609E501A0F5E0F670AE7 /* TrainingGoalDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGoalDetails.swift; sourceTree = "<group>"; };
 		17CC60C749162E0014B95A73 /* SettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		17CC6138F9F694BD479D8798 /* MKPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolyline.swift; sourceTree = "<group>"; };
 		17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 				17CC6212F2153D1DBE379CF5 /* TrainingGoal.swift */,
 				69698739EB42C07DC09B31E9 /* PostRun */,
 				17CC6BB9B2918138ACD2DE1F /* EditTrainingDayView.swift */,
+				17CC609E501A0F5E0F670AE7 /* TrainingGoalDetails.swift */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -1173,6 +1176,7 @@
 				17CC6B7A497E6D7D4D086659 /* SettingsModel.swift in Sources */,
 				17CC634917C591A1A876D670 /* WeekDayEnum.swift in Sources */,
 				17CC6F9EBF6E6177129EF05A /* TrainingGoalModels.swift in Sources */,
+				17CC651C6C01B5818FFF9027 /* TrainingGoalDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
