@@ -24,8 +24,10 @@ public enum ActivityUtils {
 
     public static func toggleLike(id: String, activity: ActivityData) {
         let uid = AuthUtils.getCurrentUID()
+
         Firestore.firestore().collection("activities").document(id).updateData([
-            "likes": activity.social.likes.contains(uid) ? FieldValue.arrayRemove([uid]) : FieldValue.arrayUnion([uid]),
+            "social.likes": activity.social.likes.contains(uid) ? FieldValue.arrayRemove([uid]) : FieldValue
+                .arrayUnion([uid]),
         ])
     }
 

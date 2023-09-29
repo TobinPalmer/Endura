@@ -101,39 +101,48 @@ struct ActivitiesView: View {
     let padding: CGFloat = 20
 
     var body: some View {
-        VStack {
-            ScrollView(.vertical) {
-                if !activityViewModel.activities.isEmpty {
-                    LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 0), count: 1), spacing: padding) {
-                        ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }),
-                                id: \.0)
-                        { id, activity in
-                            ActivityPost(id: id, activity: activity)
-                                .onAppear {
-                                    if id == activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time })
-                                        .last?.0 && activityViewModel.activities.count >= ActivitiesViewModel
-                                        .loadAmount
-                                    {
-                                        activityViewModel.loadActivities()
+        ZStack {
+            Color(.systemGray6)
+                .ignoresSafeArea()
+
+            VStack {
+                ScrollView(.vertical) {
+                    if !activityViewModel.activities.isEmpty {
+                        LazyVGrid(
+                            columns: Array(repeating: .init(.flexible(), spacing: 0), count: 1),
+                            spacing: padding
+                        ) {
+                            ForEach(activityViewModel.activities.values.sorted(by: { $0.1.time > $1.1.time }),
+                                    id: \.0)
+                            { id, activity in
+                                ActivityPost(id: id, activity: activity)
+                                    .onAppear {
+                                        if id == activityViewModel.activities.values
+                                            .sorted(by: { $0.1.time > $1.1.time })
+                                            .last?.0 && activityViewModel.activities.count >= ActivitiesViewModel
+                                            .loadAmount
+                                        {
+                                            activityViewModel.loadActivities()
+                                        }
                                     }
-                                }
+                            }
+                        }
+                        .padding(.horizontal, padding)
+                    } else {
+                        Text("No activities")
+                    }
+                }
+                .refreshable {
+                    if let friends = activeUserModel.data?.friends {
+                        if activityViewModel.friends != friends {
+                            activityViewModel.friends = friends
+                            activityViewModel.clearActivities()
+                            activityViewModel.loadActivities()
+                            return
                         }
                     }
-                    .padding(.horizontal, padding)
-                } else {
-                    Text("No activities")
+                    activityViewModel.loadNewActivities()
                 }
-            }
-            .refreshable {
-                if let friends = activeUserModel.data?.friends {
-                    if activityViewModel.friends != friends {
-                        activityViewModel.friends = friends
-                        activityViewModel.clearActivities()
-                        activityViewModel.loadActivities()
-                        return
-                    }
-                }
-                activityViewModel.loadNewActivities()
             }
         }
         .onAppear {

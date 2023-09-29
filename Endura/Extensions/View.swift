@@ -18,12 +18,17 @@ public extension View {
             .shadow(color: disabled ? .clear : color, radius: 1, x: 0, y: 1)
     }
 
+    func newShadow() -> some View {
+        shadow(color: Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.08), radius: 10, x: 0, y: 4)
+            .shadow(color: Color(red: 0.05, green: 0.1, blue: 0.29).opacity(0.1), radius: 0.5, x: 0, y: 0)
+    }
+
     func EnduraDefaultBox() -> some View {
         cornerRadius(16)
+            .newShadow()
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .inset(by: 1)
-                    .strokeBorder(Color(hex: "D5D9DE"), lineWidth: 2, antialiased: true)
+                    .stroke(Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.1), lineWidth: 1)
             )
     }
 }
