@@ -6,6 +6,9 @@ import WorkoutKit
 private final class TrainingGoalDetailsModel: ObservableObject {
     @available(iOS 17.0, *)
     func generateRunningWorkout(_ goalData: RunningTrainingGoalData) async {
+        await WorkoutScheduler.shared.requestAuthorization()
+        print("Supported: \(WorkoutScheduler.isSupported)")
+        print("Authorized: \(await WorkoutScheduler.shared.authorizationState)")
         if await WorkoutScheduler.shared.authorizationState != .authorized {
             if await WorkoutScheduler.shared.requestAuthorization() != .authorized {
                 return
@@ -14,13 +17,23 @@ private final class TrainingGoalDetailsModel: ObservableObject {
 
         let pacerWorkout = PacerWorkout(
             activity: .running,
-            distance: Measurement(value: goalData.distance, unit: UnitLength.meters),
-            time: Measurement(value: goalData.time, unit: UnitDuration.seconds)
+            distance: Measurement(value: goalData.distance, unit: UnitLength.miles),
+            time: Measurement(value: goalData.time, unit: UnitDuration.minutes)
         )
 
         let workoutPlan = WorkoutPlan(.pacer(pacerWorkout))
 
-        await WorkoutScheduler.shared.schedule(workoutPlan, at: DateComponents())
+        var daysAheadComponents = DateComponents()
+        daysAheadComponents.day = 0
+        daysAheadComponents.hour = 1
+
+        guard let nextDate = Calendar.autoupdatingCurrent.date(byAdding: daysAheadComponents, to: .now) else {
+            return
+        }
+
+        let nextDateComponents = Calendar.autoupdatingCurrent.dateComponents(in: .autoupdatingCurrent, from: nextDate)
+
+        await WorkoutScheduler.shared.schedule(workoutPlan, at: nextDateComponents)
     }
 }
 
@@ -48,6 +61,12 @@ struct TrainingGoalDetails: View {
                 }
 
                 if #available(iOS 17.0, *) {
+                    Button("Authorize Workouts") {
+                        Task {
+                            await WorkoutScheduler.shared.requestAuthorization()
+                        }
+                    }
+
                     Button("Add Workout to Watch") {
                         Task {
                             await viewModel.generateRunningWorkout(data)
