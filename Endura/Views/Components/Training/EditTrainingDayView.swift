@@ -2,6 +2,28 @@ import Foundation
 import SwiftUI
 import SwiftUICalendar
 
+struct EditTrainingGoalLink: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
+    @State private var showEditGoal = false
+    var goal: TrainingGoalData
+
+    var body: some View {
+        Button(action: {
+            showEditGoal = true
+        }) {
+            Text("Edit")
+        }
+        .sheet(isPresented: $showEditGoal) {
+            switch goal {
+            case let .routine(data):
+                EditRoutineTrainingGoalView(goal: data)
+            case let .run(data):
+                EditRunningTrainingGoalView(goal: data)
+            }
+        }
+    }
+}
+
 private final class TrainingDayViewModel: ObservableObject {}
 
 struct TrainingDayView: View {

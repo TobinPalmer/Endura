@@ -75,5 +75,6 @@ struct TrainingGoalDetails: View {
                 }
             }
         }
+        .navigationBarItems(trailing: EditTrainingGoalLink(goal: goal))
     }
 }
