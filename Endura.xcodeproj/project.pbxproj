@@ -55,6 +55,7 @@
 		17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC659A1576329D2B4CB4F2 /* ActivityView.swift */; };
 		17CC68161A37E41AE1DB565F /* StringArrayValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */; };
 		17CC682E88A5BF7A13F60DB5 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */; };
+		17CC68A491351A17AE670E14 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6357BEDBEE88B0488148 /* WorkoutModels.swift */; };
 		17CC68D0F54B2CF335C127F0 /* EditRunningTrainingGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6486C23008AB4B1BFBA7 /* EditRunningTrainingGoalView.swift */; };
 		17CC68DAEFAD7FB41ABA0D99 /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */; };
 		17CC69010684FDD587AF79B9 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61A4C68A0172243AB286 /* View.swift */; };
@@ -195,6 +196,7 @@
 		17CC621472800F2D778E7D01 /* ActivityComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityComment.swift; sourceTree = "<group>"; };
 		17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStepForm.swift; sourceTree = "<group>"; };
 		17CC62ABEA2C9CDFBDB7B8A6 /* CacheUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUtils.swift; sourceTree = "<group>"; };
+		17CC6357BEDBEE88B0488148 /* WorkoutModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutModels.swift; sourceTree = "<group>"; };
 		17CC6456ADDCD3B3619C2871 /* SummaryModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryModels.swift; sourceTree = "<group>"; };
 		17CC6468B0C9C45EBDAAF375 /* ActivityGraphs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityGraphs.swift; sourceTree = "<group>"; };
 		17CC647C809BFAC3C20DA478 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -632,6 +634,7 @@
 				6969864B8B26535EBF8EE62D /* TrainingEnums.swift */,
 				17CC6A9B8DA59441836A95B4 /* WeekDayEnum.swift */,
 				17CC6F3AC8B1DE5044FFAC30 /* TrainingGoalModels.swift */,
+				17CC6357BEDBEE88B0488148 /* WorkoutModels.swift */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -1185,6 +1188,7 @@
 				17CC651C6C01B5818FFF9027 /* TrainingGoalDetails.swift in Sources */,
 				17CC68D0F54B2CF335C127F0 /* EditRunningTrainingGoalView.swift in Sources */,
 				17CC659F8A3D5A7B43C39E01 /* EditRoutineTrainingGoalView.swift in Sources */,
+				17CC68A491351A17AE670E14 /* WorkoutModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

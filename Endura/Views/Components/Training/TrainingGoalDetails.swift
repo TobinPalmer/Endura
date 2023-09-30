@@ -5,7 +5,7 @@ import WorkoutKit
 
 private final class TrainingGoalDetailsModel: ObservableObject {
     @available(iOS 17.0, *)
-    func generateRunningWorkout(_ goalData: RunningTrainingGoalData) async {
+    func generateRunningWorkout(_: RunningTrainingGoalData) async {
         await WorkoutScheduler.shared.requestAuthorization()
         print("Supported: \(WorkoutScheduler.isSupported)")
         print("Authorized: \(await WorkoutScheduler.shared.authorizationState)")
@@ -15,13 +15,23 @@ private final class TrainingGoalDetailsModel: ObservableObject {
             }
         }
 
-        let pacerWorkout = PacerWorkout(
+//        let pacerWorkout = PacerWorkout(
+//            activity: .running,
+//            distance: Measurement(value: goalData.distance, unit: UnitLength.miles),
+//            time: Measurement(value: goalData.time, unit: UnitDuration.minutes)
+//        )
+
+        let step1 = IntervalStep(.work, goal: .distance(0.1, .miles))
+
+        let block1 = IntervalBlock(steps: [step1], iterations: 2)
+
+        let customWorkout = CustomWorkout(
             activity: .running,
-            distance: Measurement(value: goalData.distance, unit: UnitLength.miles),
-            time: Measurement(value: goalData.time, unit: UnitDuration.minutes)
+            displayName: "Clean Workout",
+            blocks: [block1]
         )
 
-        let workoutPlan = WorkoutPlan(.pacer(pacerWorkout))
+        let workoutPlan = WorkoutPlan(.custom(customWorkout))
 
         var daysAheadComponents = DateComponents()
         daysAheadComponents.day = 0

@@ -1,8 +1,10 @@
 import Foundation
 import SwiftUI
+import WorkoutKit
 
 public struct RunningTrainingGoalData: Codable, Hashable {
     public var type: TrainingRunType
+    public var workoutType: WorkoutGoalData = .distance(distance: 0)
     public var distance: Double
     public var pace: Double
     public var time: Double
