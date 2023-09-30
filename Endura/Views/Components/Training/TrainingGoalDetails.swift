@@ -4,7 +4,6 @@ import SwiftUI
 import WorkoutKit
 
 private final class TrainingGoalDetailsModel: ObservableObject {
-    @available(iOS 17.0, *)
     func generateRunningWorkout(_: RunningTrainingGoalData) async {
         await WorkoutScheduler.shared.requestAuthorization()
         print("Supported: \(WorkoutScheduler.isSupported)")

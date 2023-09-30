@@ -1,7 +1,6 @@
 import Foundation
 import WorkoutKit
 
-@available(iOS 17.0, *)
 public enum WorkoutGoalData: Codable, Hashable {
     case distance(
         distance: Double
@@ -39,7 +38,6 @@ public enum WorkoutGoalData: Codable, Hashable {
     }
 }
 
-@available(iOS 17.0, *)
 public struct CustomWorkoutData: Codable, Hashable {
     public var name: String
     public var blocks: [CustomWorkoutBlockData]
@@ -53,19 +51,16 @@ public struct CustomWorkoutData: Codable, Hashable {
     }
 }
 
-@available(iOS 17.0, *)
 public struct CustomWorkoutBlockData: Codable, Hashable {
     public var steps: [CustomWorkoutStepData]
     public var iterations: Int
 }
 
-@available(iOS 17.0, *)
 public struct CustomWorkoutStepData: Codable, Hashable {
     public var type: CustomWorkoutStepType
     public var goal: CustomWorkoutStepGoal
 }
 
-@available(iOS 17.0, *)
 public enum CustomWorkoutStepGoal: Codable, Hashable {
     case open
     case distance(
@@ -87,7 +82,6 @@ public enum CustomWorkoutStepGoal: Codable, Hashable {
     }
 }
 
-@available(iOS 17.0, *)
 public enum CustomWorkoutStepType: String, Codable, Hashable {
     case work
     case recovery
