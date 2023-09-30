@@ -64,6 +64,12 @@ import SwiftUICalendar
 //        ])
     }
 
+    public func moveGoal(_ date: YearMonthDay, _ indices: IndexSet, _ newOffset: Int) {
+        var trainingDay = getTrainingDay(date)
+        trainingDay.goals.move(fromOffsets: indices, toOffset: newOffset)
+        setTrainingDay(date, trainingDay)
+    }
+
     public func loadTrainingMonth(_ date: YearMonth) {
         for i in -1 ... 1 {
             let date = date.addMonth(value: i)

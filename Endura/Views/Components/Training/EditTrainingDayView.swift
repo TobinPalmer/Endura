@@ -21,8 +21,19 @@ struct TrainingDayView: View {
             if trainingDay.goals.isEmpty {
                 Text("No goals for this day")
             } else {
-                ForEach(trainingDay.goals, id: \.self) { goal in
-                    TrainingGoal(goal)
+                List {
+                    ForEach(trainingDay.goals, id: \.self) { goal in
+                        switch goal {
+                        case let .routine(data):
+                            NavigationLink(destination: EditRoutineTrainingGoalView(goal: data)) {
+                                TrainingGoal(goal)
+                            }
+                        case let .run(data):
+                            NavigationLink(destination: EditRunningTrainingGoalView(goal: data)) {
+                                TrainingGoal(goal)
+                            }
+                        }
+                    }
                 }
             }
             Spacer()
