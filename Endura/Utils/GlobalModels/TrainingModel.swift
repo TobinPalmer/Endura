@@ -25,18 +25,18 @@ import SwiftUICalendar
 
         loadTrainingMonth(.current)
 
-        var today = getTrainingDay(.current)
-        today.goals = [TrainingGoalData.run(
-            data: RunningTrainingGoalData(
-                type: .normal,
-                distance: 2.5,
-                pace: 8,
-                time: 45,
-                progress: TrainingGoalProgressData(completed: true, activity: nil)
-            )
-        )]
-        setTrainingDay(.current, today)
-        saveTrainingMonth(.current)
+//        var today = getTrainingDay(.current)
+//        today.goals = [TrainingGoalData.run(
+//            data: RunningTrainingGoalData(
+//                type: .normal,
+//                distance: 2.5,
+//                pace: 8,
+//                time: 45,
+//                progress: TrainingGoalProgressData(completed: true, activity: nil)
+//            )
+//        )]
+//        setTrainingDay(.current, today)
+//        saveTrainingMonth(.current)
 
 //        monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days:
 //        [

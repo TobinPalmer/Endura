@@ -49,16 +49,17 @@ public enum TrainingUtils {
 
     public static func updateTrainingGoals(
         _ goals: [TrainingGoalData],
-        _ activity: ActivityDataWithRoute
+        _: ActivityDataWithRoute
     ) -> [TrainingGoalData] {
         let updatedGoals = goals
         for goal in updatedGoals {
             switch goal {
             case var .run(data):
-                if activity.distance >= data.distance - trainingDistanceTolerance, !data.progress.completed {
-                    data.progress.completed = true
-                    print("Run goal completed: \(data.distance)")
-                }
+//                if activity.distance >= data.distance - trainingDistanceTolerance, !data.progress.completed {
+//                    data.progress.completed = true
+//                    print("Run goal completed: \(data.distance)")
+//                }
+                break
             case .routine:
                 break
             }

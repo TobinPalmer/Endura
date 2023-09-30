@@ -60,8 +60,8 @@ struct TrainingGoalDetails: View {
             case .routine:
                 Text("Coming Soon")
             case let .run(data):
-                Text("Distance: \(data.distance.removeTrailingZeros()) Miles")
-                Text("Time: \(data.time.removeTrailingZeros()) Minutes")
+//                Text("Distance: \(data.distance.removeTrailingZeros()) Miles")
+//                Text("Time: \(data.time.removeTrailingZeros()) Minutes")
 
                 if data.progress.completed {
                     Text("Completed")

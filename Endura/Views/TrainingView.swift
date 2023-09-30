@@ -16,5 +16,8 @@ struct TrainingView: View {
             TrainingGoalList(selectedDate: $viewModel.selectedDate)
         }
         .navigationBarTitle("Training")
+        .navigationBarItems(trailing: NavigationLink(destination: AddTrainingGoalView()) {
+            Text("Add")
+        })
     }
 }

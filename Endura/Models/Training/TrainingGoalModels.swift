@@ -4,10 +4,7 @@ import WorkoutKit
 
 public struct RunningTrainingGoalData: Codable, Hashable {
     public var type: TrainingRunType
-    public var workoutType: WorkoutGoalData = .distance(distance: 0)
-    public var distance: Double
-    public var pace: Double
-    public var time: Double
+    public var workout: WorkoutGoalData = .distance(distance: 0)
     public var progress: TrainingGoalProgressData = .init(completed: false, activity: nil)
 }
 
@@ -78,9 +75,6 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
         case let .run(data):
             cache.goalType = "run"
             cache.type = data.type.rawValue
-            cache.distance = data.distance
-            cache.pace = data.pace
-            cache.time = data.time
             cache.progressCompleted = data.progress.completed
             cache.progressActivity = data.progress.activity
         case let .routine(data):
@@ -100,9 +94,7 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
             return .run(
                 data: RunningTrainingGoalData(
                     type: TrainingRunType(rawValue: cache.type ?? "none") ?? .none,
-                    distance: cache.distance,
-                    pace: cache.pace,
-                    time: cache.time,
+                    workout: .distance(distance: 1),
                     progress: TrainingGoalProgressData(
                         completed: cache.progressCompleted ?? false,
                         activity: cache.progressActivity
@@ -126,9 +118,7 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
             return .run(
                 data: RunningTrainingGoalData(
                     type: .none,
-                    distance: 0,
-                    pace: 0,
-                    time: 0
+                    workout: .distance(distance: 0)
                 )
             )
         }

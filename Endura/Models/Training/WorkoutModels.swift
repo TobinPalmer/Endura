@@ -2,6 +2,7 @@ import Foundation
 import WorkoutKit
 
 public enum WorkoutGoalData: Codable, Hashable {
+    case open
     case distance(
         distance: Double
     )
@@ -18,6 +19,8 @@ public enum WorkoutGoalData: Codable, Hashable {
 
     public func getWorkoutPlan() -> WorkoutPlan {
         switch self {
+        case .open:
+            return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .open)))
         case let .distance(distance):
             return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .distance(distance, .miles))))
         case let .time(time):
