@@ -5,20 +5,25 @@ struct ProgressDashboardView: View {
     @State private var currentPage = 0
 
     var body: some View {
-        VStack {
-            NavigationLink(destination: AccountSettingsView()) {
-                Text("Account View")
-            }
+        ZStack {
+            Color("Background")
+                .ignoresSafeArea()
 
-            NavigationLink(destination: PostRunView()) {
-                Text("Post Run")
-            }
+            VStack {
+                NavigationLink(destination: AccountSettingsView()) {
+                    Text("Account View")
+                }
 
-            MultiStepForm([
-                AnyView(ExampleStepView(viewModel: ExampleStepViewModel(), currentStep: $currentPage)),
-                AnyView(ExampleStepView(viewModel: ExampleStepViewModel(), currentStep: $currentPage)),
-                AnyView(ExampleStepView(viewModel: ExampleStepViewModel(), currentStep: $currentPage)),
-            ], viewModel: SignupFormInfo(), currentPage: $currentPage)
+                NavigationLink(destination: PostRunView()) {
+                    Text("Post Run")
+                }
+
+                MultiStepForm([
+                    AnyView(ExampleStepView(viewModel: ExampleStepViewModel(), currentStep: $currentPage)),
+                    AnyView(ExampleStepView(viewModel: ExampleStepViewModel(), currentStep: $currentPage)),
+                    AnyView(ExampleStepView(viewModel: ExampleStepViewModel(), currentStep: $currentPage)),
+                ], viewModel: SignupFormInfo(), currentPage: $currentPage)
+            }
         }
     }
 }

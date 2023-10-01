@@ -25,20 +25,25 @@ public enum HealthKitUtils {
         HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
     ]
 
-    public static func requestAuthorization() {
+    public static func requestAuthorization(completion: @escaping (Bool) -> Void) {
         healthStore.requestAuthorization(toShare: nil, read: healthDataTypes) { _, error in
             if let error = error {
                 Global.log.error("Authorization request failed: \(error.localizedDescription)")
+                completion(false)
                 return
             }
+
+            completion(true)
 
             let sampleType = HKObjectType.workoutType()
 
             healthStore.enableBackgroundDelivery(for: sampleType, frequency: .immediate) { _, error in
                 if let error = error {
                     Global.log.error("Error enabling background delivery: \(error.localizedDescription)")
+                    completion(false)
                     return
                 } else {
+                    completion(true)
                     print("TODO: Enabled background delivery of \(sampleType.identifier)")
                 }
             }

@@ -37,7 +37,7 @@ public enum ActivityUtils {
                 "uid": comment.uid,
                 "message": comment.message,
                 "time": comment.time,
-            ] as [String: Any]]),
+            ]]),
         ])
     }
 

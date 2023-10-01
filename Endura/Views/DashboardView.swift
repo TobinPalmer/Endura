@@ -11,51 +11,56 @@ struct DashboardView: View {
     @State var response: String?
 
     var body: some View {
-        ScrollView {
-            VStack {
-                VStack(alignment: .leading) {
-                    DailySummaryGraph()
-                }
-                .frame(minWidth: 0, maxWidth: .infinity)
+        ZStack {
+            Color("Background")
+                .ignoresSafeArea()
 
-                HStack(spacing: 10) {
-                    VStack {
-                        GoalRing(.distance)
-                            .frame(maxHeight: 70)
+            ScrollView {
+                VStack {
+                    VStack(alignment: .leading) {
+                        DailySummaryGraph()
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
-                    .background(.red)
-                    .cornerRadius(8)
+                    .frame(minWidth: 0, maxWidth: .infinity)
 
-                    VStack {
-                        GoalRing(.distance)
-                            .frame(maxHeight: 70)
+                    HStack(spacing: 10) {
+                        VStack {
+                            GoalRing(.distance)
+                                .frame(maxHeight: 70)
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                        .background(.red)
+                        .cornerRadius(8)
+
+                        VStack {
+                            GoalRing(.distance)
+                                .frame(maxHeight: 70)
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
+                        .background(.orange)
+                        .cornerRadius(8)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
-                    .background(.orange)
-                    .cornerRadius(8)
+                    .frame(minWidth: 0, maxWidth: .infinity)
                 }
-                .frame(minWidth: 0, maxWidth: .infinity)
+
+                Text(response ?? "no response yet").task {
+                    let palmClient = GenerativeLanguage(apiKey: ProcessInfo.processInfo.environment["PALM_API_KEY"]!)
+                    do {
+                        print("Sending message")
+                        let prompt = "What ai are you? Can you tell me about yourself?"
+
+                        let response = try await palmClient.generateText(with: prompt)
+                        print("Got response \(response)")
+
+                        if let candidate = response.candidates?.first, let text = candidate.output {
+                            self.response = text
+                        }
+                    } catch {
+                        print("Error with palm response: \(error)")
+                    }
+                }
+
+                TrainingGoalList()
             }
-
-            Text(response ?? "no response yet").task {
-                let palmClient = GenerativeLanguage(apiKey: ProcessInfo.processInfo.environment["PALM_API_KEY"]!)
-                do {
-                    print("Sending message")
-                    let prompt = "What ai are you? Can you tell me about yourself?"
-
-                    let response = try await palmClient.generateText(with: prompt)
-                    print("Got response \(response)")
-
-                    if let candidate = response.candidates?.first, let text = candidate.output {
-                        self.response = text
-                    }
-                } catch {
-                    print("Error with palm response: \(error)")
-                }
-            }
-
-            TrainingGoalList()
         }
         .padding(5)
         .toolbar {

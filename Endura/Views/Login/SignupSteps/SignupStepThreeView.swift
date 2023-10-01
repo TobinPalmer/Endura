@@ -17,7 +17,8 @@ struct SignupStepThreeView: View {
 
             VStack(alignment: .center, spacing: 20) {
                 Button {
-                    HealthKitUtils.requestAuthorization()
+                    HealthKitUtils.requestAuthorization { _ in
+                    }
                 } label: {
                     Text("Give health permissions")
                 }

@@ -11,9 +11,14 @@ struct TrainingView: View {
     @ObservedObject var controller = CalendarController()
 
     var body: some View {
-        ScrollView {
-            TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
-            TrainingGoalList(selectedDate: $viewModel.selectedDate)
+        ZStack {
+            Color("Background")
+                .ignoresSafeArea()
+
+            ScrollView {
+                TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
+                TrainingGoalList(selectedDate: $viewModel.selectedDate)
+            }
         }
         .navigationBarTitle("Training")
         .navigationBarItems(trailing: NavigationLink(destination: AddTrainingGoalView()) {

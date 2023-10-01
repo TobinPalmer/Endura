@@ -8,15 +8,17 @@ public final class SettingsModel: ObservableObject {
 
     @Published public var data: SettingsDataModel! {
         didSet {
-            CacheUtils.updateObject(SettingsCache.self, update: data.updateCache)
-            saveSettingsWork?.cancel()
-            saveSettingsWork = DispatchWorkItem {
-                if self.data != nil && self.fetched {
-                    self.saveSettings()
+            if data != nil {
+                CacheUtils.updateObject(SettingsCache.self, update: data.updateCache)
+                saveSettingsWork?.cancel()
+                saveSettingsWork = DispatchWorkItem {
+                    if self.fetched {
+                        self.saveSettings()
+                    }
                 }
-            }
-            if let saveSettingsWork = saveSettingsWork {
-                DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: saveSettingsWork)
+                if let saveSettingsWork = saveSettingsWork {
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: saveSettingsWork)
+                }
             }
         }
     }

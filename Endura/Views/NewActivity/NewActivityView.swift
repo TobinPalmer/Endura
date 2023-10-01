@@ -48,12 +48,17 @@ struct NewActivityView: View {
     @ObservedObject private var uploadsViewModel = UploadsViewModel()
     @State private var totalItemsLoaded: Int = 0
     @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
+    @State private var isAuthorized = false
 
     var body: some View {
-        if !HealthKitUtils.isAuthorized() {
+        if !HealthKitUtils.isAuthorized() || !isAuthorized {
             Text("Please authorize Apple Health to continue.")
             Button("Authorize") {
-                HealthKitUtils.requestAuthorization()
+                HealthKitUtils.requestAuthorization { success in
+                    isAuthorized = success
+                    print("setting isAuthorized to \(success)")
+                    print("but healthKit is \(HealthKitUtils.isAuthorized())")
+                }
             }
         } else {
             let groupedActivities = Dictionary(grouping: uploadsViewModel.uploads.compactMap {
