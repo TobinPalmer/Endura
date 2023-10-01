@@ -7,6 +7,11 @@ private final class ActivityPostModel: ObservableObject {
     @Published fileprivate var scale: CGFloat = 1
     @Published fileprivate var degrees: Double = 0
 
+    fileprivate init(liked: Bool) {
+        Global.log.info("ActivityPostModel init with liked: \(liked)")
+        isLiked = liked
+    }
+
     fileprivate func animateHeart() {
         let rot = Double(Int.random(in: 6 ... 12))
         let scale = Double.random(in: 0.2 ... 0.3)
@@ -56,7 +61,7 @@ private final class ActivityPostModel: ObservableObject {
 
 struct ActivityPost: View {
     @EnvironmentObject var databaseCache: UsersCacheModel
-    @StateObject private var viewModel = ActivityPostModel()
+    @StateObject private var viewModel: ActivityPostModel
     private var activityData: ActivityData
     private var id: String
 
@@ -66,6 +71,9 @@ struct ActivityPost: View {
     init(id: String, activity: ActivityData) {
         activityData = activity
         self.id = id
+        _viewModel =
+            StateObject(wrappedValue: ActivityPostModel(liked: activity.social.likes
+                    .contains(AuthUtils.getCurrentUID())))
     }
 
     var body: some View {
