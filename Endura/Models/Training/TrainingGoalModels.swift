@@ -105,6 +105,22 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
             cache.date = data.date
             cache.goalType = "run"
             cache.type = data.type.rawValue
+            switch data.workout {
+            case .open:
+                cache.workoutType = "open"
+            case let .distance(distance):
+                cache.workoutType = "distance"
+                cache.distance = distance
+            case let .time(time):
+                cache.workoutType = "time"
+                cache.time = time
+            case let .pacer(distance, time):
+                cache.workoutType = "pacer"
+                cache.distance = distance
+                cache.time = time
+            case let .custom(data):
+                cache.workoutType = "custom"
+            }
             cache.progressCompleted = data.progress.completed
             cache.progressActivity = data.progress.activity
         case let .routine(data):
@@ -126,7 +142,7 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
                 data: RunningTrainingGoalData(
                     date: cache.date ?? Date(),
                     type: TrainingRunType(rawValue: cache.type ?? "none") ?? .none,
-                    workout: .distance(distance: 1),
+                    workout: WorkoutGoalData.fromCache(cache),
                     progress: TrainingGoalProgressData(
                         completed: cache.progressCompleted ?? false,
                         activity: cache.progressActivity

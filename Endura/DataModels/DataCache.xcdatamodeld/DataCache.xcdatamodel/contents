@@ -48,6 +48,7 @@
         <attribute name="progressCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="workoutType" optional="YES" attributeType="String"/>
         <relationship name="day" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DailyTrainingCache" inverseName="goals" inverseEntity="DailyTrainingCache"/>
     </entity>
     <entity name="UploadedActivityCache" representedClassName="UploadedActivityCache" syncable="YES" codeGenerationType="class">

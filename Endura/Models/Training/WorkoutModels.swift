@@ -40,6 +40,21 @@ public enum WorkoutGoalData: Codable, Hashable {
             )))
         }
     }
+
+    public static func fromCache(_ cache: TrainingGoalCache) -> WorkoutGoalData {
+        switch cache.workoutType {
+        case "distance":
+            return .distance(distance: cache.distance)
+        case "time":
+            return .time(time: cache.time)
+        case "pacer":
+            return .pacer(distance: cache.distance, time: cache.time)
+        case "custom":
+            return .custom(data: CustomWorkoutData())
+        default:
+            return .open
+        }
+    }
 }
 
 public struct CustomWorkoutData: Codable, Hashable {
