@@ -45,7 +45,7 @@ public struct DailyTrainingDataDocument: Codable {
     public var summary: DailySummaryData?
 }
 
-public struct MonthlyTrainingData: Cacheable {
+public struct MonthlyTrainingData: Cacheable, Equatable {
     public var date: YearMonth
     public var totalDistance: Double = 0
     public var totalDuration: Double = 0
@@ -73,6 +73,11 @@ public struct MonthlyTrainingData: Cacheable {
                     .fromCache(day as! DailyTrainingCache)
             } ?? [:]
         )
+    }
+
+    public static func == (lhs: MonthlyTrainingData, rhs: MonthlyTrainingData) -> Bool {
+        lhs.date == rhs.date && lhs.totalDistance == rhs.totalDistance && lhs.totalDuration == rhs.totalDuration && rhs
+            .days.isEmpty
     }
 }
 

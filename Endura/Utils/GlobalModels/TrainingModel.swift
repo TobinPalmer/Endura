@@ -16,15 +16,20 @@ import SwiftUICalendar
             }
             saveTrainingWork?.cancel()
             saveTrainingWork = DispatchWorkItem {
-                for (month, data) in self.monthlyTrainingData {
-                    if !self.fetched.contains(month) {
-                        self.fetched.append(month)
-                        self.loadTrainingMonth(month)
+                for (month, _) in self.monthlyTrainingData {
+                    if oldValue[month] != self.monthlyTrainingData[month] {
+                        if self.fetched.contains(month) {
+                            if MonthlyTrainingData(date: month) != self.monthlyTrainingData[month] {
+                                self.saveTrainingMonth(month)
+                            }
+                        } else {
+                            self.loadTrainingMonth(month)
+                        }
                     }
                 }
             }
             if let saveSettingsWork = saveTrainingWork {
-                DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: saveSettingsWork)
+                DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: saveSettingsWork)
             }
         }
     }
