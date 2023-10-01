@@ -102,7 +102,7 @@ struct ActivitiesView: View {
 
     var body: some View {
         ZStack {
-            Color(.systemGray6)
+            Color("Background")
                 .ignoresSafeArea()
 
             VStack {

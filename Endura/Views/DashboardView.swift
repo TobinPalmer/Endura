@@ -15,6 +15,7 @@ struct DashboardView: View {
             Color("Background")
                 .ignoresSafeArea()
 
+            Text("HI")
             ScrollView {
                 VStack {
                     VStack(alignment: .leading) {
@@ -62,13 +63,13 @@ struct DashboardView: View {
                 TrainingGoalList()
             }
         }
-        .padding(5)
+        //      .padding(5)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink(destination: NewActivityView()) {
-                    Image(systemName: "plus")
-                }
-            }
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                NavigationLink(destination: NewActivityView()) {
+//                    Image(systemName: "plus")
+//                }
+//            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: NotificationsView()) {
                     Image("bell")
@@ -79,11 +80,11 @@ struct DashboardView: View {
                         )
                 }
             }
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink(destination: FindUsersView()) {
-                    Image(systemName: "person.2")
-                }
-            }
+//        ToolbarItem(placement: .navigationBarLeading) {
+//          NavigationLink(destination: FindUsersView()) {
+//            Image(systemName: "person.2")
+//          }
+//        }
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 UserProfileLink(AuthUtils.getCurrentUID()) {

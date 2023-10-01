@@ -27,7 +27,6 @@ struct ContentView: View {
                     TabView {
                         NavigationView {
                             DashboardView()
-                                .preferredColorScheme(.light)
                         }
                         .tabItem {
                             Image(systemName: "house")
