@@ -2,8 +2,61 @@ import Foundation
 import Inject
 import SwiftUI
 
+private final class ActivityPostModel: ObservableObject {
+    @Published fileprivate var isLiked: Bool = false
+    @Published fileprivate var scale: CGFloat = 1
+    @Published fileprivate var degrees: Double = 0
+
+    fileprivate func animateHeart() {
+        let rot = Double(Int.random(in: 6 ... 12))
+        let scale = Double.random(in: 0.2 ... 0.3)
+        let rev = Bool.random()
+
+        let animations = [
+            {
+                self.scale += scale
+
+                if rev {
+                    self.degrees -= rot
+                } else {
+                    self.degrees += rot
+                }
+            },
+            {
+                self.scale -= scale / 2
+
+                if rev {
+                    self.degrees += rot * 2
+                } else {
+                    self.degrees -= rot * 2
+                }
+            },
+            {
+                self.scale = 1
+
+                if rev {
+                    self.degrees -= rot
+                } else {
+                    self.degrees += rot
+                }
+            },
+        ]
+
+        var delay: Double = 0
+        for animation in animations {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    animation()
+                }
+            }
+            delay += 0.2
+        }
+    }
+}
+
 struct ActivityPost: View {
     @EnvironmentObject var databaseCache: UsersCacheModel
+    @StateObject private var viewModel = ActivityPostModel()
     private var activityData: ActivityData
     private var id: String
 
@@ -51,16 +104,20 @@ struct ActivityPost: View {
             HStack {
                 Button(action: {
                     ActivityUtils.toggleLike(id: id, activity: activityData)
+                    viewModel.isLiked.toggle()
+                    viewModel.animateHeart()
                 }) {
-                    Text("🎉")
+                    Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
                         .font(.title)
+                        .scaleEffect(viewModel.scale)
+                        .rotationEffect(.degrees(viewModel.degrees))
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: activityData.social.likes
-                        .contains(AuthUtils.getCurrentUID()) ? Color(.systemGray5) : .clear))
 
                 Text(activityData.social.likes.count.description)
+                    .animation(.none, value: activityData.social.likes.contains(AuthUtils.getCurrentUID()))
 
                 ActivityLikesList(activityData.social.likes)
+                    .animation(.none, value: activityData.social.likes.contains(AuthUtils.getCurrentUID()))
 
                 Spacer()
 
@@ -152,7 +209,7 @@ struct ActivityPost: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity)
-        .background(.white)
+        .background(Color("Background"))
         .EnduraDefaultBox()
     }
 }

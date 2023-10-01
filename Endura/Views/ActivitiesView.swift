@@ -83,8 +83,12 @@ import SwiftUI
 
             let activity = data.getActivityData()
 
-            if diff.type == .added || diff.type == .modified {
+            if diff.type == .added {
                 activities.updateValue((diff.document.documentID, activity), forKey: diff.document.documentID)
+            } else if diff.type == .modified {
+                withAnimation {
+                    activities.updateValue((diff.document.documentID, activity), forKey: diff.document.documentID)
+                }
             } else if diff.type == .removed {
                 activities.removeValue(forKey: diff.document.documentID)
             }
