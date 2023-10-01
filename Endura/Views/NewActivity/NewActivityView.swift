@@ -48,10 +48,10 @@ struct NewActivityView: View {
     @ObservedObject private var uploadsViewModel = UploadsViewModel()
     @State private var totalItemsLoaded: Int = 0
     @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
-    @State private var isAuthorized = false
+    @State private var isAuthorized = HealthKitUtils.isAuthorized()
 
     var body: some View {
-        if !HealthKitUtils.isAuthorized() || !isAuthorized {
+        if !isAuthorized {
             Text("Please authorize Apple Health to continue.")
             Button("Authorize") {
                 HealthKitUtils.requestAuthorization { success in
