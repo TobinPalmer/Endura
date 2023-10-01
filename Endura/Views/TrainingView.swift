@@ -21,7 +21,7 @@ struct TrainingView: View {
             }
         }
         .navigationBarTitle("Training")
-        .navigationBarItems(trailing: NavigationLink(destination: AddTrainingGoalView()) {
+        .navigationBarItems(trailing: NavigationLink(destination: AddTrainingGoalView(viewModel.selectedDate)) {
             Text("Add")
         })
     }

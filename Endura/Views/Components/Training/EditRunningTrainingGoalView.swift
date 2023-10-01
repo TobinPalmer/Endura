@@ -1,24 +1,49 @@
 import Foundation
 import SwiftUI
-
-private final class EditRunningTrainingGoalViewModel: ObservableObject {}
+import SwiftUICalendar
 
 struct EditRunningTrainingGoalView: View {
-    @StateObject private var viewModel = EditRunningTrainingGoalViewModel()
+    @EnvironmentObject private var activeUser: ActiveUserModel
     @State var goal: RunningTrainingGoalData
 
     var body: some View {
         VStack {
-            Text("Edit Training Goal")
-                .font(.title)
-                .padding()
-//            Text("Distance: \(goal.distance.removeTrailingZeros()) Miles")
-//            Stepper("Distance", value: $goal.distance, in: 0 ... 100, step: 0.1)
-//            Text("Time: \(goal.time.removeTrailingZeros()) Minutes")
-//            Stepper("Time", value: $goal.time, in: 0 ... 100, step: 0.1)
-//            Text("Pace: \(goal.pace.removeTrailingZeros()) Minutes/Mile")
-//            Stepper("Pace", value: $goal.pace, in: 0 ... 100, step: 0.1)
-            Spacer()
+            switch goal.workout {
+            case .open:
+                Text("Open Workout")
+            case let .distance(distance):
+                EditDistanceWorkoutGoal(workout: $goal.workout)
+            case let .time(time):
+                Text("Time: \(time)")
+            case let .pacer(distance, time):
+                Text("Distance: \(distance)")
+                Text("Time: \(time)")
+            case let .custom(data):
+                Text("Custom Workout")
+            }
         }
+        .onChange(of: goal) { _, newValue in
+            activeUser.training.updateTrainingGoal(goal.date.toYearMonthDay(), TrainingGoalData.run(data: newValue))
+        }
+    }
+}
+
+private struct EditDistanceWorkoutGoal: View {
+    @Binding var workout: WorkoutGoalData
+    @State var distance: Double = 0
+
+    init(workout: Binding<WorkoutGoalData>) {
+        _workout = workout
+        if case let .distance(distance) = workout.wrappedValue {
+            _distance = State(initialValue: distance)
+        }
+    }
+
+    var body: some View {
+        Text("Distance: \(distance)")
+        Stepper("Distance", value: $distance, in: 0 ... 100)
+            .onChange(of: distance) { _, newValue in
+                workout = .distance(distance: newValue)
+            }
     }
 }

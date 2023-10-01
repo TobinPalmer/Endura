@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import WorkoutKit
 
 public enum WorkoutGoalData: Codable, Hashable {
@@ -42,8 +43,19 @@ public enum WorkoutGoalData: Codable, Hashable {
 }
 
 public struct CustomWorkoutData: Codable, Hashable {
-    public var name: String
-    public var blocks: [CustomWorkoutBlockData]
+    public var name: String = ""
+    public var blocks: [CustomWorkoutBlockData] = []
+
+    public func getDistance() -> Double {
+        blocks.reduce(0) { total, block in
+            total + block.steps.reduce(0) { total, step in
+                if case let .distance(distance) = step.goal {
+                    return total + distance
+                }
+                return total
+            }
+        }
+    }
 
     public func getBlocks() -> [IntervalBlock] {
         blocks.map { block in

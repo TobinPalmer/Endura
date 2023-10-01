@@ -29,7 +29,7 @@ struct TrainingGoal: View {
                         case let .run(data):
                             VStack(alignment: .leading) {
                                 HStack {
-//                                    Text("\(data.distance.removeTrailingZeros()) Miles")
+                                    Text("\(data.getDistance().removeTrailingZeros()) Miles")
                                 }
                             }
                         case let .routine(data):

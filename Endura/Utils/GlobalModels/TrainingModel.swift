@@ -2,6 +2,9 @@ import Foundation
 import SwiftUICalendar
 
 @MainActor public final class TrainingModel: ObservableObject {
+    private var saveTrainingWork: DispatchWorkItem?
+    private var fetched: [YearMonth] = []
+
     @Published public var monthlyTrainingData: [YearMonth: MonthlyTrainingData] = [:] {
         didSet {
             for (date, data) in monthlyTrainingData {
@@ -10,6 +13,18 @@ import SwiftUICalendar
                     update: data.updateCache,
                     predicate: CacheUtils.predicateMatchingField("date", value: date.toCache())
                 )
+            }
+            saveTrainingWork?.cancel()
+            saveTrainingWork = DispatchWorkItem {
+                for (month, data) in self.monthlyTrainingData {
+                    if !self.fetched.contains(month) {
+                        self.fetched.append(month)
+                        self.loadTrainingMonth(month)
+                    }
+                }
+            }
+            if let saveSettingsWork = saveTrainingWork {
+                DispatchQueue.global().asyncAfter(deadline: .now() + 2, execute: saveSettingsWork)
             }
         }
     }
@@ -88,6 +103,7 @@ import SwiftUICalendar
                                 days: [:]
                             )
                         }
+                        self.fetched.append(date)
                     }
                 }
             }
@@ -109,7 +125,21 @@ import SwiftUICalendar
     }
 
     private func setTrainingDay(_ date: YearMonthDay, _ data: DailyTrainingData) {
-        monthlyTrainingData[date.getYearMonth()]?.days[date] = data
+        var monthTrainingData = monthlyTrainingData[date.getYearMonth()] ?? MonthlyTrainingData(
+            date: date.getYearMonth()
+        )
+        monthTrainingData.days[date] = data
+        monthlyTrainingData[date.getYearMonth()] = monthTrainingData
+    }
+
+    public func updateTrainingGoal(_ date: YearMonthDay, _ goal: TrainingGoalData) {
+        var trainingDay = getTrainingDay(date)
+        if let index = trainingDay.goals.firstIndex(where: { $0.getUUID() == goal.getUUID() }) {
+            trainingDay.goals[index] = goal
+        } else {
+            trainingDay.goals.append(goal)
+        }
+        setTrainingDay(date, trainingDay)
     }
 
     public func processNewActivity(_ activity: ActivityDataWithRoute) {

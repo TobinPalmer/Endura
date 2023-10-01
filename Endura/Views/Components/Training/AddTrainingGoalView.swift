@@ -1,7 +1,15 @@
 import Foundation
 import SwiftUI
+import SwiftUICalendar
 
 struct AddTrainingGoalView: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
+    public var selectedDate: YearMonthDay
+
+    init(_ selectedDate: YearMonthDay) {
+        self.selectedDate = selectedDate
+    }
+
     var body: some View {
         VStack {
             Text("Add Training Goal")
@@ -10,10 +18,40 @@ struct AddTrainingGoalView: View {
             NavigationLink(destination: Text("Coming Soon")) {
                 Text("Add Routine Goal")
             }
-            NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
-                type: .normal,
-                workout: .distance(distance: 5)
-            ))) {
+            NavigationLink(destination: VStack {
+                let date = selectedDate.getDate()
+
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
+                    date: date,
+                    workout: .open
+                ))) {
+                    Text("Open Workout")
+                }
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
+                    date: date,
+                    workout: .distance(distance: 0)
+                ))) {
+                    Text("Distance Workout")
+                }
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
+                    date: date,
+                    workout: .time(time: 0)
+                ))) {
+                    Text("Time Workout")
+                }
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
+                    date: date,
+                    workout: .pacer(distance: 0, time: 0)
+                ))) {
+                    Text("Pacer Workout")
+                }
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
+                    date: date,
+                    workout: .custom(data: CustomWorkoutData())
+                ))) {
+                    Text("Custom Workout")
+                }
+            }) {
                 Text("Add Running Goal")
             }
             Spacer()

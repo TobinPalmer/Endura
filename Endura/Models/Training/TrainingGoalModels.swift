@@ -1,14 +1,34 @@
 import Foundation
 import SwiftUI
+import SwiftUICalendar
 import WorkoutKit
 
 public struct RunningTrainingGoalData: Codable, Hashable {
-    public var type: TrainingRunType
+    public var uuid: String? = UUID().uuidString
+    public var date: Date
+    public var type: TrainingRunType = .none
     public var workout: WorkoutGoalData = .distance(distance: 0)
     public var progress: TrainingGoalProgressData = .init(completed: false, activity: nil)
+
+    public func getDistance() -> Double {
+        switch workout {
+        case .open:
+            return 0
+        case let .distance(distance):
+            return distance
+        case let .time(time):
+            return 0
+        case let .pacer(distance, time):
+            return distance
+        case let .custom(data):
+            return data.getDistance()
+        }
+    }
 }
 
 public struct RoutineTrainingGoalData: Codable, Hashable {
+    public var uuid: String? = UUID().uuidString
+    public var date: Date
     public var type: RoutineType
     public var difficulty: RoutineDifficulty
     public var time: Double
@@ -28,6 +48,15 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
     case routine(
         data: RoutineTrainingGoalData
     )
+
+    public func getUUID() -> String {
+        switch self {
+        case let .run(data):
+            return data.uuid!
+        case let .routine(data):
+            return data.uuid!
+        }
+    }
 
     public func getTitle() -> String {
         switch self {
@@ -73,11 +102,13 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
     func updateCache(_ cache: TrainingGoalCache) {
         switch self {
         case let .run(data):
+            cache.date = data.date
             cache.goalType = "run"
             cache.type = data.type.rawValue
             cache.progressCompleted = data.progress.completed
             cache.progressActivity = data.progress.activity
         case let .routine(data):
+            cache.date = data.date
             cache.goalType = "routine"
             cache.type = data.type.rawValue
             cache.difficulty = data.difficulty.rawValue
@@ -93,6 +124,7 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
         case "run":
             return .run(
                 data: RunningTrainingGoalData(
+                    date: cache.date ?? Date(),
                     type: TrainingRunType(rawValue: cache.type ?? "none") ?? .none,
                     workout: .distance(distance: 1),
                     progress: TrainingGoalProgressData(
@@ -104,6 +136,7 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
         case "routine":
             return .routine(
                 data: RoutineTrainingGoalData(
+                    date: cache.date ?? Date(),
                     type: RoutineType(rawValue: cache.type ?? "none") ?? .postrun,
                     difficulty: RoutineDifficulty(rawValue: cache.difficulty ?? "none") ?? .medium,
                     time: cache.time,
@@ -117,6 +150,7 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
         default:
             return .run(
                 data: RunningTrainingGoalData(
+                    date: Date(),
                     type: .none,
                     workout: .distance(distance: 0)
                 )

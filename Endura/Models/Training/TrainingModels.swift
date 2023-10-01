@@ -47,9 +47,9 @@ public struct DailyTrainingDataDocument: Codable {
 
 public struct MonthlyTrainingData: Cacheable {
     public var date: YearMonth
-    public var totalDistance: Double
-    public var totalDuration: Double
-    public var days: [YearMonthDay: DailyTrainingData]
+    public var totalDistance: Double = 0
+    public var totalDuration: Double = 0
+    public var days: [YearMonthDay: DailyTrainingData] = [:]
 
     func updateCache(_ cache: MonthlyTrainingCache) {
         cache.date = date.toCache()
