@@ -17,6 +17,7 @@ struct ContentView: View {
                 LoginView()
                     .preferredColorScheme(.light)
             }
+            .preferredColorScheme(.light)
             .onAppear {
                 activeUserModel = nil
                 isLogoutButtonHidden = false
@@ -95,6 +96,7 @@ struct ContentView: View {
                 }
             }
             .id(navigation.refreshID)
+            .preferredColorScheme(.light)
         }
     }
 }
