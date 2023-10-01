@@ -46,6 +46,8 @@ struct DailySummaryGraph: View {
                 }
             }
         }
-        .padding()
+        .padding(.horizontal, 10)
+        .padding(.vertical, 20)
+        .EnduraDefaultBox()
     }
 }

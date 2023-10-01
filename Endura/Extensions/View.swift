@@ -24,7 +24,8 @@ public extension View {
     }
 
     func EnduraDefaultBox() -> some View {
-        cornerRadius(16)
+        background(.white)
+            .cornerRadius(16)
             .newShadow()
             .overlay(
                 RoundedRectangle(cornerRadius: 16)

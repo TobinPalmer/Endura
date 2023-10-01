@@ -10,6 +10,13 @@ public enum FormattingUtils {
         return formattedString
     }
 
+    public static func fullFormattedDay(_ date: YearMonthDay) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMM d"
+        let formattedString = formatter.string(from: date.getDate())
+        return formattedString
+    }
+
     public static func dateToFormattedDay(_ date: YearMonthDay) -> String {
         if date == .current {
             return "Today"

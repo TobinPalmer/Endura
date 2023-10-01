@@ -23,7 +23,6 @@ struct TrainingGoalList: View {
                     Text("Edit")
                 }
             }
-            .padding()
             let trainingDay = activeUser.training.getTrainingDay(selectedDate)
             Text("Day: \(trainingDay.type.rawValue)").foregroundColor(trainingDay.type.getColor())
             if trainingDay.goals.isEmpty {
@@ -34,7 +33,6 @@ struct TrainingGoalList: View {
                         TrainingGoal(goal)
                     }
                 }
-                .padding(20)
             }
         }
     }

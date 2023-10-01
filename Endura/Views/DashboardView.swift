@@ -16,7 +16,12 @@ struct DashboardView: View {
                 .ignoresSafeArea()
 
             ScrollView {
-                VStack {
+                VStack(spacing: 20) {
+                    Text(FormattingUtils.fullFormattedDay(.current))
+                        .font(.title)
+                        .padding(.vertical, 10)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+
                     HStack {
                         ForEach(activeUserModel.data.friends, id: \.self) { friend in
                             UserProfileLink(friend) {
@@ -34,7 +39,6 @@ struct DashboardView: View {
                         Spacer()
                     }
                     .frame(minWidth: 0, maxWidth: .infinity)
-                    .padding()
 
                     VStack(alignment: .leading) {
                         DailySummaryGraph()
@@ -63,19 +67,20 @@ struct DashboardView: View {
 
                 TrainingGoalList()
             }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: NotificationsView()) {
-                    Image(systemName: "bell")
-                        .overlay(
-                            NotificationCountView(value: $notificationsModel.unreadCount)
-                        )
+            .padding()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: NotificationsView()) {
+                        Image(systemName: "bell")
+                            .overlay(
+                                NotificationCountView(value: $notificationsModel.unreadCount)
+                            )
+                    }
                 }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                UserProfileLink(AuthUtils.getCurrentUID()) {
-                    ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    UserProfileLink(AuthUtils.getCurrentUID()) {
+                        ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                    }
                 }
             }
         }
