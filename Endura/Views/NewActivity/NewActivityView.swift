@@ -68,15 +68,35 @@ struct NewActivityView: View {
             }
             let sortedKeys = groupedActivities.keys.sorted(by: >)
 
+            if sortedKeys.isEmpty {
+                VStack {
+                    ZStack {
+                        Image(systemName: "nosign")
+                            .font(.system(size: 150))
+                            .foregroundColor(Color("Text"))
+                            .zIndex(1)
+
+                        Image(systemName: "figure.walk")
+                            .font(.system(size: 100))
+                            .foregroundColor(Color("Text"))
+                    }
+
+                    VStack {
+                        Text("No activities found.")
+                            .foregroundColor(Color("TextMuted"))
+                            .font(.title2)
+
+                        Text("Check the Apple Health app to see if you have you have any workouts.")
+                            .foregroundColor(Color("TextMuted"))
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 5)
+                    }
+                    .padding(.horizontal, 26)
+                }
+            }
+
             List {
-//                NavigationLink(destination: VStack {
-//                }) {
-//                    Label {
-//                        Text("Manual Activity")
-//                    } icon: {
-//                        Image(systemName: "pencil").font(.title2)
-//                    }
-//                }
                 ForEach(sortedKeys, id: \.self) { key in
                     Section(header: Text("\(key.formatted(date: .abbreviated, time: .omitted))")) {
                         ForEach(groupedActivities[key]!, id: \.self) { activity in
