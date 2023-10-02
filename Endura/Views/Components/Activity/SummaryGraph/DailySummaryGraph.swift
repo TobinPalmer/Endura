@@ -48,6 +48,6 @@ struct DailySummaryGraph: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 20)
-        .EnduraDefaultBox()
+        .enduraDefaultBox()
     }
 }

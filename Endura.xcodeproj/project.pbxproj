@@ -72,6 +72,7 @@
 		17CC6D07ACB8C238CFDC9CC6 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66EA7C715C2776A564D2 /* ProfileImage.swift */; };
 		17CC6D19A74715C51CFC058A /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6C9A840B16A10E8DC625 /* NavigationModel.swift */; };
 		17CC6D7AC6A79CC11C342BCB /* ActivityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FF82A173C3BA5FA5204 /* ActivityUtils.swift */; };
+		17CC6DBC17BD9A6AF968F22A /* PageWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6B14F3BA74C5D860A6E4 /* PageWidget.swift */; };
 		17CC6E23D5A6B1EE12259C6E /* ActivityGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6468B0C9C45EBDAAF375 /* ActivityGraphs.swift */; };
 		17CC6E2D815670C3A2DBDFBF /* ActivitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6C296596DA475D462B36 /* ActivitiesView.swift */; };
 		17CC6E3338FB8B8721F2F71F /* HoverableChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6AE64751A45E5995A5F9 /* HoverableChart.swift */; };
@@ -223,6 +224,7 @@
 		17CC69F5F51AE211727A3343 /* ActivityPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPost.swift; sourceTree = "<group>"; };
 		17CC6A9B8DA59441836A95B4 /* WeekDayEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekDayEnum.swift; sourceTree = "<group>"; };
 		17CC6AE64751A45E5995A5F9 /* HoverableChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoverableChart.swift; sourceTree = "<group>"; };
+		17CC6B14F3BA74C5D860A6E4 /* PageWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageWidget.swift; sourceTree = "<group>"; };
 		17CC6B1555ECC86F1858E844 /* FindUsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindUsersView.swift; sourceTree = "<group>"; };
 		17CC6BA3109219CA4E553FAE /* TrainingGoalList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGoalList.swift; sourceTree = "<group>"; };
 		17CC6BB9B2918138ACD2DE1F /* EditTrainingDayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTrainingDayView.swift; sourceTree = "<group>"; };
@@ -824,6 +826,7 @@
 				69698E9271FB5D3C456BDAA5 /* NotificationsBell.swift */,
 				69698EC55CE8019B02C2224B /* ImagePicker.swift */,
 				6969873EC82353D92234F2F3 /* FormBar.swift */,
+				17CC6B14F3BA74C5D860A6E4 /* PageWidget.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1193,6 +1196,7 @@
 				17CC659F8A3D5A7B43C39E01 /* EditRoutineTrainingGoalView.swift in Sources */,
 				17CC68A491351A17AE670E14 /* WorkoutModels.swift in Sources */,
 				17CC60E233AA2A2E1321A1A8 /* AddTrainingGoalView.swift in Sources */,
+				17CC6DBC17BD9A6AF968F22A /* PageWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

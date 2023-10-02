@@ -29,7 +29,7 @@ public extension View {
             .shadow(color: Color(red: 0.05, green: 0.1, blue: 0.29).opacity(0.1), radius: 0.5, x: 0, y: 0)
     }
 
-    func EnduraDefaultBox() -> some View {
+    func enduraDefaultBox() -> some View {
         background(.white)
             .cornerRadius(16)
             .newShadow()

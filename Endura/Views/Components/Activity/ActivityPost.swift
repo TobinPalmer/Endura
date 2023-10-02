@@ -218,7 +218,7 @@ struct ActivityPost: View {
         .padding(20)
         .frame(maxWidth: .infinity)
         .background(Color("Background"))
-        .EnduraDefaultBox()
+        .enduraDefaultBox()
     }
 }
 

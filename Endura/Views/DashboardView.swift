@@ -17,10 +17,20 @@ struct DashboardView: View {
 
             ScrollView {
                 VStack(spacing: 20) {
-                    VStack(alignment: .leading) {
-                        DailySummaryGraph()
+                    TabView {
+                        PageWidgetView {
+                            Text("Hello, World!")
+                        }
+                        PageWidgetView {
+                            DailySummaryGraph()
+                        }
+                        PageWidgetView {
+                            Text("???")
+                        }
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .frame(height: 250)
+                    .tabViewStyle(.page)
+                    .indexViewStyle(.page(backgroundDisplayMode: .interactive))
 
 //                    HStack(spacing: 10) {
 //                        VStack {
