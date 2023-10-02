@@ -109,8 +109,26 @@ struct ActivitiesView: View {
             Color("Background")
                 .ignoresSafeArea()
 
-            VStack {
-                ScrollView(.vertical) {
+            ScrollView(.vertical) {
+                VStack(spacing: 20) {
+                    HStack {
+                        ForEach(activeUserModel.data.friends, id: \.self) { friend in
+                            UserProfileLink(friend) {
+                                ProfileImage(friend, size: 50)
+                            }
+                        }
+                        NavigationLink(destination: FindUsersView()) {
+                            Image(systemName: "plus.circle")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundStyle(Color.accentColor)
+                                .clipShape(Circle())
+                                .frame(width: 50, height: 50)
+                        }
+                        Spacer()
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity)
+
                     if !activityViewModel.activities.isEmpty {
                         LazyVGrid(
                             columns: Array(repeating: .init(.flexible(), spacing: 0), count: 1),
@@ -131,22 +149,23 @@ struct ActivitiesView: View {
                                     }
                             }
                         }
-                        .padding(.horizontal, padding)
                     } else {
                         Text("No activities")
                     }
                 }
-                .refreshable {
-                    if let friends = activeUserModel.data?.friends {
-                        if activityViewModel.friends != friends {
-                            activityViewModel.friends = friends
-                            activityViewModel.clearActivities()
-                            activityViewModel.loadActivities()
-                            return
-                        }
+                .padding(.horizontal, 26)
+                .padding(.vertical, 20)
+            }
+            .refreshable {
+                if let friends = activeUserModel.data?.friends {
+                    if activityViewModel.friends != friends {
+                        activityViewModel.friends = friends
+                        activityViewModel.clearActivities()
+                        activityViewModel.loadActivities()
+                        return
                     }
-                    activityViewModel.loadNewActivities()
                 }
+                activityViewModel.loadNewActivities()
             }
         }
         .onAppear {

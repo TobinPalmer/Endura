@@ -23,24 +23,6 @@ struct DashboardView: View {
                         .padding(.vertical, 10)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 
-                    HStack {
-                        ForEach(activeUserModel.data.friends, id: \.self) { friend in
-                            UserProfileLink(friend) {
-                                ProfileImage(friend, size: 50)
-                            }
-                        }
-                        NavigationLink(destination: FindUsersView()) {
-                            Image(systemName: "plus.circle")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(Color.accentColor)
-                                .clipShape(Circle())
-                                .frame(width: 50, height: 50)
-                        }
-                        Spacer()
-                    }
-                    .frame(minWidth: 0, maxWidth: .infinity)
-
                     VStack(alignment: .leading) {
                         DailySummaryGraph()
                     }
