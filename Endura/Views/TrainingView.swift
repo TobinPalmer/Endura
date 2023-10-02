@@ -16,13 +16,15 @@ struct TrainingView: View {
                 .ignoresSafeArea()
 
             ScrollView {
-                TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
-                TrainingGoalList(selectedDate: $viewModel.selectedDate)
+                VStack(spacing: 20.0) {
+                    TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
+                    TrainingGoalList(selectedDate: $viewModel.selectedDate)
+                    NavigationLink(destination: AddTrainingGoalView(viewModel.selectedDate)) {
+                        Text("Add")
+                    }
+                }
+                .padding(26)
             }
         }
-        .navigationBarTitle("Training")
-        .navigationBarItems(trailing: NavigationLink(destination: AddTrainingGoalView(viewModel.selectedDate)) {
-            Text("Add")
-        })
     }
 }

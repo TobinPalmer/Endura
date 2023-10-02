@@ -14,20 +14,13 @@ struct TrainingCalender: View {
 
     var body: some View {
         VStack {
-            Button {
-                activeUser.training.monthlyTrainingData[.current]?.days.updateValue(
-                    DailyTrainingData(date: selectedDate.addDay(value: 1), type: .workout, goals: []),
-                    forKey: selectedDate.addDay(value: 1)
-                )
-            } label: {
-                Text("test")
-            }
-
             HStack(alignment: .center, spacing: 0) {
-                Button("Prev") {
+                Button(action: {
                     controller.scrollTo(controller.yearMonth.addMonth(value: -1), isAnimate: true)
+                }) {
+                    Image(systemName: "chevron.left")
+                        .font(.title2)
                 }
-                .padding(26)
                 Spacer()
                 HStack {
                     Button {
@@ -37,17 +30,22 @@ struct TrainingCalender: View {
                     }
                     Text("\(controller.yearMonth.monthShortString), \(String(controller.yearMonth.year))")
                         .font(.title)
+                        .fontWeight(.bold)
+                        .fontColor(.primary)
                 }
-                .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
                 Spacer()
-                Button("Next") {
+                Button(action: {
                     controller.scrollTo(controller.yearMonth.addMonth(value: 1), isAnimate: true)
+                }) {
+                    Image(systemName: "chevron.right")
+                        .font(.title2)
                 }
-                .padding(26)
             }
-            CalendarView(controller, startWithMonday: true, header: { week in
+            CalendarView(controller, startWithMonday: true, headerSize: .fixHeight(20.0), header: { week in
                 Text(week.shortString)
                     .font(.subheadline)
+                    .fontColor(.primary)
+                    .frame(maxWidth: .infinity, alignment: .center)
             },
             component: { date in
                 let trainingDay = activeUser.training.getTrainingDay(date)
@@ -69,10 +67,9 @@ struct TrainingCalender: View {
                     selectedDate = date
                 }
             })
-            .onChange(of: controller.yearMonth) { newMonth in
+            .onChange(of: controller.yearMonth) { _, newMonth in
                 activeUser.training.loadTrainingMonth(newMonth)
             }
-            .padding(26)
         }
         .frame(maxWidth: .infinity, minHeight: 400, maxHeight: 400)
     }

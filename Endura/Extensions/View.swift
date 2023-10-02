@@ -1,6 +1,12 @@
 import Foundation
 import SwiftUI
 
+public enum EnduraFontColor {
+    case primary
+    case secondary
+    case muted
+}
+
 public extension View {
     func takeScreenshot(origin: CGPoint, size: CGSize) -> UIImage {
         let window = UIWindow(frame: CGRect(origin: origin, size: size))
@@ -31,5 +37,16 @@ public extension View {
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.1), lineWidth: 1)
             )
+    }
+
+    func fontColor(_ fontColor: EnduraFontColor) -> some View {
+        switch fontColor {
+        case .primary:
+            foregroundColor(Color("Text"))
+        case .secondary:
+            foregroundColor(Color("TextSecondary"))
+        case .muted:
+            foregroundColor(Color("TextMuted"))
+        }
     }
 }
