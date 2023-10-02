@@ -4,6 +4,7 @@ import SwiftUI
 struct MultiStepForm<T>: View where T: ObservableObject {
     @ObservedObject private var viewModel: T
     @Binding private var currentPage: Int
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     private let steps: [AnyView]
 
@@ -15,8 +16,6 @@ struct MultiStepForm<T>: View where T: ObservableObject {
 
     public var body: some View {
         VStack {
-            FormBarView(progress: $currentPage, steps: steps.count)
-
             Spacer()
 
             Group {
@@ -26,6 +25,25 @@ struct MultiStepForm<T>: View where T: ObservableObject {
                             .transition(.opacity)
                     }
                 }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "xmark")
+                            //                .font(.title)
+                            .font(.system(size: 20, weight: .bold))
+                            .frame(maxHeight: 20)
+                    }
+                }
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                FormBarView(progress: $currentPage, steps: steps.count, width: UIScreen.main.bounds.width - 75)
             }
         }
     }

@@ -20,13 +20,33 @@ public struct EnduraButtonStyleOld:
     }
 }
 
+struct EnduraNewButtonStyle: ButtonStyle {
+    private let backgroundColor: Color
+
+    init(backgroundColor: Color = Color.accentColor) {
+        self.backgroundColor = backgroundColor
+    }
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(configuration.isPressed ? backgroundColor.opacity(0.8) : backgroundColor)
+            .cornerRadius(6)
+    }
+}
+
 struct EnduraButtonStyle: ButtonStyle {
     private let backgroundColor: Color
     private let disabled: Bool
+    private let borderColor: Color
 
-    init(backgroundColor: Color = Color.accentColor, disabled: Bool = false) {
+    init(backgroundColor: Color = Color.accentColor, borderColor: Color = Color(hex: "008A8A"),
+         disabled: Bool = false)
+    {
         self.backgroundColor = backgroundColor
         self.disabled = disabled
+        self.borderColor = borderColor
     }
 
     func makeBody(configuration: Configuration) -> some View {
@@ -35,7 +55,7 @@ struct EnduraButtonStyle: ButtonStyle {
             .padding(.vertical, 16)
             .background(disabled ? Color.gray : backgroundColor)
             .cornerRadius(8)
-            .shadow(color: disabled ? Color(hex: "777777") : Color(hex: "008A8A"), radius: 0, x: 0,
+            .shadow(color: disabled ? Color(hex: "777777") : borderColor, radius: 0, x: 0,
                     y: configuration.isPressed ? 0 : 7)
             .offset(y: configuration.isPressed ? 7 : 0)
             .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)

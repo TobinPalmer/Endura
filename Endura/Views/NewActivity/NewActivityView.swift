@@ -78,7 +78,7 @@ struct NewActivityView: View {
 
                         Image(systemName: "figure.walk")
                             .font(.system(size: 100))
-                            .foregroundColor(Color("Text"))
+                            .foregroundColor(Color("TextMuted"))
                     }
 
                     VStack {

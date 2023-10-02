@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 private var postRunEasyDay: [PostRunExercise] = [
-    PostRunExercise(type: .plank, parameter: .time(10)),
+    PostRunExercise(type: .plank, parameter: .time(3)),
     PostRunExercise(type: .pushup, parameter: .count(10)),
     PostRunExercise(type: .squat, parameter: .count(10)),
     PostRunExercise(type: .lunge, parameter: .count(10)),
@@ -104,36 +104,48 @@ struct PostRunExerciseView: View {
     }
 
     public var body: some View {
+        let exerciseReference = postRunExerciseReference[viewModel.exercise.type]
+
         VStack {
-            Text(String(describing: viewModel.exercise.type))
+            Text(exerciseReference?.name ?? "")
+                .font(.title)
+                .padding()
+
+            Spacer()
 
             switch viewModel.exercise.parameter {
             case let .count(count):
                 Text("Do \(count)")
-            case .time:
-                PostRunTimerRing(time: $viewModel.currentTime, duration: 10, size: 150)
+            case let .time(time):
+                PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
                     .environmentObject(viewModel)
+                    .padding(.bottom, 20)
 
                 Button("Start Time") {
                     viewModel.startTimer(duration: 10)
                 }
             }
 
-            Button("Next") {
-                withAnimation {
-                    currentStep += 1
+            HStack {
+                Button("Next") {
+                    withAnimation {
+                        currentStep += 1
+                    }
                 }
-            }
-            .buttonStyle(EnduraButtonStyle(backgroundColor: .accentColor))
+                .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
 
-            Button("Back") {
-                withAnimation {
-                    currentStep -= 1
+                Button("<") {
+                    withAnimation {
+                        currentStep -= 1
+                    }
                 }
+                .disabled(currentStep == 0)
+                .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
             }
-            .disabled(currentStep == 0)
-            .buttonStyle(EnduraButtonStyle(backgroundColor: currentStep == 0 ? .gray : .accentColor))
+
+            Spacer()
         }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
     }
 }
 
