@@ -23,11 +23,11 @@ struct ActivityHeader: View {
                     VStack(alignment: .leading) {
                         Text("---------------")
                             .font(Font.custom("FlowBlock-Regular", size: 20, relativeTo: .title))
-                            .foregroundColor(Color("Text"))
+                            .fontColor(.primary)
 
                         Text("------------------------------- - -------------------------------")
                             .font(Font.custom("FlowBlock-Regular", size: 12, relativeTo: .title))
-                            .foregroundColor(Color("TextMuted"))
+                            .fontColor(.secondary)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .topLeading)
@@ -40,16 +40,16 @@ struct ActivityHeader: View {
                     if let user = databaseCache.getUserData(uid) {
                         VStack(spacing: 3) {
                             Text(user.name)
-                                .foregroundColor(Color("Text"))
                                 .font(.title3)
+                                .fontColor(.primary)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
                             Text(
                                 "\(activityData.time.formatted()) • \(activityData.social.startCity), \(activityData.social.startCountry)"
                             )
-                            .foregroundColor(Color("TextMuted"))
                             .font(.system(size: 12))
+                            .fontColor(.secondary)
                             .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         }

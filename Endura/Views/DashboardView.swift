@@ -19,6 +19,7 @@ struct DashboardView: View {
                 VStack(spacing: 20) {
                     Text(FormattingUtils.fullFormattedDay(.current))
                         .font(.title)
+                        .fontColor()
                         .padding(.vertical, 10)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 

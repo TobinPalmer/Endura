@@ -39,7 +39,7 @@ public extension View {
             )
     }
 
-    func fontColor(_ fontColor: EnduraFontColor) -> some View {
+    func fontColor(_ fontColor: EnduraFontColor = .primary) -> some View {
         switch fontColor {
         case .primary:
             foregroundColor(Color("Text"))
