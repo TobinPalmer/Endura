@@ -39,6 +39,15 @@ public extension View {
             )
     }
 
+    func alignFullWidth(_ alignment: Alignment = .leading) -> some View {
+        frame(maxWidth: .infinity, alignment: alignment)
+    }
+
+    func enduraPadding() -> some View {
+        padding(.horizontal, 26)
+            .padding(.vertical, 20)
+    }
+
     func fontColor(_ fontColor: EnduraFontColor = .primary) -> some View {
         switch fontColor {
         case .primary:

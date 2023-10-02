@@ -17,12 +17,6 @@ struct DashboardView: View {
 
             ScrollView {
                 VStack(spacing: 20) {
-                    Text(FormattingUtils.fullFormattedDay(.current))
-                        .font(.title)
-                        .fontColor()
-                        .padding(.vertical, 10)
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-
                     VStack(alignment: .leading) {
                         DailySummaryGraph()
                     }
@@ -46,11 +40,11 @@ struct DashboardView: View {
 //                            .cornerRadius(8)
 //                    }
 //                        .frame(minWidth: 0, maxWidth: .infinity)
+                    TrainingGoalList()
                 }
-
-                TrainingGoalList()
+                .enduraPadding()
             }
-            .padding()
+            .navigationBarTitle(FormattingUtils.fullFormattedDay(.current))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: NotificationsView()) {
