@@ -4,6 +4,7 @@ import SwiftUI
 private enum ProfileViewPages {
     case activities
     case progress
+    case achievements
 }
 
 private final class ProfileViewModel: ObservableObject {
@@ -11,6 +12,7 @@ private final class ProfileViewModel: ObservableObject {
 }
 
 struct ProfileView: View {
+    @EnvironmentObject var activeUser: ActiveUserModel
     @StateObject private var viewModel = ProfileViewModel()
 
     public var body: some View {
@@ -18,46 +20,63 @@ struct ProfileView: View {
             Color("Background")
                 .ignoresSafeArea()
 
-            VStack {
+            VStack(spacing: 20) {
                 HStack {
                     ProfileImage(AuthUtils.getCurrentUID(), size: 128)
                         .padding(.horizontal, 8)
 
-                    Text("Tobin Palmer")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    VStack(alignment: .leading) {
+                        Text(activeUser.data.name)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .padding(.bottom, 8)
+
+                        Text("Friends")
+                            .font(.caption)
+                            .fontColor(.secondary)
+
+                        HStack {
+                            ForEach(0 ..< activeUser.data.friends.count, id: \.self) { i in
+                                let maxDisplay = 5
+                                if i < maxDisplay {
+                                    let friend = activeUser.data.friends[i]
+                                    UserProfileLink(friend) {
+                                        ProfileImage(friend, size: 32)
+                                            .offset(x: CGFloat(-i * 16))
+                                    }
+                                } else if i == maxDisplay {
+                                    Text("...\(activeUser.data.friends.count - maxDisplay) more")
+                                        .font(.body)
+                                        .fontColor(.secondary)
+                                        .offset(x: CGFloat(-i * 16) + 8)
+                                }
+                            }
+                        }
+                    }
+                    .alignFullWidth()
                 }
 
-                Divider()
-
-                HStack {
-                    Button(action: {
-                        viewModel.currentPage = .activities
-                    }, label: {
-                        Text("Activities")
-                            .font(.title2)
-                            .foregroundColor(viewModel.currentPage == .activities ? Color("TextMuted") : Color("Text"))
-                            .padding(.horizontal, 8)
-                    })
-
-                    Button(action: {
-                        viewModel.currentPage = .progress
-                    }, label: {
-                        Text("Progress")
-                            .font(.title2)
-                            .foregroundColor(viewModel.currentPage == .progress ? Color("TextMuted") : Color("Text"))
-                            .padding(.horizontal, 8)
-                    })
+                Picker(selection: $viewModel.currentPage, label: Text("Picker")) {
+                    Text("Activities").tag(ProfileViewPages.activities)
+                    Text("Progress").tag(ProfileViewPages.progress)
+                    Text("Achievements").tag(ProfileViewPages.achievements)
+                        .background(.clear)
                 }
+                .pickerStyle(SegmentedPickerStyle())
 
                 switch viewModel.currentPage {
                 case .activities:
-                    Text("Activities")
+                    ActivityList(singlePerson: AuthUtils.getCurrentUID(), fullWidth: false)
                 case .progress:
                     Text("Progress")
+                case .achievements:
+                    Text("Achievements")
                 }
 
                 Spacer()
             }
+            .enduraPadding()
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

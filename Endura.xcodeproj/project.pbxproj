@@ -63,6 +63,7 @@
 		17CC697D0001616A977EEFF1 /* UsersCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC65111606C9904DB57056 /* UsersCacheModel.swift */; };
 		17CC6983F4112553B14E96DD /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E5C876813CE440700AC /* ActivityViewModel.swift */; };
 		17CC698D69D7848BB549C593 /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC620E713369BF3ECEA030 /* PersistanceController.swift */; };
+		17CC69AE9149E6DD0A1E05E2 /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D5590AE22C3209DD958 /* ActivityList.swift */; };
 		17CC69D74E4C269D24EBB5E6 /* TrainingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6212F2153D1DBE379CF5 /* TrainingGoal.swift */; };
 		17CC6A29EB3D7F50A0FB38F2 /* TrainingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC656E8B60587CA8E876DE /* TrainingModels.swift */; };
 		17CC6B7A497E6D7D4D086659 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC60C749162E0014B95A73 /* SettingsModel.swift */; };
@@ -231,6 +232,7 @@
 		17CC6C296596DA475D462B36 /* ActivitiesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
 		17CC6C5CCD2C0F286ACBF0A4 /* UserModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModels.swift; sourceTree = "<group>"; };
 		17CC6C9A840B16A10E8DC625 /* NavigationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
+		17CC6D5590AE22C3209DD958 /* ActivityList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityList.swift; sourceTree = "<group>"; };
 		17CC6D870BA8F7FE33770E38 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		17CC6D93D86A82B085AB91BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		17CC6E5C876813CE440700AC /* ActivityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				69698EC86F9A7092017FDF6F /* ActivityHeader.swift */,
 				69698F458E637E5ED12A14F2 /* Loading */,
 				69698DDFA619D90ED487EF68 /* SummaryGraph */,
+				17CC6D5590AE22C3209DD958 /* ActivityList.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -1197,6 +1200,7 @@
 				17CC68A491351A17AE670E14 /* WorkoutModels.swift in Sources */,
 				17CC60E233AA2A2E1321A1A8 /* AddTrainingGoalView.swift in Sources */,
 				17CC6DBC17BD9A6AF968F22A /* PageWidget.swift in Sources */,
+				17CC69AE9149E6DD0A1E05E2 /* ActivityList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
