@@ -55,35 +55,40 @@ struct TrainingGoalDetails: View {
     }
 
     var body: some View {
-        VStack {
-            switch goal {
-            case .routine:
-                Text("Coming Soon")
-            case let .run(data):
+        ZStack {
+            Color("Background")
+                .ignoresSafeArea()
+
+            VStack {
+                switch goal {
+                case .routine:
+                    Text("Coming Soon")
+                case let .run(data):
 //                Text("Distance: \(data.distance.removeTrailingZeros()) Miles")
 //                Text("Time: \(data.time.removeTrailingZeros()) Minutes")
 
-                if data.progress.completed {
-                    Text("Completed")
-                } else {
-                    Text("Not Completed")
-                }
-
-                if #available(iOS 17.0, *) {
-                    Button("Authorize Workouts") {
-                        Task {
-                            await WorkoutScheduler.shared.requestAuthorization()
-                        }
+                    if data.progress.completed {
+                        Text("Completed")
+                    } else {
+                        Text("Not Completed")
                     }
 
-                    Button("Add Workout to Watch") {
-                        Task {
-                            await viewModel.generateRunningWorkout(data)
+                    if #available(iOS 17.0, *) {
+                        Button("Authorize Workouts") {
+                            Task {
+                                await WorkoutScheduler.shared.requestAuthorization()
+                            }
+                        }
+
+                        Button("Add Workout to Watch") {
+                            Task {
+                                await viewModel.generateRunningWorkout(data)
+                            }
                         }
                     }
                 }
             }
+            .navigationBarItems(trailing: EditTrainingGoalLink(goal: goal))
         }
-        .navigationBarItems(trailing: EditTrainingGoalLink(goal: goal))
     }
 }
