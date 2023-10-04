@@ -6,8 +6,11 @@ struct AddTrainingGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     public var selectedDate: YearMonthDay
 
-    init(_ selectedDate: YearMonthDay) {
+    @Binding var rootIsActive: Bool
+
+    init(_ selectedDate: YearMonthDay, rootIsActive: Binding<Bool>) {
         self.selectedDate = selectedDate
+        _rootIsActive = rootIsActive
     }
 
     var body: some View {
@@ -54,6 +57,30 @@ struct AddTrainingGoalView: View {
             }) {
                 Text("Add Running Goal")
             }
+            Spacer()
+        }
+    }
+}
+
+struct AddOpenRunGoalView: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
+    @State var goal: RunningTrainingGoalData
+
+    var body: some View {
+        VStack {
+            Text("Open Workout")
+            Spacer()
+        }
+    }
+}
+
+struct AddDistanceRunGoalView: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
+    @State var goal: RunningTrainingGoalData
+
+    var body: some View {
+        VStack {
+            Text("Distance Workout")
             Spacer()
         }
     }

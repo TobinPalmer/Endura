@@ -10,6 +10,8 @@ struct TrainingView: View {
     @StateObject private var viewModel = TrainingViewModel()
     @ObservedObject var controller = CalendarController()
 
+    @State private var rootIsActive = false
+
     var body: some View {
         ZStack {
             Color("Background")
@@ -19,7 +21,10 @@ struct TrainingView: View {
                 VStack(spacing: 20.0) {
                     TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
                     TrainingGoalList(selectedDate: $viewModel.selectedDate)
-                    NavigationLink(destination: AddTrainingGoalView(viewModel.selectedDate)) {
+                    NavigationLink(
+                        destination: AddTrainingGoalView(viewModel.selectedDate, rootIsActive: $rootIsActive),
+                        isActive: $rootIsActive
+                    ) {
                         Text("Add")
                     }
                 }

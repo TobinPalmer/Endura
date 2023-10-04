@@ -4,12 +4,14 @@ import SwiftUI
 struct TrainingGoal: View {
     private let goal: TrainingGoalData
 
+    @State private var isActive = false
+
     public init(_ goal: TrainingGoalData) {
         self.goal = goal
     }
 
     var body: some View {
-        NavigationLink(destination: TrainingGoalDetails(goal)) {
+        NavigationLink(destination: TrainingGoalDetails(goal), isActive: $isActive) {
             HStack {
                 Image(systemName: goal.getIcon())
                     .background(
@@ -51,6 +53,9 @@ struct TrainingGoal: View {
             .padding(26)
             .enduraDefaultBox()
         }
+        .onTapGesture(perform: {
+            isActive = true
+        })
     }
 
     func timeAndProgressView(time: Double, progress: TrainingGoalProgressData) -> some View {

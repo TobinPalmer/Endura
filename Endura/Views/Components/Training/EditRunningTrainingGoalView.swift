@@ -22,6 +22,8 @@ struct EditRunningTrainingGoalView: View {
                 Text("Custom Workout")
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .enduraPadding()
         .onChange(of: goal) { _, newValue in
             activeUser.training.updateTrainingGoal(goal.date.toYearMonthDay(), TrainingGoalData.run(data: newValue))
         }
@@ -40,10 +42,30 @@ private struct EditDistanceWorkoutGoal: View {
     }
 
     var body: some View {
-        Text("Distance: \(distance)")
-        Stepper("Distance", value: $distance, in: 0 ... 100)
+        VStack {
+            HStack {
+                Button(action: {
+                    distance -= 1
+                }) {
+                    Image(systemName: "minus")
+                }
+                TextField("Distance", value: $distance, format: .number)
+                    .multilineTextAlignment(.center)
+                    .keyboardType(.decimalPad)
+                    .fontColor(.primary)
+                Button(action: {
+                    distance += 1
+                }) {
+                    Image(systemName: "plus")
+                }
+            }
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .enduraDefaultBox()
             .onChange(of: distance) { _, newValue in
                 workout = .distance(distance: newValue)
             }
+        }
+        .padding(26)
     }
 }
