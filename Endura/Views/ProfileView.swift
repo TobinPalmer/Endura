@@ -70,6 +70,9 @@ struct ProfileView: View {
                     ActivityList(singlePerson: AuthUtils.getCurrentUID(), fullWidth: false)
                 case .progress:
                     Text("Progress")
+                    NavigationLink(destination: TrainingSetupView()) {
+                        Text("Setup Training")
+                    }
                 case .achievements:
                     Text("Achievements")
                 }
