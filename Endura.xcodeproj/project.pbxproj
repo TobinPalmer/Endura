@@ -29,6 +29,14 @@
 		0267A8072A92CC3D0090E032 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 0267A8062A92CC3D0090E032 /* Inject */; };
 		02C6C3F32AAAAB290079B76B /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F22AAAAB290079B76B /* AlertKit */; };
 		02C6C3F62AAAB1DB0079B76B /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */; };
+		02E09A662ACD18C200681FE6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E09A652ACD18C200681FE6 /* WidgetKit.framework */; };
+		02E09A682ACD18C200681FE6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E09A672ACD18C200681FE6 /* SwiftUI.framework */; };
+		02E09A6B2ACD18C200681FE6 /* EnduraWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A6A2ACD18C200681FE6 /* EnduraWidgetBundle.swift */; };
+		02E09A6D2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A6C2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift */; };
+		02E09A6F2ACD18C200681FE6 /* EnduraWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A6E2ACD18C200681FE6 /* EnduraWidget.swift */; };
+		02E09A712ACD18C200681FE6 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A702ACD18C200681FE6 /* AppIntent.swift */; };
+		02E09A732ACD18C300681FE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02E09A722ACD18C300681FE6 /* Assets.xcassets */; };
+		02E09A772ACD18C300681FE6 /* EnduraWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 02E09A632ACD18C200681FE6 /* EnduraWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
 		17CC607E08EEDD8271A5C295 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6C5CCD2C0F286ACBF0A4 /* UserModels.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
@@ -170,7 +178,28 @@
 			remoteGlobalIDString = 026042B82A62E27900F4AF88;
 			remoteInfo = Endura;
 		};
+		02E09A752ACD18C300681FE6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 026042B12A62E27900F4AF88 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02E09A622ACD18C200681FE6;
+			remoteInfo = EnduraWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		02E09A782ACD18C300681FE6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				02E09A772ACD18C300681FE6 /* EnduraWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0202FC542A67851500D28518 /* EnduraDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EnduraDebug.entitlements; sourceTree = "<group>"; };
@@ -187,6 +216,15 @@
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		026D06352A7B2A3200A91958 /* Endura.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Endura.entitlements; sourceTree = "<group>"; };
 		02BC053E2A903125007CB32C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		02E09A632ACD18C200681FE6 /* EnduraWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EnduraWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		02E09A652ACD18C200681FE6 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		02E09A672ACD18C200681FE6 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		02E09A6A2ACD18C200681FE6 /* EnduraWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraWidgetBundle.swift; sourceTree = "<group>"; };
+		02E09A6C2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraWidgetLiveActivity.swift; sourceTree = "<group>"; };
+		02E09A6E2ACD18C200681FE6 /* EnduraWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraWidget.swift; sourceTree = "<group>"; };
+		02E09A702ACD18C200681FE6 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		02E09A722ACD18C300681FE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		02E09A742ACD18C300681FE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		17CC607A7A216D39B0646F45 /* TrainingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingModel.swift; sourceTree = "<group>"; };
 		17CC609E501A0F5E0F670AE7 /* TrainingGoalDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGoalDetails.swift; sourceTree = "<group>"; };
 		17CC60C749162E0014B95A73 /* SettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
@@ -349,6 +387,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		02E09A602ACD18C200681FE6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02E09A682ACD18C200681FE6 /* SwiftUI.framework in Frameworks */,
+				02E09A662ACD18C200681FE6 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -375,6 +422,8 @@
 				026042BB2A62E27900F4AF88 /* Endura */,
 				026042CC2A62E27C00F4AF88 /* EnduraTests */,
 				026042D62A62E27C00F4AF88 /* EnduraUITests */,
+				02E09A692ACD18C200681FE6 /* EnduraWidget */,
+				02E09A642ACD18C200681FE6 /* Frameworks */,
 				026042BA2A62E27900F4AF88 /* Products */,
 				696981BF2A29E3B41F08E183 /* .pre-commit-config.yaml */,
 				696981BDEAA09748168F40DF /* .swiftformat */,
@@ -387,6 +436,7 @@
 				026042B92A62E27900F4AF88 /* Endura.app */,
 				026042C92A62E27C00F4AF88 /* EnduraTests.xctest */,
 				026042D32A62E27C00F4AF88 /* EnduraUITests.xctest */,
+				02E09A632ACD18C200681FE6 /* EnduraWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -439,6 +489,28 @@
 				026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */,
 			);
 			path = EnduraUITests;
+			sourceTree = "<group>";
+		};
+		02E09A642ACD18C200681FE6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				02E09A652ACD18C200681FE6 /* WidgetKit.framework */,
+				02E09A672ACD18C200681FE6 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		02E09A692ACD18C200681FE6 /* EnduraWidget */ = {
+			isa = PBXGroup;
+			children = (
+				02E09A6A2ACD18C200681FE6 /* EnduraWidgetBundle.swift */,
+				02E09A6C2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift */,
+				02E09A6E2ACD18C200681FE6 /* EnduraWidget.swift */,
+				02E09A702ACD18C200681FE6 /* AppIntent.swift */,
+				02E09A722ACD18C300681FE6 /* Assets.xcassets */,
+				02E09A742ACD18C300681FE6 /* Info.plist */,
+			);
+			path = EnduraWidget;
 			sourceTree = "<group>";
 		};
 		17CC60B382EB59EFE1DCE682 /* Notifications */ = {
@@ -926,10 +998,12 @@
 				026042B52A62E27900F4AF88 /* Sources */,
 				026042B62A62E27900F4AF88 /* Frameworks */,
 				026042B72A62E27900F4AF88 /* Resources */,
+				02E09A782ACD18C300681FE6 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				02E09A762ACD18C300681FE6 /* PBXTargetDependency */,
 			);
 			name = Endura;
 			packageProductDependencies = (
@@ -992,6 +1066,23 @@
 			productReference = 026042D32A62E27C00F4AF88 /* EnduraUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		02E09A622ACD18C200681FE6 /* EnduraWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02E09A7B2ACD18C300681FE6 /* Build configuration list for PBXNativeTarget "EnduraWidgetExtension" */;
+			buildPhases = (
+				02E09A5F2ACD18C200681FE6 /* Sources */,
+				02E09A602ACD18C200681FE6 /* Frameworks */,
+				02E09A612ACD18C200681FE6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EnduraWidgetExtension;
+			productName = EnduraWidgetExtension;
+			productReference = 02E09A632ACD18C200681FE6 /* EnduraWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1012,6 +1103,9 @@
 					026042D22A62E27C00F4AF88 = {
 						CreatedOnToolsVersion = 15.0;
 						TestTargetID = 026042B82A62E27900F4AF88;
+					};
+					02E09A622ACD18C200681FE6 = {
+						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
@@ -1043,6 +1137,7 @@
 				026042B82A62E27900F4AF88 /* Endura */,
 				026042C82A62E27C00F4AF88 /* EnduraTests */,
 				026042D22A62E27C00F4AF88 /* EnduraUITests */,
+				02E09A622ACD18C200681FE6 /* EnduraWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1074,6 +1169,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02E09A612ACD18C200681FE6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02E09A732ACD18C300681FE6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1221,6 +1324,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		02E09A5F2ACD18C200681FE6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02E09A6B2ACD18C200681FE6 /* EnduraWidgetBundle.swift in Sources */,
+				02E09A712ACD18C200681FE6 /* AppIntent.swift in Sources */,
+				02E09A6F2ACD18C200681FE6 /* EnduraWidget.swift in Sources */,
+				02E09A6D2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1233,6 +1347,11 @@
 			isa = PBXTargetDependency;
 			target = 026042B82A62E27900F4AF88 /* Endura */;
 			targetProxy = 026042D42A62E27C00F4AF88 /* PBXContainerItemProxy */;
+		};
+		02E09A762ACD18C300681FE6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02E09A622ACD18C200681FE6 /* EnduraWidgetExtension */;
+			targetProxy = 02E09A752ACD18C300681FE6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1360,6 +1479,7 @@
 		026042DE2A62E27C00F4AF88 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Endura/EnduraDebug.entitlements;
@@ -1396,6 +1516,7 @@
 		026042DF2A62E27C00F4AF88 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Endura/Endura.entitlements;
@@ -1502,6 +1623,60 @@
 			};
 			name = Release;
 		};
+		02E09A792ACD18C300681FE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 879YJUG243;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EnduraWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EnduraWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.enduraapp.EnduraApp.EnduraWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		02E09A7A2ACD18C300681FE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 879YJUG243;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EnduraWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EnduraWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.enduraapp.EnduraApp.EnduraWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1537,6 +1712,15 @@
 			buildConfigurations = (
 				026042E42A62E27C00F4AF88 /* Debug */,
 				026042E52A62E27C00F4AF88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		02E09A7B2ACD18C300681FE6 /* Build configuration list for PBXNativeTarget "EnduraWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02E09A792ACD18C300681FE6 /* Debug */,
+				02E09A7A2ACD18C300681FE6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
