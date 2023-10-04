@@ -13,7 +13,7 @@ struct ContentView: View {
 
     var body: some View {
         if navigation.currentView == .LOGIN {
-            NavigationView {
+            NavigationStack {
                 LoginView()
                     .preferredColorScheme(.light)
             }
@@ -26,7 +26,7 @@ struct ContentView: View {
             VStack {
                 if let activeUserModel = activeUserModel {
                     TabView {
-                        NavigationView {
+                        NavigationStack {
                             DashboardView()
                         }
                         .tabItem {
@@ -34,7 +34,7 @@ struct ContentView: View {
                             Text("Home")
                         }
 
-                        NavigationView {
+                        NavigationStack {
                             ActivitiesView()
                         }
                         .tabItem {
@@ -42,7 +42,7 @@ struct ContentView: View {
                             Text("Activity")
                         }
 
-                        NavigationView {
+                        NavigationStack {
                             TrainingView()
                         }
                         .tabItem {
@@ -50,7 +50,7 @@ struct ContentView: View {
                             Text("Training")
                         }
 
-                        NavigationView {
+                        NavigationStack {
                             ProgressDashboardView()
                         }
                         .tabItem {
@@ -58,7 +58,7 @@ struct ContentView: View {
                             Text("Progress")
                         }
 
-                        NavigationView {
+                        NavigationStack {
                             ProfileView()
                         }
                         .tabItem {

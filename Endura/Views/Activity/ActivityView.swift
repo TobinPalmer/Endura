@@ -65,7 +65,7 @@ struct ActivityView: View {
             }
         }
         .sheet(isPresented: $analysisView) {
-            NavigationView {
+            NavigationStack {
                 VStack {
                     if let activityData = activityData {
                         VStack {
