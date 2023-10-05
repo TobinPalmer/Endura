@@ -52,18 +52,13 @@ public struct TrainingEndGoalDocument: Codable {
     public var completed: Bool
 
     public init(
-        date: YearMonthDay,
-        startDate: YearMonthDay,
-        distance: Double,
-        time: Double,
-        currentTime: Double,
-        completed: Bool
+        _ data: TrainingEndGoalData
     ) {
-        self.date = date.toCache()
-        self.startDate = startDate.toCache()
-        self.distance = distance
-        self.time = time
-        self.currentTime = currentTime
-        self.completed = completed
+        date = data.date.toCache()
+        startDate = data.startDate.toCache()
+        distance = data.distance
+        time = data.time
+        currentTime = data.currentTime
+        completed = data.completed
     }
 }
