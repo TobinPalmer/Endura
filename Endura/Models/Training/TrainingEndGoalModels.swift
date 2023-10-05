@@ -13,6 +13,15 @@ public struct TrainingEndGoalData: Cacheable {
 
     public var completed: Bool
 
+    public func daysLeft() -> Int {
+        Int(YearMonthDay.current.getDate().distance(to: date.getDate()) / (60 * 60 * 24))
+    }
+
+    public func getProgress() -> Double {
+        YearMonthDay.current.getDate().distance(to: startDate.getDate()) / date.getDate()
+            .distance(to: startDate.getDate())
+    }
+
     public func updateCache(_ cache: TrainingEndGoalCache) {
         cache.date = date.toCache()
         cache.startDate = startDate.toCache()

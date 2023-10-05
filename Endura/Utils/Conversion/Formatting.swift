@@ -30,4 +30,11 @@ public enum FormattingUtils {
         let formattedString = formatter.string(from: date.getDate())
         return formattedString
     }
+
+    public static func formatMiles(_ miles: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        return formatter.string(from: NSNumber(value: miles))!
+    }
 }

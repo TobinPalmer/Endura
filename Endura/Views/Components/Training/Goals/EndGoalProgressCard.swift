@@ -9,27 +9,49 @@ struct EndGoalProgressCard: View {
             if let endTrainingGoal = activeUser.training.endTrainingGoal {
                 HStack(spacing: 20) {
                     let progressRingSize = 100
-                    ZStack {
-                        Circle()
-                            .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
-                            .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
-                        Circle()
-                            .trim(from: 0, to: 0.7)
-                            .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                            .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
-                            .rotationEffect(.degrees(-90))
-                        VStack {
-                            Text("20")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .fontColor(.primary)
-                            Text("days left")
-                                .font(.caption)
-                                .fontColor(.secondary)
+                    if endTrainingGoal.completed {
+                        ZStack {
+                            Circle()
+                                .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
+                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+                            Circle()
+                                .trim(from: 0, to: 1)
+                                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+                                .rotationEffect(.degrees(-90))
+                            VStack {
+                                Text("Done!")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                    .fontColor(.primary)
+                                Text("🎉")
+                                    .font(.title)
+                                    .fontColor(.secondary)
+                            }
+                        }
+                    } else {
+                        ZStack {
+                            Circle()
+                                .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
+                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+                            Circle()
+                                .trim(from: 0, to: CGFloat(endTrainingGoal.getProgress()))
+                                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+                                .rotationEffect(.degrees(-90))
+                            VStack {
+                                Text("\(endTrainingGoal.daysLeft())")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .fontColor(.primary)
+                                Text("days left")
+                                    .font(.caption)
+                                    .fontColor(.secondary)
+                            }
                         }
                     }
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("\(endTrainingGoal.distance) miles")
+                        Text("\(FormattingUtils.formatMiles(endTrainingGoal.distance)) miles")
                             .font(.title2)
                             .fontWeight(.bold)
                             .fontColor(.primary)
@@ -38,7 +60,7 @@ struct EndGoalProgressCard: View {
                                 Text("Current")
                                     .font(.caption)
                                     .fontColor(.muted)
-                                Text("22:30")
+                                Text("\(FormattingUtils.secondsToFormattedTime(endTrainingGoal.currentTime))")
                                     .fontWeight(.bold)
                                     .fontColor(.secondary)
                             }
@@ -46,7 +68,7 @@ struct EndGoalProgressCard: View {
                                 Text("Goal")
                                     .font(.caption)
                                     .fontColor(.muted)
-                                Text("21:45")
+                                Text("\(FormattingUtils.secondsToFormattedTime(endTrainingGoal.time))")
                                     .fontWeight(.bold)
                                     .fontColor(.secondary)
                             }

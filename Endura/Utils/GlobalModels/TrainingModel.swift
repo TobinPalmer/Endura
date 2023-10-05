@@ -57,11 +57,11 @@ import SwiftUICalendar
         loadTrainingMonth(.current)
 
         endTrainingGoal = TrainingEndGoalData(
-            date: YearMonthDay.current,
-            startDate: YearMonthDay.current,
+            date: YearMonthDay(year: 2023, month: 11, day: 1),
+            startDate: YearMonthDay(year: 2023, month: 6, day: 2),
             distance: 3,
-            time: 21.2,
-            currentTime: 22.5,
+            time: 21.2 * 60,
+            currentTime: 22.5 * 60,
             completed: false
         )
 
