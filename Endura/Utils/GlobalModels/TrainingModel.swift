@@ -34,6 +34,17 @@ import SwiftUICalendar
         }
     }
 
+    @Published public var endTrainingGoal: TrainingEndGoalData? {
+        didSet {
+            if let endTrainingGoal = endTrainingGoal {
+                CacheUtils.updateObject(
+                    TrainingEndGoalCache.self,
+                    update: endTrainingGoal.updateCache
+                )
+            }
+        }
+    }
+
     @Published private var loadedMonths: [YearMonth] = []
 
     init() async throws {
@@ -44,6 +55,15 @@ import SwiftUICalendar
         }
 
         loadTrainingMonth(.current)
+
+        endTrainingGoal = TrainingEndGoalData(
+            date: YearMonthDay.current,
+            startDate: YearMonthDay.current,
+            distance: 3,
+            time: 21.2,
+            currentTime: 22.5,
+            completed: false
+        )
 
 //        var today = getTrainingDay(.current)
 //        today.goals = [TrainingGoalData.run(

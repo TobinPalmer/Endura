@@ -5,9 +5,9 @@ import GoogleGenerativeAI
     public static func generateTrainingPlanForEndGoal(_ endGoal: TrainingEndGoalData) -> [TrainingGoalData] {
         let startDate = endGoal.startDate
         let endDate = endGoal.date
-        let daysBetween = Calendar.current.dateComponents([.day], from: startDate, to: endDate).day!
+        let daysBetween = Calendar.current.dateComponents([.day], from: startDate.getDate(), to: endDate.getDate()).day!
         let days = (0 ... daysBetween).map { day in
-            Calendar.current.date(byAdding: .day, value: day, to: startDate)!
+            Calendar.current.date(byAdding: .day, value: day, to: startDate.getDate())!
         }
         let daysWithGoals = days.map { _ in
             TrainingGoalData.run(
