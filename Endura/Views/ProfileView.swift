@@ -69,10 +69,17 @@ struct ProfileView: View {
                 case .activities:
                     ActivityList(singlePerson: AuthUtils.getCurrentUID(), fullWidth: false)
                 case .progress:
-                    EndGoalProgressCard()
-//                    NavigationLink(destination: TrainingSetupView()) {
-//                        Text("Setup Training")
-//                    }
+                    VStack {
+                        EndGoalProgressCard()
+
+                        Text("Weekly Summary")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .padding(.top, 16)
+                            .alignFullWidth()
+                        DailySummaryGraph()
+                    }
                 case .achievements:
                     Text("Achievements")
                 }

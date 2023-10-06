@@ -80,6 +80,23 @@ struct EndGoalProgressCard: View {
                     .padding()
                 }
                 .frame(height: 150)
+            } else {
+                VStack(spacing: 10) {
+                    Text("No Training Goal Set")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .fontColor(.primary)
+                    Text(
+                        "A training goal can help you stay motivated and on track with your training to achieve your goals!"
+                    )
+                    .font(.body)
+                    .fontColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                    NavigationLink(destination: TrainingSetupView()) {
+                        Text("Setup Training Goal")
+                    }
+                }
             }
         }
     }
