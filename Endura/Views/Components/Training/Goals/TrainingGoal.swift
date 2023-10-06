@@ -41,28 +41,41 @@ struct TrainingGoal: View {
                     Spacer()
                     switch goal {
                     case let .routine(data):
-                        timeAndProgressView(time: data.time, progress: data.progress)
+                        HStack {
+                            if data.progress.completed {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.green)
+                            } else {
+                                Text("\(FormattingUtils.secondsToFormattedTime(data.time)) Minutes")
+                                    .padding()
+                                    .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
+                            }
+                        }
                     case let .run(data):
-                        timeAndProgressView(time: 10, progress: data.progress)
+                        HStack {
+                            if data.progress.completed {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.green)
+                            } else {
+                                VStack {
+                                    switch data.workout {
+                                    case let .distance(distance):
+                                        Text("\(FormattingUtils.formatMiles(distance)) Miles")
+                                    case let .time(time):
+                                        Text("\(FormattingUtils.secondsToFormattedTime(time)) Minutes")
+                                    default: EmptyView()
+                                    }
+                                }
+                                .padding()
+                                .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
+                            }
+                        }
                     }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(26)
             .enduraDefaultBox()
-        }
-    }
-
-    func timeAndProgressView(time: Double, progress: TrainingGoalProgressData) -> some View {
-        HStack {
-            if progress.completed {
-                Image(systemName: "checkmark")
-                    .foregroundColor(.green)
-            } else {
-                Text("\(time.removeTrailingZeros()) Minutes")
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
-            }
         }
     }
 }

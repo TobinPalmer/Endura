@@ -61,7 +61,18 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
     public func getTitle() -> String {
         switch self {
         case let .run(data):
-            return data.type.rawValue
+            switch data.workout {
+            case .open:
+                return "Open Run"
+            case let .distance(distance):
+                return "\(distance.removeTrailingZeros()) Miles"
+            case let .time(time):
+                return "\(time.removeTrailingZeros()) Minutes"
+            case let .pacer(distance, time):
+                return "\(distance.removeTrailingZeros()) Miles in \(time.removeTrailingZeros()) Minutes"
+            case let .custom(data):
+                return "Custom Workout"
+            }
         case let .routine(data):
             return data.type.rawValue
         }
