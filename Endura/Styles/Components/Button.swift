@@ -29,8 +29,11 @@ struct EnduraNewButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .frame(maxWidth: .infinity)
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
+            .foregroundColor(.white)
+            .fontWeight(.bold)
             .background(configuration.isPressed ? backgroundColor.opacity(0.8) : backgroundColor)
             .cornerRadius(6)
     }

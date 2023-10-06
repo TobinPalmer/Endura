@@ -93,7 +93,7 @@ struct EndGoalProgressCard: View {
                     .fontColor(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
-                    NavigationLink(destination: TrainingSetupView()) {
+                    NavigationLink(destination: TrainingEndGoalSetupView()) {
                         Text("Setup Training Goal")
                     }
                 }

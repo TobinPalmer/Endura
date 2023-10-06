@@ -32,10 +32,11 @@ public extension View {
     func enduraDefaultBox() -> some View {
         background(.white)
             .cornerRadius(16)
-            .newShadow()
+            //            .shadow(color: .black.opacity(0.02), radius: 5, x: 0, y: 0)
+            //            .newShadow()
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.1), lineWidth: 1)
+                    .stroke(Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.1), lineWidth: 1.5)
             )
     }
 
