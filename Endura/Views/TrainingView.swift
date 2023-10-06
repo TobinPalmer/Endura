@@ -10,8 +10,6 @@ struct TrainingView: View {
     @StateObject private var viewModel = TrainingViewModel()
     @ObservedObject var controller = CalendarController()
 
-    @State private var rootIsActive = false
-
     var body: some View {
         ZStack {
             Color("Background")
@@ -22,13 +20,32 @@ struct TrainingView: View {
                     TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
                     TrainingGoalList(selectedDate: $viewModel.selectedDate)
                     NavigationLink(
-                        destination: AddTrainingGoalView(viewModel.selectedDate, rootIsActive: $rootIsActive),
-                        isActive: $rootIsActive
+                        destination: AddTrainingGoalView(viewModel.selectedDate)
                     ) {
                         Text("Add")
                     }
                 }
                 .padding(26)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(
+                    destination: Text("Coming soon")
+                ) {
+                    Image(systemName: "sparkles")
+                        .fontWeight(.bold)
+                }
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(
+                    destination: AddTrainingGoalView(viewModel.selectedDate)
+                ) {
+                    Image(systemName: "plus")
+                        .fontWeight(.bold)
+                        .padding(.trailing, 8)
+                }
             }
         }
     }

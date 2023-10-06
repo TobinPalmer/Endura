@@ -6,11 +6,8 @@ struct AddTrainingGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     public var selectedDate: YearMonthDay
 
-    @Binding var rootIsActive: Bool
-
-    init(_ selectedDate: YearMonthDay, rootIsActive: Binding<Bool>) {
+    init(_ selectedDate: YearMonthDay) {
         self.selectedDate = selectedDate
-        _rootIsActive = rootIsActive
     }
 
     var body: some View {
