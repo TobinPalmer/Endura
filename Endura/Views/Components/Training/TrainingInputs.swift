@@ -34,57 +34,72 @@ struct DistanceInput: View {
 
 struct TimeInput: View {
     @Binding var time: Double
+    @State var hours: Int = 0
+    @State var minutes: Int = 0
+    @State var seconds: Int = 0
+
+    init(time: Binding<Double>) {
+        _time = time
+        _hours = State(initialValue: Int(time.wrappedValue / 3600))
+        _minutes = State(initialValue: Int(time.wrappedValue / 60) % 60)
+        _seconds = State(initialValue: Int(time.wrappedValue) % 60)
+    }
 
     var body: some View {
         HStack(spacing: 0) {
+            let width = CGFloat(90)
             Picker("Hours", selection: Binding(
-                get: { Int(time) },
+                get: { Int(time / 3600) },
                 set: { newValue in
-                    time = Double(newValue)
+                    time = time + Double(-hours * 3600 + newValue * 3600)
+                    hours = newValue
                 }
             )) {
                 ForEach(0 ..< 24) { index in
-                    Text("\(index)")
+                    Text("\(index)h")
                         .tag(index)
                 }
             }
+            .frame(width: width)
             .pickerStyle(WheelPickerStyle())
             .clipShape(.rect.offset(x: -16))
             .padding(.trailing, -16)
             Picker("Minutes", selection: Binding(
-                get: { Int(time.rounded(toPlaces: 2) / 100) },
+                get: { Int(time / 60) % 60 },
                 set: { newValue in
-                    time = time.rounded() + Double(newValue) / 100
+                    time = time + Double(-minutes * 60 + newValue * 60)
+                    minutes = newValue
                 }
             )) {
                 ForEach(0 ..< 60) { index in
-                    Text("\(index)")
+                    Text("\(index)m")
                         .tag(index)
                 }
             }
+            .frame(width: width)
             .pickerStyle(WheelPickerStyle())
             .clipShape(.rect.offset(x: -16))
             .padding(.trailing, -16)
             .clipShape(.rect.offset(x: 16))
             .padding(.leading, -16)
             Picker("Seconds", selection: Binding(
-                get: { Int(time.rounded(toPlaces: 2) / 100) },
+                get: { Int(time) % 60 },
                 set: { newValue in
-                    time = time.rounded() + Double(newValue) / 100
+                    time = time + Double(-seconds + newValue)
+                    seconds = newValue
                 }
             )) {
                 ForEach(0 ..< 60) { index in
-                    Text("\(index)")
+                    Text("\(index)s")
                         .tag(index)
                 }
             }
+            .frame(width: width)
             .pickerStyle(WheelPickerStyle())
             .clipShape(.rect.offset(x: 16))
             .padding(.leading, -16)
         }
-        .frame(maxHeight: 100)
-        .font(.largeTitle)
-        .fontWeight(.bold)
-        .padding(26)
+        .frame(maxWidth: .infinity, maxHeight: 100)
+        .padding(.top, 8)
     }
 }

@@ -53,10 +53,7 @@ struct TrainingEndGoalSetupView: View {
                         Label("Distance", systemImage: "figure.walk")
 
                         DistanceInput(
-                            distance: Binding<Double>(
-                                get: { endGoal.distance },
-                                set: { endGoal.distance = $0 }
-                            )
+                            distance: $endGoal.distance
                         )
                     }
                     .frame(maxWidth: .infinity)
@@ -66,11 +63,10 @@ struct TrainingEndGoalSetupView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Label("Time", systemImage: "stopwatch")
 
+                        Text("\(FormattingUtils.secondsToFormattedTime(endGoal.time))")
+
                         TimeInput(
-                            time: Binding<Double>(
-                                get: { endGoal.time },
-                                set: { endGoal.time = $0 }
-                            )
+                            time: $endGoal.time
                         )
                     }
                     .frame(maxWidth: .infinity)
