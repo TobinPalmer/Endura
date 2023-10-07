@@ -51,10 +51,16 @@ struct TrainingCalender: View {
                 let trainingDay = activeUser.training.getTrainingDay(date)
 
                 ZStack {
-                    Circle()
+//                    Circle()
+//                        .fill(trainingDay.type.getColor().opacity(0.2))
+//                        .overlay(
+//                            Circle()
+//                                .stroke(trainingDay.type.getColor(), lineWidth: selectedDate == date ? 2 : 0)
+//                        )
+                    RoundedRectangle(cornerRadius: 10)
                         .fill(trainingDay.type.getColor().opacity(0.2))
                         .overlay(
-                            Circle()
+                            RoundedRectangle(cornerRadius: 10)
                                 .stroke(trainingDay.type.getColor(), lineWidth: selectedDate == date ? 2 : 0)
                         )
                     Text("\(date.day)")

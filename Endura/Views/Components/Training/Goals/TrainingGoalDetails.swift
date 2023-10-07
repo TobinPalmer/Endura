@@ -88,7 +88,9 @@ struct TrainingGoalDetails: View {
                     }
                 }
             }
-            .navigationBarItems(trailing: EditTrainingGoalLink(goal: goal))
+            .navigationBarItems(trailing: EditTrainingGoalLink(goal: goal) {
+                Text("Edit")
+            })
         }
     }
 }

@@ -2,16 +2,22 @@ import Foundation
 import SwiftUI
 import SwiftUICalendar
 
-struct EditTrainingGoalLink: View {
+struct EditTrainingGoalLink<Label: View>: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     @State private var showEditGoal = false
     var goal: TrainingGoalData
+    private var content: () -> Label
+
+    init(goal: TrainingGoalData, @ViewBuilder content: @escaping () -> Label) {
+        self.goal = goal
+        self.content = content
+    }
 
     var body: some View {
         Button(action: {
             showEditGoal = true
         }) {
-            Text("Edit")
+            content()
         }
         .sheet(isPresented: $showEditGoal) {
             NavigationView {
@@ -76,12 +82,16 @@ struct EditTrainingDayView: View {
                                     TrainingGoal(goal)
                                 }
                             case let .run(data):
-                                NavigationLink(destination: EditRunningTrainingGoalView(goal: data)) {
+//                                NavigationLink(destination: EditRunningTrainingGoalView(goal: data)) {
+//                                    TrainingGoal(goal)
+//                                }
+                                EditTrainingGoalLink(goal: goal) {
                                     TrainingGoal(goal)
                                 }
                             }
                         }
                     }
+                    .listStyle(PlainListStyle())
                 }
                 Spacer()
             }
