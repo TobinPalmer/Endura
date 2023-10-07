@@ -9,6 +9,8 @@ struct TrainingGoalList: View {
         selectedDate == .current
     }
 
+    @State private var editSheet = false
+
     init(selectedDate: Binding<YearMonthDay> = .constant(.current)) {
         _selectedDate = selectedDate
     }
@@ -19,7 +21,9 @@ struct TrainingGoalList: View {
                 Text("\(FormattingUtils.dateToFormattedDay(selectedDate))")
                     .font(.title)
                 Spacer()
-                NavigationLink(destination: TrainingDayView(selectedDate: selectedDate)) {
+                Button(action: {
+                    editSheet = true
+                }) {
                     Text("Edit")
                 }
             }
@@ -34,6 +38,9 @@ struct TrainingGoalList: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: $editSheet) {
+            EditTrainingDayView(selectedDate: selectedDate)
         }
     }
 }

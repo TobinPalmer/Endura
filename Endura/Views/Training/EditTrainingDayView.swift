@@ -36,11 +36,8 @@ struct EditTrainingGoalLink: View {
     }
 }
 
-private final class TrainingDayViewModel: ObservableObject {}
-
-struct TrainingDayView: View {
+struct EditTrainingDayView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
-    @StateObject private var viewModel = TrainingDayViewModel()
     var selectedDate: YearMonthDay
 
     var body: some View {
