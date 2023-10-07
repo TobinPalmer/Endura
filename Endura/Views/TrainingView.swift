@@ -29,6 +29,15 @@ struct TrainingView: View {
             }
         }
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationLink(
+                    destination: AddTrainingGoalView(viewModel.selectedDate)
+                ) {
+                    Image(systemName: "plus")
+                        .fontWeight(.bold)
+                }
+            }
+
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(
                     destination: GenerateTrainingGoalsView()
@@ -40,11 +49,10 @@ struct TrainingView: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(
-                    destination: AddTrainingGoalView(viewModel.selectedDate)
+                    destination: Text("Coming Soon")
                 ) {
-                    Image(systemName: "plus")
+                    Image(systemName: "gearshape")
                         .fontWeight(.bold)
-                        .padding(.trailing, 8)
                 }
             }
         }
