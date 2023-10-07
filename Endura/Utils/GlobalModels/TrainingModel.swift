@@ -78,6 +78,7 @@ import SwiftUICalendar
 //            currentTime: 22.5 * 60,
 //            completed: false
 //        )
+//        saveEndGoal()
 
 //        var today = getTrainingDay(.current)
 //        today.goals = [TrainingGoalData.run(

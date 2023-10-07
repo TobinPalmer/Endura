@@ -1,7 +1,7 @@
 import Foundation
 import GoogleGenerativeAI
 
-@MainActor public enum TrainingGenerationUtils {
+public enum TrainingGenerationUtils {
     public static func generateTrainingPlanForEndGoal(_ endGoal: TrainingEndGoalData) -> [TrainingGoalData] {
         let startDate = endGoal.startDate
         let endDate = endGoal.date
