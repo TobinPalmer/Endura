@@ -53,7 +53,7 @@ public struct ActivityData: Codable {
 public struct ActivityDataWithRoute: Codable {
     public let uid: String
     public let time: Date
-    public let visibility: ActivityVisibility
+    public var visibility: ActivityVisibility
 
     public let type: TrainingRunType
     public let distance: Double

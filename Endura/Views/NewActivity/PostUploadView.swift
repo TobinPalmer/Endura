@@ -97,6 +97,9 @@ struct PostUploadView: View {
         .task {
             let storage = Storage.storage()
 
+            var activityData = activityData
+            activityData.visibility = activeUser.settings.data.defaultActivityVisibility
+
             do {
                 if let mapRef = mapRef.wrappedValue, let geometryRef = geometryRef.wrappedValue {
                     let image = mapRef.takeScreenshot(
