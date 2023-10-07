@@ -65,11 +65,11 @@ public enum TrainingGoalData: Codable, Hashable, Cacheable {
             case .open:
                 return "Open Run"
             case let .distance(distance):
-                return "\(distance.removeTrailingZeros()) Miles"
+                return "\(FormattingUtils.formatMiles(distance)) Mile Run"
             case let .time(time):
-                return "\(time.removeTrailingZeros()) Minutes"
+                return "\(FormattingUtils.secondsToFormattedTime(time)) Run"
             case let .pacer(distance, time):
-                return "\(distance.removeTrailingZeros()) Miles in \(time.removeTrailingZeros()) Minutes"
+                return "\(FormattingUtils.formatMiles(distance)) Mile Run in \(FormattingUtils.secondsToFormattedTime(time))"
             case let .custom(data):
                 return "Custom Workout"
             }
