@@ -20,7 +20,7 @@ public enum TrainingGenerationUtils {
         return daysWithGoals
     }
 
-    private static func generateWithTrainingAI(_ input: String) async -> String? {
+    public static func generateWithTrainingAI(_ input: String) async -> String? {
         do {
             let response = try await GenerativeLanguage(apiKey: ProcessInfo.processInfo
                 .environment["PALM_API_KEY"]!).generateText(with: input)
