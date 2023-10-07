@@ -38,8 +38,8 @@ struct EnduraWidgetEntryView: View {
             Text("Time:")
             Text(entry.date, style: .time)
 
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+            Text("Distance Type")
+            Text(entry.configuration.distanceType.rawValue)
         }
     }
 }
@@ -52,26 +52,27 @@ struct EnduraWidget: Widget {
             EnduraWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
+        .supportedFamilies([.systemSmall])
     }
 }
 
 private extension ConfigurationAppIntent {
     static var smiley: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
+        intent.distanceType = .mile
         return intent
     }
 
     static var starEyes: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
+        intent.distanceType = .kilo
         return intent
     }
 }
 
-#Preview(as: .systemSmall) {
-    EnduraWidget()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
-}
+// #Preview(as: .systemSmall) {
+//  EnduraWidget()
+// } timeline: {
+//  SimpleEntry(date: .now, configuration: .smiley)
+//  SimpleEntry(date: .now, configuration: .starEyes)
+// }
