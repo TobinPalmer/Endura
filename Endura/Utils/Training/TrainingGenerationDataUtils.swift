@@ -15,20 +15,20 @@ public enum TrainingGenerationDataUtils {
     }
 
     // The output will be like:
-    //   {
-    //       "2021-08-01": {
-    //           "workout": {
-    //               "type": "time",
-    //               "time": 3600
-    //           }
-    //       },
-    //       "2021-08-02": {
-    //           "workout": {
-    //               "type": "distance",
-    //                "distance": 10000
-    //           }
-    //       }
-    //   }
+//       {
+//           "2021-08-01": {
+//               "workout": {
+//                   "type": "time",
+//                   "time": 3600
+//               }
+//           },
+//           "2021-08-02": {
+//               "workout": {
+//                   "type": "distance",
+//                    "distance": 10000
+//               }
+//           }
+//       }
     //
 
     public static func decodeOutputDailyGoals(_ data: Data) -> [YearMonthDay: DailyTrainingData] {

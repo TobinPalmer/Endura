@@ -13,7 +13,9 @@ struct GenerateTrainingGoalsView: View {
             Button {
                 print("Generating training goals")
                 if let endGoal = activeUser.training.endTrainingGoal {
-                    print(TrainingGenerationDataUtils.encodeEndTrainingGoal(endGoal))
+                    if let encodedEndGoal = TrainingGenerationDataUtils.encodeEndTrainingGoal(endGoal) {
+                        print("\(encodedEndGoal)")
+                    }
                 }
             } label: {
                 Text("Generate")
