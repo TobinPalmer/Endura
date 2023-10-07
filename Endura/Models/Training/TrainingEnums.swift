@@ -43,6 +43,10 @@ public enum TrainingDayType: String, Codable {
             return .red
         }
     }
+
+    public static var allCases: [TrainingDayType] {
+        [.none, .rest, .easy, .long, .workout]
+    }
 }
 
 public enum TrainingDayAvailability: String, Codable {

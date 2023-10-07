@@ -53,6 +53,18 @@ struct EditTrainingDayView: View {
                     .font(.title2)
                 let trainingDay = activeUser.training.getTrainingDay(selectedDate)
                 Text("Day: \(trainingDay.type.rawValue)").foregroundColor(trainingDay.type.getColor())
+
+                Picker("Type", selection: Binding(
+                    get: { trainingDay.type },
+                    set: { newValue in
+                        activeUser.training.updateTrainingDayType(selectedDate, newValue)
+                    }
+                )) {
+                    ForEach(TrainingDayType.allCases, id: \.self) { type in
+                        Text(type.rawValue).tag(type)
+                    }
+                }
+
                 if trainingDay.goals.isEmpty {
                     Text("No goals for this day")
                 } else {

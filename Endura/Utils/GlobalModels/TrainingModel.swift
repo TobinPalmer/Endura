@@ -212,6 +212,16 @@ import SwiftUICalendar
         monthlyTrainingData[date.getYearMonth()] = monthTrainingData
     }
 
+    public func updateTrainingDay(_ date: YearMonthDay, _ data: DailyTrainingData) {
+        setTrainingDay(date, data)
+    }
+
+    public func updateTrainingDayType(_ date: YearMonthDay, _ type: TrainingDayType) {
+        var trainingDay = getTrainingDay(date)
+        trainingDay.type = type
+        setTrainingDay(date, trainingDay)
+    }
+
     public func updateTrainingGoal(_ date: YearMonthDay, _ goal: TrainingGoalData) {
         var trainingDay = getTrainingDay(date)
         if let index = trainingDay.goals.firstIndex(where: { $0.getUUID() == goal.getUUID() }) {
