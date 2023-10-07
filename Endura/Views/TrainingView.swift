@@ -31,7 +31,7 @@ struct TrainingView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(
-                    destination: Text("Coming soon")
+                    destination: GenerateTrainingGoalsView()
                 ) {
                     Image(systemName: "sparkles")
                         .fontWeight(.bold)
