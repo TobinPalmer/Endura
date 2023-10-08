@@ -14,19 +14,23 @@ struct DailySummaryGraph: View {
                     let miles = activeUserModel.training.getTrainingDay(day).summary.getMiles()
                     BarMark(
                         x: .value("Day", day.getShortName()),
-                        y: .value("Miles", miles)
+                        y: .value("Miles", miles),
+                        width: 20
                     )
-                    .foregroundStyle(Color.accentColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .foregroundStyle(
+                        Color.accentColor
+                    )
                     .annotation {
-                        if selectedDay == day && miles > 0 {
-                            Text("\(FormattingUtils.formatMiles(miles)) mi")
-                                .font(.title3)
-                                .frame(height: 20)
-                        } else {
-                            Text("")
-                                .font(.title3)
-                                .frame(height: 20)
+                        VStack {
+                            if selectedDay == day && miles > 0 {
+                                Text("\(FormattingUtils.formatMiles(miles)) mi")
+                                    .fontColor(.secondary)
+                                    .fontWeight(.bold)
+                                    .font(.body)
+                            }
                         }
+                        .frame(height: 20)
                     }
                 }
             }
@@ -51,11 +55,15 @@ struct DailySummaryGraph: View {
                                 .onChanged { value in
                                     let origin = geometry[proxy.plotAreaFrame].origin
                                     if let day = proxy.value(atX: value.location.x - origin.x, as: String.self) {
-                                        selectedDay = WeekDay.day(from: day)
+                                        if selectedDay != WeekDay.day(from: day) {
+                                            selectedDay = WeekDay.day(from: day)
+                                        }
                                     }
                                 }
                                 .onEnded { _ in
-                                    selectedDay = nil
+                                    if selectedDay != nil {
+                                        selectedDay = nil
+                                    }
                                 }
                         )
                 }
