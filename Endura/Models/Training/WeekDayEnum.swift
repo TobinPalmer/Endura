@@ -2,13 +2,13 @@ import Foundation
 import SwiftUICalendar
 
 public enum WeekDay: Int, Codable {
-    case sunday = 0
-    case monday = 1
-    case tuesday = 2
-    case wednesday = 3
-    case thursday = 4
-    case friday = 5
-    case saturday = 6
+    case monday = 0
+    case tuesday = 1
+    case wednesday = 2
+    case thursday = 3
+    case friday = 4
+    case saturday = 5
+    case sunday = 6
 
     public func toYearMonthDay() -> YearMonthDay {
         let calendar = Calendar.current

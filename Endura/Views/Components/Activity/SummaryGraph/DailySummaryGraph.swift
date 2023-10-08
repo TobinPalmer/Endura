@@ -16,15 +16,29 @@ struct DailySummaryGraph: View {
                         x: .value("Day", day.getShortName()),
                         y: .value("Miles", miles)
                     )
-                    .foregroundStyle(selectedDay == day ? .red : .blue)
+                    .foregroundStyle(Color.accentColor)
                     .annotation {
                         if selectedDay == day && miles > 0 {
                             Text("\(ConversionUtils.round(miles)) mi")
                                 .font(.title3)
+                                .frame(height: 20)
                         } else {
                             Text("")
                                 .font(.title3)
+                                .frame(height: 20)
                         }
+                    }
+                }
+            }
+            .chartYAxis(.hidden)
+            .chartXAxis {
+                AxisMarks(values: WeekDay.eachDay().map { day in
+                    day.getShortName()
+                }) { value in
+                    AxisValueLabel {
+                        Text(WeekDay(rawValue: value.index)!.getShortName())
+                            .font(.caption)
+                            .fontColor(.secondary)
                     }
                 }
             }
@@ -47,7 +61,7 @@ struct DailySummaryGraph: View {
             }
         }
         .padding(.horizontal, 10)
-        .padding(.vertical, 20)
+        .padding(.vertical, 10)
         .enduraDefaultBox()
     }
 }

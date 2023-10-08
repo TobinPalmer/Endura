@@ -24,8 +24,9 @@ public extension Date {
 
     func startOfWeek() -> Date {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self)
-        return calendar.date(from: components) ?? self
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear, .weekday], from: self)
+        let sunday = calendar.date(from: components)!
+        return calendar.date(byAdding: .day, value: -5, to: sunday)!
     }
 }
 
