@@ -2,6 +2,11 @@ import Foundation
 import HealthKit
 import SwiftUI
 
+private struct IdentifiableDate: Identifiable, Hashable {
+    let id: UUID
+    let date: Date
+}
+
 @MainActor final class UploadsViewModel: ObservableObject {
     @Published fileprivate final var uploads: [HKWorkout?] = []
     private var offset: Int = 0
@@ -50,6 +55,9 @@ struct NewActivityView: View {
     @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
     @State private var isAuthorized = HealthKitUtils.isAuthorized()
 
+    @State private var selectionMode = false
+    @State private var selectedActivities: Set<HKWorkout> = []
+
     var body: some View {
         if !isAuthorized {
             Text("Please authorize Apple Health to continue.")
@@ -66,9 +74,9 @@ struct NewActivityView: View {
             }) { workout in
                 Calendar.current.startOfDay(for: workout.startDate)
             }
-            let sortedKeys = groupedActivities.keys.sorted(by: >)
+            let sortedDates = groupedActivities.keys.sorted(by: >)
 
-            if sortedKeys.isEmpty {
+            if sortedDates.isEmpty {
                 VStack {
                     ZStack {
                         Image(systemName: "nosign")
@@ -96,10 +104,10 @@ struct NewActivityView: View {
                 }
             }
 
-            List {
-                ForEach(sortedKeys, id: \.self) { key in
-                    Section(header: Text("\(key.formatted(date: .abbreviated, time: .omitted))")) {
-                        ForEach(groupedActivities[key]!, id: \.self) { activity in
+            List(selection: $selectedActivities) {
+                ForEach(sortedDates, id: \.self) { date in
+                    Section(header: Text("\(date.formatted(date: .abbreviated, time: .omitted))")) {
+                        ForEach(groupedActivities[date]!, id: \.self) { activity in
                             NavigationLink(destination: UploadWorkoutView(workout: activity)) {
                                 let workoutType = activity.workoutActivityType.name
                                 let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0)
@@ -116,8 +124,26 @@ struct NewActivityView: View {
                                             .font(.title2)
                                     }
                                 }
+                                .frame(height: 30)
+                                .selectionDisabled(ActivityUtils.isActivityUploaded(activity))
+                                .tag(activity)
                             }
-                            .frame(height: 30)
+                        }
+                    }
+                }
+            }
+            .onChange(of: selectedActivities) { _ in
+                if !selectionMode {
+                    self.selectedActivities = []
+                }
+            }
+            .environment(\.editMode, .constant(selectionMode ? EditMode.active : EditMode.inactive))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(selectionMode ? "Cancel" : "Select") {
+                        withAnimation {
+                            selectionMode.toggle()
+                            selectedActivities = []
                         }
                     }
                 }
