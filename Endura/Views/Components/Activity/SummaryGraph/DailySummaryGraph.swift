@@ -12,9 +12,6 @@ struct DailySummaryGraph: View {
             Chart {
                 ForEach(WeekDay.eachDay(), id: \.self) { day in
                     let miles = activeUserModel.training.getTrainingDay(day).summary.getMiles()
-                    if day == .sunday {
-                        let _ = print("\n\n\(miles)")
-                    }
                     BarMark(
                         x: .value("Day", day.getShortName()),
                         y: .value("Miles", miles)
@@ -34,17 +31,18 @@ struct DailySummaryGraph: View {
                 }
             }
             .chartYAxis(.hidden)
-            //                .chartXAxis {
-            //                AxisMarks(values: WeekDay.eachDay().map { day in
-            //                    day.getShortName()
-            //                }) { value in
-            //                    AxisValueLabel {
-            //                        Text(WeekDay(rawValue: value.index)!.getShortName())
-            //                            .font(.caption)
-            //                            .fontColor(.secondary)
-            //                    }
-            //                }
-            //                }
+            .chartXAxis {
+                AxisMarks(values: WeekDay.eachDay().map { day in
+                    day.getShortName()
+                }) { value in
+                    AxisValueLabel {
+                        Text(WeekDay(rawValue: value.index)!.getShortName())
+                            .font(.caption)
+                            .fontColor(.secondary)
+                            .padding(.top, 6)
+                    }
+                }
+            }
             .chartOverlay { proxy in
                 GeometryReader { geometry in
                     Rectangle().fill(.clear).contentShape(Rectangle())

@@ -12,7 +12,10 @@ public enum WeekDay: Int, Codable {
 
     public func toYearMonthDay() -> YearMonthDay {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
+        let components = calendar.dateComponents(
+            [.yearForWeekOfYear, .weekOfYear],
+            from: calendar.date(byAdding: .day, value: -1, to: Date())!
+        )
         let date = calendar.date(from: components) ?? Date()
         let day = calendar.date(byAdding: .day, value: rawValue + 1, to: date) ?? Date()
         let dayComponents = calendar.dateComponents([.year, .month, .day], from: day)
