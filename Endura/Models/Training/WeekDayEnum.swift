@@ -14,7 +14,7 @@ public enum WeekDay: Int, Codable {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
         let date = calendar.date(from: components) ?? Date()
-        let day = calendar.date(byAdding: .day, value: rawValue, to: date) ?? Date()
+        let day = calendar.date(byAdding: .day, value: rawValue + 1, to: date) ?? Date()
         let dayComponents = calendar.dateComponents([.year, .month, .day], from: day)
         return YearMonthDay(
             year: dayComponents.year ?? 0,

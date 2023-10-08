@@ -12,6 +12,9 @@ struct DailySummaryGraph: View {
             Chart {
                 ForEach(WeekDay.eachDay(), id: \.self) { day in
                     let miles = activeUserModel.training.getTrainingDay(day).summary.getMiles()
+                    if day == .sunday {
+                        let _ = print("\n\n\(miles)")
+                    }
                     BarMark(
                         x: .value("Day", day.getShortName()),
                         y: .value("Miles", miles)
@@ -19,7 +22,7 @@ struct DailySummaryGraph: View {
                     .foregroundStyle(Color.accentColor)
                     .annotation {
                         if selectedDay == day && miles > 0 {
-                            Text("\(ConversionUtils.round(miles)) mi")
+                            Text("\(FormattingUtils.formatMiles(miles)) mi")
                                 .font(.title3)
                                 .frame(height: 20)
                         } else {
@@ -31,17 +34,17 @@ struct DailySummaryGraph: View {
                 }
             }
             .chartYAxis(.hidden)
-            .chartXAxis {
-                AxisMarks(values: WeekDay.eachDay().map { day in
-                    day.getShortName()
-                }) { value in
-                    AxisValueLabel {
-                        Text(WeekDay(rawValue: value.index)!.getShortName())
-                            .font(.caption)
-                            .fontColor(.secondary)
-                    }
-                }
-            }
+            //                .chartXAxis {
+            //                AxisMarks(values: WeekDay.eachDay().map { day in
+            //                    day.getShortName()
+            //                }) { value in
+            //                    AxisValueLabel {
+            //                        Text(WeekDay(rawValue: value.index)!.getShortName())
+            //                            .font(.caption)
+            //                            .fontColor(.secondary)
+            //                    }
+            //                }
+            //                }
             .chartOverlay { proxy in
                 GeometryReader { geometry in
                     Rectangle().fill(.clear).contentShape(Rectangle())
