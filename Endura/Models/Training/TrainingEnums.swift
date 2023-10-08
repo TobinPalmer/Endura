@@ -51,6 +51,5 @@ public enum TrainingDayType: String, Codable {
 
 public enum TrainingDayAvailability: String, Codable {
     case busy = "Busy"
-    case maybe = "Maybe"
     case free = "Free"
 }

@@ -49,9 +49,9 @@ struct TrainingView: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(
-                    destination: Text("Coming Soon")
+                    destination: TrainingSettingsView()
                 ) {
-                    Image(systemName: "gearshape")
+                    Image(systemName: "slider.horizontal.3")
                         .fontWeight(.bold)
                 }
             }

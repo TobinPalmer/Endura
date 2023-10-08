@@ -75,7 +75,6 @@ struct SettingsView: View {
                         ) {
                             let options = VStack {
                                 Text("Busy").tag(TrainingDayAvailability.busy)
-                                Text("Maybe").tag(TrainingDayAvailability.maybe)
                                 Text("Free").tag(TrainingDayAvailability.free)
                             }
 

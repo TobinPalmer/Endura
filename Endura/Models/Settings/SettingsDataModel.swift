@@ -68,4 +68,14 @@ public struct NotificationsSettingsDataModel: Codable {
     public var postRunReminder: Bool
 }
 
-public struct TrainingSettingsDataModel: Codable {}
+public struct TrainingSettingsDataModel: Codable {
+    public var dayAvailabilities: [Int: Bool] = [
+        0: true,
+        1: true,
+        2: true,
+        3: true,
+        4: true,
+        5: true,
+        6: true,
+    ]
+}
