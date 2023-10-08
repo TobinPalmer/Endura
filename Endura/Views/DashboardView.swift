@@ -17,39 +17,24 @@ struct DashboardView: View {
 
             ScrollView {
                 VStack(spacing: 20) {
-                    TabView {
-                        PageWidgetView {
-                            Text("Hello, World!")
-                        }
-                        PageWidgetView {
-                            DailySummaryGraph()
-                        }
-                        PageWidgetView {
-                            Text("???")
-                        }
-                    }
-                    .frame(height: 250)
-                    .tabViewStyle(.page)
-                    .indexViewStyle(.page(backgroundDisplayMode: .interactive))
-
-//                    HStack(spacing: 10) {
-//                        VStack {
-//                            GoalRing(.distance)
-//                                .frame(maxHeight: 70)
+//                    TabView {
+//                        PageWidgetView {
+//                            Text("Hello, World!")
 //                        }
-//                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
-//                            .background(.red)
-//                            .cornerRadius(8)
-//
-//                        VStack {
-//                            GoalRing(.distance)
-//                                .frame(maxHeight: 70)
+//                        PageWidgetView {
+//                            DailySummaryGraph()
 //                        }
-//                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
-//                            .background(.orange)
-//                            .cornerRadius(8)
+//                        PageWidgetView {
+//                            Text("???")
+//                        }
 //                    }
-//                        .frame(minWidth: 0, maxWidth: .infinity)
+//                    .frame(height: 250)
+//                    .tabViewStyle(.page)
+//                    .indexViewStyle(.page(backgroundDisplayMode: .interactive))
+
+                    DailySummaryGraph()
+                        .frame(height: 200)
+
                     TrainingGoalList()
                 }
                 .enduraPadding()
