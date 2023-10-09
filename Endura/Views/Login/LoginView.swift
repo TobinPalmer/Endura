@@ -50,9 +50,9 @@ struct LoginView: View {
                     if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
                         let _ = userDefaults.set(Int.random(in: 1 ... 100), forKey: "test")
                         let _ = print(userDefaults.string(forKey: "test")!)
-                    }
 
-                    let _ = WidgetCenter.shared.reloadAllTimelines()
+                        let _ = WidgetCenter.shared.reloadAllTimelines()
+                    }
                 }
                 .buttonStyle(.borderedProminent)
 
