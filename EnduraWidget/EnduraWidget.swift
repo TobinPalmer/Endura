@@ -35,6 +35,7 @@ struct EnduraWidgetEntryView: View {
             Text("Time:")
             if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
                 Text(userDefaults.string(forKey: "test") ?? "NIL")
+                Text(userDefaults.string(forKey: "dailyDistance-1") ?? "DAY NIL")
             }
 
             Text("Distance Type")

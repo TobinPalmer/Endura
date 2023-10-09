@@ -1,6 +1,7 @@
 import FirebaseFirestore
 import Foundation
 import SwiftUICalendar
+import WidgetKit
 
 @MainActor public final class TrainingModel: ObservableObject {
     private var saveTrainingWork: DispatchWorkItem?
@@ -16,6 +17,7 @@ import SwiftUICalendar
                     predicate: CacheUtils.predicateMatchingField("date", value: date.toCache())
                 )
             }
+            updateWidgetData()
             saveTrainingWork?.cancel()
             saveTrainingWork = DispatchWorkItem {
                 for (month, _) in self.monthlyTrainingData {
@@ -250,5 +252,17 @@ import SwiftUICalendar
         monthlyTrainingData[date.getYearMonth()]?.totalDuration += activity.duration
 
         saveTrainingMonth(date.getYearMonth())
+    }
+
+    private func updateWidgetData() {
+        if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
+            for day in WeekDay.eachDay() {
+                let data = getTrainingDay(day.toYearMonthDay())
+
+                userDefaults.set(data.summary.distance, forKey: "dailyDistance-\(day.rawValue)")
+            }
+
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 }
