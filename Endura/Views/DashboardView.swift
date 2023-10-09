@@ -15,8 +15,22 @@ struct DashboardView: View {
             Color("Background")
                 .ignoresSafeArea()
 
+            VStack {
+                Color.accentColor
+                    .ignoresSafeArea()
+                    .frame(height: 200)
+                Spacer()
+            }
+
             ScrollView {
                 VStack(spacing: 20) {
+                    Text("\(FormattingUtils.fullFormattedDay(.current))")
+                        .alignFullWidth()
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 6)
+
                     DailySummaryGraph()
                         .frame(height: 200)
 
@@ -24,19 +38,27 @@ struct DashboardView: View {
                 }
                 .enduraPadding()
             }
-            .navigationBarTitle(FormattingUtils.fullFormattedDay(.current))
+            .toolbarBackground(Color.accentColor)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: NotificationsView()) {
-                        Image(systemName: "bell")
-                            .overlay(
-                                NotificationCountView(value: $notificationsModel.unreadCount)
-                            )
+                ToolbarItem(placement: .navigationBarLeading) {
+                    UserProfileLink(AuthUtils.getCurrentUID()) {
+                        HStack {
+                            ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                            Text("Hi, \(activeUserModel.data.name)")
+                                .font(.body)
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                        }
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    UserProfileLink(AuthUtils.getCurrentUID()) {
-                        ProfileImage(AuthUtils.getCurrentUID(), size: 30)
+                    NavigationLink(destination: NotificationsView()) {
+                        Image(systemName: "bell")
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .overlay(
+                                NotificationCountView(value: $notificationsModel.unreadCount)
+                            )
                     }
                 }
             }
