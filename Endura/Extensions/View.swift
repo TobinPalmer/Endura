@@ -52,11 +52,11 @@ public extension View {
     func fontColor(_ fontColor: EnduraFontColor = .primary) -> some View {
         switch fontColor {
         case .primary:
-            foregroundColor(Color("Text"))
+            return foregroundColor(Color("Text"))
         case .secondary:
-            foregroundColor(Color("TextSecondary"))
+            return foregroundColor(Color("TextSecondary"))
         case .muted:
-            foregroundColor(Color("TextMuted"))
+            return foregroundColor(Color("TextMuted"))
         }
     }
 }

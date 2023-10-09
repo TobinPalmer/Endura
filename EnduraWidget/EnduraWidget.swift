@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 import WidgetKit
 
@@ -13,7 +14,6 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in _: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
@@ -36,7 +36,9 @@ struct EnduraWidgetEntryView: View {
     var body: some View {
         VStack {
             Text("Time:")
-            Text(entry.date, style: .time)
+            if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
+                Text(userDefaults.string(forKey: "test") ?? "NIL")
+            }
 
             Text("Distance Type")
             Text(entry.configuration.distanceType.rawValue)
@@ -70,9 +72,9 @@ private extension ConfigurationAppIntent {
     }
 }
 
-// #Preview(as: .systemSmall) {
-//  EnduraWidget()
-// } timeline: {
-//  SimpleEntry(date: .now, configuration: .smiley)
-//  SimpleEntry(date: .now, configuration: .starEyes)
-// }
+#Preview(as: .systemSmall) {
+    EnduraWidget()
+} timeline: {
+    SimpleEntry(date: .now, configuration: .smiley)
+    SimpleEntry(date: .now, configuration: .starEyes)
+}

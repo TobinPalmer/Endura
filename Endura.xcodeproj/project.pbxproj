@@ -27,6 +27,7 @@
 		026042F82A62E36300F4AF88 /* FirebaseMLModelDownloader in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F72A62E36300F4AF88 /* FirebaseMLModelDownloader */; };
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
 		0267A8072A92CC3D0090E032 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 0267A8062A92CC3D0090E032 /* Inject */; };
+		02A23F932AD2093B00672284 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A23F922AD2093B00672284 /* AppGroup.swift */; };
 		02C6C3F32AAAAB290079B76B /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F22AAAAB290079B76B /* AlertKit */; };
 		02C6C3F62AAAB1DB0079B76B /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */; };
 		02E09A662ACD18C200681FE6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E09A652ACD18C200681FE6 /* WidgetKit.framework */; };
@@ -225,7 +226,9 @@
 		026042D72A62E27C00F4AF88 /* EnduraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITests.swift; sourceTree = "<group>"; };
 		026042D92A62E27C00F4AF88 /* EnduraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		026D06352A7B2A3200A91958 /* Endura.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Endura.entitlements; sourceTree = "<group>"; };
+		02A23F922AD2093B00672284 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		02BC053E2A903125007CB32C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		02BF59C12AD34E8800F0AF99 /* EnduraWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EnduraWidgetExtension.entitlements; sourceTree = "<group>"; };
 		02E09A632ACD18C200681FE6 /* EnduraWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = EnduraWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		02E09A652ACD18C200681FE6 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		02E09A672ACD18C200681FE6 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -439,6 +442,7 @@
 		026042B02A62E27900F4AF88 = {
 			isa = PBXGroup;
 			children = (
+				02BF59C12AD34E8800F0AF99 /* EnduraWidgetExtension.entitlements */,
 				026042BB2A62E27900F4AF88 /* Endura */,
 				026042CC2A62E27C00F4AF88 /* EnduraTests */,
 				026042D62A62E27C00F4AF88 /* EnduraUITests */,
@@ -529,6 +533,7 @@
 				02E09A702ACD18C200681FE6 /* AppIntent.swift */,
 				02E09A722ACD18C300681FE6 /* Assets.xcassets */,
 				02E09A742ACD18C300681FE6 /* Info.plist */,
+				02A23F922AD2093B00672284 /* AppGroup.swift */,
 			);
 			path = EnduraWidget;
 			sourceTree = "<group>";
@@ -1256,6 +1261,7 @@
 				69698F967DFA9D0303BE96FF /* MKCoordinateRegion.swift in Sources */,
 				6969878A3056F1B2A488E450 /* CLLocation.swift in Sources */,
 				696986BD803239CC2C5AE22A /* HKWorkoutActivityType.swift in Sources */,
+				02A23F932AD2093B00672284 /* AppGroup.swift in Sources */,
 				696986CC55DFA43BF6A1D9B1 /* WorkoutErrors.swift in Sources */,
 				696983D815E023C30549A7BB /* HealthKitErrors.swift in Sources */,
 				17CC6F4B78384077758D0334 /* Conversion.swift in Sources */,
@@ -1692,6 +1698,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = EnduraWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 879YJUG243;
@@ -1719,6 +1726,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = EnduraWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 879YJUG243;
