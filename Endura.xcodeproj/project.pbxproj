@@ -166,6 +166,8 @@
 		69698FAA873BB6E235CB0685 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696984C1906C8DA101564F11 /* DashboardView.swift */; };
 		E90CACFD2AB3B55200DC3CF6 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = E90CACFC2AB3B55200DC3CF6 /* RiveRuntime */; };
 		E92549A92AA03AE900776856 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = E92549A82AA03AE900776856 /* CachedAsyncImage */; };
+		E93814192AD3A7F100E162ED /* WeekDayEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6A9B8DA59441836A95B4 /* WeekDayEnum.swift */; };
+		E938141B2AD3A8ED00E162ED /* SwiftUICalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E938141A2AD3A8ED00E162ED /* SwiftUICalendar */; };
 		E9535FD92AA953D400D19B86 /* DataCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9535FD72AA953D400D19B86 /* DataCache.xcdatamodeld */; };
 		E95B67622A7B07F800E12DDC /* ActivityMapImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95B67612A7B07F800E12DDC /* ActivityMapImage.swift */; };
 		E98AFF032AA65664002DB211 /* SwiftUICalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E98AFF022AA65664002DB211 /* SwiftUICalendar */; };
@@ -415,6 +417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02E09A682ACD18C200681FE6 /* SwiftUI.framework in Frameworks */,
+				E938141B2AD3A8ED00E162ED /* SwiftUICalendar in Frameworks */,
 				02E09A662ACD18C200681FE6 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1138,6 +1141,9 @@
 			dependencies = (
 			);
 			name = EnduraWidgetExtension;
+			packageProductDependencies = (
+				E938141A2AD3A8ED00E162ED /* SwiftUICalendar */,
+			);
 			productName = EnduraWidgetExtension;
 			productReference = 02E09A632ACD18C200681FE6 /* EnduraWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1399,6 +1405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02E09A6B2ACD18C200681FE6 /* EnduraWidgetBundle.swift in Sources */,
+				E93814192AD3A7F100E162ED /* WeekDayEnum.swift in Sources */,
 				02E09A712ACD18C200681FE6 /* AppIntent.swift in Sources */,
 				02E09A6F2ACD18C200681FE6 /* EnduraWidget.swift in Sources */,
 				02E09A6D2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift in Sources */,
@@ -1962,6 +1969,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E92549A72AA03AE900776856 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
 			productName = CachedAsyncImage;
+		};
+		E938141A2AD3A8ED00E162ED /* SwiftUICalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E98AFF012AA65664002DB211 /* XCRemoteSwiftPackageReference "SwiftUICalendar" */;
+			productName = SwiftUICalendar;
 		};
 		E98AFF022AA65664002DB211 /* SwiftUICalendar */ = {
 			isa = XCSwiftPackageProductDependency;

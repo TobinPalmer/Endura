@@ -35,11 +35,14 @@ struct EnduraWidgetEntryView: View {
             Text("Time:")
             if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
                 Text(userDefaults.string(forKey: "test") ?? "NIL")
-                Text(userDefaults.string(forKey: "dailyDistance-1") ?? "DAY NIL")
+
+                ForEach(WeekDay.eachDay(), id: \.self) { day in
+                    Text(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "DAY NIL")
+                }
             }
 
             Text("Distance Type")
-            Text(entry.configuration.distanceType.rawValue)
+//            Text(entry.configuration.distanceType.rawValue)
         }
     }
 }
