@@ -28,6 +28,10 @@
 		026042FA2A62E36300F4AF88 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 026042F92A62E36300F4AF88 /* FirebaseStorage */; };
 		0267A8072A92CC3D0090E032 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 0267A8062A92CC3D0090E032 /* Inject */; };
 		02A23F932AD2093B00672284 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A23F922AD2093B00672284 /* AppGroup.swift */; };
+		02BF59C22AD3AC1100F0AF99 /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC68FD129A61DF48BD0D4F /* Formatting.swift */; };
+		02BF59C32AD3ACE100F0AF99 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC647C809BFAC3C20DA478 /* Date.swift */; };
+		02BF59C42AD3AD9600F0AF99 /* Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FAD8A0AC457723ACD1F /* Conversion.swift */; };
+		02BF59C52AD3AF2A00F0AF99 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969819A8C4285A3E148D771 /* Double.swift */; };
 		02C6C3F32AAAAB290079B76B /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F22AAAAB290079B76B /* AlertKit */; };
 		02C6C3F62AAAB1DB0079B76B /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 02C6C3F52AAAB1DB0079B76B /* SwiftyBeaver */; };
 		02E09A662ACD18C200681FE6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E09A652ACD18C200681FE6 /* WidgetKit.framework */; };
@@ -1404,10 +1408,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02BF59C22AD3AC1100F0AF99 /* Formatting.swift in Sources */,
+				02BF59C42AD3AD9600F0AF99 /* Conversion.swift in Sources */,
 				02E09A6B2ACD18C200681FE6 /* EnduraWidgetBundle.swift in Sources */,
+				02BF59C32AD3ACE100F0AF99 /* Date.swift in Sources */,
 				E93814192AD3A7F100E162ED /* WeekDayEnum.swift in Sources */,
 				02E09A712ACD18C200681FE6 /* AppIntent.swift in Sources */,
 				02E09A6F2ACD18C200681FE6 /* EnduraWidget.swift in Sources */,
+				02BF59C52AD3AF2A00F0AF99 /* Double.swift in Sources */,
 				02E09A6D2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

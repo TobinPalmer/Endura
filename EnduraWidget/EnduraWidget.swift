@@ -1,3 +1,4 @@
+import Charts
 import Foundation
 import SwiftUI
 import WidgetKit
@@ -32,17 +33,70 @@ struct EnduraWidgetEntryView: View {
 
     var body: some View {
         VStack {
-            Text("Time:")
             if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
-                Text(userDefaults.string(forKey: "test") ?? "NIL")
-
-                ForEach(WeekDay.eachDay(), id: \.self) { day in
-                    Text(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "DAY NIL")
+                VStack {
+                    Chart {
+                        ForEach(WeekDay.eachDay(), id: \.self) { day in
+                            let miles = Double(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "")
+                            BarMark(
+                                x: .value("Day", day.getShortName()),
+                                y: .value("Miles", miles ?? 0.0),
+                                width: 20
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                            .foregroundStyle(
+                                Color.accentColor
+                            )
+                            .annotation {
+                                VStack {
+//                    if selectedDay == day && miles > 0 {
+//                      Text("\(FormattingUtils.formatMiles(miles)) mi")
+//                        .fontColor(.secondary)
+//                        .fontWeight(.bold)
+//                        .font(.body)
+//                    }
+                                }
+                                .frame(height: 20)
+                            }
+                        }
+                    }
+                    .chartYAxis(.hidden)
+                    .chartXAxis {
+                        AxisMarks(values: WeekDay.eachDay().map { day in
+                            day.getShortName()
+                        }) { value in
+                            AxisValueLabel {
+                                Text(WeekDay(rawValue: value.index)!.getShortName())
+                                    .font(.caption)
+                            }
+                        }
+                    }
+//            .chartOverlay { proxy in
+//              GeometryReader { geometry in
+//                Rectangle().fill(.clear).contentShape(Rectangle())
+//                  .gesture(
+//                    DragGesture(minimumDistance: 0)
+                    ////                      .onChanged { value in
+                    ////                        let origin = geometry[proxy.plotAreaFrame].origin
+                    ////                        if let day = proxy.value(atX: value.location.x - origin.x, as:
+                    // String.self) {
+                    ////                          if selectedDay != WeekDay.day(from: day) {
+                    ////                            selectedDay = WeekDay.day(from: day)
+                    ////                          }
+                    ////                        }
+                    ////                      }
+                    ////                      .onEnded { _ in
+                    ////                        if selectedDay != nil {
+                    ////                          selectedDay = nil
+                    ////                        }
+                    ////                      }
+//                  )
+//              }
+//            }
                 }
+            } else {
+                Text("Error")
             }
-
-            Text("Distance Type")
-//            Text(entry.configuration.distanceType.rawValue)
         }
     }
 }
@@ -55,7 +109,7 @@ struct EnduraWidget: Widget {
             EnduraWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
-        .supportedFamilies([.systemSmall])
+        .supportedFamilies([.systemMedium])
     }
 }
 
