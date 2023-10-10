@@ -19,9 +19,12 @@ struct TrainingGoalList: View {
         VStack {
             let trainingDay = activeUser.training.getTrainingDay(selectedDate)
             HStack {
-                Text("\(FormattingUtils.dateToFormattedDay(selectedDate))")
-                    .font(.title)
-                ColoredBadge(trainingDay.type)
+                VStack {
+                    Text("\(FormattingUtils.dateToFormattedDay(selectedDate))")
+                        .font(.title)
+                        .fontColor(.primary)
+                        .fontWeight(.bold)
+                }
                 Spacer()
                 Button(action: {
                     editSheet = true
@@ -29,9 +32,16 @@ struct TrainingGoalList: View {
                     Text("Edit")
                 }
             }
-            Text("Day: \(trainingDay.type.rawValue)").foregroundColor(trainingDay.type.getColor())
+            ColoredBadge(trainingDay.type)
+                .alignFullWidth()
+                .padding(.top, -10)
+                .padding(.bottom, 10)
             if trainingDay.goals.isEmpty {
                 Text("No goals for \(isToday ? "today" : "this day")")
+                    .font(.body)
+                    .fontColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
             } else {
                 VStack {
                     ForEach(trainingDay.goals, id: \.self) { goal in
