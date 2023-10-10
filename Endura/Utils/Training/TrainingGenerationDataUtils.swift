@@ -14,6 +14,37 @@ public enum TrainingGenerationDataUtils {
         return nil
     }
 
+    public static func encodeTrainingPlan(_ monthlyData: [YearMonth: MonthlyTrainingData]) -> String? {
+        let encodedMonthlyData = monthlyData.map { key, value in
+            [key.toCache(): MonthlyTrainingDataDocument(value)]
+        }
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(encodedMonthlyData)
+            return String(data: data, encoding: .utf8)
+        } catch {
+            Global.log.error("Error encoding training plan: \(error)")
+        }
+        return nil
+    }
+
+    public static func decodeTrainingPlan(_ data: String) -> [YearMonth: MonthlyTrainingData] {
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let decodedData = try decoder.decode([MonthlyTrainingDataDocument].self, from: data.data(using: .utf8)!)
+            print("Decoded data: \(decodedData)")
+//            return decodedData.reduce(into: [:]) { dict, data in
+//                dict[YearMonth.fromCache(data.key)] = data.value.toMonthlyTrainingData()
+//            }
+//            return [:]
+        } catch {
+            Global.log.error("Error decoding training plan: \(error)")
+        }
+        return [:]
+    }
+
     // The output will be like:
 //       {
 //           "2021-08-01": {

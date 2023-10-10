@@ -39,7 +39,7 @@ public struct DailyTrainingData: Cacheable {
 }
 
 public struct DailyTrainingDataDocument: Codable {
-    public var date: Date
+    public var date: String
     public var type: TrainingDayType
     public var goals: [TrainingGoalData]
     public var summary: DailySummaryData?
@@ -91,12 +91,28 @@ public struct MonthlyTrainingDataDocument: Codable {
         totalDuration = data.totalDuration
         days = data.days.reduce(into: [:]) { dict, day in
             dict[day.key.toCache()] = DailyTrainingDataDocument(
-                date: day.value.date.getDate(),
+                date: day.value.date.toCache(),
                 type: day.value.type,
                 goals: day.value.goals,
                 summary: day.value.summary
             )
         }
+    }
+
+    public func toMonthlyTrainingData() -> MonthlyTrainingData {
+        MonthlyTrainingData(
+            date: YearMonth.fromCache(days.first!.key),
+            totalDistance: totalDistance,
+            totalDuration: totalDuration,
+            days: days.reduce(into: [:]) { dict, day in
+                dict[YearMonthDay.fromCache(day.key)] = DailyTrainingData(
+                    date: YearMonthDay.fromCache(day.value.date),
+                    type: day.value.type,
+                    goals: day.value.goals,
+                    summary: day.value.summary ?? .init(distance: 0, duration: 0, activities: 0)
+                )
+            }
+        )
     }
 }
 
