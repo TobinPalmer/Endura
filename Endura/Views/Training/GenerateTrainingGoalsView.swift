@@ -18,7 +18,17 @@ struct GenerateTrainingGoalsView: View {
                     if let encodedEndGoal = TrainingGenerationDataUtils
                         .encodeTrainingPlan(activeUser.training.monthlyTrainingData)
                     {
-                        print("\n\n\n\(encodedEndGoal)\n\n\n")
+                        let printText = "\n\n\n\(encodedEndGoal)\n\n\n".replacing(
+                            ",",
+                            with: ",\n"
+                        ).replacing(
+                            "{",
+                            with: "{\n"
+                        ).replacing(
+                            "}",
+                            with: "\n}"
+                        )
+                        print("\(printText)")
 //                        let decodedGoal = TrainingGenerationDataUtils.decodeTrainingPlan(encodedEndGoal)
 //                        print("\n\n\n\(decodedGoal)\n\n\n")
 //                        Task {
