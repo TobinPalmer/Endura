@@ -3,11 +3,23 @@ import SwiftUI
 import SwiftUICalendar
 import WorkoutKit
 
-public struct RunningTrainingGoalData: Codable, Hashable {
+public struct TrainingGoalProgressData: Codable, Hashable {
+    public var completed: Bool
+    public var activity: String?
+}
+
+public struct TrainingRoutineGoalData: Codable, Hashable {
+    public var type: RoutineType
+    public var difficulty: RoutineDifficulty
+    public var progress: TrainingGoalProgressData = .init(completed: false, activity: nil)
+}
+
+public struct TrainingRunGoalData: Hashable {
     public var uuid: String? = UUID().uuidString
-    public var date: Date
-    public var type: TrainingRunType = .none
+    public var date: YearMonthDay
+    public var preRoutine: TrainingRoutineGoalData?
     public var workout: WorkoutGoalData = .distance(distance: 0)
+    public var postRoutine: TrainingRoutineGoalData?
     public var progress: TrainingGoalProgressData = .init(completed: false, activity: nil)
 
     public func getDistance() -> Double {
@@ -24,164 +36,79 @@ public struct RunningTrainingGoalData: Codable, Hashable {
             return data.getDistance()
         }
     }
-}
-
-public struct RoutineTrainingGoalData: Codable, Hashable {
-    public var uuid: String? = UUID().uuidString
-    public var date: Date
-    public var type: RoutineType
-    public var difficulty: RoutineDifficulty
-    public var time: Double
-    public var count: Int
-    public var progress: TrainingGoalProgressData = .init(completed: false, activity: nil)
-}
-
-public struct TrainingGoalProgressData: Codable, Hashable {
-    public var completed: Bool
-    public var activity: String?
-}
-
-public enum TrainingGoalData: Codable, Hashable, Cacheable {
-    case run(
-        data: RunningTrainingGoalData
-    )
-    case routine(
-        data: RoutineTrainingGoalData
-    )
-
-    public func getUUID() -> String {
-        switch self {
-        case let .run(data):
-            return data.uuid!
-        case let .routine(data):
-            return data.uuid!
-        }
-    }
 
     public func getTitle() -> String {
-        switch self {
-        case let .run(data):
-            switch data.workout {
-            case .open:
-                return "Open Run"
-            case let .distance(distance):
-                return "\(FormattingUtils.formatMiles(distance)) Mile Run"
-            case let .time(time):
-                return "\(FormattingUtils.secondsToFormattedTime(time)) Run"
-            case let .pacer(distance, time):
-                return "\(FormattingUtils.formatMiles(distance)) Mile Run in \(FormattingUtils.secondsToFormattedTime(time))"
-            case let .custom(data):
-                return "Custom Workout"
-            }
-        case let .routine(data):
-            return data.type.rawValue
+        switch workout {
+        case .open:
+            return "Open Run"
+        case let .distance(distance):
+            return "\(FormattingUtils.formatMiles(distance)) Mile Run"
+        case let .time(time):
+            return "\(FormattingUtils.secondsToFormattedTime(time)) Run"
+        case let .pacer(distance, time):
+            return "\(FormattingUtils.formatMiles(distance)) Mile Run in \(FormattingUtils.secondsToFormattedTime(time))"
+        case let .custom(data):
+            return "Custom Workout"
         }
-    }
-
-    public func getIcon() -> String {
-        switch self {
-        case .run:
-            return "figure.run"
-        case let .routine(data):
-            switch data.type {
-            case .warmup:
-                return "figure.cooldown"
-            case .postrun:
-                return "figure.strengthtraining.functional"
-            }
-        }
-    }
-
-    public func getColor() -> Color {
-        switch self {
-        case .run:
-            return .blue
-        case let .routine(data):
-            switch data.type {
-            case .warmup:
-                return .green
-            case .postrun:
-                return .red
-            }
-        }
-    }
-
-    public func getBackgroundColor() -> Color {
-        getColor().opacity(0.2)
     }
 
     func updateCache(_ cache: TrainingGoalCache) {
-        switch self {
-        case let .run(data):
-            cache.date = data.date
-            cache.goalType = "run"
-            cache.type = data.type.rawValue
-            switch data.workout {
-            case .open:
-                cache.workoutType = "open"
-            case let .distance(distance):
-                cache.workoutType = "distance"
-                cache.distance = distance
-            case let .time(time):
-                cache.workoutType = "time"
-                cache.time = time
-            case let .pacer(distance, time):
-                cache.workoutType = "pacer"
-                cache.distance = distance
-                cache.time = time
-            case let .custom(data):
-                cache.workoutType = "custom"
-            }
-            cache.progressCompleted = data.progress.completed
-            cache.progressActivity = data.progress.activity
-        case let .routine(data):
-            cache.date = data.date
-            cache.goalType = "routine"
-            cache.type = data.type.rawValue
-            cache.difficulty = data.difficulty.rawValue
-            cache.time = data.time
-            cache.count = Int16(data.count)
-            cache.progressCompleted = data.progress.completed
-            cache.progressActivity = data.progress.activity
+        cache.date = date.toCache()
+        cache.goalType = "run"
+        switch workout {
+        case .open:
+            cache.workoutType = "open"
+        case let .distance(distance):
+            cache.workoutType = "distance"
+            cache.distance = distance
+        case let .time(time):
+            cache.workoutType = "time"
+            cache.time = time
+        case let .pacer(distance, time):
+            cache.workoutType = "pacer"
+            cache.distance = distance
+            cache.time = time
+        case let .custom(data):
+            cache.workoutType = "custom"
         }
+        cache.progressCompleted = progress.completed
+        cache.progressActivity = progress.activity
     }
 
     static func fromCache(_ cache: TrainingGoalCache) -> Self {
-        switch cache.goalType {
-        case "run":
-            return .run(
-                data: RunningTrainingGoalData(
-                    date: cache.date ?? Date(),
-                    type: TrainingRunType(rawValue: cache.type ?? "none") ?? .none,
-                    workout: WorkoutGoalData.fromCache(cache),
-                    progress: TrainingGoalProgressData(
-                        completed: cache.progressCompleted ?? false,
-                        activity: cache.progressActivity
-                    )
-                )
+        TrainingRunGoalData(
+            date: YearMonthDay.fromCache(cache.date ?? ""),
+            workout: WorkoutGoalData.fromCache(cache),
+            progress: TrainingGoalProgressData(
+                completed: cache.progressCompleted,
+                activity: cache.progressActivity
             )
-        case "routine":
-            return .routine(
-                data: RoutineTrainingGoalData(
-                    date: cache.date ?? Date(),
-                    type: RoutineType(rawValue: cache.type ?? "none") ?? .postrun,
-                    difficulty: RoutineDifficulty(rawValue: cache.difficulty ?? "none") ?? .medium,
-                    time: cache.time,
-                    count: Int(cache.count),
-                    progress: TrainingGoalProgressData(
-                        completed: cache.progressCompleted ?? false,
-                        activity: cache.progressActivity
-                    )
-                )
-            )
-        default:
-            return .run(
-                data: RunningTrainingGoalData(
-                    date: Date(),
-                    type: .none,
-                    workout: .distance(distance: 0)
-                )
-            )
-        }
+        )
+    }
+}
+
+public struct TrainingRunGoalDataDocument: Codable, Hashable {
+    public var date: String
+    public var preRoutine: TrainingRoutineGoalData?
+    public var workout: WorkoutGoalData
+    public var postRoutine: TrainingRoutineGoalData?
+    public var progress: TrainingGoalProgressData?
+
+    init(_ data: TrainingRunGoalData) {
+        date = data.date.toCache()
+        preRoutine = data.preRoutine
+        workout = data.workout
+        postRoutine = data.postRoutine
+        progress = data.progress
+    }
+
+    public func toTrainingRunGoalData() -> TrainingRunGoalData {
+        TrainingRunGoalData(
+            date: YearMonthDay.fromCache(date),
+            preRoutine: preRoutine,
+            workout: workout,
+            postRoutine: postRoutine,
+            progress: progress ?? .init(completed: false, activity: nil)
+        )
     }
 }

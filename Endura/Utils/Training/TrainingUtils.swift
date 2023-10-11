@@ -30,7 +30,9 @@ public enum TrainingUtils {
                 dailyTrainingData[YearMonthDay.fromCache(day)] = DailyTrainingData(
                     date: YearMonthDay.fromCache(day),
                     type: dailyData.type,
-                    goals: dailyData.goals,
+                    goals: dailyData.goals.map { goal in
+                        goal.toTrainingRunGoalData()
+                    },
                     summary: dailyData.summary ?? DailySummaryData(distance: 0, duration: 0, activities: 0)
                 )
             }
@@ -48,22 +50,10 @@ public enum TrainingUtils {
     }
 
     public static func updateTrainingGoals(
-        _ goals: [TrainingGoalData],
+        _ goals: [TrainingRunGoalData],
         _: ActivityDataWithRoute
-    ) -> [TrainingGoalData] {
+    ) -> [TrainingRunGoalData] {
         let updatedGoals = goals
-        for goal in updatedGoals {
-            switch goal {
-            case var .run(data):
-//                if activity.distance >= data.distance - trainingDistanceTolerance, !data.progress.completed {
-//                    data.progress.completed = true
-//                    print("Run goal completed: \(data.distance)")
-//                }
-                break
-            case .routine:
-                break
-            }
-        }
         return updatedGoals
     }
 }

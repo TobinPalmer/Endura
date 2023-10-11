@@ -5,10 +5,10 @@ import SwiftUICalendar
 struct EditTrainingGoalLink<Label: View>: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     @State private var showEditGoal = false
-    var goal: TrainingGoalData
+    var goal: TrainingRunGoalData
     private var content: () -> Label
 
-    init(goal: TrainingGoalData, @ViewBuilder content: @escaping () -> Label) {
+    init(goal: TrainingRunGoalData, @ViewBuilder content: @escaping () -> Label) {
         self.goal = goal
         self.content = content
     }
@@ -22,12 +22,7 @@ struct EditTrainingGoalLink<Label: View>: View {
         .sheet(isPresented: $showEditGoal) {
             NavigationView {
                 VStack {
-                    switch goal {
-                    case let .routine(data):
-                        EditRoutineTrainingGoalView(goal: data)
-                    case let .run(data):
-                        EditRunningTrainingGoalView(goal: data)
-                    }
+                    EditRunningTrainingGoalView(goal: goal)
                 }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
@@ -76,18 +71,8 @@ struct EditTrainingDayView: View {
                 } else {
                     List {
                         ForEach(trainingDay.goals, id: \.self) { goal in
-                            switch goal {
-                            case let .routine(data):
-                                NavigationLink(destination: EditRoutineTrainingGoalView(goal: data)) {
-                                    TrainingGoal(goal)
-                                }
-                            case let .run(data):
-//                                NavigationLink(destination: EditRunningTrainingGoalView(goal: data)) {
-//                                    TrainingGoal(goal)
-//                                }
-                                EditTrainingGoalLink(goal: goal) {
-                                    TrainingGoal(goal)
-                                }
+                            EditTrainingGoalLink(goal: goal) {
+                                TrainingGoal(goal)
                             }
                         }
                     }

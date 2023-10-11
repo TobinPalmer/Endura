@@ -19,34 +19,32 @@ struct AddTrainingGoalView: View {
                 Text("Add Routine Goal")
             }
             NavigationLink(destination: VStack {
-                let date = selectedDate.getDate()
-
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
-                    date: date,
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
+                    date: selectedDate,
                     workout: .open
                 ))) {
                     Text("Open Workout")
                 }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
-                    date: date,
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
+                    date: selectedDate,
                     workout: .distance(distance: 0)
                 ))) {
                     Text("Distance Workout")
                 }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
-                    date: date,
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
+                    date: selectedDate,
                     workout: .time(time: 0)
                 ))) {
                     Text("Time Workout")
                 }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
-                    date: date,
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
+                    date: selectedDate,
                     workout: .pacer(distance: 0, time: 0)
                 ))) {
                     Text("Pacer Workout")
                 }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: RunningTrainingGoalData(
-                    date: date,
+                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
+                    date: selectedDate,
                     workout: .custom(data: CustomWorkoutData())
                 ))) {
                     Text("Custom Workout")
@@ -61,7 +59,7 @@ struct AddTrainingGoalView: View {
 
 struct AddOpenRunGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
-    @State var goal: RunningTrainingGoalData
+    @State var goal: TrainingRunGoalData
 
     var body: some View {
         VStack {
@@ -73,7 +71,7 @@ struct AddOpenRunGoalView: View {
 
 struct AddDistanceRunGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
-    @State var goal: RunningTrainingGoalData
+    @State var goal: TrainingRunGoalData
 
     var body: some View {
         VStack {

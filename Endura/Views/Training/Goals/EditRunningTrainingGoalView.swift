@@ -4,7 +4,7 @@ import SwiftUICalendar
 
 struct EditRunningTrainingGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
-    @State var goal: RunningTrainingGoalData
+    @State var goal: TrainingRunGoalData
 
     var body: some View {
         ZStack {
@@ -42,8 +42,8 @@ struct EditRunningTrainingGoalView: View {
             .enduraPadding()
             .onChange(of: goal) { _, newValue in
                 activeUser.training.updateTrainingGoal(
-                    goal.date.toYearMonthDay(),
-                    TrainingGoalData.run(data: newValue)
+                    goal.date,
+                    newValue
                 )
             }
         }

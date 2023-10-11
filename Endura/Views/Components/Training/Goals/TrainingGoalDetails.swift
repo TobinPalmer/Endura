@@ -4,7 +4,7 @@ import SwiftUI
 import WorkoutKit
 
 private final class TrainingGoalDetailsModel: ObservableObject {
-    func generateRunningWorkout(_: RunningTrainingGoalData) async {
+    func generateRunningWorkout(_: TrainingRunGoalData) async {
         await WorkoutScheduler.shared.requestAuthorization()
         print("Supported: \(WorkoutScheduler.isSupported)")
         print("Authorized: \(await WorkoutScheduler.shared.authorizationState)")
@@ -48,9 +48,9 @@ private final class TrainingGoalDetailsModel: ObservableObject {
 
 struct TrainingGoalDetails: View {
     @ObservedObject private var viewModel = TrainingGoalDetailsModel()
-    private let goal: TrainingGoalData
+    private let goal: TrainingRunGoalData
 
-    public init(_ goal: TrainingGoalData) {
+    public init(_ goal: TrainingRunGoalData) {
         self.goal = goal
     }
 
@@ -60,30 +60,25 @@ struct TrainingGoalDetails: View {
                 .ignoresSafeArea()
 
             VStack {
-                switch goal {
-                case .routine:
-                    Text("Coming Soon")
-                case let .run(data):
 //                Text("Distance: \(data.distance.removeTrailingZeros()) Miles")
 //                Text("Time: \(data.time.removeTrailingZeros()) Minutes")
 
-                    if data.progress.completed {
-                        Text("Completed")
-                    } else {
-                        Text("Not Completed")
+                if goal.progress.completed {
+                    Text("Completed")
+                } else {
+                    Text("Not Completed")
+                }
+
+                if #available(iOS 17.0, *) {
+                    Button("Authorize Workouts") {
+                        Task {
+                            await WorkoutScheduler.shared.requestAuthorization()
+                        }
                     }
 
-                    if #available(iOS 17.0, *) {
-                        Button("Authorize Workouts") {
-                            Task {
-                                await WorkoutScheduler.shared.requestAuthorization()
-                            }
-                        }
-
-                        Button("Add Workout to Watch") {
-                            Task {
-                                await viewModel.generateRunningWorkout(data)
-                            }
+                    Button("Add Workout to Watch") {
+                        Task {
+                            await viewModel.generateRunningWorkout(goal)
                         }
                     }
                 }

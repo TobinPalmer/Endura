@@ -2,7 +2,7 @@ import Foundation
 import GoogleGenerativeAI
 
 public enum TrainingGenerationUtils {
-    public static func generateTrainingPlanForEndGoal(_ endGoal: TrainingEndGoalData) -> [TrainingGoalData] {
+    public static func generateTrainingPlanForEndGoal(_ endGoal: TrainingEndGoalData) -> [TrainingRunGoalData] {
         let startDate = endGoal.startDate
         let endDate = endGoal.date
         let daysBetween = Calendar.current.dateComponents([.day], from: startDate.getDate(), to: endDate.getDate()).day!
@@ -10,11 +10,9 @@ public enum TrainingGenerationUtils {
             Calendar.current.date(byAdding: .day, value: day, to: startDate.getDate())!
         }
         let daysWithGoals = days.map { _ in
-            TrainingGoalData.run(
-                data: RunningTrainingGoalData(
-                    date: Date(),
-                    workout: .time(time: endGoal.time)
-                )
+            TrainingRunGoalData(
+                date: .current,
+                workout: .time(time: endGoal.time)
             )
         }
         return daysWithGoals

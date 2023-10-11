@@ -2,19 +2,19 @@ import Foundation
 import SwiftUI
 
 struct TrainingGoal: View {
-    private let goal: TrainingGoalData
+    private let goal: TrainingRunGoalData
 
-    public init(_ goal: TrainingGoalData) {
+    public init(_ goal: TrainingRunGoalData) {
         self.goal = goal
     }
 
     var body: some View {
         NavigationLink(destination: TrainingGoalDetails(goal)) {
             HStack(alignment: .top, spacing: 10) {
-                Image(systemName: goal.getIcon())
-                    .font(.title)
-                    .foregroundColor(goal.getColor())
-                    .fontWeight(.bold)
+//                Image(systemName: goal.getIcon())
+//                .font(.title)
+//                .foregroundColor(goal.getColor())
+//                .fontWeight(.bold)
 
                 VStack(alignment: .leading) {
                     Text(goal.getTitle())

@@ -224,9 +224,9 @@ import WidgetKit
         setTrainingDay(date, trainingDay)
     }
 
-    public func updateTrainingGoal(_ date: YearMonthDay, _ goal: TrainingGoalData) {
+    public func updateTrainingGoal(_ date: YearMonthDay, _ goal: TrainingRunGoalData) {
         var trainingDay = getTrainingDay(date)
-        if let index = trainingDay.goals.firstIndex(where: { $0.getUUID() == goal.getUUID() }) {
+        if let index = trainingDay.goals.firstIndex(where: { $0.uuid == goal.uuid }) {
             trainingDay.goals[index] = goal
         } else {
             trainingDay.goals.append(goal)

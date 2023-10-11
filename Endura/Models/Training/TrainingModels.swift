@@ -5,7 +5,8 @@ import SwiftUICalendar
 public struct DailyTrainingData: Cacheable {
     public var date: YearMonthDay
     public var type: TrainingDayType
-    public var goals: [TrainingGoalData] = []
+    public var description: String = ""
+    public var goals: [TrainingRunGoalData] = []
     public var summary: DailySummaryData = .init(distance: 0, duration: 70, activities: 0)
 
     func updateCache(_ cache: DailyTrainingCache) {
@@ -27,7 +28,7 @@ public struct DailyTrainingData: Cacheable {
             date: YearMonthDay.fromCache(cache.date ?? ""),
             type: TrainingDayType(rawValue: cache.type ?? "none") ?? .none,
             goals: cache.goals?.map { goal in
-                TrainingGoalData.fromCache(goal as! TrainingGoalCache)
+                TrainingRunGoalData.fromCache(goal as! TrainingGoalCache)
             } ?? [],
             summary: DailySummaryData(
                 distance: cache.summaryDistance,
@@ -41,7 +42,7 @@ public struct DailyTrainingData: Cacheable {
 public struct DailyTrainingDataDocument: Codable {
     public var date: String
     public var type: TrainingDayType
-    public var goals: [TrainingGoalData]
+    public var goals: [TrainingRunGoalDataDocument]
     public var summary: DailySummaryData?
 }
 
@@ -93,7 +94,9 @@ public struct MonthlyTrainingDataDocument: Codable {
             dict[day.key.toCache()] = DailyTrainingDataDocument(
                 date: day.value.date.toCache(),
                 type: day.value.type,
-                goals: day.value.goals,
+                goals: day.value.goals.map { goal in
+                    TrainingRunGoalDataDocument(goal)
+                },
                 summary: day.value.summary
             )
         }
@@ -108,7 +111,9 @@ public struct MonthlyTrainingDataDocument: Codable {
                 dict[YearMonthDay.fromCache(day.key)] = DailyTrainingData(
                     date: YearMonthDay.fromCache(day.value.date),
                     type: day.value.type,
-                    goals: day.value.goals,
+                    goals: day.value.goals.map { goal in
+                        goal.toTrainingRunGoalData()
+                    },
                     summary: day.value.summary ?? .init(distance: 0, duration: 0, activities: 0)
                 )
             }
