@@ -36,7 +36,7 @@ import SwiftUICalendar
         initPublishedUpdates()
     }
 
-    private func initPublishedUpdates() {
+    @MainActor private func initPublishedUpdates() {
         anyCancellable = settings.objectWillChange.sink { [weak self] _ in
             self?.objectWillChange.send()
         }

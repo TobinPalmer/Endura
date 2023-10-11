@@ -28,71 +28,95 @@ struct SimpleEntry: TimelineEntry {
     let configuration: ConfigurationAppIntent
 }
 
-struct EnduraWidgetEntryView: View {
-    var entry: Provider.Entry
+final class EnduraWidgetEntryViewModel: ObservableObject {
+    fileprivate var userDefaults: UserDefaults? {
+        UserDefaults(suiteName: "group.com.endurapp.EnduraApp")
+    }
 
-    var body: some View {
+    @Published var totalDistance: Double = 0.0
+    @Published var weeklyGoal: Double = 0.0
+
+    init() {
+        var distance = 0.0
+        if let userDefaults = userDefaults {
+            for day in WeekDay.eachDay() {
+                let miles = Double(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "")
+                distance += miles ?? 0.0
+            }
+        }
+
+        totalDistance = distance
+
+        // TODO: Get this from the the userDefaults
+        weeklyGoal = 10000
+    }
+}
+
+struct EnduraWidgetEntryView: View {
+    public var entry: Provider.Entry
+    private let viewModel = EnduraWidgetEntryViewModel()
+
+    public var body: some View {
         VStack {
-            if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
-                VStack {
-                    Chart {
-                        ForEach(WeekDay.eachDay(), id: \.self) { day in
-                            let miles = Double(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "")
-                            BarMark(
-                                x: .value("Day", day.getShortName()),
-                                y: .value("Miles", miles ?? 0.0),
-                                width: 20
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
-                            .foregroundStyle(
-                                Color.accentColor
-                            )
-                            .annotation {
-                                VStack {
-//                    if selectedDay == day && miles > 0 {
-//                      Text("\(FormattingUtils.formatMiles(miles)) mi")
-//                        .fontColor(.secondary)
-//                        .fontWeight(.bold)
-//                        .font(.body)
-//                    }
+            if let userDefaults = viewModel.userDefaults {
+                HStack {
+                    VStack {
+                        ZStack {
+                            let progressRingSize = 100
+
+                            Circle()
+                                .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
+                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+                                .foregroundColor(.red)
+
+                            Circle()
+                                .trim(from: 0, to: CGFloat(viewModel.totalDistance / viewModel.weeklyGoal))
+                                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+                                .rotationEffect(.degrees(-90))
+
+                            VStack {
+//                Text("Total Distance:")
+//                  .font(.caption)
+//                  .fontWeight(.bold)
+//                  .foregroundColor(.secondary)
+
+                                Text(
+                                    "\(FormattingUtils.formatMiles(ConversionUtils.metersToMiles(viewModel.totalDistance))) mi"
+                                )
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.primary)
+                            }
+                        }
+                    }
+                    VStack {
+                        Chart {
+                            ForEach(WeekDay.eachDay(), id: \.self) { day in
+                                let miles = Double(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "")
+                                BarMark(
+                                    x: .value("Day", day.getShortName()),
+                                    y: .value("Miles", miles ?? 0.0),
+                                    width: 20
+                                )
+                                .clipShape(RoundedRectangle(cornerRadius: 4))
+                                .foregroundStyle(
+                                    Color.accentColor
+                                )
+                            }
+                        }
+                        .chartYAxis(.hidden)
+                        .chartXAxis {
+                            AxisMarks(values: WeekDay.eachDay().map { day in
+                                day.getShortName()
+                            }) { value in
+                                AxisValueLabel {
+                                    Text(WeekDay(rawValue: value.index)!.getShortName())
+                                        .font(.caption)
                                 }
-                                .frame(height: 20)
                             }
                         }
                     }
-                    .chartYAxis(.hidden)
-                    .chartXAxis {
-                        AxisMarks(values: WeekDay.eachDay().map { day in
-                            day.getShortName()
-                        }) { value in
-                            AxisValueLabel {
-                                Text(WeekDay(rawValue: value.index)!.getShortName())
-                                    .font(.caption)
-                            }
-                        }
-                    }
-//            .chartOverlay { proxy in
-//              GeometryReader { geometry in
-//                Rectangle().fill(.clear).contentShape(Rectangle())
-//                  .gesture(
-//                    DragGesture(minimumDistance: 0)
-                    ////                      .onChanged { value in
-                    ////                        let origin = geometry[proxy.plotAreaFrame].origin
-                    ////                        if let day = proxy.value(atX: value.location.x - origin.x, as:
-                    // String.self) {
-                    ////                          if selectedDay != WeekDay.day(from: day) {
-                    ////                            selectedDay = WeekDay.day(from: day)
-                    ////                          }
-                    ////                        }
-                    ////                      }
-                    ////                      .onEnded { _ in
-                    ////                        if selectedDay != nil {
-                    ////                          selectedDay = nil
-                    ////                        }
-                    ////                      }
-//                  )
-//              }
-//            }
                 }
             } else {
                 Text("Error")
