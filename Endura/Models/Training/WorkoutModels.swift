@@ -18,6 +18,14 @@ public enum WorkoutGoalData: Codable, Hashable {
         data: CustomWorkoutData
     )
 
+    public static let allCases: [WorkoutGoalData] = [
+        .open,
+        .distance(distance: 0),
+        .time(time: 0),
+        .pacer(distance: 0, time: 0),
+        .custom(data: CustomWorkoutData()),
+    ]
+
     public func getWorkoutPlan() -> WorkoutPlan {
         switch self {
         case .open:
@@ -38,6 +46,51 @@ public enum WorkoutGoalData: Codable, Hashable {
                 displayName: data.name,
                 blocks: data.getBlocks()
             )))
+        }
+    }
+
+    public func getWorkoutIcon() -> String {
+        switch self {
+        case .open:
+            return "questionmark.circle"
+        case .distance:
+            return "figure.walk"
+        case .time:
+            return "clock"
+        case .pacer:
+            return "figure.walk"
+        case .custom:
+            return "figure.walk"
+        }
+    }
+
+    public func getWorkoutName() -> String {
+        switch self {
+        case .open:
+            return "Open Run"
+        case .distance:
+            return "Distance Run"
+        case .time:
+            return "Timed Run"
+        case .pacer:
+            return "Pacer Run"
+        case .custom:
+            return "Custom Workout"
+        }
+    }
+
+    public func getWorkoutDescription() -> String {
+        switch self {
+        case .open:
+            return "An open workout, run whatever you want!"
+        case .distance:
+            return "A workout where you run a certain distance, regardless of time."
+        case .time:
+            return "A workout where you run for a certain amount of time, regardless of distance."
+        case .pacer:
+            return "A workout where you run a certain distance at a certain pace for a certain amount of time."
+        case .custom:
+            return "A workout where you run a custom workout, with custom intervals."
         }
     }
 }

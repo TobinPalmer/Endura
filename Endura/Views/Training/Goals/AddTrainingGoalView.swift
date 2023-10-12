@@ -11,72 +11,66 @@ struct AddTrainingGoalView: View {
     }
 
     var body: some View {
-        VStack {
+        ScrollView {
             Text("Add Training Goal")
                 .font(.title)
+                .fontWeight(.bold)
+                .fontColor(.primary)
                 .padding()
-            NavigationLink(destination: Text("Coming Soon")) {
-                Text("Add Routine Goal")
+            Text("Select a type of goal to add.")
+                .font(.title2)
+                .fontColor(.secondary)
+                .padding()
+
+            VStack {
+                ForEach(WorkoutGoalData.allCases, id: \.self) { goal in
+                    NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
+                        date: selectedDate,
+                        workout: goal
+                    ))) {
+                        AddTrainingGoalTypeCard(
+                            icon: goal.getWorkoutIcon(),
+                            title: goal.getWorkoutName(),
+                            description: goal.getWorkoutDescription()
+                        )
+                    }
+                }
             }
-            NavigationLink(destination: VStack {
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
-                    date: selectedDate,
-                    workout: .open
-                ))) {
-                    Text("Open Workout")
-                }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
-                    date: selectedDate,
-                    workout: .distance(distance: 0)
-                ))) {
-                    Text("Distance Workout")
-                }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
-                    date: selectedDate,
-                    workout: .time(time: 0)
-                ))) {
-                    Text("Time Workout")
-                }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
-                    date: selectedDate,
-                    workout: .pacer(distance: 0, time: 0)
-                ))) {
-                    Text("Pacer Workout")
-                }
-                NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
-                    date: selectedDate,
-                    workout: .custom(data: CustomWorkoutData())
-                ))) {
-                    Text("Custom Workout")
-                }
-            }) {
-                Text("Add Running Goal")
-            }
-            Spacer()
         }
     }
 }
 
-struct AddOpenRunGoalView: View {
-    @EnvironmentObject private var activeUser: ActiveUserModel
-    @State var goal: TrainingRunGoalData
+struct AddTrainingGoalTypeCard: View {
+    private let icon: String
+    private let title: String
+    private let description: String
 
-    var body: some View {
-        VStack {
-            Text("Open Workout")
-            Spacer()
-        }
+    public init(icon: String, title: String, description: String) {
+        self.title = title
+        self.description = description
+        self.icon = icon
     }
-}
-
-struct AddDistanceRunGoalView: View {
-    @EnvironmentObject private var activeUser: ActiveUserModel
-    @State var goal: TrainingRunGoalData
 
     var body: some View {
-        VStack {
-            Text("Distance Workout")
-            Spacer()
+        HStack {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(.primary)
+                .fontWeight(.bold)
+            VStack {
+                Text(title)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .fontColor(.primary)
+                    .padding()
+                Text(description)
+                    .font(.body)
+                    .fontColor(.secondary)
+                    .padding()
+            }
         }
+        .alignFullWidth()
+        .padding(26)
+        .enduraDefaultBox()
     }
 }
