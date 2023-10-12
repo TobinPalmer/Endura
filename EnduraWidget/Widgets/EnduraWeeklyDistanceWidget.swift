@@ -72,7 +72,9 @@ public struct EnduraWeeklyDistanceWidget: Widget {
     public init() {}
 
     public var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: EnduraWeeklyDistanceIntent.self, provider: Provider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: EnduraWeeklyDistanceIntent.self,
+                               provider: WidgetProvider())
+        { entry in
             EnduraWeeklyDistanceWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
@@ -81,7 +83,7 @@ public struct EnduraWeeklyDistanceWidget: Widget {
 }
 
 struct EnduraWeeklyDistanceWidgetView: View {
-    public var entry: Provider.Entry
+    public var entry: WidgetProvider.Entry
     private let viewModel = EnduraWidgetEntryViewModel()
 
     public var body: some View {
