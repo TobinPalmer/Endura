@@ -44,6 +44,39 @@ public struct DailyTrainingDataDocument: Codable {
     public var type: TrainingDayType
     public var goals: [TrainingRunGoalDataDocument]
     public var summary: DailySummaryData?
+
+    init(_ data: DailyTrainingData) {
+        date = data.date.toCache()
+        type = data.type
+        goals = data.goals.map { goal in
+            TrainingRunGoalDataDocument(goal)
+        }
+        summary = data.summary
+    }
+
+    public func toJSON() -> String {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        do {
+            let data = try encoder.encode(self)
+            return String(data: data, encoding: .utf8)!
+        } catch {
+            print(error)
+            return ""
+        }
+    }
+
+    public static func fromJSON(_ json: String) -> DailyTrainingDataDocument? {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        do {
+            let data = json.data(using: .utf8)!
+            return try decoder.decode(DailyTrainingDataDocument.self, from: data)
+        } catch {
+            print(error)
+            return nil
+        }
+    }
 }
 
 public struct MonthlyTrainingData: Cacheable, Equatable {
@@ -91,14 +124,7 @@ public struct MonthlyTrainingDataDocument: Codable {
         totalDistance = data.totalDistance
         totalDuration = data.totalDuration
         days = data.days.reduce(into: [:]) { dict, day in
-            dict[day.key.toCache()] = DailyTrainingDataDocument(
-                date: day.value.date.toCache(),
-                type: day.value.type,
-                goals: day.value.goals.map { goal in
-                    TrainingRunGoalDataDocument(goal)
-                },
-                summary: day.value.summary
-            )
+            dict[day.key.toCache()] = DailyTrainingDataDocument(day.value)
         }
     }
 

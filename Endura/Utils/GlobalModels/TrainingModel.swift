@@ -262,6 +262,11 @@ import WidgetKit
                 userDefaults.set(data.summary.distance, forKey: "dailyDistance-\(day.rawValue)")
             }
 
+            userDefaults.set(
+                DailyTrainingDataDocument(getTrainingDay(.current)).toJSON(),
+                forKey: "currentDailyData"
+            )
+
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
