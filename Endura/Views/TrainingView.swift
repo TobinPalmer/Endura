@@ -22,7 +22,20 @@ struct TrainingView: View {
                     NavigationLink(
                         destination: AddTrainingGoalView(viewModel.selectedDate)
                     ) {
-                        Text("Add")
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color("TextMuted"), style: StrokeStyle(lineWidth: 2, dash: [5]))
+                                .frame(height: 50)
+                            HStack {
+                                Image(systemName: "plus")
+                                    .fontWeight(.bold)
+                                    .fontColor(.muted)
+
+                                Text("Add Goal")
+                                    .fontWeight(.bold)
+                                    .fontColor(.muted)
+                            }
+                        }
                     }
                 }
                 .padding(26)
