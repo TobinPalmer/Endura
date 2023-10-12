@@ -5,6 +5,6 @@ import WidgetKit
 struct EnduraWidgetBundle: WidgetBundle {
     var body: some Widget {
         EnduraWidget()
-        EnduraWidgetLiveActivity()
+        EnduraWidget2()
     }
 }

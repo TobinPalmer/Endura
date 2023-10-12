@@ -142,12 +142,33 @@ struct EnduraWidgetEntryView: View {
     }
 }
 
+struct EnduraWidgetEntryView2: View {
+    public var entry: Provider.Entry
+    private let viewModel = EnduraWidgetEntryViewModel()
+
+    public var body: some View {
+        Text("HI widget 2")
+    }
+}
+
 struct EnduraWidget: Widget {
-    let kind: String = "EnduraWidget"
+    let kind: String = "EnduraWidget2s"
 
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             EnduraWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+        .supportedFamilies([.systemMedium])
+    }
+}
+
+struct EnduraWidget2: Widget {
+    let kind: String = "EnduraWidget"
+
+    var body: some WidgetConfiguration {
+        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
+            EnduraWidgetEntryView2(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .supportedFamilies([.systemMedium])

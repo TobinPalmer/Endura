@@ -37,7 +37,6 @@
 		02E09A662ACD18C200681FE6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E09A652ACD18C200681FE6 /* WidgetKit.framework */; };
 		02E09A682ACD18C200681FE6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E09A672ACD18C200681FE6 /* SwiftUI.framework */; };
 		02E09A6B2ACD18C200681FE6 /* EnduraWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A6A2ACD18C200681FE6 /* EnduraWidgetBundle.swift */; };
-		02E09A6D2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A6C2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift */; };
 		02E09A6F2ACD18C200681FE6 /* EnduraWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A6E2ACD18C200681FE6 /* EnduraWidget.swift */; };
 		02E09A712ACD18C200681FE6 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E09A702ACD18C200681FE6 /* AppIntent.swift */; };
 		02E09A732ACD18C300681FE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02E09A722ACD18C300681FE6 /* Assets.xcassets */; };
@@ -247,7 +246,6 @@
 		02E09A652ACD18C200681FE6 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		02E09A672ACD18C200681FE6 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		02E09A6A2ACD18C200681FE6 /* EnduraWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraWidgetBundle.swift; sourceTree = "<group>"; };
-		02E09A6C2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraWidgetLiveActivity.swift; sourceTree = "<group>"; };
 		02E09A6E2ACD18C200681FE6 /* EnduraWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnduraWidget.swift; sourceTree = "<group>"; };
 		02E09A702ACD18C200681FE6 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		02E09A722ACD18C300681FE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -545,7 +543,6 @@
 			isa = PBXGroup;
 			children = (
 				02E09A6A2ACD18C200681FE6 /* EnduraWidgetBundle.swift */,
-				02E09A6C2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift */,
 				02E09A6E2ACD18C200681FE6 /* EnduraWidget.swift */,
 				02E09A702ACD18C200681FE6 /* AppIntent.swift */,
 				02E09A722ACD18C300681FE6 /* Assets.xcassets */,
@@ -1436,7 +1433,6 @@
 				02BF59C52AD3AF2A00F0AF99 /* Double.swift in Sources */,
 				E9303B8B2AD781130077BCC7 /* SummaryModels.swift in Sources */,
 				E9303B8A2AD780FB0077BCC7 /* TrainingDocumentModels.swift in Sources */,
-				02E09A6D2ACD18C200681FE6 /* EnduraWidgetLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
