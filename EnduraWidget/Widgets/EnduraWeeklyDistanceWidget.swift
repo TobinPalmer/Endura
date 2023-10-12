@@ -1,49 +1,25 @@
+import AppIntents
 import Charts
 import Foundation
 import SwiftUI
 import SwiftUICalendar
 import WidgetKit
 
-struct Provider: AppIntentTimelineProvider {
-    func placeholder(in _: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
-    }
-
-    func snapshot(for configuration: ConfigurationAppIntent, in _: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
-    }
-
-    func timeline(for configuration: ConfigurationAppIntent, in _: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
-
-        let currentDate = Date()
-
-        entries.append(SimpleEntry(date: currentDate, configuration: configuration))
-
-        return Timeline(entries: entries, policy: .atEnd)
-    }
-}
-
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let configuration: ConfigurationAppIntent
-}
-
-final class EnduraWidgetEntryViewModel: ObservableObject {
+private final class EnduraWidgetEntryViewModel: ObservableObject {
     fileprivate var userDefaults: UserDefaults? {
         UserDefaults(suiteName: "group.com.endurapp.EnduraApp")
     }
 
-    @Published var totalDistance: Double = 0.0
-    @Published var weeklyGoal: Double = 0.0
-    @Published var trainingDay: DailyTrainingDataDocument = .init(
+    @Published fileprivate var totalDistance: Double = 0.0
+    @Published fileprivate var weeklyGoal: Double = 0.0
+    @Published fileprivate var trainingDay: DailyTrainingDataDocument = .init(
         date: YearMonthDay.current.toCache(),
         type: .none,
         goals: [],
         summary: .init(distance: 0, duration: 0, activities: 0)
     )
 
-    init() {
+    fileprivate init() {
         var distance = 0.0
         if let userDefaults = userDefaults {
             if let trainingDayData = DailyTrainingDataDocument
@@ -65,7 +41,46 @@ final class EnduraWidgetEntryViewModel: ObservableObject {
     }
 }
 
-struct EnduraWidgetEntryView: View {
+private enum EnduraWeeklyDistanceWidgetDistanceType: String, CaseIterable, AppEnum {
+    case mile
+    case kilo
+
+    public static var typeDisplayRepresentation: TypeDisplayRepresentation = "Timeframe"
+
+    public static var caseDisplayRepresentations: [EnduraWeeklyDistanceWidgetDistanceType: DisplayRepresentation] = [
+        .mile: "Miles",
+        .kilo: "Kilometers",
+    ]
+}
+
+struct EnduraWeeklyDistanceIntent: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource = "Configuration"
+    static var description = IntentDescription("This is an example widget.")
+
+    @Parameter(title: "Distance", default: .mile)
+    fileprivate var distanceType: EnduraWeeklyDistanceWidgetDistanceType
+}
+
+public struct SimpleEntry: TimelineEntry {
+    public let date: Date
+    let configuration: EnduraWeeklyDistanceIntent
+}
+
+public struct EnduraWeeklyDistanceWidget: Widget {
+    let kind: String = "EnduraDistanceWidget"
+
+    public init() {}
+
+    public var body: some WidgetConfiguration {
+        AppIntentConfiguration(kind: kind, intent: EnduraWeeklyDistanceIntent.self, provider: Provider()) { entry in
+            EnduraWeeklyDistanceWidgetView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+        .supportedFamilies([.systemMedium])
+    }
+}
+
+struct EnduraWeeklyDistanceWidgetView: View {
     public var entry: Provider.Entry
     private let viewModel = EnduraWidgetEntryViewModel()
 
@@ -140,58 +155,4 @@ struct EnduraWidgetEntryView: View {
             }
         }
     }
-}
-
-struct EnduraWidgetEntryView2: View {
-    public var entry: Provider.Entry
-    private let viewModel = EnduraWidgetEntryViewModel()
-
-    public var body: some View {
-        Text("HI widget 2")
-    }
-}
-
-struct EnduraWidget: Widget {
-    let kind: String = "EnduraWidget2s"
-
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            EnduraWidgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
-        }
-        .supportedFamilies([.systemMedium])
-    }
-}
-
-struct EnduraWidget2: Widget {
-    let kind: String = "EnduraWidget"
-
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            EnduraWidgetEntryView2(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
-        }
-        .supportedFamilies([.systemMedium])
-    }
-}
-
-private extension ConfigurationAppIntent {
-    static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.distanceType = .mile
-        return intent
-    }
-
-    static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.distanceType = .kilo
-        return intent
-    }
-}
-
-#Preview(as: .systemSmall) {
-    EnduraWidget()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
 }
