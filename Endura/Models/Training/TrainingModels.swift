@@ -37,45 +37,16 @@ public struct DailyTrainingData: Cacheable {
             )
         )
     }
-}
 
-public struct DailyTrainingDataDocument: Codable {
-    public var date: String
-    public var type: TrainingDayType
-    public var goals: [TrainingRunGoalDataDocument]
-    public var summary: DailySummaryData?
-
-    init(_ data: DailyTrainingData) {
-        date = data.date.toCache()
-        type = data.type
-        goals = data.goals.map { goal in
-            TrainingRunGoalDataDocument(goal)
-        }
-        summary = data.summary
-    }
-
-    public func toJSON() -> String {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        do {
-            let data = try encoder.encode(self)
-            return String(data: data, encoding: .utf8)!
-        } catch {
-            print(error)
-            return ""
-        }
-    }
-
-    public static func fromJSON(_ json: String) -> DailyTrainingDataDocument? {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        do {
-            let data = json.data(using: .utf8)!
-            return try decoder.decode(DailyTrainingDataDocument.self, from: data)
-        } catch {
-            print(error)
-            return nil
-        }
+    public func getDocument() -> DailyTrainingDataDocument {
+        DailyTrainingDataDocument(
+            date: date.toCache(),
+            type: type,
+            goals: goals.map { goal in
+                TrainingRunGoalDataDocument(goal)
+            },
+            summary: summary
+        )
     }
 }
 
@@ -124,7 +95,7 @@ public struct MonthlyTrainingDataDocument: Codable {
         totalDistance = data.totalDistance
         totalDuration = data.totalDuration
         days = data.days.reduce(into: [:]) { dict, day in
-            dict[day.key.toCache()] = DailyTrainingDataDocument(day.value)
+            dict[day.key.toCache()] = day.value.getDocument()
         }
     }
 
@@ -150,4 +121,57 @@ public struct MonthlyTrainingDataDocument: Codable {
 public struct RunningSchedule: Codable {
     public var day: Int
     public var type: RunningScheduleType
+}
+
+public extension WorkoutGoalData {
+    static func fromCache(_ cache: TrainingGoalCache) -> WorkoutGoalData {
+        switch cache.workoutType {
+        case "distance":
+            return .distance(distance: cache.distance)
+        case "time":
+            return .time(time: cache.time)
+        case "pacer":
+            return .pacer(distance: cache.distance, time: cache.time)
+        case "custom":
+            return .custom(data: CustomWorkoutData())
+        default:
+            return .open
+        }
+    }
+}
+
+extension TrainingRunGoalData {
+    func updateCache(_ cache: TrainingGoalCache) {
+        cache.date = date.toCache()
+        cache.goalType = "run"
+        switch workout {
+        case .open:
+            cache.workoutType = "open"
+        case let .distance(distance):
+            cache.workoutType = "distance"
+            cache.distance = distance
+        case let .time(time):
+            cache.workoutType = "time"
+            cache.time = time
+        case let .pacer(distance, time):
+            cache.workoutType = "pacer"
+            cache.distance = distance
+            cache.time = time
+        case let .custom(data):
+            cache.workoutType = "custom"
+        }
+        cache.progressCompleted = progress.completed
+        cache.progressActivity = progress.activity
+    }
+
+    static func fromCache(_ cache: TrainingGoalCache) -> Self {
+        TrainingRunGoalData(
+            date: YearMonthDay.fromCache(cache.date ?? ""),
+            workout: WorkoutGoalData.fromCache(cache),
+            progress: TrainingGoalProgressData(
+                completed: cache.progressCompleted,
+                activity: cache.progressActivity
+            )
+        )
+    }
 }

@@ -1,6 +1,7 @@
 import Charts
 import Foundation
 import SwiftUI
+import SwiftUICalendar
 import WidgetKit
 
 struct Provider: AppIntentTimelineProvider {
@@ -35,10 +36,22 @@ final class EnduraWidgetEntryViewModel: ObservableObject {
 
     @Published var totalDistance: Double = 0.0
     @Published var weeklyGoal: Double = 0.0
+    @Published var trainingDay: DailyTrainingDataDocument = .init(
+        date: YearMonthDay.current.toCache(),
+        type: .none,
+        goals: [],
+        summary: .init(distance: 0, duration: 0, activities: 0)
+    )
 
     init() {
         var distance = 0.0
         if let userDefaults = userDefaults {
+            if let trainingDayData = DailyTrainingDataDocument
+                .fromJSON(userDefaults.string(forKey: "trainingDay") ?? "")
+            {
+                trainingDay = trainingDayData
+            }
+
             for day in WeekDay.eachDay() {
                 let miles = Double(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "")
                 distance += miles ?? 0.0
@@ -76,6 +89,10 @@ struct EnduraWidgetEntryView: View {
                                 .rotationEffect(.degrees(-90))
 
                             VStack {
+                                Text("\(viewModel.trainingDay.goals.count)")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.primary)
 //                Text("Total Distance:")
 //                  .font(.caption)
 //                  .fontWeight(.bold)

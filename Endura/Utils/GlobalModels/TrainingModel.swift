@@ -263,8 +263,8 @@ import WidgetKit
             }
 
             userDefaults.set(
-                DailyTrainingDataDocument(getTrainingDay(.current)).toJSON(),
-                forKey: "currentDailyData"
+                getTrainingDay(.current).getDocument().toJSON(),
+                forKey: "trainingDay"
             )
 
             WidgetCenter.shared.reloadAllTimelines()
