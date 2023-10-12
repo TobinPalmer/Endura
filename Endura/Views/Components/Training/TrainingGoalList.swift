@@ -37,11 +37,13 @@ struct TrainingGoalList: View {
                 .padding(.top, -10)
                 .padding(.bottom, 10)
             if trainingDay.goals.isEmpty {
-                Text("No goals for \(isToday ? "today" : "this day")")
+                Text("No goals for \(isToday ? "today" : "this day") yet!")
                     .font(.body)
                     .fontColor(.secondary)
+                    .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
+                    .padding(.vertical, 5)
             } else {
                 VStack {
                     ForEach(trainingDay.goals, id: \.self) { goal in
