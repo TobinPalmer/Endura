@@ -26,6 +26,15 @@ public enum WorkoutGoalData: Codable, Hashable {
         .custom(data: CustomWorkoutData()),
     ]
 
+    public func isCustomWorkout() -> Bool {
+        switch self {
+        case .custom:
+            return true
+        default:
+            return false
+        }
+    }
+
     public func getWorkoutPlan() -> WorkoutPlan {
         switch self {
         case .open:

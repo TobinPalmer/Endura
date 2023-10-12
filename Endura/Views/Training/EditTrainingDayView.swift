@@ -22,7 +22,18 @@ struct EditTrainingGoalLink<Label: View>: View {
         .sheet(isPresented: $showEditGoal) {
             NavigationView {
                 VStack {
-//                        EditTrainingRunWorkout(goal: goal)
+                    EditTrainingRunWorkout(goal: Binding(
+                        get: { goal.workout },
+                        set: { newValue in
+                            activeUser.training.updateTrainingGoal(
+                                goal.date,
+                                TrainingRunGoalData(
+                                    date: goal.date,
+                                    workout: newValue
+                                )
+                            )
+                        }
+                    ))
                 }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
@@ -32,7 +43,7 @@ struct EditTrainingGoalLink<Label: View>: View {
                     }
                 }
             }
-            .presentationDetents([.medium])
+            .presentationDetents(goal.workout.isCustomWorkout() ? [.large, .medium] : [.medium])
         }
     }
 }

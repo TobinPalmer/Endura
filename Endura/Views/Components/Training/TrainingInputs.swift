@@ -111,37 +111,58 @@ struct EditCustomWorkout: View {
         VStack {
             ForEach(data.blocks.indices, id: \.self) { blockIndex in
                 let block = data.blocks[blockIndex]
-                ForEach(block.steps.indices, id: \.self) { stepIndex in
-                    let step = block.steps[stepIndex]
-                    if step.type == .work {
-                        switch step.goal {
-                        case .open:
-                            Text("Open")
-                        case let .distance(distance):
-                            Text("Distance: \(distance)")
-                            DistanceInput(distance: Binding(
-                                get: { distance },
-                                set: { newValue in
-                                    data.blocks[blockIndex].steps[stepIndex].goal = .distance(distance: newValue)
-                                }
-                            ))
-                        case let .time(time):
-                            Text("Time: \(time)")
-                            TimeInput(time: Binding(
-                                get: { time },
-                                set: { newValue in
-                                    data.blocks[blockIndex].steps[stepIndex].goal = .time(time: newValue)
-                                }
-                            ))
+                VStack {
+                    HStack {
+                        Text("Block \(blockIndex + 1)")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+
+                        Spacer()
+
+                        Text("x\(block.iterations)")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+
+                        Button("Delete") {
+                            data.blocks.remove(at: blockIndex)
                         }
-                    } else {
-                        Text("Break")
+                    }
+
+                    ForEach(block.steps.indices, id: \.self) { stepIndex in
+                        let step = block.steps[stepIndex]
+                        if step.type == .work {
+                            switch step.goal {
+                            case .open:
+                                Text("Open")
+                            case let .distance(distance):
+                                Text("Distance: \(distance)")
+                                DistanceInput(distance: Binding(
+                                    get: { distance },
+                                    set: { newValue in
+                                        data.blocks[blockIndex].steps[stepIndex].goal = .distance(distance: newValue)
+                                    }
+                                ))
+                            case let .time(time):
+                                Text("Time: \(time)")
+                                TimeInput(time: Binding(
+                                    get: { time },
+                                    set: { newValue in
+                                        data.blocks[blockIndex].steps[stepIndex].goal = .time(time: newValue)
+                                    }
+                                ))
+                            }
+                        } else {
+                            Text("Break")
+                        }
+                    }
+
+                    Button("Add Step") {
+                        data.blocks[blockIndex].steps.append(CustomWorkoutStepData(type: .work, goal: .open))
                     }
                 }
-
-                Button("Add Step") {
-                    data.blocks[blockIndex].steps.append(CustomWorkoutStepData(type: .work, goal: .open))
-                }
+                .enduraDefaultBox()
             }
 
             Button("Add Block") {
