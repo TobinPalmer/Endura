@@ -5,42 +5,6 @@ import SwiftUI
 import SwiftUICalendar
 import WidgetKit
 
-private final class EnduraWidgetEntryViewModel: ObservableObject {
-    fileprivate var userDefaults: UserDefaults? {
-        UserDefaults(suiteName: "group.com.endurapp.EnduraApp")
-    }
-
-    @Published fileprivate var totalDistance: Double = 0.0
-    @Published fileprivate var weeklyGoal: Double = 0.0
-    @Published fileprivate var trainingDay: DailyTrainingDataDocument = .init(
-        date: YearMonthDay.current.toCache(),
-        type: .none,
-        goals: [],
-        summary: .init(distance: 0, duration: 0, activities: 0)
-    )
-
-    fileprivate init() {
-        var distance = 0.0
-        if let userDefaults = userDefaults {
-            if let trainingDayData = DailyTrainingDataDocument
-                .fromJSON(userDefaults.string(forKey: "trainingDay") ?? "")
-            {
-                trainingDay = trainingDayData
-            }
-
-            for day in WeekDay.eachDay() {
-                let miles = Double(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "")
-                distance += miles ?? 0.0
-            }
-        }
-
-        totalDistance = distance
-
-        // TODO: Get this from the the userDefaults
-        weeklyGoal = 10000
-    }
-}
-
 private enum EnduraWeeklyDistanceWidgetDistanceType: String, CaseIterable, AppEnum {
     case mile
     case kilo
@@ -82,6 +46,50 @@ public struct EnduraWeeklyDistanceWidget: Widget {
     }
 }
 
+private final class EnduraWidgetEntryViewModel: ObservableObject {
+    fileprivate var userDefaults: UserDefaults? {
+        UserDefaults(suiteName: "group.com.endurapp.EnduraApp")
+    }
+
+    @Published fileprivate var totalDistance: Double = 0.0
+    @Published fileprivate var weeklyGoal: Double = 0.0
+    @Published fileprivate var totalGoalsComplete = 0
+
+    @Published fileprivate var trainingDay: DailyTrainingDataDocument = .init(
+        date: YearMonthDay.current.toCache(),
+        type: .none,
+        goals: [],
+        summary: .init(distance: 0, duration: 0, activities: 0)
+    )
+
+    fileprivate init() {
+        var distance = 0.0
+        if let userDefaults = userDefaults {
+            if let trainingDayData = DailyTrainingDataDocument
+                .fromJSON(userDefaults.string(forKey: "trainingDay") ?? "")
+            {
+                trainingDay = trainingDayData
+            }
+
+            for goal in trainingDay.goals {
+                if goal.progress?.completed ?? false {
+                    totalGoalsComplete += 1
+                }
+            }
+
+            for day in WeekDay.eachDay() {
+                let miles = Double(userDefaults.string(forKey: "dailyDistance-\(day.rawValue)") ?? "")
+                distance += miles ?? 0.0
+            }
+        }
+
+        totalDistance = distance
+
+        // TODO: Get this from the the userDefaults
+        weeklyGoal = 10000
+    }
+}
+
 struct EnduraWeeklyDistanceWidgetView: View {
     public var entry: WidgetProvider.Entry
     private let viewModel = EnduraWidgetEntryViewModel()
@@ -100,21 +108,15 @@ struct EnduraWeeklyDistanceWidgetView: View {
                                 .foregroundColor(.red)
 
                             Circle()
-                                .trim(from: 0, to: CGFloat(viewModel.totalDistance / viewModel.weeklyGoal))
+                                .trim(
+                                    from: 0,
+                                    to: CGFloat(viewModel.totalGoalsComplete / viewModel.trainingDay.goals.count)
+                                )
                                 .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                                 .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
                                 .rotationEffect(.degrees(-90))
 
                             VStack {
-                                Text("\(viewModel.trainingDay.goals.count)")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.primary)
-//                Text("Total Distance:")
-//                  .font(.caption)
-//                  .fontWeight(.bold)
-//                  .foregroundColor(.secondary)
-
                                 Text(
                                     "\(FormattingUtils.formatMiles(ConversionUtils.metersToMiles(viewModel.totalDistance))) mi"
                                 )
