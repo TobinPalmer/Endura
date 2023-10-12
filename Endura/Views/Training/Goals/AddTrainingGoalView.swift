@@ -6,6 +6,8 @@ struct AddTrainingGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     public var selectedDate: YearMonthDay
 
+    @State public var workoutGoal: WorkoutGoalData = .open
+
     init(_ selectedDate: YearMonthDay) {
         self.selectedDate = selectedDate
     }
@@ -32,13 +34,24 @@ struct AddTrainingGoalView: View {
                     VStack(spacing: 16) {
                         ForEach(WorkoutGoalData.allCases, id: \.self) { goal in
                             NavigationLink(destination: VStack {
-                                EditRunningTrainingGoalView(goal: TrainingRunGoalData(
-                                    date: selectedDate,
-                                    workout: goal
+                                EditTrainingRunWorkout(goal: Binding(
+                                    get: { workoutGoal },
+                                    set: { workoutGoal = $0 }
                                 ))
+                                .onAppear {
+                                    workoutGoal = goal
+                                }
                                 Button("Save") {
+                                    activeUser.training.updateTrainingGoal(
+                                        selectedDate,
+                                        TrainingRunGoalData(
+                                            date: selectedDate,
+                                            workout: workoutGoal
+                                        )
+                                    )
                                     print("Save")
                                 }
+                                .buttonStyle(EnduraNewButtonStyle())
                             }) {
                                 AddTrainingGoalTypeCard(
                                     icon: goal.getWorkoutIcon(),

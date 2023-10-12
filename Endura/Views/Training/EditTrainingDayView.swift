@@ -22,7 +22,7 @@ struct EditTrainingGoalLink<Label: View>: View {
         .sheet(isPresented: $showEditGoal) {
             NavigationView {
                 VStack {
-                    EditRunningTrainingGoalView(goal: goal)
+//                        EditTrainingRunWorkout(goal: goal)
                 }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {

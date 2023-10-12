@@ -47,7 +47,7 @@
 		17CC6075111C3487EA856BA4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC666255DBC8045DFCBCF2 /* LoginView.swift */; };
 		17CC607E08EEDD8271A5C295 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6C5CCD2C0F286ACBF0A4 /* UserModels.swift */; };
 		17CC60CA49A6046011212E9D /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC621472800F2D778E7D01 /* ActivityComment.swift */; };
-		17CC6170BD87C7D349B47A31 /* EditRunningTrainingGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC65A60DFFB4D56871D345 /* EditRunningTrainingGoalView.swift */; };
+		17CC6170BD87C7D349B47A31 /* EditTrainingRunWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC65A60DFFB4D56871D345 /* EditTrainingRunWorkout.swift */; };
 		17CC617439A463D6F2F6C8C3 /* CacheUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC62ABEA2C9CDFBDB7B8A6 /* CacheUtils.swift */; };
 		17CC61CBBAC693AFFBCF3C21 /* NotificationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC657C04F1EFB9941F99AE /* NotificationsModel.swift */; };
 		17CC61E475691FB9E083105B /* TrainingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6582E0365BB8164BB3CA /* TrainingUtils.swift */; };
@@ -277,7 +277,7 @@
 		17CC657C04F1EFB9941F99AE /* NotificationsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsModel.swift; sourceTree = "<group>"; };
 		17CC6582E0365BB8164BB3CA /* TrainingUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingUtils.swift; sourceTree = "<group>"; };
 		17CC659A1576329D2B4CB4F2 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
-		17CC65A60DFFB4D56871D345 /* EditRunningTrainingGoalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRunningTrainingGoalView.swift; sourceTree = "<group>"; };
+		17CC65A60DFFB4D56871D345 /* EditTrainingRunWorkout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTrainingRunWorkout.swift; sourceTree = "<group>"; };
 		17CC65DD44DDB6608744B554 /* AddTrainingGoalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTrainingGoalView.swift; sourceTree = "<group>"; };
 		17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringArrayValueTransformer.swift; sourceTree = "<group>"; };
 		17CC666255DBC8045DFCBCF2 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -560,7 +560,7 @@
 			children = (
 				17CC65DD44DDB6608744B554 /* AddTrainingGoalView.swift */,
 				17CC6E97C0F64CD107601DBF /* EditRoutineTrainingGoalView.swift */,
-				17CC65A60DFFB4D56871D345 /* EditRunningTrainingGoalView.swift */,
+				17CC65A60DFFB4D56871D345 /* EditTrainingRunWorkout.swift */,
 			);
 			path = Goals;
 			sourceTree = "<group>";
@@ -1391,7 +1391,7 @@
 				17CC6AE1DF133F22BD24F48A /* TrainingEndGoalSetupView.swift in Sources */,
 				17CC6C61215CDCA30CC3BE3A /* AddTrainingGoalView.swift in Sources */,
 				17CC6D49C375896417B55218 /* EditRoutineTrainingGoalView.swift in Sources */,
-				17CC6170BD87C7D349B47A31 /* EditRunningTrainingGoalView.swift in Sources */,
+				17CC6170BD87C7D349B47A31 /* EditTrainingRunWorkout.swift in Sources */,
 				17CC639B45064F0D1F3F838B /* GenerateTrainingGoalsView.swift in Sources */,
 				17CC666E7724DFCE0FBA1CAB /* TrainingGenerationPromptUtils.swift in Sources */,
 				17CC6BBE08FA59B2136A5BCC /* TrainingGenerationDataUtils.swift in Sources */,
