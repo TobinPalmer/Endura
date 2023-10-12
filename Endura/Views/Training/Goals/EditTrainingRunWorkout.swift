@@ -45,6 +45,12 @@ struct EditTrainingRunWorkout: View {
                 Text("Pace: \(distance / time)")
             case let .custom(data):
                 Text("Custom Workout")
+                EditCustomWorkout(data: Binding(
+                    get: { data },
+                    set: { newValue in
+                        goal = .custom(data: newValue)
+                    }
+                ))
             }
         }
         .enduraPadding()
