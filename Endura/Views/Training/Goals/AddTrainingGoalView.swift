@@ -11,30 +11,45 @@ struct AddTrainingGoalView: View {
     }
 
     var body: some View {
-        ScrollView {
-            Text("Add Training Goal")
-                .font(.title)
-                .fontWeight(.bold)
-                .fontColor(.primary)
-                .padding()
-            Text("Select a type of goal to add.")
-                .font(.title2)
-                .fontColor(.secondary)
-                .padding()
+        ZStack {
+            Color("Background")
+                .ignoresSafeArea()
 
-            VStack {
-                ForEach(WorkoutGoalData.allCases, id: \.self) { goal in
-                    NavigationLink(destination: EditRunningTrainingGoalView(goal: TrainingRunGoalData(
-                        date: selectedDate,
-                        workout: goal
-                    ))) {
-                        AddTrainingGoalTypeCard(
-                            icon: goal.getWorkoutIcon(),
-                            title: goal.getWorkoutName(),
-                            description: goal.getWorkoutDescription()
-                        )
+            ScrollView {
+                VStack(spacing: 26) {
+                    VStack(spacing: 6) {
+                        Text("Add Training Goal")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .alignFullWidth()
+                        Text("Select a type of goal to add.")
+                            .font(.body)
+                            .fontColor(.secondary)
+                            .alignFullWidth()
+                    }
+
+                    VStack(spacing: 16) {
+                        ForEach(WorkoutGoalData.allCases, id: \.self) { goal in
+                            NavigationLink(destination: VStack {
+                                EditRunningTrainingGoalView(goal: TrainingRunGoalData(
+                                    date: selectedDate,
+                                    workout: goal
+                                ))
+                                Button("Save") {
+                                    print("Save")
+                                }
+                            }) {
+                                AddTrainingGoalTypeCard(
+                                    icon: goal.getWorkoutIcon(),
+                                    title: goal.getWorkoutName(),
+                                    description: goal.getWorkoutDescription()
+                                )
+                            }
+                        }
                     }
                 }
+                .enduraPadding()
             }
         }
     }
@@ -52,22 +67,22 @@ struct AddTrainingGoalTypeCard: View {
     }
 
     var body: some View {
-        HStack {
-            Image(systemName: icon)
-                .font(.title2)
-                .foregroundColor(.primary)
-                .fontWeight(.bold)
-            VStack {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
                 Text(title)
-                    .font(.title2)
+                    .font(.title3)
                     .fontWeight(.bold)
                     .fontColor(.primary)
-                    .padding()
-                Text(description)
-                    .font(.body)
-                    .fontColor(.secondary)
-                    .padding()
+                Image(systemName: icon)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .alignFullWidth(.trailing)
             }
+
+            Text(description)
+                .font(.system(size: 16))
+                .multilineTextAlignment(.leading)
+                .fontColor(.secondary)
         }
         .alignFullWidth()
         .padding(26)
