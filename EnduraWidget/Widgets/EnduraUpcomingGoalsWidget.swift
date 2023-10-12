@@ -17,7 +17,15 @@ final class EnduraUpcomingGoalsWidgetViewModel: ObservableObject {
         summary: .init(distance: 0, duration: 0, activities: 0)
     )
 
-    fileprivate init() {}
+    fileprivate init() {
+        if let userDefaults = userDefaults {
+            if let trainingDayData = DailyTrainingDataDocument
+                .fromJSON(userDefaults.string(forKey: "trainingDay") ?? "")
+            {
+                trainingDay = trainingDayData
+            }
+        }
+    }
 }
 
 public struct EnduraUpcomingGoalsWidget: Widget {
@@ -41,6 +49,12 @@ struct EnduraUpcomingGoalsWidgetView: View {
     private let viewModel = EnduraUpcomingGoalsWidgetViewModel()
 
     public var body: some View {
-        Text("HI widget 2")
+        if viewModel.trainingDay.goals.isEmpty {
+            Text("No upcoming goals, click here to add one")
+                .multilineTextAlignment(.center)
+                .foregroundColor(.gray)
+        } else {
+            Text("COOL" + String(describing: viewModel.trainingDay.goals[0].progress))
+        }
     }
 }
