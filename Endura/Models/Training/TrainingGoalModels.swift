@@ -39,6 +39,21 @@ public struct TrainingRunGoalData: Hashable {
         }
     }
 
+    public func getTime() -> Double {
+        switch workout {
+        case .open:
+            return 0
+        case let .distance(distance):
+            return 0
+        case let .time(time):
+            return time
+        case let .pacer(distance, time):
+            return time
+        case let .custom(data):
+            return data.getTime()
+        }
+    }
+
     public func getTitle() -> String {
         switch workout {
         case .open:

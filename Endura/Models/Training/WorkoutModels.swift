@@ -119,6 +119,17 @@ public struct CustomWorkoutData: Codable, Hashable {
         }
     }
 
+    public func getTime() -> Double {
+        blocks.reduce(0) { total, block in
+            total + block.steps.reduce(0) { total, step in
+                if case let .time(time) = step.goal {
+                    return total + time
+                }
+                return total
+            }
+        }
+    }
+
     public func getBlocks() -> [IntervalBlock] {
         blocks.map { block in
             IntervalBlock(steps: block.steps.map { step in

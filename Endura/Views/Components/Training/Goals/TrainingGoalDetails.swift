@@ -60,16 +60,62 @@ struct TrainingGoalDetails: View {
                 .ignoresSafeArea()
 
             VStack {
-                Text(goal.getTitle())
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .fontColor(.primary)
-                    .alignFullWidth()
+                HStack {
+                    Text(goal.getTitle())
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .fontColor(.primary)
+                        .alignFullWidth()
+
+                    Spacer()
+
+                    if goal.progress.completed {
+                        Image(systemName: "checkmark")
+                            .font(.title)
+                            .foregroundColor(.green)
+                    }
+                }
 
                 ColoredBadge(
-                    text: "Easy",
-                    color: .green
+                    text: goal.type.rawValue,
+                    color: goal.type.getColor()
                 )
+                .alignFullWidth()
+
+                Text("This is the description of the goal.")
+                    .font(.body)
+                    .fontColor(.secondary)
+                    .padding(.top, 5)
+                    .alignFullWidth()
+
+                HStack {
+                    VStack {
+                        Text("Distance")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .alignFullWidth()
+                        Text("\(FormattingUtils.formatMiles(goal.getDistance())) mi")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .alignFullWidth()
+                    }
+                    VStack {
+                        Text("Time")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .alignFullWidth()
+                        Text(FormattingUtils.secondsToFormattedTime(goal.getTime()))
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .alignFullWidth()
+                    }
+                }
+                .padding(.top, 8)
+                .alignFullWidth(.center)
 
 //                Text("Distance: \(data.distance.removeTrailingZeros()) Miles")
 //                Text("Time: \(data.time.removeTrailingZeros()) Minutes")
@@ -94,6 +140,8 @@ struct TrainingGoalDetails: View {
 //                    }
 //                }
             }
+            .frame(maxHeight: .infinity, alignment: .top)
+            .enduraPadding()
             .navigationBarItems(trailing: EditTrainingGoalLink(goal: goal) {
                 Text("Edit")
             })
