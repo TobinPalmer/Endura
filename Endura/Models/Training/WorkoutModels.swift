@@ -129,13 +129,13 @@ public struct CustomWorkoutData: Codable, Hashable {
 }
 
 public struct CustomWorkoutBlockData: Codable, Hashable {
-    public var steps: [CustomWorkoutStepData]
-    public var iterations: Int
+    public var steps: [CustomWorkoutStepData] = []
+    public var iterations: Int = 1
 }
 
 public struct CustomWorkoutStepData: Codable, Hashable {
-    public var type: CustomWorkoutStepType
-    public var goal: CustomWorkoutStepGoal
+    public var type: CustomWorkoutStepType = .work
+    public var goal: CustomWorkoutStepGoal = .open
 }
 
 public enum CustomWorkoutStepGoal: Codable, Hashable {
@@ -146,6 +146,12 @@ public enum CustomWorkoutStepGoal: Codable, Hashable {
     case time(
         time: Double
     )
+
+    public static let allCases: [CustomWorkoutStepGoal] = [
+        .open,
+        .distance(distance: 0),
+        .time(time: 0),
+    ]
 
     public func getStepGoal() -> WorkoutGoal {
         switch self {

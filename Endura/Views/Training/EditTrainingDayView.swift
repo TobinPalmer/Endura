@@ -43,7 +43,7 @@ struct EditTrainingGoalLink<Label: View>: View {
                     }
                 }
             }
-            .presentationDetents(goal.workout.isCustomWorkout() ? [.large, .medium] : [.medium])
+            .presentationDetents(goal.workout.isCustomWorkout() ? [.large] : [.medium])
         }
     }
 }

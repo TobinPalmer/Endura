@@ -105,34 +105,48 @@ struct TimeInput: View {
 }
 
 struct EditCustomWorkout: View {
-    @Binding var data: CustomWorkoutData
+    @Binding var workoutData: CustomWorkoutData
+
+    @State var data: CustomWorkoutData
+
+    init(data: Binding<CustomWorkoutData>) {
+        _workoutData = data
+        _data = State(initialValue: data.wrappedValue)
+    }
 
     var body: some View {
         VStack {
-            ForEach(data.blocks.indices, id: \.self) { blockIndex in
+            ForEach(0 ..< data.blocks.count, id: \.self) { blockIndex in
                 let block = data.blocks[blockIndex]
                 VStack {
                     HStack {
                         Text("Block \(blockIndex + 1)")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .fontColor(.primary)
 
                         Spacer()
 
-                        Text("x\(block.iterations)")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .fontColor(.primary)
-
-                        Button("Delete") {
-                            data.blocks.remove(at: blockIndex)
+                        Stepper(value: Binding(
+                            get: { data.blocks[blockIndex].iterations },
+                            set: { newValue in
+                                data.blocks[blockIndex].iterations = newValue
+                            }
+                        ), in: 1 ... 50) {
+                            Text("x\(data.blocks[blockIndex].iterations)")
                         }
                     }
 
-                    ForEach(block.steps.indices, id: \.self) { stepIndex in
+                    ForEach(0 ..< block.steps.count, id: \.self) { stepIndex in
                         let step = block.steps[stepIndex]
-                        if step.type == .work {
+                        VStack {
+                            Picker("Goal", selection: Binding(
+                                get: { step.goal },
+                                set: { newValue in
+                                    data.blocks[blockIndex].steps[stepIndex].goal = newValue
+                                }
+                            )) {
+                                Text("Open").tag(CustomWorkoutStepGoal.open)
+                                Text("Distance").tag(CustomWorkoutStepGoal.distance(distance: 0))
+                                Text("Time").tag(CustomWorkoutStepGoal.time(time: 0))
+                            }
                             switch step.goal {
                             case .open:
                                 Text("Open")
@@ -153,21 +167,25 @@ struct EditCustomWorkout: View {
                                     }
                                 ))
                             }
-                        } else {
-                            Text("Break")
                         }
+                        .padding(16)
+                        .enduraDefaultBox()
                     }
 
                     Button("Add Step") {
                         data.blocks[blockIndex].steps.append(CustomWorkoutStepData(type: .work, goal: .open))
                     }
                 }
+                .padding(16)
                 .enduraDefaultBox()
             }
 
             Button("Add Block") {
                 data.blocks.append(CustomWorkoutBlockData(steps: [], iterations: 1))
             }
+        }
+        .onChange(of: data) { _, newValue in
+            workoutData = newValue
         }
     }
 }

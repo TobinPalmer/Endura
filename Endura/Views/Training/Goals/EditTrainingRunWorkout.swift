@@ -46,7 +46,9 @@ struct EditTrainingRunWorkout: View {
             case let .custom(data):
                 Text("Custom Workout")
                 EditCustomWorkout(data: Binding(
-                    get: { data },
+                    get: {
+                        data
+                    },
                     set: { newValue in
                         goal = .custom(data: newValue)
                     }
