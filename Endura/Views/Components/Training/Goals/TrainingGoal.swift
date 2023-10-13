@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 struct TrainingGoal: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
     private let goal: TrainingRunGoalData
 
     public init(_ goal: TrainingRunGoalData) {
@@ -31,55 +32,25 @@ struct TrainingGoal: View {
             .alignFullWidth()
             .padding(26)
             .enduraDefaultBox()
-
-            //                        switch goal {
-            //                        case let .run(data):
-            //                            VStack(alignment: .leading) {
-            //                                HStack {
-            //                                    Text("\(data.getDistance().removeTrailingZeros()) Miles")
-            //                                }
-            //                            }
-            //                        case let .routine(data):
-            //                            VStack(alignment: .leading) {
-            //                                Text("\(data.count) Exercises")
-            //                            }
-            //                        }
-            //                    }
-            //                    Spacer()
-            //                    switch goal {
-            //                    case let .routine(data):
-            //                        HStack {
-            //                            if data.progress.completed {
-            //                                Image(systemName: "checkmark")
-            //                                    .foregroundColor(.green)
-            //                            } else {
-            //                                Text("\(FormattingUtils.secondsToFormattedTime(data.time))
-            //                                Minutes")
-            //                                    .padding()
-            //                                    .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
-            //                            }
-            //                        }
-            //                    case let .run(data):
-            //                        HStack {
-            //                            if data.progress.completed {
-            //                                Image(systemName: "checkmark")
-            //                                    .foregroundColor(.green)
-            //                            } else {
-            //                                VStack {
-            //                                    switch data.workout {
-            //                                    case let .distance(distance):
-            //                                        Text("\(FormattingUtils.formatMiles(distance)) Miles")
-            //                                    case let .time(time):
-            //                                        Text("\(FormattingUtils.secondsToFormattedTime(time))
-            //                                        Minutes")
-            //                                    default: EmptyView()
-            //                                    }
-            //                                }
-            //                                .padding()
-            //                                .background(RoundedRectangle(cornerRadius: 50).foregroundColor(goal.getColor()))
-            //                            }
-            //                        }
-            //                    }
+        }
+        .contextMenu {
+            Button(action: {
+                var goal = goal
+                goal.progress.completed.toggle()
+                activeUser.training.updateTrainingGoal(goal.date, goal)
+            }) {
+                if goal.progress.completed {
+                    Label("Completed", systemImage: "checkmark")
+                } else {
+                    Label("Mark as Complete", systemImage: "")
+                }
+            }
+            Divider()
+            Button(role: .destructive, action: {
+                activeUser.training.removeTrainingGoal(goal.date, goal)
+            }) {
+                Label("Remove", systemImage: "trash")
+            }
         }
     }
 }

@@ -234,6 +234,14 @@ import WidgetKit
         setTrainingDay(date, trainingDay)
     }
 
+    public func removeTrainingGoal(_ date: YearMonthDay, _ goal: TrainingRunGoalData) {
+        var trainingDay = getTrainingDay(date)
+        if let index = trainingDay.goals.firstIndex(where: { $0.uuid == goal.uuid }) {
+            trainingDay.goals.remove(at: index)
+        }
+        setTrainingDay(date, trainingDay)
+    }
+
     public func processNewActivity(_ activity: ActivityDataWithRoute) {
         updateSummaryData(for: activity.time.toYearMonthDay(), with: activity)
 
