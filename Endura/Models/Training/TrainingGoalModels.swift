@@ -17,6 +17,8 @@ public struct TrainingRoutineGoalData: Codable, Hashable {
 public struct TrainingRunGoalData: Hashable {
     public var uuid: String? = UUID().uuidString
     public var date: YearMonthDay
+    public var type: TrainingRunType = .none
+    public var description: String = ""
     public var preRoutine: TrainingRoutineGoalData?
     public var workout: WorkoutGoalData = .distance(distance: 0)
     public var postRoutine: TrainingRoutineGoalData?

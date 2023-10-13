@@ -9,11 +9,26 @@ public enum TrainingGoalType: String, Codable {
 }
 
 public enum TrainingRunType: String, Codable {
-    case long = "Long Run"
-    case hard = "Hard Run"
-    case normal = "Normal Run"
-    case workout = "Workout Run"
     case none
+    case hard = "Easy Run"
+    case normal = "Medium Run"
+    case long = "Long Run"
+    case workout = "Workout Run"
+
+    public func getColor() -> Color {
+        switch self {
+        case .hard:
+            return .green
+        case .normal:
+            return .yellow
+        case .long:
+            return .orange
+        case .workout:
+            return .red
+        case .none:
+            return .gray
+        }
+    }
 }
 
 public enum TrainingGoalDifficulty: String, Codable {
@@ -26,6 +41,7 @@ public enum TrainingDayType: String, Codable {
     case none = "None"
     case rest = "Rest"
     case easy = "Easy"
+    case medium = "Medium"
     case long = "Long"
     case workout = "Workout"
 
@@ -37,6 +53,8 @@ public enum TrainingDayType: String, Codable {
             return .blue
         case .easy:
             return .green
+        case .medium:
+            return .yellow
         case .long:
             return .orange
         case .workout:
@@ -45,7 +63,7 @@ public enum TrainingDayType: String, Codable {
     }
 
     public static var allCases: [TrainingDayType] {
-        [.none, .rest, .easy, .long, .workout]
+        [.none, .rest, .easy, .medium, .long, .workout]
     }
 }
 

@@ -3,7 +3,7 @@ import SwiftUICalendar
 
 public struct DailyTrainingDataDocument: Codable {
     public var date: String
-    public var type: TrainingDayType
+    public var type: TrainingRunType
     public var goals: [TrainingRunGoalDataDocument]
     public var summary: DailySummaryData?
 
@@ -37,6 +37,8 @@ public struct DailyTrainingDataDocument: Codable {
 
 public struct TrainingRunGoalDataDocument: Codable, Hashable {
     public var date: String
+    public var type: TrainingRunType
+    public var description: String
     public var preRoutine: TrainingRoutineGoalData?
     public var workout: WorkoutGoalData
     public var postRoutine: TrainingRoutineGoalData?
@@ -44,6 +46,8 @@ public struct TrainingRunGoalDataDocument: Codable, Hashable {
 
     init(_ data: TrainingRunGoalData) {
         date = data.date.toCache()
+        type = data.type
+        description = data.description
         preRoutine = data.preRoutine
         workout = data.workout
         postRoutine = data.postRoutine
@@ -53,6 +57,8 @@ public struct TrainingRunGoalDataDocument: Codable, Hashable {
     public func toTrainingRunGoalData() -> TrainingRunGoalData {
         TrainingRunGoalData(
             date: YearMonthDay.fromCache(date),
+            type: type,
+            description: description,
             preRoutine: preRoutine,
             workout: workout,
             postRoutine: postRoutine,

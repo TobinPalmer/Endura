@@ -29,6 +29,7 @@ struct EditTrainingGoalLink<Label: View>: View {
                                 goal.date,
                                 TrainingRunGoalData(
                                     date: goal.date,
+                                    type: goal.type,
                                     workout: newValue
                                 )
                             )

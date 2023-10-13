@@ -60,28 +60,39 @@ struct TrainingGoalDetails: View {
                 .ignoresSafeArea()
 
             VStack {
+                Text(goal.getTitle())
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .fontColor(.primary)
+                    .alignFullWidth()
+
+                ColoredBadge(
+                    text: "Easy",
+                    color: .green
+                )
+
 //                Text("Distance: \(data.distance.removeTrailingZeros()) Miles")
 //                Text("Time: \(data.time.removeTrailingZeros()) Minutes")
 
-                if goal.progress.completed {
-                    Text("Completed")
-                } else {
-                    Text("Not Completed")
-                }
-
-                if #available(iOS 17.0, *) {
-                    Button("Authorize Workouts") {
-                        Task {
-                            await WorkoutScheduler.shared.requestAuthorization()
-                        }
-                    }
-
-                    Button("Add Workout to Watch") {
-                        Task {
-                            await viewModel.generateRunningWorkout(goal)
-                        }
-                    }
-                }
+//                if goal.progress.completed {
+//                    Text("Completed")
+//                } else {
+//                    Text("Not Completed")
+//                }
+//
+//                if #available(iOS 17.0, *) {
+//                    Button("Authorize Workouts") {
+//                        Task {
+//                            await WorkoutScheduler.shared.requestAuthorization()
+//                        }
+//                    }
+//
+//                    Button("Add Workout to Watch") {
+//                        Task {
+//                            await viewModel.generateRunningWorkout(goal)
+//                        }
+//                    }
+//                }
             }
             .navigationBarItems(trailing: EditTrainingGoalLink(goal: goal) {
                 Text("Edit")
