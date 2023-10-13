@@ -18,10 +18,20 @@ struct TrainingGoal: View {
 //                .fontWeight(.bold)
 
                 VStack(alignment: .leading) {
-                    Text(goal.getTitle())
-                        .font(.title3)
-                        .fontColor(.primary)
-                        .fontWeight(.bold)
+                    HStack {
+                        Text(goal.getTitle())
+                            .font(.title3)
+                            .fontColor(.primary)
+                            .fontWeight(.bold)
+
+                        Spacer()
+
+                        if goal.progress.completed {
+                            Image(systemName: "checkmark")
+                                .font(.title3)
+                                .foregroundColor(.green)
+                        }
+                    }
 
                     Text("This is the description of the goal.")
                         .multilineTextAlignment(.leading)
@@ -42,7 +52,7 @@ struct TrainingGoal: View {
                 if goal.progress.completed {
                     Label("Completed", systemImage: "checkmark")
                 } else {
-                    Label("Mark as Complete", systemImage: "")
+                    Text("Mark as Complete")
                 }
             }
             Divider()
