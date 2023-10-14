@@ -14,10 +14,14 @@ struct ActivitiesView: View {
 
             ActivityList()
         }
+        .toolbarBackground(Color.accentColor, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink(destination: NewActivityView()) {
                     Image(systemName: "plus")
+                        .foregroundColor(Color("TextLight"))
+                        .fontWeight(.bold)
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -26,11 +30,15 @@ struct ActivitiesView: View {
                         .overlay(
                             NotificationCountView(value: .constant(50))
                         )
+                        .foregroundColor(Color("TextLight"))
+                        .fontWeight(.bold)
                 }
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink(destination: FindUsersView()) {
                     Image(systemName: "person.2")
+                        .foregroundColor(Color("TextLight"))
+                        .fontWeight(.bold)
                 }
             }
 

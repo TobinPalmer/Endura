@@ -28,7 +28,7 @@ struct DashboardView: View {
                         .alignFullWidth()
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color("TextLight"))
                         .padding(.vertical, 6)
 
                     DailySummaryGraph()
@@ -46,7 +46,7 @@ struct DashboardView: View {
                             ProfileImage(AuthUtils.getCurrentUID(), size: 30)
                             Text("Hi, \(activeUserModel.data.name)")
                                 .font(.body)
-                                .foregroundColor(.white)
+                                .foregroundColor(Color("TextLight"))
                                 .fontWeight(.bold)
                         }
                     }
@@ -55,7 +55,7 @@ struct DashboardView: View {
                     NavigationLink(destination: NotificationsView()) {
                         Image(systemName: "bell")
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            .foregroundColor(Color("TextLight"))
                             .overlay(
                                 NotificationCountView(value: $notificationsModel.unreadCount)
                             )
