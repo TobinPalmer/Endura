@@ -52,6 +52,9 @@ import SwiftUICalendar
             uid: AuthUtils.getCurrentUID(),
             firstName: document.firstName,
             lastName: document.lastName,
+            birthday: document.birthday,
+            gender: document.gender,
+            weight: document.weight,
             friends: document.friends,
             role: document.role,
             lastNotificationsRead: document.lastNotificationsRead

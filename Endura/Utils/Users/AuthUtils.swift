@@ -64,6 +64,7 @@ public enum AuthUtils {
                     role: .USER,
                     birthday: Date(),
                     gender: .OTHER,
+                    weight: 160,
                     email: email
                 )
                 createUser(email: email, password: password, userData: userData)

@@ -76,6 +76,7 @@ public struct UserDocument: Codable {
     public let role: Roles?
     public let birthday: Date
     public let gender: UserGender
+    public let weight: Double?
     public let email: String
     public var lastNotificationsRead: Date?
 }
@@ -88,6 +89,11 @@ public struct ActiveUserData: Cacheable {
 
     public let firstName: String
     public let lastName: String
+
+    public let birthday: Date
+    public let gender: UserGender
+    public let weight: Double?
+
     public let friends: [String]
     public var role: Roles?
     public var lastNotificationsRead: Date?
@@ -96,6 +102,11 @@ public struct ActiveUserData: Cacheable {
         cache.uid = uid
         cache.firstName = firstName
         cache.lastName = lastName
+        cache.birthday = birthday
+        cache.gender = gender.rawValue
+        if let weight = weight {
+            cache.weight = weight
+        }
         cache.friends = friends
         cache.role = role?.rawValue ?? Roles.USER.rawValue
         cache.lastNotificationsRead = lastNotificationsRead
@@ -103,11 +114,14 @@ public struct ActiveUserData: Cacheable {
 
     public static func fromCache(_ cache: ActiveUserDataCache) -> ActiveUserData {
         ActiveUserData(
-            uid: cache.uid!,
-            firstName: cache.firstName!,
-            lastName: cache.lastName!,
-            friends: cache.friends!,
-            role: Roles(rawValue: cache.role!),
+            uid: cache.uid ?? "",
+            firstName: cache.firstName ?? "",
+            lastName: cache.lastName ?? "",
+            birthday: cache.birthday ?? Date(),
+            gender: UserGender(rawValue: cache.gender ?? UserGender.OTHER.rawValue) ?? UserGender.OTHER,
+            weight: cache.weight,
+            friends: cache.friends ?? [],
+            role: Roles(rawValue: cache.role ?? Roles.USER.rawValue) ?? Roles.USER,
             lastNotificationsRead: cache.lastNotificationsRead
         )
     }

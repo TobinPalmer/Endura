@@ -22,6 +22,7 @@ public final class SignupFormInfo: ObservableObject {
             role: nil,
             birthday: birthday,
             gender: gender,
+            weight: nil,
             email: email
         )
     }
