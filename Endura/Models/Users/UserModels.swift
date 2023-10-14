@@ -125,4 +125,8 @@ public struct ActiveUserData: Cacheable {
             lastNotificationsRead: cache.lastNotificationsRead
         )
     }
+
+    public func getAge() -> Int {
+        Calendar.current.dateComponents([.year], from: birthday, to: Date()).year!
+    }
 }

@@ -2,6 +2,16 @@ import Foundation
 import SwiftUICalendar
 
 public enum TrainingGenerationDataUtils {
+    public static func createAthleteInfo(_ data: ActiveUserData) -> String {
+        """
+        {
+            age: \(data.getAge()),
+            gender: \(data.gender.rawValue),
+            weight: \(String(describing: data.weight)),
+        }
+        """
+    }
+
     public static func encodeEndTrainingGoal(_ endGoal: TrainingEndGoalData) -> String? {
         do {
             let encoder = JSONEncoder()
