@@ -5,9 +5,9 @@ public enum TrainingGenerationDataUtils {
     public static func createAthleteInfo(_ data: ActiveUserData) -> String {
         """
         {
-            age: \(data.getAge()),
-            gender: \(data.gender.rawValue),
-            weight: \(String(describing: data.weight)),
+            "age": \(data.getAge()),
+            "gender": "\(data.gender.rawValue)",
+            "weight": \(data.weight != nil ? "\(data.weight!)" : "n/a"),
         }
         """
     }
