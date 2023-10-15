@@ -2,49 +2,81 @@ import Foundation
 import SwiftUI
 
 struct SignupStepTwoView: View {
-    @StateObject private var viewModel: SignupFormInfo
+    @ObservedObject private var viewModel: SignupFormInfo
     @Binding private var currentStep: Int
 
     init(viewModel: SignupFormInfo, currentStep: Binding<Int>) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = ObservedObject(initialValue: viewModel)
         _currentStep = currentStep
     }
 
     public var body: some View {
-        ZStack {
-            Color("Background")
-                .edgesIgnoringSafeArea(.all)
+        ZStack(alignment: .top) {
+            Color("Background").edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
-                TextField("Email", text: $viewModel.email)
-                    .disableAutocorrection(true)
-                    .autocapitalization(.none)
-                    .keyboardType(.emailAddress)
-                    .textFieldStyle(EnduraTextFieldStyle())
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .aspectRatio(contentMode: .fill)
+                    .foregroundColor(Color.accentColor)
 
-                SecureField("Password", text: $viewModel.password)
-                    .autocapitalization(.none)
-                    .textFieldStyle(EnduraTextFieldStyle())
+                Text("Create an account")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("Text"))
+
+                VStack(spacing: 7) {
+                    Text("Email")
+                        .foregroundColor(Color("TextMuted"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.caption)
+
+                    TextField("", text: $viewModel.email)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(EnduraTextFieldStyle())
+                }
+
+                VStack(spacing: 7) {
+                    Text("Password")
+                        .foregroundColor(Color("TextMuted"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.caption)
+
+                    TextField("", text: $viewModel.password)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(EnduraTextFieldStyle())
+                }
+
+                Spacer()
 
                 HStack {
-                    Button("Back") {
+                    Button {
                         withAnimation {
                             currentStep -= 1
                         }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.title)
+                            .foregroundColor(Color("Text"))
                     }
-                    .buttonStyle(EnduraButtonStyleOld())
+                    .buttonStyle(EnduraNewButtonStyle(maxWidth: 50, maxHeight: 30))
 
                     Button("Next") {
                         withAnimation {
                             currentStep += 1
                         }
                     }
-                    .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel
-                            .lastName.isEmpty) ? .gray : .accentColor))
-//                    .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
+                    .frame(maxWidth: .infinity)
+                    .buttonStyle(EnduraNewButtonStyle(
+                        backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
+                            .isEmpty) ? .gray : .accentColor,
+                        maxHeight: 30
+                    ))
                 }
             }
-            .padding(40)
+            .padding([.horizontal, .top], 40)
+            .padding(.bottom, 10)
         }
     }
 }

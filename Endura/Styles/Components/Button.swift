@@ -22,14 +22,18 @@ public struct EnduraButtonStyleOld:
 
 struct EnduraNewButtonStyle: ButtonStyle {
     private let backgroundColor: Color
+    private let width: CGFloat
+    private let height: CGFloat
 
-    init(backgroundColor: Color = Color.accentColor) {
+    init(backgroundColor: Color = Color.accentColor, maxWidth: CGFloat = .infinity, maxHeight: CGFloat = 30) {
         self.backgroundColor = backgroundColor
+        width = maxWidth
+        height = maxHeight
     }
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: width, maxHeight: height)
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
             .foregroundColor(.white)
