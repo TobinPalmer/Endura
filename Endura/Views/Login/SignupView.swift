@@ -10,6 +10,7 @@ public final class SignupFormInfo: ObservableObject {
     @Published public var password: String = ""
     @Published public var birthday: Date = .init(timeIntervalSince1970: 946_717_200) // 2000-01-01
     @Published public var gender: UserGender = .OTHER
+    @Published public var weight: Double = 0
     @Published public var schedule: [RunningSchedule] = (1 ... 7).map { day in
         RunningSchedule(day: day, type: .FREE)
     }
@@ -22,7 +23,7 @@ public final class SignupFormInfo: ObservableObject {
             role: nil,
             birthday: birthday,
             gender: gender,
-            weight: nil,
+            weight: weight,
             email: email
         )
     }
