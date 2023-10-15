@@ -22,16 +22,28 @@ import SwiftUICalendar
         return daysWithGoals
     }
 
+    private static func encodeExamples(_ examples: [(String, String)]) -> [Example] {
+        examples.map { input, output in
+            Example(input: Message(content: input, author: "0"), output: Message(content: output, author: "1"))
+        }
+    }
+
     public static func generateMultiOutputWithTrainingAI(
         inputs: [String],
         context: String?,
+        examples: [(String, String)] = [],
         progress: @escaping (Int) -> Void
     ) async -> [String]? {
         do {
             var outputs: [String] = []
             var history: [Message] = []
             for input in inputs {
-                let response = try await api.chat(message: input, history: history, context: context)
+                let response = try await api.chat(
+                    message: input,
+                    history: history,
+                    context: context,
+                    examples: encodeExamples(examples)
+                )
                 if let output = response.candidates?.first?.content {
                     outputs.append(output)
                     history.append(Message(content: input, author: "0"))
@@ -82,18 +94,18 @@ import SwiftUICalendar
 
         print("Context: \(context)")
 
-        let inputs = TrainingGenerationPromptUtils.getDaysBetween(
+        let inputs = TrainingGenerationPromptUtils.getDaysInWeeksBetween(
             .current,
-            .current.addDay(value: 3)
-        ).map {
-            $0.toCache()
-        }
-
+            goal.date
+        )
         print("\nInputs: \(inputs)\n")
+
+        let examples = TrainingGenerationPromptUtils.outputExamplesForDayTypes()
 
         if let outputs = await TrainingGenerationUtils.generateMultiOutputWithTrainingAI(
             inputs: inputs,
             context: context,
+            examples: examples,
             progress: progress
         ) {
             let dayTypes = outputs
