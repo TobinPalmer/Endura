@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUICalendar
 
 public enum TrainingGenerationPromptUtils {
     private static let generalRules =
@@ -20,7 +21,7 @@ public enum TrainingGenerationPromptUtils {
             - Workouts should be 1-2 miles shorter than the goal distance.
         """
 
-    private static func basicContext(athleteInfo: String, goal: String, settings: String) -> String {
+    public static func basicContext(athleteInfo: String, goal: String, settings: String) -> String {
         """
             You are a training ai that is dedicated to help the running athlete reach their goals.
             Using the given info you must generate a training plan that will get them ideally to succeed with their goal by the date specified.
@@ -39,13 +40,14 @@ public enum TrainingGenerationPromptUtils {
         """
     }
 
-    public static func outputContextForDayTypes(athleteInfo _: String, goal _: String, settings _: String) -> String {
+    public static func outputContextForDayTypes() -> String {
         """
+
         For the example format of ouput, every [type](description?) means that the full []() should be replaced with a value that fits the optional description and is the right type.
 
         Training day types: [easy, medium, workout, long, rest]
 
-        Generate an array of each training day type from now to the goal date in this format:
+        Give the training day type for each [yyyy-mm-dd] inputted as the below format.
 
         ```json
         [
@@ -56,7 +58,17 @@ public enum TrainingGenerationPromptUtils {
         ]
         ```
 
-        Output (do not include `json...`, just have it be []):
+        Output (do not include `json...`, just have it be {}, and DO NOT give anything extra. ONLY THE RAW JSON SHOULD BE IN THE RESPONSE):
         """
+    }
+
+    public static func getDaysBetween(_ startDate: YearMonthDay, _ endDate: YearMonthDay) -> [YearMonthDay] {
+        let daysBetween = Calendar.current.dateComponents([.day], from: startDate.getDate(), to: endDate.getDate()).day!
+        let days = (0 ... daysBetween).map { day in
+            Calendar.current.date(byAdding: .day, value: day, to: startDate.getDate())!
+        }
+        return days.map {
+            $0.toYearMonthDay()
+        }
     }
 }

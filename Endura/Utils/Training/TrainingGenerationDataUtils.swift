@@ -2,7 +2,7 @@ import Foundation
 import SwiftUICalendar
 
 public enum TrainingGenerationDataUtils {
-    public static func createAthleteInfo(_ data: ActiveUserData) -> String {
+    public static func encodeAthleteInfo(_ data: ActiveUserData) -> String {
         """
         {
             "age": \(data.getAge()),
@@ -12,16 +12,28 @@ public enum TrainingGenerationDataUtils {
         """
     }
 
-    public static func encodeEndTrainingGoal(_ endGoal: TrainingEndGoalData) -> String? {
+    public static func encodeEndTrainingGoal(_ endGoal: TrainingEndGoalData) -> String {
         do {
             let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .iso8601
             let data = try encoder.encode(TrainingEndGoalDocument(endGoal))
-            return String(data: data, encoding: .utf8)
+            return String(data: data, encoding: .utf8) ?? ""
         } catch {
             Global.log.error("Error encoding end goal: \(error)")
         }
-        return nil
+        return ""
+    }
+
+    public static func encodeTrainingSettings(_ settings: TrainingSettingsDataModel) -> String {
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(settings)
+            return String(data: data, encoding: .utf8) ?? ""
+        } catch {
+            Global.log.error("Error encoding training settings: \(error)")
+        }
+        return ""
     }
 
     public static func encodeTrainingPlan(_ monthlyData: [YearMonth: MonthlyTrainingData]) -> String? {
@@ -37,6 +49,18 @@ public enum TrainingGenerationDataUtils {
             Global.log.error("Error encoding training plan: \(error)")
         }
         return nil
+    }
+
+    public static func decodeTrainingDayType(_ data: String) -> [YearMonthDay: DailyTrainingData] {
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let decodedData = try decoder.decode([TrainingGenerationDayType].self, from: data.data(using: .utf8)!)
+            print("Decoded data: \(decodedData)")
+        } catch {
+            Global.log.error("Error decoding training day type: \(error)")
+        }
+        return [:]
     }
 
     public static func decodeTrainingPlan(_ data: String) -> [YearMonth: MonthlyTrainingData] {

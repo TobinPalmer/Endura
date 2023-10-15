@@ -81,6 +81,7 @@
 		17CC68A491351A17AE670E14 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6357BEDBEE88B0488148 /* WorkoutModels.swift */; };
 		17CC68DAEFAD7FB41ABA0D99 /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */; };
 		17CC69010684FDD587AF79B9 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61A4C68A0172243AB286 /* View.swift */; };
+		17CC692E027657DB0772EEBB /* TrainingGenerationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FA3CEDBEEF39BCB92D1 /* TrainingGenerationModels.swift */; };
 		17CC697D0001616A977EEFF1 /* UsersCacheModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC65111606C9904DB57056 /* UsersCacheModel.swift */; };
 		17CC6983F4112553B14E96DD /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E5C876813CE440700AC /* ActivityViewModel.swift */; };
 		17CC698D69D7848BB549C593 /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC620E713369BF3ECEA030 /* PersistanceController.swift */; };
@@ -317,6 +318,7 @@
 		17CC6ED5BEE3D8AA0EE162FF /* EndGoalProgressCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndGoalProgressCard.swift; sourceTree = "<group>"; };
 		17CC6F3AC8B1DE5044FFAC30 /* TrainingGoalModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGoalModels.swift; sourceTree = "<group>"; };
 		17CC6F75EB4498EB1ED2EE0A /* NotificationsSettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsModel.swift; sourceTree = "<group>"; };
+		17CC6FA3CEDBEEF39BCB92D1 /* TrainingGenerationModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGenerationModels.swift; sourceTree = "<group>"; };
 		17CC6FAD8A0AC457723ACD1F /* Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversion.swift; sourceTree = "<group>"; };
 		17CC6FDB47061EA0B1158098 /* NotificationModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationModels.swift; sourceTree = "<group>"; };
 		17CC6FE8496937628D610F98 /* UserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -574,6 +576,14 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
+		17CC60BE2DDB6999B41BCF11 /* Generation */ = {
+			isa = PBXGroup;
+			children = (
+				17CC6FA3CEDBEEF39BCB92D1 /* TrainingGenerationModels.swift */,
+			);
+			path = Generation;
+			sourceTree = "<group>";
+		};
 		17CC60E01717788113BEAD06 /* Training */ = {
 			isa = PBXGroup;
 			children = (
@@ -792,6 +802,7 @@
 				17CC6357BEDBEE88B0488148 /* WorkoutModels.swift */,
 				17CC604B09DF1EA018671F97 /* TrainingEndGoalModels.swift */,
 				17CC6DE5BC05129FC3E4498F /* TrainingDocumentModels.swift */,
+				17CC60BE2DDB6999B41BCF11 /* Generation */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -1412,6 +1423,7 @@
 				0234D9882AD87F3B003058A5 /* EnduraUpcomingGoalsWidget.swift in Sources */,
 				17CC6887263492DD2E2F6826 /* TrainingDocumentModels.swift in Sources */,
 				6969895B610B4BA2218D47FE /* EnduraWeeklyDistanceWidget.swift in Sources */,
+				17CC692E027657DB0772EEBB /* TrainingGenerationModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
