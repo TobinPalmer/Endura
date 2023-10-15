@@ -45,17 +45,6 @@ struct LoginView: View {
                     .resizable()
                     .frame(width: 100, height: 100)
 
-                Button("ADD TO USERDATA") {
-                    print("Added to userdata")
-                    if let userDefaults = UserDefaults(suiteName: "group.com.endurapp.EnduraApp") {
-                        let _ = userDefaults.set(Int.random(in: 1 ... 100), forKey: "test")
-                        let _ = print(userDefaults.string(forKey: "test")!)
-
-                        let _ = WidgetCenter.shared.reloadAllTimelines()
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-
                 Spacer()
                     .frame(height: 3)
 

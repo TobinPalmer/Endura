@@ -11,7 +11,7 @@ struct SignupStepOneView: View {
     }
 
     public var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             Color("Background")
                 .edgesIgnoringSafeArea(.all)
 
@@ -19,22 +19,45 @@ struct SignupStepOneView: View {
                 Image(systemName: "person.crop.circle.fill")
                     .resizable()
                     .frame(width: 100, height: 100)
-                    .foregroundColor(Color.accentColor)
+                    //          .foregroundColor(Color.accentColor)
+                    .foregroundColor(Color("Text"))
 
-                TextField("First Name", text: $viewModel.firstName)
-                    .disableAutocorrection(true)
-                    .textFieldStyle(EnduraTextFieldStyle())
+                Text("What's your name?")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("Text"))
 
-                TextField("Last Name", text: $viewModel.lastName)
-                    .disableAutocorrection(true)
-                    .textFieldStyle(EnduraTextFieldStyle())
+                VStack(spacing: 7) {
+                    Text("First Name")
+                        .foregroundColor(Color("TextMuted"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.caption)
+
+                    TextField("", text: $viewModel.firstName)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(EnduraTextFieldStyle())
+                }
+
+                VStack(spacing: 7) {
+                    Text("Last Name")
+                        .foregroundColor(Color("TextMuted"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.caption)
+
+                    TextField("", text: $viewModel.lastName)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(EnduraTextFieldStyle())
+                }
+
+                Spacer()
 
                 Button("Next") {
                     withAnimation {
                         currentStep += 1
                     }
                 }
-                .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
+                .frame(maxWidth: .infinity)
+                .buttonStyle(EnduraButtonStyle(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
                         .isEmpty) ? .gray : .accentColor))
 //                .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
             }

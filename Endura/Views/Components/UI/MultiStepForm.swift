@@ -28,6 +28,8 @@ struct MultiStepForm<T>: View where T: ObservableObject {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbarBackground(Color("Background"), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
@@ -35,7 +37,6 @@ struct MultiStepForm<T>: View where T: ObservableObject {
                 }) {
                     HStack {
                         Image(systemName: "xmark")
-                            //                .font(.title)
                             .font(.system(size: 20, weight: .bold))
                             .frame(maxHeight: 20)
                     }
