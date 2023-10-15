@@ -5,8 +5,9 @@ public enum Roles: String, Codable {
     case USER = "user"
 }
 
-public enum UserGender: String, Codable {
+public enum UserGender: String, CaseIterable, Identifiable, Codable {
     case MALE = "male"
     case FEMALE = "female"
     case OTHER = "other"
+    public var id: Self { self }
 }
