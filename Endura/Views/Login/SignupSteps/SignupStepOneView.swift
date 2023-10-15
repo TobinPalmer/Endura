@@ -12,8 +12,7 @@ struct SignupStepOneView: View {
 
     public var body: some View {
         ZStack(alignment: .top) {
-            Color("Background")
-                .edgesIgnoringSafeArea(.all)
+            Color("Background").edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
                 Image(systemName: "person.crop.circle.fill")

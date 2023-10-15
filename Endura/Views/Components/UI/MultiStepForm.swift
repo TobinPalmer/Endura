@@ -15,14 +15,37 @@ struct MultiStepForm<T>: View where T: ObservableObject {
     }
 
     public var body: some View {
-        VStack {
-            Spacer()
+        ZStack(alignment: .top) {
+            Color("Background").edgesIgnoringSafeArea(.all)
+            VStack {
+                HStack {
+                    VStack {
+                        Button(action: {
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            HStack {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .frame(maxHeight: 20)
+                            }
+                        }
+                    }
+                    .frame(width: 25, height: 25)
 
-            Group {
-                ForEach(0 ..< steps.count, id: \.self) { index in
-                    if index == currentPage {
-                        steps[index]
-                            .transition(.opacity)
+                    FormBarView(progress: $currentPage, steps: steps.count, width: UIScreen.main.bounds.width - 50)
+                }
+            }
+            .zIndex(10)
+
+            VStack {
+                Spacer()
+
+                Group {
+                    ForEach(0 ..< steps.count, id: \.self) { index in
+                        if index == currentPage {
+                            steps[index]
+                                .transition(.opacity)
+                        }
                     }
                 }
             }
@@ -30,22 +53,5 @@ struct MultiStepForm<T>: View where T: ObservableObject {
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(Color("Background"), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    HStack {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 20, weight: .bold))
-                            .frame(maxHeight: 20)
-                    }
-                }
-            }
-
-            ToolbarItem(placement: .navigationBarTrailing) {
-                FormBarView(progress: $currentPage, steps: steps.count, width: UIScreen.main.bounds.width - 75)
-            }
-        }
     }
 }
