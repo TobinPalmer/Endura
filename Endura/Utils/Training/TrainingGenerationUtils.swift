@@ -44,7 +44,6 @@ import SwiftUICalendar
                     context: context,
                     examples: encodeExamples(examples)
                 )
-                print("\nResponse: \(response)")
                 if let output = response.candidates?.first?.content {
                     outputs.append(output)
                     history.append(Message(content: input, author: "0"))
@@ -93,36 +92,36 @@ import SwiftUICalendar
             settings: settings
         ) + TrainingGenerationPromptUtils.contextForDailyTrainingData()
 
-        print("Context: \(context)")
-
         let inputs = TrainingGenerationPromptUtils.getDaysInWeeksBetween(
             .current,
-            .current.addDay(value: 6)
-//            goal.date
+            goal.date
         ).map {
             TrainingGenerationPromptUtils.promptForDailyTrainingData($0)
         }
-        print("\nInputs: \(inputs)\n")
-
-//        let examples = TrainingGenerationPromptUtils.outputExamplesForDayTypes()
 
         if let outputs = await TrainingGenerationUtils.generateMultiOutputWithTrainingAI(
             inputs: inputs,
             context: context,
             progress: progress
         ) {
-            let dayTypes = outputs
-                .map {
-                    print("\nOutput: \($0)\n")
-                    return TrainingGenerationDataUtils.decodeDailyTrainingData($0)
-                }
+            var generatedDailyData: [DailyTrainingData] = []
+            outputs.forEach {
+                generatedDailyData.append(contentsOf: TrainingGenerationDataUtils.decodeDailyTrainingData($0))
+            }
 
-            print("\nDay types: \(dayTypes)\n")
-
-//            var monthlyData: [YearMonth: MonthlyTrainingData] = activeUser.training.monthlyTrainingData
-//            for day in dayTypes {
-//
-//            }
+            var monthlyData: [YearMonth: MonthlyTrainingData] = activeUser.training.monthlyTrainingData
+            for day in generatedDailyData {
+                print("Updating day: \(day.date)")
+                let date = day.date
+                let yearMonth = YearMonth(year: date.year, month: date.month)
+                var updatedMonthlyData = monthlyData[yearMonth] ?? MonthlyTrainingData(date: yearMonth)
+                updatedMonthlyData.days.updateValue(day, forKey: day.date)
+                monthlyData.updateValue(
+                    updatedMonthlyData,
+                    forKey: yearMonth
+                )
+            }
+            return monthlyData
         }
 
         return [:]
