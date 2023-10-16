@@ -27,7 +27,7 @@ public enum TrainingGenerationPromptUtils {
 
     private static let formattingRules =
         """
-        For the example format of ouput, every [type](description?) means that the full []() should be replaced with a value that fits the optional description and is the right type.
+        For the output format every [type](description?) means that the full []() should be replaced with a value that fits the optional description and is the right type.
         """
 
     public static func basicContext(athleteInfo: String, goal: String, settings: String) -> String {
@@ -48,7 +48,6 @@ public enum TrainingGenerationPromptUtils {
 
     public static func outputContextForDayTypes() -> String {
         """
-
 
         Training Rules:
         \(generalDailyRules)
@@ -73,6 +72,76 @@ public enum TrainingGenerationPromptUtils {
         [
             ...
         ]
+        """
+    }
+
+    public static func contextForDailyTrainingData() -> String {
+        """
+        Training Rules:
+        \(generalDailyRules)
+
+        Training Workout Rules:
+        \(generalWorkoutRules)
+        """
+    }
+
+    public static func promptForDailyTrainingData(_ days: String) -> String {
+        """
+        For these all of these days: \(days) return a raw json that follows this format (note: \(formattingRules)):
+        {
+          "[yyyy-mm-dd]": {
+            "date": "[yyyy-mm-dd](same as day)",
+            "type": "[enum: [Rest, Easy, Medium, Workout, Long]](the type of day this is, no goals needed for rest days)",
+            "goals": [
+              {
+                "date": "[yyyy-mm-dd](same as day)",
+                "type": "[enum: [None, Easy, Medium, Long, Workout]]",
+                "workout": {
+                  "[enumValue: workout]": {}
+                },
+                "description": "[string](short 1-2 sentence description of run and purpose)"
+              }
+            ]
+          }
+        }
+
+        enumValue: workout is one of the following:
+          "open": {},
+          "distance": {
+            "distance": "[number](miles)"
+          },
+          "time": {
+            "time": "[number](seconds)"
+          },
+          "pacer": {
+            "distance": "[number](miles)",
+            "time": "[number](seconds to complete distance)"
+          },
+          "custom": {
+            "data": {
+              "name": "[string](name of custom workout)",
+              "blocks": [
+                {
+                  "steps": [
+                    {
+                      "goal": {
+                        "distance": {
+                          "distance": "[number](miles)"
+                        },
+                        "time": {
+                          "time": "[number](seconds)"
+                        }
+                      }(one of distance or time should be specified),
+                      "type": "work",
+                    }
+                  ],
+                  "iterations": "[number](number of times to repeat steps)"
+                }
+              ]
+            }
+          }
+
+        Output should be { "[yyyy-mm-dd]": { ... } } for each day in \(days) as a raw json ONLY, no extra text.
         """
     }
 

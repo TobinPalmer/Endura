@@ -63,6 +63,30 @@ public enum TrainingGenerationDataUtils {
         return [:]
     }
 
+    public static func decodeDailyTrainingData(_ data: String) -> [DailyTrainingData] {
+        do {
+            var cleanedData = data
+            if let start = data.firstIndex(of: "{"),
+               let end = data.lastIndex(of: "}")
+            {
+                cleanedData = "\(data[start ... end])"
+                print("Cleaned data: \(cleanedData)")
+            }
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let decodedData = try decoder.decode(
+                [String: DailyTrainingDataDocument].self,
+                from: cleanedData.data(using: .utf8)!
+            )
+            return decodedData.map {
+                DailyTrainingData.fromDocument($0.value)
+            }
+        } catch {
+            Global.log.error("Error decoding daily training data: \(error)")
+        }
+        return []
+    }
+
     public static func decodeTrainingPlan(_ data: String) -> [YearMonth: MonthlyTrainingData] {
         do {
             let decoder = JSONDecoder()

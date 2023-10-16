@@ -44,6 +44,7 @@ import SwiftUICalendar
                     context: context,
                     examples: encodeExamples(examples)
                 )
+                print("\nResponse: \(response)")
                 if let output = response.candidates?.first?.content {
                     outputs.append(output)
                     history.append(Message(content: input, author: "0"))
@@ -90,36 +91,39 @@ import SwiftUICalendar
             athleteInfo: athleteInfo,
             goal: endGoal,
             settings: settings
-        ) + TrainingGenerationPromptUtils.outputContextForDayTypes()
+        ) + TrainingGenerationPromptUtils.contextForDailyTrainingData()
 
         print("Context: \(context)")
 
         let inputs = TrainingGenerationPromptUtils.getDaysInWeeksBetween(
             .current,
-            goal.date
-        )
+            .current.addDay(value: 6)
+//            goal.date
+        ).map {
+            TrainingGenerationPromptUtils.promptForDailyTrainingData($0)
+        }
         print("\nInputs: \(inputs)\n")
 
-        let examples = TrainingGenerationPromptUtils.outputExamplesForDayTypes()
+//        let examples = TrainingGenerationPromptUtils.outputExamplesForDayTypes()
 
         if let outputs = await TrainingGenerationUtils.generateMultiOutputWithTrainingAI(
             inputs: inputs,
             context: context,
-            examples: examples,
             progress: progress
         ) {
             let dayTypes = outputs
                 .map {
                     print("\nOutput: \($0)\n")
-                    TrainingGenerationDataUtils.decodeTrainingDayType($0)
+                    return TrainingGenerationDataUtils.decodeDailyTrainingData($0)
                 }
 
-            for day in dayTypes {
-                print("Day: \(day)")
-            }
-        }
+            print("\nDay types: \(dayTypes)\n")
 
-//        var monthlyData: [YearMonth: MonthlyTrainingData] = activeUser.training.monthlyTrainingData
+//            var monthlyData: [YearMonth: MonthlyTrainingData] = activeUser.training.monthlyTrainingData
+//            for day in dayTypes {
+//
+//            }
+        }
 
         return [:]
     }

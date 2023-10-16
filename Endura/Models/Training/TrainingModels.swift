@@ -47,6 +47,17 @@ public struct DailyTrainingData: Cacheable {
             summary: summary
         )
     }
+
+    public static func fromDocument(_ document: DailyTrainingDataDocument) -> Self {
+        DailyTrainingData(
+            date: YearMonthDay.fromCache(document.date),
+            type: document.type,
+            goals: document.goals.map { goal in
+                goal.toTrainingRunGoalData()
+            },
+            summary: document.summary ?? .init(distance: 0, duration: 0, activities: 0)
+        )
+    }
 }
 
 public struct MonthlyTrainingData: Cacheable, Equatable {
