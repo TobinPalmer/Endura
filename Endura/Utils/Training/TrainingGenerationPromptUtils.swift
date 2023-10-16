@@ -97,7 +97,7 @@ public enum TrainingGenerationPromptUtils {
                 "date": "[yyyy-mm-dd](same as day)",
                 "type": "[enum: [None, Easy, Medium, Long, Workout]]",
                 "workout": {
-                  "[enumValue: workout]": {}
+                  "[enumValue: workout]": {[enumValue: workout](see below for workout enum values)}
                 },
                 "description": "[string](short 1-2 sentence description of run and purpose)"
               }
@@ -105,7 +105,7 @@ public enum TrainingGenerationPromptUtils {
           }
         }
 
-        For enum value of workout, only intervals should be using the custom enum option and the entire enum with the key should be added, matching the format of only one of the following:
+        For enum value of workout, it should match the format of only one of the following:
           "open": {},
           "distance": {
             "distance": "[number](miles)"
@@ -116,29 +116,6 @@ public enum TrainingGenerationPromptUtils {
           "pacer": {
             "distance": "[number](miles)",
             "time": "[number](seconds to complete distance)"
-          },
-          "custom": {
-            "data": {
-              "name": "[string](name of custom workout)",
-              "blocks": [
-                {
-                  "steps": [
-                    {
-                      "goal": {
-                        "distance": {
-                          "distance": "[number](miles)"
-                        },
-                        "time": {
-                          "time": "[number](seconds)"
-                        }
-                      }(one of distance or time should be specified),
-                      "type": "work",
-                    }
-                  ],
-                  "iterations": "[number](number of times to repeat steps)"
-                }
-              ]
-            }
           }
         The enumValue for example would in the end look like this:
         "workout": {
