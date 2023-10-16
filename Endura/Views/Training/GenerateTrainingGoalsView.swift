@@ -19,22 +19,15 @@ struct GenerateTrainingGoalsView: View {
 
             Button {
                 Task {
-                    if let encodedData = TrainingGenerationDataUtils
-                        .encodeTrainingPlan(activeUser.training.monthlyTrainingData)
-                    {
-                        print("\n\nEncodedData:\n\(encodedData)\n\n")
-                    }
                     let trainingData = await TrainingGenerationUtils.generateTrainingGoalsForEndGoal(
                         activeUser: activeUser,
                         progress: { progress in
-                            print("Progress: \(progress)")
                             withAnimation {
                                 self.progress = progress
                             }
                         }
                     )
                     if let trainingData = trainingData {
-                        print("Training data: \(trainingData)")
                         DispatchQueue.main.async {
                             activeUser.training.monthlyTrainingData = trainingData
                         }

@@ -70,7 +70,6 @@ public enum TrainingGenerationDataUtils {
                let end = data.lastIndex(of: "}")
             {
                 cleanedData = "\(data[start ... end])"
-                print("Cleaned data: \(cleanedData)")
             }
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
@@ -81,53 +80,7 @@ public enum TrainingGenerationDataUtils {
             return decodedData.map {
                 DailyTrainingData.fromDocument($0.value)
             }
-        } catch {
-            Global.log.error("Error decoding daily training data: \(error)")
-        }
+        } catch {}
         return []
-    }
-
-    public static func decodeTrainingPlan(_ data: String) -> [YearMonth: MonthlyTrainingData] {
-        do {
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            let decodedData = try decoder.decode([MonthlyTrainingDataDocument].self, from: data.data(using: .utf8)!)
-            print("Decoded data: \(decodedData)")
-//            return decodedData.reduce(into: [:]) { dict, data in
-//                dict[YearMonth.fromCache(data.key)] = data.value.toMonthlyTrainingData()
-//            }
-//            return [:]
-        } catch {
-            Global.log.error("Error decoding training plan: \(error)")
-        }
-        return [:]
-    }
-
-    // The output will be like:
-//       {
-//           "2021-08-01": {
-//               "workout": {
-//                   "type": "time",
-//                   "time": 3600
-//               }
-//           },
-//           "2021-08-02": {
-//               "workout": {
-//                   "type": "distance",
-//                    "distance": 10000
-//               }
-//           }
-//       }
-    //
-
-    public static func decodeOutputDailyGoals(_ data: Data) -> [YearMonthDay: DailyTrainingData] {
-        do {
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            print(data)
-        } catch {
-            Global.log.error("Error decoding output daily goals: \(error)")
-        }
-        return [:]
     }
 }
