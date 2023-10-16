@@ -33,7 +33,7 @@ struct TrainingGoal: View {
                         }
                     }
 
-                    Text("This is the description of the goal.")
+                    Text(goal.description)
                         .multilineTextAlignment(.leading)
                         .font(.body)
                         .fontColor(.secondary)
