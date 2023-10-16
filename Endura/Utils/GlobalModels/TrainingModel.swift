@@ -218,7 +218,7 @@ import WidgetKit
         setTrainingDay(date, data)
     }
 
-    public func updateTrainingDayType(_ date: YearMonthDay, _ type: TrainingRunType) {
+    public func updateTrainingDayType(_ date: YearMonthDay, _ type: TrainingDayType) {
         var trainingDay = getTrainingDay(date)
         trainingDay.type = type
         setTrainingDay(date, trainingDay)

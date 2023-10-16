@@ -4,7 +4,7 @@ import SwiftUICalendar
 
 public struct DailyTrainingData: Cacheable {
     public var date: YearMonthDay
-    public var type: TrainingRunType
+    public var type: TrainingDayType
     public var goals: [TrainingRunGoalData] = []
     public var summary: DailySummaryData = .init(distance: 0, duration: 70, activities: 0)
 
@@ -25,7 +25,7 @@ public struct DailyTrainingData: Cacheable {
     static func fromCache(_ cache: DailyTrainingCache) -> Self {
         DailyTrainingData(
             date: YearMonthDay.fromCache(cache.date ?? ""),
-            type: TrainingRunType(rawValue: cache.type ?? "none") ?? .none,
+            type: TrainingDayType(rawValue: cache.type ?? "none") ?? .none,
             goals: cache.goals?.map { goal in
                 TrainingRunGoalData.fromCache(goal as! TrainingGoalCache)
             } ?? [],

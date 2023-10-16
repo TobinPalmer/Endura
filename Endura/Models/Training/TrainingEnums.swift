@@ -9,15 +9,15 @@ public enum TrainingGoalType: String, Codable {
 }
 
 public enum TrainingRunType: String, Codable {
-    case none
-    case hard = "Easy Run"
-    case normal = "Medium Run"
-    case long = "Long Run"
-    case workout = "Workout Run"
+    case none = "None"
+    case easy = "Easy"
+    case normal = "Medium"
+    case long = "Long"
+    case workout = "Workout"
 
     public func getColor() -> Color {
         switch self {
-        case .hard:
+        case .easy:
             return .green
         case .normal:
             return .yellow

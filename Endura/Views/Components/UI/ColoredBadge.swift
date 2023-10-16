@@ -10,6 +10,15 @@ struct ColoredBadge: View {
         self.color = color
     }
 
+    init(_ trainingType: TrainingDayType) {
+        if trainingType == .none {
+            text = ""
+        } else {
+            text = trainingType.rawValue
+        }
+        color = trainingType.getColor()
+    }
+
     init(_ trainingType: TrainingRunType) {
         if trainingType == .none {
             text = ""

@@ -3,7 +3,7 @@ import SwiftUICalendar
 
 public struct DailyTrainingDataDocument: Codable {
     public var date: String
-    public var type: TrainingRunType
+    public var type: TrainingDayType
     public var goals: [TrainingRunGoalDataDocument]
     public var summary: DailySummaryData?
 
