@@ -105,7 +105,7 @@ public enum TrainingGenerationPromptUtils {
           }
         }
 
-        enumValue: workout is one of the following:
+        For enum value of workout, only intervals should be using the custom enum option and the entire enum with the key should be added, matching the format of only one of the following:
           "open": {},
           "distance": {
             "distance": "[number](miles)"
@@ -140,6 +140,12 @@ public enum TrainingGenerationPromptUtils {
               ]
             }
           }
+        The enumValue for example would in the end look like this:
+        "workout": {
+            "distance": {
+                "distance": 5
+            }
+        }
 
         Output should be { "[yyyy-mm-dd]": { ... } } for each day in \(days) as a raw json ONLY, no extra text.
         """
