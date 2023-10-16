@@ -29,7 +29,10 @@ struct GenerateTrainingGoalsView: View {
                     )
                     if let trainingData = trainingData {
                         DispatchQueue.main.async {
-                            activeUser.training.monthlyTrainingData = trainingData
+                            for month in trainingData {
+                                activeUser.training.monthlyTrainingData.updateValue(month.value, forKey: month.key)
+                                activeUser.training.saveTrainingMonth(month.key)
+                            }
                         }
                     }
                 }

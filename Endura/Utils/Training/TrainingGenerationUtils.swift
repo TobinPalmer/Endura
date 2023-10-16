@@ -99,10 +99,6 @@ import SwiftUICalendar
             TrainingGenerationPromptUtils.promptForDailyTrainingData($0)
         }
 
-        for week in TrainingGenerationPromptUtils.getDaysInWeeksBetween(.current, goal.date) {
-            print("Week: \(week)")
-        }
-
         if let outputs = await TrainingGenerationUtils.generateMultiOutputWithTrainingAI(
             inputs: inputs,
             context: context,
@@ -113,11 +109,12 @@ import SwiftUICalendar
                 generatedDailyData.append(contentsOf: TrainingGenerationDataUtils.decodeDailyTrainingData($0))
             }
 
-            var monthlyData: [YearMonth: MonthlyTrainingData] = activeUser.training.monthlyTrainingData
+            var monthlyData: [YearMonth: MonthlyTrainingData] = [:]
             for day in generatedDailyData {
                 let date = day.date
                 let yearMonth = YearMonth(year: date.year, month: date.month)
-                var updatedMonthlyData = monthlyData[yearMonth] ?? MonthlyTrainingData(date: yearMonth)
+                var updatedMonthlyData = activeUser.training
+                    .monthlyTrainingData[yearMonth] ?? MonthlyTrainingData(date: yearMonth)
                 updatedMonthlyData.days.updateValue(day, forKey: day.date)
                 monthlyData.updateValue(
                     updatedMonthlyData,
