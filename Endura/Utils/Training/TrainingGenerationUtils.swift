@@ -113,13 +113,14 @@ import SwiftUICalendar
             for day in generatedDailyData {
                 let date = day.date
                 let yearMonth = YearMonth(year: date.year, month: date.month)
-                var updatedMonthlyData = activeUser.training
-                    .monthlyTrainingData[yearMonth] ?? MonthlyTrainingData(date: yearMonth)
-                updatedMonthlyData.days.updateValue(day, forKey: day.date)
-                monthlyData.updateValue(
-                    updatedMonthlyData,
-                    forKey: yearMonth
-                )
+                if monthlyData[yearMonth] == nil {
+                    monthlyData.updateValue(
+                        activeUser.training
+                            .monthlyTrainingData[yearMonth] ?? MonthlyTrainingData(date: yearMonth),
+                        forKey: yearMonth
+                    )
+                }
+                monthlyData[yearMonth]!.days.updateValue(day, forKey: day.date)
             }
             return monthlyData
         }
