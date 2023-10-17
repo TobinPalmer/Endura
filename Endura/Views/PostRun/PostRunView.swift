@@ -46,11 +46,11 @@ private final class PostRunExerciseViewModel: ObservableObject {
 
             if self.currentTime >= duration {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-                    guard let self = self else {
+                    guard self != nil else {
                         return
                     }
 
-                    self.exercise.parameter = .count(10)
+//          self.exercise.parameter = .count(10)
                 }
                 timer.invalidate()
             }
@@ -98,6 +98,7 @@ struct PostRunExerciseView: View {
                     .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
                 }
             case let .time(time):
+                let _ = print(viewModel.currentTime, time)
                 PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
                     .environmentObject(viewModel)
                     .padding(.bottom, 20)
@@ -118,7 +119,7 @@ struct PostRunExerciseView: View {
                 } else {
                     HStack {
                         Button("Start Time") {
-                            viewModel.startTimer(duration: 10)
+                            viewModel.startTimer(duration: time)
                         }
                         .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
                     }

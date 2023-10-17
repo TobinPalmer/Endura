@@ -51,13 +51,12 @@ struct PostRunTimerRing: View {
 
     var body: some View {
         let progressRingSize = size - 50
-
         ZStack {
             Circle()
                 .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
                 .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
             Circle()
-                .trim(from: 0, to: CGFloat(progress))
+                .trim(from: 0, to: min(CGFloat(progress), 1))
                 .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                 .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
                 .rotationEffect(.degrees(-90))
