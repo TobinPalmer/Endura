@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
-import WrappingHStack
+
+// import WrappingHStack
 
 private final class SignupStepSixViewModel: ObservableObject {
     fileprivate final func stateToColor(state: RunningScheduleType) -> Color {
@@ -50,43 +51,7 @@ struct SignupStepSixView: View {
                             }
                         }
 
-                        VStack {
-                            Button("Busy") {
-                                viewModel.schedule[showingDate - 1].type = .BUSY
-                            }
-                            .fixedSize()
-                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1]
-                                    .type != .BUSY) ? .gray : .accentColor))
-                            .padding(.vertical, 3)
-                            Button("Probably Not") {
-                                viewModel.schedule[showingDate - 1].type = .PROBABLY_NOT
-                            }
-                            .fixedSize()
-                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1]
-                                    .type != .PROBABLY_NOT) ? .gray : .accentColor))
-                            .padding(.vertical, 3)
-                            Button("Maybe") {
-                                viewModel.schedule[showingDate - 1].type = .MAYBE
-                            }
-                            .fixedSize()
-                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1]
-                                    .type != .MAYBE) ? .gray : .accentColor))
-                            .padding(.vertical, 3)
-                            Button("Probably") {
-                                viewModel.schedule[showingDate - 1].type = .PROBABLY
-                            }
-                            .fixedSize()
-                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1]
-                                    .type != .PROBABLY) ? .gray : .accentColor))
-                            .padding(.vertical, 3)
-                            Button("Free") {
-                                viewModel.schedule[showingDate - 1].type = .FREE
-                            }
-                            .fixedSize()
-                            .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.schedule[showingDate - 1]
-                                    .type != .FREE) ? .gray : .accentColor))
-                            .padding(.vertical, 3)
-                        }
+                        VStack {}
                     }
                 }
 

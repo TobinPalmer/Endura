@@ -49,48 +49,22 @@ struct PostRunTimerRing: View {
         self.duration = duration
     }
 
-    private var colors: [Color] = [Color.darkRed, Color.lightRed]
-
     var body: some View {
+        let progressRingSize = size - 50
+
         ZStack {
             Circle()
-                .stroke(Color.outlineRed, lineWidth: 20)
-                .frame(width: size, height: size)
-                .overlay {
-                    Circle()
-                        .trim(from: 0, to: Double.minimum(CGFloat(progress), 0.5))
-                        .stroke(
-                            AngularGradient(
-                                gradient: Gradient(colors: colors),
-                                center: .center,
-                                startAngle: .degrees(-20),
-                                endAngle: .degrees(340)
-                            ),
-                            style: StrokeStyle(lineWidth: 20, lineCap: .round)
-                        )
-                        .rotationEffect(.degrees(-90))
-                        .frame(width: size, height: size)
-                        .overlay {
-                            Circle()
-                                .trim(from: 0.5, to: Double.maximum(CGFloat(progress), 0.5))
-                                .stroke(
-                                    AngularGradient(
-                                        gradient: Gradient(colors: colors),
-                                        center: .center,
-                                        startAngle: .degrees(20),
-                                        endAngle: .degrees(380)
-                                    ),
-                                    style: StrokeStyle(lineWidth: 20, lineCap: .round)
-                                )
-                                .rotationEffect(.degrees(-90))
-                                .frame(width: size, height: size)
-                        }
-                }
-            Text(viewModel.formatTime(duration - time))
-                .animation(.none)
+                .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
+                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+            Circle()
+                .trim(from: 0, to: CGFloat(progress))
+                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+                .rotationEffect(.degrees(-90))
+
+            Text("\(viewModel.formatTime(time))")
                 .font(.system(size: 50, weight: .bold, design: .rounded))
+                .foregroundColor(Color.outlineRed)
         }
-        .animation(.linear(duration: progress == 0 ? 0 : 1.0), value: time)
-        .frame(width: size, height: size)
     }
 }

@@ -8,38 +8,6 @@ private var postRunEasyDay: [PostRunExercise] = [
     PostRunExercise(type: .lunge, parameter: .count(10)),
 ]
 
-// final class PostRunViewModel: ObservableObject {
-//  @Published public var currentTime: TimeInterval = 0
-//  @Published public var isDoneWithTimerExercise = false
-//  @Published fileprivate var currentExerciseIndex: Int = 0
-//  fileprivate let numberOfExercises = postRunEasyDay.count
-//
-//  public final var timer: Timer?
-//
-//  public func startTimer(duration: TimeInterval) {
-//    currentTime = 1
-//
-//    timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
-//      guard let self = self else {
-//        return
-//      }
-//
-//      self.currentTime += 1
-//
-//      if self.currentTime >= duration {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-//          guard let self = self else {
-//            return
-//          }
-//
-//          isDoneWithTimerExercise = true
-//        }
-//        timer.invalidate()
-//      }
-//    }
-//  }
-// }
-
 private final class PostRunViewModel: ObservableObject {
     private var currentExerciseIndex: Int = 0
     @Published fileprivate private(set) var currentExercise: PostRunExercise
@@ -106,46 +74,57 @@ struct PostRunExerciseView: View {
     public var body: some View {
         let exerciseReference = postRunExerciseReference[viewModel.exercise.type]
 
-        VStack {
+        VStack(spacing: 20) {
+            Spacer()
+                .frame(height: 50)
+
             Text(exerciseReference?.name ?? "")
                 .font(.title)
                 .padding()
 
             Spacer()
+                .frame(height: 50)
 
             switch viewModel.exercise.parameter {
             case let .count(count):
-                Text("Do \(count)")
+                Spacer()
+
+                HStack {
+                    Button("Next") {
+                        withAnimation {
+                            currentStep += 1
+                        }
+                    }
+                    .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                }
             case let .time(time):
                 PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
                     .environmentObject(viewModel)
                     .padding(.bottom, 20)
 
-                Button("Start Time") {
-                    viewModel.startTimer(duration: 10)
-                }
-            }
+                Spacer()
 
-            HStack {
-                Button("Next") {
-                    withAnimation {
-                        currentStep += 1
+                if viewModel.currentTime > 0 {
+                    HStack {
+                        Button("Next") {
+                            withAnimation {
+                                currentStep += 1
+                            }
+                        }
+                        .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                    }
+                } else {
+                    HStack {
+                        Button("Start Time") {
+                            viewModel.startTimer(duration: 10)
+                        }
+                        .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
                     }
                 }
-                .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
-
-                Button("<") {
-                    withAnimation {
-                        currentStep -= 1
-                    }
-                }
-                .disabled(currentStep == 0)
-                .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
             }
-
-            Spacer()
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        .padding()
     }
 }
 
@@ -168,104 +147,4 @@ struct PostRunView: View {
             MultiStepForm(views, viewModel: SignupFormInfo(), currentPage: $currentPage)
         }
     }
-
-//    public var body: some View {
-//        ZStack {
-//            Color.white
-//                .ignoresSafeArea()
-//
-//            VStack {
-//                let currentExercise = postRunEasyDay[viewModel.currentExerciseIndex]
-//                Text("\(String(describing: currentExercise.type)) for \(String(describing: currentExercise.parameter))")
-//                switch currentExercise.parameter {
-//                case let .count(count):
-//                    FormBarView(progress: $viewModel.currentExerciseIndex, steps: viewModel.numberOfExercises)
-//                        .frame(width: 300, height: 50)
-//
-//                    Text("Do \(count)")
-//                case .time:
-//                    FormBarView(progress: $viewModel.currentExerciseIndex, steps: viewModel.numberOfExercises)
-//                        .frame(width: 300, height: 50)
-//
-//                    PostRunTimerRing(time: $viewModel.currentTime, duration: 10, size: 150)
-//                        .environmentObject(viewModel)
-//                }
-//
-//                if let exerciseInfo = postRunExerciseReference[currentExercise.type] {
-//                    Text(exerciseInfo.name)
-//                        .font(.title)
-//                        .padding()
-//                    Text(exerciseInfo.description)
-//                        .padding()
-//                }
-//                Spacer()
-//
-//                VStack {
-//                    if viewModel.currentExerciseIndex == viewModel.numberOfExercises - 1 {
-//                        Button {
-//                            isFinished = true
-//                        } label: {
-//                            Text("Done")
-//                                .frame(maxWidth: .infinity)
-//                        }
-//                        .buttonStyle(EnduraButtonStyle())
-//                    } else {
-//                        switch currentExercise.parameter {
-//                        case .count:
-//                            Button {
-//                                viewModel.currentExerciseIndex += 1
-//                                viewModel.isDoneWithTimerExercise = false
-//                            } label: {
-//                                Text("Next")
-//                                    .frame(maxWidth: .infinity)
-//                            }
-//                            .buttonStyle(EnduraButtonStyle())
-//
-//                        case .time:
-//                            if viewModel.currentTime > 0 {
-//                                Button {
-//                                    viewModel.currentTime = 0
-//                                    viewModel.timer?.invalidate()
-//                                } label: {
-//                                    Text("Cancel")
-//                                        .frame(maxWidth: .infinity)
-//                                }
-//                                .buttonStyle(EnduraButtonStyle())
-//
-//                                Button {
-//                                    viewModel.currentExerciseIndex += 1
-//                                    viewModel.isDoneWithTimerExercise = false
-//                                } label: {
-//                                    Text("Next")
-//                                        .frame(maxWidth: .infinity)
-//                                }
-//                                .disabled(!viewModel.isDoneWithTimerExercise)
-//                                .buttonStyle(EnduraButtonStyle(disabled: !viewModel.isDoneWithTimerExercise))
-//                            }
-//                        }
-//                    }
-//
-//                    if viewModel.currentTime <= 0 {
-//                        Button {
-//                            viewModel.startTimer(duration: 10)
-//                        } label: {
-//                            Text("Start")
-//                                .frame(maxWidth: .infinity)
-//                        }
-//                        .buttonStyle(EnduraButtonStyle())
-//                        .frame(maxWidth: .infinity)
-//                    }
-//                }
-//                .padding()
-//                .fullScreenCover(isPresented: $isFinished) {
-//                    PostRunFinishedView()
-//                }
-//            }
-//            .frame(
-//                maxWidth: .infinity,
-//                maxHeight: .infinity,
-//                alignment: .center
-//            )
-//        }
-//    }
 }
