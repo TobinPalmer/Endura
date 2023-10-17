@@ -42,12 +42,12 @@ public enum WorkoutGoalData: Codable, Hashable {
         case let .distance(distance):
             return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .distance(distance, .miles))))
         case let .time(time):
-            return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .time(time, .minutes))))
+            return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .time(time, .seconds))))
         case let .pacer(distance, time):
             return WorkoutPlan(.pacer(PacerWorkout(
                 activity: .running,
                 distance: Measurement(value: distance, unit: UnitLength.miles),
-                time: Measurement(value: time, unit: UnitDuration.minutes)
+                time: Measurement(value: time, unit: UnitDuration.seconds)
             )))
         case let .custom(data):
             return WorkoutPlan(.custom(CustomWorkout(
@@ -171,7 +171,7 @@ public enum CustomWorkoutStepGoal: Codable, Hashable {
         case let .distance(distance):
             return .distance(distance, .miles)
         case let .time(time):
-            return .time(time, .minutes)
+            return .time(time, .seconds)
         }
     }
 }

@@ -18,6 +18,17 @@ import WidgetKit
                 )
             }
             updateWidgetData()
+            if let currentMonth = monthlyTrainingData[.current] {
+                var workoutsToSchedule: [YearMonthDay: WorkoutGoalData] = [:]
+                for i in 0 ... 1 {
+                    let date = YearMonthDay.current.addDay(value: i)
+                    let goals = currentMonth.days[date]?.goals ?? []
+                    for goal in goals {
+                        workoutsToSchedule.updateValue(goal.workout, forKey: date)
+                    }
+                }
+                WatchWorkoutUtils.updateWorkouts(workoutsToSchedule)
+            }
 //            saveTrainingWork?.cancel()
 //            saveTrainingWork = DispatchWorkItem {
 //                for (month, _) in self.monthlyTrainingData {
