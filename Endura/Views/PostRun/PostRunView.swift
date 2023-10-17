@@ -111,7 +111,9 @@ struct PostRunExerciseView: View {
                                 currentStep += 1
                             }
                         }
-                        .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                        .buttonStyle(EnduraNewButtonStyle(backgroundColor: viewModel
+                                .currentTime >= time ? .accentColor : .gray))
+                        .disabled(viewModel.currentTime < time)
                     }
                 } else {
                     HStack {
