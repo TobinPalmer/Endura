@@ -24,16 +24,31 @@ public enum TrainingGenerationDataUtils {
         return ""
     }
 
-    public static func encodeTrainingSettings(_ settings: TrainingSettingsDataModel) -> String {
-        do {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-            let data = try encoder.encode(settings)
-            return String(data: data, encoding: .utf8) ?? ""
-        } catch {
-            Global.log.error("Error encoding training settings: \(error)")
+    public static func encodeTrainingSettings(_ settings: TrainingSettingsDataModel,
+                                              _ endGoal: TrainingEndGoalData) -> String
+    {
+        """
+        Paces:
+        {
+            "easy": \(endGoal.pace + 120)
+            "medium": \(endGoal.pace + 90),
+            "tempo": \(endGoal.pace + 30),
+            "workout": \(endGoal.pace),
         }
-        return ""
+
+        The athlete is FULLY UNAVAILABLE on the following days (these are the ONLY days that should be rest days):
+        \(settings.dayAvailabilities.map {
+            if let day = WeekDay(rawValue: $0.key) {
+                return $0.value ? "" : "\(day.getLongName())"
+            }
+            return ""
+        }
+        .filter {
+            !$0.isEmpty
+        }
+        .joined(separator: ", "))
+
+        """
     }
 
     public static func encodeTrainingPlan(_ monthlyData: [YearMonth: MonthlyTrainingData]) -> String? {

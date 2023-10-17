@@ -84,19 +84,21 @@ import SwiftUICalendar
             activeUser.training.endTrainingGoal!
         )
         let settings = TrainingGenerationDataUtils.encodeTrainingSettings(
-            activeUser.settings.data.training
+            activeUser.settings.data.training,
+            activeUser.training.endTrainingGoal!
         )
+
         let context = TrainingGenerationPromptUtils.basicContext(
             athleteInfo: athleteInfo,
             goal: endGoal,
-            settings: settings
+            trainingInfo: settings
         ) + TrainingGenerationPromptUtils.contextForDailyTrainingData()
 
         let inputs = TrainingGenerationPromptUtils.getDaysInWeeksBetween(
             .current,
             goal.date
         ).map {
-            TrainingGenerationPromptUtils.promptForDailyTrainingData($0)
+            TrainingGenerationPromptUtils.promptForDailyTrainingData($0, extraReference: settings)
         }
 
         if let outputs = await TrainingGenerationUtils.generateMultiOutputWithTrainingAI(

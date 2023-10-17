@@ -8,21 +8,20 @@ public enum TrainingGenerationPromptUtils {
             - Rest days should only every be after long runs or workouts but do not have to be after both.
             - No rest days should be after easy or medium runs.
             - Workouts and long runs should never be back to back.
-            - Overall schedule should align rest days to be on the athletes unavailable days.
-            - Fewer rest days are better if the athlete can handle it.
-            - Try to only have as many rest days as unavailable days.
+            - On days the athlete is unavailable they should ALWAYS have a rest day.
+            - The only rest days the athlete should have are on days they are unavailable, no other rest days should be given.
         """
 
     private static let generalWorkoutRules =
         """
             - Easy and medium days can be more distance than the goal distance but the pace should always be slower.
             - They should never run their goal pace besides workouts.
-             - Tempo runs should not be goal pace but 30 seconds slower than goal pace.
-             - Long runs should never be more than 1.5x the goal distance.
-             - Easy runs should be 1-2 minutes slower than goal pace.
-             - Medium runs should be 30 seconds to 1 minute slower than goal pace.
-             - Workouts should be at goal pace or faster.
-             - Workouts should be 1-2 miles shorter than the goal distance.
+            - Tempo runs should not be goal pace but 30 seconds slower than goal pace.
+            - Long runs should never be more than 1.5x the goal distance.
+            - Easy runs should be easy pace.
+            - Medium runs should be medium pace.
+            - Workouts should be at goal pace or slightly faster.
+            - Workouts should be 1-2 miles shorter than the goal distance.
         """
 
     private static let formattingRules =
@@ -30,7 +29,7 @@ public enum TrainingGenerationPromptUtils {
         For the output format every [type](description?) means that the full []() should be replaced with a value that fits the optional description and is the right type.
         """
 
-    public static func basicContext(athleteInfo: String, goal: String, settings: String) -> String {
+    public static func basicContext(athleteInfo: String, goal: String, trainingInfo: String) -> String {
         """
             You are a training ai that is dedicated to help the running athlete reach their goals.
             Using the given info you must generate a training plan that will get them ideally to succeed with their goal by the date specified.
@@ -42,7 +41,8 @@ public enum TrainingGenerationPromptUtils {
             \(goal)
 
             Training info:
-            \(settings)
+            (The start of the week is monday, so 0 is monday and 6 is sunday, the athlete is unavailable on the days specified as false)
+            \(trainingInfo)
         """
     }
 
@@ -85,43 +85,30 @@ public enum TrainingGenerationPromptUtils {
         """
     }
 
-    public static func promptForDailyTrainingData(_ days: String) -> String {
+    public static func promptForDailyTrainingData(_ days: String, extraReference: String) -> String {
         """
+        Important Extra Reference:
+        \(extraReference)
+
         For these all of these days: \(days) return a raw json that follows this format (note: \(formattingRules)):
         {
           "[yyyy-mm-dd]": {
             "date": "[yyyy-mm-dd](same as day)",
-            "type": "[enum: [Rest, Easy, Medium, Workout, Long]](the type of day this is, no goals needed for rest days)",
+            "type": "[enum: [Rest, Easy, Medium, Workout, Long]](the type of day this is, no goals needed for rest days, only one rest day a week)",
             "goals": [
               {
                 "date": "[yyyy-mm-dd](same as day)",
                 "type": "[enum: [None, Easy, Medium, Long, Workout]]",
                 "workout": {
-                  "[enumValue: workout]": {[enumValue: workout](see below for workout enum values)}
+                    "pacer": {
+                        "distance": "[number](miles)",
+                        "time": "[number](matching training day pace with some variation * distance)"
+                    }
                 },
                 "description": "[string](short 1-2 sentence description of run and purpose)"
               }
             ]
           }
-        }
-
-        For enum value of workout, it should match the format of only one of the following:
-          "open": {},
-          "distance": {
-            "distance": "[number](miles)"
-          },
-          "time": {
-            "time": "[number](seconds)"
-          },
-          "pacer": {
-            "distance": "[number](miles)",
-            "time": "[number](seconds to complete distance)"
-          }
-        The enumValue for example would in the end look like this:
-        "workout": {
-            "distance": {
-                "distance": 5
-            }
         }
 
         Output should be { "[yyyy-mm-dd]": { ... } } for each day in \(days) as a raw json ONLY, no extra text.
