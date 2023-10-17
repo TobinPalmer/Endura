@@ -31,7 +31,9 @@ import SwiftUI
                     if let profileImage = await userData.fetchProfileImage() {
                         userData.profileImage = profileImage
                     }
-                    users.append((document.documentID, userData))
+                    if !users.contains(where: { $0.0 == document.documentID }) {
+                        users.append((document.documentID, userData))
+                    }
                 } catch {
                     Global.log.error("Error decoding user: \(error)")
                 }
@@ -47,37 +49,34 @@ struct FindUsersView: View {
     @StateObject private var viewModel = FindUsersViewModel()
 
     var body: some View {
-        VStack {
-            Text("Find Users View")
-
-            TextField("Search", text: $viewModel.searchText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-                .onReceive(
-                    viewModel.$searchText
-                        .debounce(for: .seconds(0.25), scheduler: DispatchQueue.main)
-                ) {
-                    viewModel.users = []
-                    Task {
-                        await viewModel.fetchUsers(usersCache: usersCache)
-                    }
-                    guard !$0.isEmpty else {
-                        return
-                    }
+        List(viewModel.users.sorted {
+            $0.1.name < $1.1.name
+        }, id: \.0) { uid, user in
+            UserProfileLink(uid) {
+                HStack {
+                    ProfileImage(uid, size: 50)
+                    Text(user.name)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 }
-
-            List(viewModel.users.sorted {
-                $0.1.name < $1.1.name
-            }, id: \.0) { uid, user in
-                UserProfileLink(uid) {
-                    HStack {
-                        ProfileImage(uid, size: 50)
-                        Text(user.name)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+            }
+        }
+        .searchable(text: $viewModel.searchText)
+        .onReceive(
+            viewModel.$searchText
+                .debounce(for: .seconds(0.25), scheduler: DispatchQueue.main)
+        ) {
+            if viewModel.searchText.isEmpty {
+                return
+            } else {
+                viewModel.users = []
+                Task {
+                    await viewModel.fetchUsers(usersCache: usersCache)
+                }
+                guard !$0.isEmpty else {
+                    return
                 }
             }
         }
