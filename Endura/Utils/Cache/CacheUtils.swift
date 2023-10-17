@@ -75,6 +75,20 @@ public enum CacheUtils {
         }
     }
 
+    public static func deleteListedObject<T: NSManagedObject>(_: T.Type, predicate: NSPredicate?) {
+        let fetchRequest: NSFetchRequest<T> = T.fetchRequest() as! NSFetchRequest<T>
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchLimit = 1
+        do {
+            if let object = try context.fetch(fetchRequest).first {
+                context.delete(object)
+                try context.save()
+            }
+        } catch {
+            Global.log.error("Error deleting listed object: \(error)")
+        }
+    }
+
     public static func addListedObject<T: NSManagedObject>(_ object: T) {
         context.perform {
             context.insert(object)

@@ -18,23 +18,23 @@ import WidgetKit
                 )
             }
             updateWidgetData()
-            saveTrainingWork?.cancel()
-            saveTrainingWork = DispatchWorkItem {
-                for (month, _) in self.monthlyTrainingData {
-                    if oldValue[month] != self.monthlyTrainingData[month] {
-                        if self.fetched.contains(month) {
-                            if MonthlyTrainingData(date: month) != self.monthlyTrainingData[month] {
-                                self.saveTrainingMonth(month)
-                            }
-                        } else {
-                            self.loadTrainingMonth(month)
-                        }
-                    }
-                }
-            }
-            if let saveSettingsWork = saveTrainingWork {
-                DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: saveSettingsWork)
-            }
+//            saveTrainingWork?.cancel()
+//            saveTrainingWork = DispatchWorkItem {
+//                for (month, _) in self.monthlyTrainingData {
+//                    if oldValue[month] != self.monthlyTrainingData[month] {
+//                        if self.fetched.contains(month) {
+//                            if MonthlyTrainingData(date: month) != self.monthlyTrainingData[month] {
+//                                self.saveTrainingMonth(month)
+//                            }
+//                        } else {
+//                            self.loadTrainingMonth(month)
+//                        }
+//                    }
+//                }
+//            }
+//            if let saveSettingsWork = saveTrainingWork {
+//                DispatchQueue.global().asyncAfter(deadline: .now() + 1, execute: saveSettingsWork)
+//            }
         }
     }
 
@@ -53,13 +53,12 @@ import WidgetKit
         }
     }
 
-    @Published private var loadedMonths: [YearMonth] = []
-
     init() async throws {
         let cachedMonthlyTrainingData = CacheUtils.fetchListedObject(MonthlyTrainingCache.self)
         for cachedData in cachedMonthlyTrainingData {
             let data = MonthlyTrainingData.fromCache(cachedData)
-            monthlyTrainingData[data.date] = data
+            print("Loaded training month \(data.date) from cache")
+            monthlyTrainingData.updateValue(data, forKey: data.date)
         }
 
         loadTrainingMonth(.current)
@@ -71,54 +70,6 @@ import WidgetKit
         fetchEndGoal { data in
             self.endTrainingGoal = data
         }
-
-//        endTrainingGoal = TrainingEndGoalData(
-//            date: YearMonthDay(year: 2023, month: 11, day: 1),
-//            startDate: YearMonthDay(year: 2023, month: 6, day: 2),
-//            distance: 3,
-//            time: 21.2 * 60,
-//            currentTime: 22.5 * 60,
-//            completed: false
-//        )
-//        saveEndGoal()
-
-//        var today = getTrainingDay(.current)
-//        today.goals = [TrainingGoalData.run(
-//            data: RunningTrainingGoalData(
-//                type: .normal,
-//                distance: 2.5,
-//                pace: 8,
-//                time: 45,
-//                progress: TrainingGoalProgressData(completed: true, activity: nil)
-//            )
-//        )]
-//        setTrainingDay(.current, today)
-//        saveTrainingMonth(.current)
-
-//        monthlyTrainingData[.current] = MonthlyTrainingData(date: .current, totalDistance: 0, totalDuration: 0, days:
-//        [
-//            .current: DailyTrainingData(date: .current, type: .long, goals: [TrainingGoalData.routine(
-//                type: .warmup,
-//                difficulty: .easy,
-//                time: 4,
-//                count: 5
-//            ),
-//                .run(type: .normal,
-//                    distance: 5.03,
-//                    pace: 7,
-//                    time: 32),
-//                .routine(type: .postrun,
-//                    difficulty: .easy,
-//                    time: 8,
-//                    count: 10)]),
-//            .current.addDay(value: -6): DailyTrainingData(date: .current.addDay(value: -6), type: .workout, goals: []),
-//            .current.addDay(value: -5): DailyTrainingData(date: .current.addDay(value: -5), type: .easy, goals: [TrainingGoalData.run(
-//                type: .normal,
-//                distance: 5.03,
-//                pace: 7,
-//                time: 32
-//            )]),
-//        ])
     }
 
     public func moveGoal(_ date: YearMonthDay, _ indices: IndexSet, _ newOffset: Int) {
@@ -170,20 +121,23 @@ import WidgetKit
     public func loadTrainingMonth(_ date: YearMonth) {
         for i in -1 ... 1 {
             let date = date.addMonth(value: i)
-            if !loadedMonths.contains(date) {
-                loadedMonths.append(date)
+            if !fetched.contains(date) {
                 Task {
                     let data = await TrainingUtils.getTrainingMonthData(date)
                     DispatchQueue.main.async {
+                        CacheUtils.deleteListedObject(
+                            MonthlyTrainingCache.self,
+                            predicate: CacheUtils.predicateMatchingField("date", value: date.toCache())
+                        )
                         if let data = data {
-                            self.monthlyTrainingData[data.date] = data
+                            self.monthlyTrainingData.updateValue(data, forKey: data.date)
                         } else if self.monthlyTrainingData[date] == nil {
-                            self.monthlyTrainingData[date] = MonthlyTrainingData(
+                            self.monthlyTrainingData.updateValue(MonthlyTrainingData(
                                 date: date,
                                 totalDistance: 0,
                                 totalDuration: 0,
                                 days: [:]
-                            )
+                            ), forKey: date)
                         }
                         self.fetched.append(date)
                     }
@@ -194,6 +148,7 @@ import WidgetKit
 
     public func saveTrainingMonth(_ date: YearMonth) {
         if let data = monthlyTrainingData[date] {
+            print("Saving training month \(date)")
             TrainingUtils.saveTrainingMonthData(data)
         }
     }
@@ -212,6 +167,7 @@ import WidgetKit
         )
         monthTrainingData.days[date] = data
         monthlyTrainingData[date.getYearMonth()] = monthTrainingData
+        saveTrainingMonth(date.getYearMonth())
     }
 
     public func updateTrainingDay(_ date: YearMonthDay, _ data: DailyTrainingData) {
