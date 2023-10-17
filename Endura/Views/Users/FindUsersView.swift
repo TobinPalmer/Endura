@@ -32,7 +32,9 @@ import SwiftUI
                         userData.profileImage = profileImage
                     }
                     if !users.contains(where: { $0.0 == document.documentID }) {
-                        users.append((document.documentID, userData))
+                        withAnimation {
+                            users.append((document.documentID, userData))
+                        }
                     }
                 } catch {
                     Global.log.error("Error decoding user: \(error)")
@@ -60,8 +62,10 @@ struct FindUsersView: View {
                         .fontWeight(.semibold)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 }
+                .animation(.none)
                 .frame(maxWidth: .infinity, alignment: .topLeading)
             }
+            .animation(.easeInOut)
         }
         .searchable(text: $viewModel.searchText)
         .onReceive(
