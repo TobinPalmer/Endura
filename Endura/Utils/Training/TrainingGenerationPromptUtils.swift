@@ -155,13 +155,11 @@ public enum TrainingGenerationPromptUtils {
         )]
     }
 
-    public static func getDaysInWeeksBetween(_ startDate: YearMonthDay, _ endDate: YearMonthDay) -> [String] {
+    public static func getDaysInWeeksBetween(_ startDate: YearMonthDay, _ endDate: YearMonthDay) -> [[YearMonthDay]] {
         let daysBetween = Calendar.current.dateComponents([.day], from: startDate.getDate(), to: endDate.getDate()).day!
         let days = (0 ... daysBetween).map { day in
-            Calendar.current.date(byAdding: .day, value: day, to: startDate.getDate())!.toYearMonthDay().toCache()
+            Calendar.current.date(byAdding: .day, value: day, to: startDate.getDate())!.toYearMonthDay()
         }
-        return days.chunked(into: 7).map { days in
-            "\(days)"
-        }
+        return days.chunked(into: 7)
     }
 }

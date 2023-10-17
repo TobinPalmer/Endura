@@ -98,7 +98,10 @@ import SwiftUICalendar
             .current,
             goal.date
         ).map {
-            TrainingGenerationPromptUtils.promptForDailyTrainingData($0, extraReference: settings)
+            TrainingGenerationPromptUtils.promptForDailyTrainingData(
+                $0[0].toCache(),
+                extraReference: settings + "\n The first day below is a \($0[0].dayOfWeek)"
+            )
         }
 
         if let outputs = await TrainingGenerationUtils.generateMultiOutputWithTrainingAI(
