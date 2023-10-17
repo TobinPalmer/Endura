@@ -38,20 +38,22 @@ struct SignupStepFiveView: View {
                         .foregroundColor(Color("TextMuted"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.caption)
-                        .border(.blue)
 
-                    Picker("Weight", selection: $viewModel.weight) {
-                        ForEach(30 ... 800, id: \.self) { number in
-                            Text("\(number)")
+                    Picker("Weight", selection: Binding(
+                        get: { viewModel.weight },
+                        set: { viewModel.weight = $0 }
+                    )) {
+                        ForEach(0 ..< 300) { index in
+                            Text("\(Double(index).removeTrailingZeros()) lbs")
+                                .foregroundColor(Color("Text"))
+                                .font(.title3)
+                                .tag(Double(index))
                         }
                     }
                     .pickerStyle(WheelPickerStyle())
                     .scaledToFit()
                     .labelsHidden()
-                    .border(Color.green, width: 2)
-                    .padding(.top, -50)
                 }
-                .border(.red)
 
                 Spacer()
 
