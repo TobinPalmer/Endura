@@ -35,6 +35,8 @@ struct DashboardView: View {
                         .frame(height: 200)
 
                     TrainingGoalList()
+
+                    TrainingGoalList(selectedDate: .constant(.current.addDay(value: 1)))
                 }
                 .enduraPadding()
             }
