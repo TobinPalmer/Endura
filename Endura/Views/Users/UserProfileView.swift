@@ -57,24 +57,53 @@ struct UserProfileView: View {
             if let user = databaseCache.getUserData(uid) {
                 Text(user.name)
                     .font(.title)
+                    .fontColor(.primary)
+                    .fontWeight(.bold)
+                    .padding(.top, 10)
 
-                if let activeUser = activeUser.data {
-                    if activeUser.friends.contains(uid) {
-                        Text("Friends")
-                    } else {
-                        Button("Add Friend") {
-                            Task {
-                                NotificationsModel.sendNotification(
-                                    to: uid,
-                                    data: NotificationData(type: .friendRequest, uid: activeUser.uid, timestamp: Date())
-                                )
+                Text("\(user.friends.count) Friend\(user.friends.count == 1 ? "" : "s")")
+                    .font(.body)
+                    .fontColor(.secondary)
+
+                VStack {
+                    if let activeUser = activeUser.data {
+                        if activeUser.friends.contains(uid) {
+                            Button("Friends") {}
+                                .buttonStyle(EnduraNewButtonStyle())
+                                .font(.title3)
+                                .foregroundColor(.secondary)
+                                .disabled(true)
+                        } else {
+                            Button("Send Friend Request") {
+                                Task {
+                                    NotificationsModel.sendNotification(
+                                        to: uid,
+                                        data: NotificationData(
+                                            type: .friendRequest,
+                                            uid: activeUser.uid,
+                                            timestamp: Date()
+                                        )
+                                    )
+                                }
                             }
+                            .buttonStyle(EnduraNewButtonStyle())
+                            .font(.title3)
                         }
                     }
                 }
+                .frame(maxWidth: 300)
+
+                Text("This profile is private, friend this user to see more.")
+                    .font(.title3)
+                    .fontColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 20)
+
+                Spacer()
             } else {
-                Text("Loading...")
+                ProgressView()
             }
         }
+        .enduraPadding()
     }
 }
