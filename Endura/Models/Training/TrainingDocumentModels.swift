@@ -65,4 +65,19 @@ public struct TrainingRunGoalDataDocument: Codable, Hashable {
             progress: progress ?? .init(completed: false, activity: nil)
         )
     }
+
+    public func getTitle() -> String {
+        switch workout {
+        case .open:
+            return "Open Run"
+        case let .distance(distance):
+            return "\(FormattingUtils.formatMiles(distance)) Mile Run"
+        case let .time(time):
+            return "\(FormattingUtils.secondsToFormattedTime(time)) Run"
+        case let .pacer(distance, time):
+            return "\(FormattingUtils.formatMiles(distance)) Mile Run in \(FormattingUtils.secondsToFormattedTime(time))"
+        case let .custom(data):
+            return "Custom Workout"
+        }
+    }
 }

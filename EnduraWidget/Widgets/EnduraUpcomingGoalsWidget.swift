@@ -54,7 +54,14 @@ struct EnduraUpcomingGoalsWidgetView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)
         } else {
-            Text("COOL" + String(describing: viewModel.trainingDay.goals[0].progress))
+            let goal = viewModel.trainingDay.goals[0]
+            VStack(alignment: .leading) {
+                Text(goal.getTitle())
+                    .font(.headline)
+                    .fontWeight(.bold)
+                Text(goal.description)
+                    .font(.subheadline)
+            }
         }
     }
 }
