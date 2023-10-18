@@ -28,6 +28,15 @@ struct ColoredBadge: View {
         color = trainingType.getColor()
     }
 
+    init(_ trainingType: RoutineDifficulty) {
+        if trainingType == .none {
+            text = ""
+        } else {
+            text = trainingType.rawValue
+        }
+        color = trainingType.getColor()
+    }
+
     var body: some View {
         if !text.isEmpty {
             Text(text)

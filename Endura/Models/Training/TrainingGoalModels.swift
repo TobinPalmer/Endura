@@ -68,4 +68,29 @@ public struct TrainingRunGoalData: Hashable {
             return "Custom Workout"
         }
     }
+
+    public func getRoutine(routineType: RoutineType) -> TrainingRoutineGoalData? {
+        var difficulty = RoutineDifficulty.none
+        switch type {
+        case .none:
+            return nil
+        case .easy:
+            difficulty = .easy
+        case .normal:
+            difficulty = .medium
+        case .long,
+             .workout:
+            difficulty = .hard
+        }
+        switch routineType {
+        case .warmup:
+            return TrainingRoutineGoalData(
+                type: .warmup,
+                difficulty: difficulty,
+                progress: .init(completed: false, activity: nil)
+            )
+        case .postrun:
+            return preRoutine
+        }
+    }
 }

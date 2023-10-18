@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 public enum PostRunExerciseBenifit: String {
     case legs = "Legs"
@@ -35,4 +36,17 @@ public enum RoutineDifficulty: String, Codable {
     case medium = "Medium"
     case hard = "Hard"
     case none
+
+    public func getColor() -> Color {
+        switch self {
+        case .easy:
+            return .green
+        case .medium:
+            return .yellow
+        case .hard:
+            return .red
+        case .none:
+            return .clear
+        }
+    }
 }

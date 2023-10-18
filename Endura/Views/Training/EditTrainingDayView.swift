@@ -22,6 +22,30 @@ struct EditTrainingGoalLink<Label: View>: View {
         .sheet(isPresented: $showEditGoal) {
             NavigationView {
                 VStack {
+                    Toggle("Warmup", isOn: Binding(
+                        get: { goal.preRoutine != nil },
+                        set: { newValue in
+                            var goal = goal
+                            if newValue {
+                                goal.preRoutine = goal.getRoutine(routineType: .warmup)
+                                activeUser.training.updateTrainingGoal(goal.date, goal)
+                            } else {
+                                goal.preRoutine = nil
+                            }
+                        }
+                    ))
+                    Toggle("Postrun", isOn: Binding(
+                        get: { goal.postRoutine != nil },
+                        set: { newValue in
+                            var goal = goal
+                            if newValue {
+                                goal.postRoutine = goal.getRoutine(routineType: .postrun)
+                                activeUser.training.updateTrainingGoal(goal.date, goal)
+                            } else {
+                                goal.postRoutine = nil
+                            }
+                        }
+                    ))
                     EditTrainingRunWorkout(goal: Binding(
                         get: { goal.workout },
                         set: { newValue in

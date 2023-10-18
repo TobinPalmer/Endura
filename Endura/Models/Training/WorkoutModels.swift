@@ -61,15 +61,15 @@ public enum WorkoutGoalData: Codable, Hashable {
     public func getWorkoutIcon() -> String {
         switch self {
         case .open:
-            return "questionmark.circle"
+            return "circle"
         case .distance:
-            return "figure.walk"
+            return "figure.run"
         case .time:
             return "clock"
         case .pacer:
-            return "figure.walk"
+            return "timer"
         case .custom:
-            return "figure.walk"
+            return "gearshape"
         }
     }
 
