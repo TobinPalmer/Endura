@@ -5,7 +5,7 @@ import SwiftUICalendar
 struct EditTrainingGoalLink<Label: View>: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     @State private var showEditGoal = false
-    var goal: TrainingRunGoalData
+    @State var goal: TrainingRunGoalData
     private var content: () -> Label
 
     init(goal: TrainingRunGoalData, @ViewBuilder content: @escaping () -> Label) {
@@ -25,7 +25,6 @@ struct EditTrainingGoalLink<Label: View>: View {
                     Toggle("Warmup", isOn: Binding(
                         get: { goal.preRoutine != nil },
                         set: { newValue in
-                            var goal = goal
                             if newValue {
                                 goal.preRoutine = goal.getRoutine(routineType: .warmup)
                                 activeUser.training.updateTrainingGoal(goal.date, goal)
@@ -37,7 +36,6 @@ struct EditTrainingGoalLink<Label: View>: View {
                     Toggle("Postrun", isOn: Binding(
                         get: { goal.postRoutine != nil },
                         set: { newValue in
-                            var goal = goal
                             if newValue {
                                 goal.postRoutine = goal.getRoutine(routineType: .postrun)
                                 activeUser.training.updateTrainingGoal(goal.date, goal)
