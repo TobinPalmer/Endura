@@ -32,7 +32,10 @@ struct MultiStepForm<T>: View where T: ObservableObject {
                     }
                     .frame(width: 25, height: 25)
 
-                    FormBarView(progress: $currentPage, steps: steps.count, width: UIScreen.main.bounds.width - 50)
+                    let pageBinding = Binding<Int>(
+                        get: { currentPage + 1 }, set: { currentPage = $0 }
+                    )
+                    FormBarView(progress: pageBinding, steps: steps.count, width: UIScreen.main.bounds.width - 50)
                 }
             }
             .zIndex(10)

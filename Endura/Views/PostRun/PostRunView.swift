@@ -65,6 +65,7 @@ private final class PostRunExerciseViewModel: ObservableObject {
 struct PostRunExerciseView: View {
     @ObservedObject private var viewModel: PostRunExerciseViewModel
     @Binding private var currentStep: Int
+    @State private var finished: Bool = false
 
     fileprivate init(viewModel: PostRunExerciseViewModel, currentStep: Binding<Int>) {
         _viewModel = ObservedObject(initialValue: viewModel)
@@ -75,53 +76,67 @@ struct PostRunExerciseView: View {
         let exerciseReference = postRunExerciseReference[viewModel.exercise.type]
 
         VStack(spacing: 20) {
-            Spacer()
-                .frame(height: 50)
-
-            Text(exerciseReference?.name ?? "")
-                .font(.title)
-                .padding()
-
-            Spacer()
-                .frame(height: 50)
-
-            switch viewModel.exercise.parameter {
-            case let .count(count):
+            Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
+            if finished {
+                Text("FINISHED GG")
+            } else {
                 Spacer()
+                    .frame(height: 50)
 
-                HStack {
-                    Button("Next") {
-                        withAnimation {
-                            currentStep += 1
-                        }
-                    }
-                    .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
-                }
-            case let .time(time):
-                let _ = print(viewModel.currentTime, time)
-                PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
-                    .environmentObject(viewModel)
-                    .padding(.bottom, 20)
+                Text(exerciseReference?.name ?? "")
+                    .font(.title)
+                    .padding()
 
                 Spacer()
+                    .frame(height: 50)
 
-                if viewModel.currentTime > 0 {
+                switch viewModel.exercise.parameter {
+                case let .count(count):
+                    Text("Do \(count) \(exerciseReference?.name ?? "")")
+                    Spacer()
+
                     HStack {
                         Button("Next") {
                             withAnimation {
-                                currentStep += 1
+                                if currentStep == postRunEasyDay.count {
+                                    finished = true
+                                } else {
+                                    currentStep += 1
+                                }
                             }
                         }
-                        .buttonStyle(EnduraNewButtonStyle(backgroundColor: viewModel
-                                .currentTime >= time ? .accentColor : .gray))
-                        .disabled(viewModel.currentTime < time)
-                    }
-                } else {
-                    HStack {
-                        Button("Start Time") {
-                            viewModel.startTimer(duration: time)
-                        }
                         .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                    }
+                case let .time(time):
+                    Text("Do \(time) seconds of \(exerciseReference?.name ?? "")")
+                    PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
+                        .environmentObject(viewModel)
+                        .padding(.bottom, 20)
+
+                    Spacer()
+
+                    if viewModel.currentTime > 0 {
+                        HStack {
+                            Button("Next") {
+                                withAnimation {
+                                    if currentStep == postRunEasyDay.count {
+                                        finished = true
+                                    } else {
+                                        currentStep += 1
+                                    }
+                                }
+                            }
+                            .buttonStyle(EnduraNewButtonStyle(backgroundColor: viewModel
+                                    .currentTime >= time ? .accentColor : .gray))
+                            .disabled(viewModel.currentTime < time)
+                        }
+                    } else {
+                        HStack {
+                            Button("Start Time") {
+                                viewModel.startTimer(duration: time)
+                            }
+                            .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                        }
                     }
                 }
             }
@@ -140,14 +155,15 @@ struct PostRunView: View {
             Color.white
                 .ignoresSafeArea()
 
-            let views: [AnyView] = postRunEasyDay.map { exercise in
+            var views: [AnyView] = postRunEasyDay.map { exercise in
                 AnyView(PostRunExerciseView(
                     viewModel: PostRunExerciseViewModel(exercise: exercise),
                     currentStep: $currentPage
                 ))
             }
+            let _ = views.append(AnyView(Text("FINISHED")))
 
-            MultiStepForm(views, viewModel: SignupFormInfo(), currentPage: $currentPage)
+            MultiStepForm(views, viewModel: PostRunViewModel(), currentPage: $currentPage)
         }
     }
 }
