@@ -65,6 +65,7 @@ public enum RoutineExerciseType: Hashable {
     case sideLunge
     case backAndToTheSideLunge
     case backwardLunge
+    case squats
     case squattingCalfRaisesIn90DegreeSquatPosition
     case legRaiseTo90DegreesWithBentKnee
     case kneeCirclesForward

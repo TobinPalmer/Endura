@@ -115,6 +115,16 @@ public let routineExerciseReference: [RoutineExerciseType: RoutineExerciseInfo] 
         exerciseDescription: "Step back with one leg and perform a lunge by bending both knees to a 90-degree angle. Return to the starting position and repeat on the other leg.",
         reference: "https://www.verywellfit.com/lunges-for-beginners-2911076"
     ),
+    .squats: RoutineExerciseInfo(
+        easy: .count(15),
+        medium: .count(30),
+        hard: .count(50),
+        name: "Squats",
+        benefit: .legs,
+        description: "Squats are a great lower body exercise that target your quadriceps, hamstrings, and glutes. They also work your core and improve overall leg strength.",
+        exerciseDescription: "Stand with your feet shoulder-width apart. Lower your body by bending your knees and pushing your hips back as if you're sitting in a chair. Keep your back straight and chest up. Go as low as you can while maintaining good form, and then push through your heels to stand back up.",
+        reference: "https://www.verywellfit.com/the-basic-squat-2911406"
+    ),
     .squattingCalfRaisesIn90DegreeSquatPosition: RoutineExerciseInfo(
         easy: .count(10),
         medium: .count(15),
