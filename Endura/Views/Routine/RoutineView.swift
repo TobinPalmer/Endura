@@ -2,10 +2,10 @@ import Foundation
 import SwiftUI
 
 private var postRunEasyDay: [RoutineExercise] = [
-    RoutineExercise(.frontPlank, .time(3)),
-    RoutineExercise(.pushups, .count(10)),
-    RoutineExercise(.squats, .count(10)),
-    RoutineExercise(.forwardLunge, .count(10)),
+    RoutineExercise(.frontPlank, 3),
+    RoutineExercise(.pushups, 10),
+    RoutineExercise(.squats, 10),
+    RoutineExercise(.forwardLunge, 10),
 ]
 
 private final class RoutineViewModel: ObservableObject {
@@ -89,9 +89,9 @@ struct RoutineExerciseView: View {
                     Spacer()
                         .frame(height: 50)
 
-                    switch viewModel.exercise.parameter {
-                    case let .distance(distance):
-                        Text("Do \(exerciseReference.name) for \(distance) meters")
+                    switch exerciseReference.amountType {
+                    case .distance:
+                        Text("Do \(exerciseReference.name) for \(viewModel.exercise.amount) meters")
                         Spacer()
 
                         HStack {
@@ -106,8 +106,8 @@ struct RoutineExerciseView: View {
                             }
                             .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
                         }
-                    case let .count(count):
-                        Text("Do \(count) \(exerciseReference.name)")
+                    case .count:
+                        Text("Do \(viewModel.exercise.amount) \(exerciseReference.name)")
                         Spacer()
 
                         HStack {
@@ -122,11 +122,15 @@ struct RoutineExerciseView: View {
                             }
                             .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
                         }
-                    case let .time(time):
-                        Text("Do \(time) seconds of \(exerciseReference.name)")
-                        PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
-                            .environmentObject(viewModel)
-                            .padding(.bottom, 20)
+                    case .time:
+                        Text("Do \(viewModel.exercise.amount) seconds of \(exerciseReference.name)")
+                        PostRunTimerRing(
+                            time: $viewModel.currentTime,
+                            duration: Double(viewModel.exercise.amount),
+                            size: 150
+                        )
+                        .environmentObject(viewModel)
+                        .padding(.bottom, 20)
 
                         Spacer()
 
@@ -142,13 +146,13 @@ struct RoutineExerciseView: View {
                                     }
                                 }
                                 .buttonStyle(EnduraNewButtonStyle(backgroundColor: viewModel
-                                        .currentTime >= time ? .accentColor : .gray))
-                                .disabled(viewModel.currentTime < time)
+                                        .currentTime >= Double(viewModel.exercise.amount) ? .accentColor : .gray))
+                                .disabled(viewModel.currentTime < Double(viewModel.exercise.amount))
                             }
                         } else {
                             HStack {
                                 Button("Start Time") {
-                                    viewModel.startTimer(duration: time)
+                                    viewModel.startTimer(duration: Double(viewModel.exercise.amount))
                                 }
                                 .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
                             }

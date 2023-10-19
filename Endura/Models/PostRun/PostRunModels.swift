@@ -2,25 +2,26 @@ import Foundation
 import SwiftUI
 
 public struct RoutineExerciseInfo {
-    public let easy: RoutineExerciseParameter
-    public let medium: RoutineExerciseParameter
-    public let hard: RoutineExerciseParameter
+    public let easy: Int
+    public let medium: Int
+    public let hard: Int
 
     public let name: String
     public let benefit: RoutineExerciseBenefit
     public let description: String
     public let exerciseDescription: String
+    public let amountType: RoutineExerciseAmountType
     public let icon: Image? = nil
     public let reference: String?
 }
 
 public struct RoutineExercise: Hashable, Codable {
     public var type: RoutineExerciseType
-    public var parameter: RoutineExerciseParameter
+    public var amount: Int
 
-    public init(_ type: RoutineExerciseType, _ parameter: RoutineExerciseParameter) {
+    public init(_ type: RoutineExerciseType, _ amount: Int) {
         self.type = type
-        self.parameter = parameter
+        self.amount = amount
     }
 }
 

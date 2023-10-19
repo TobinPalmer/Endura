@@ -138,15 +138,15 @@ public enum TrainingGenerationPromptUtils {
             case postRun = "Post Run"
         }
 
-        public enum RoutineExerciseParameter: Hashable {
-            case time(Int)
-            case count(Int)
-            case distance(Int)
+        public enum RoutineExerciseAmountType: String, Hashable, Codable {
+            case time = "Seconds"
+            case count = "Repetitions"
+            case distance = "Meters"
         }
 
         public struct RoutineExercise: Hashable, Codable {
             public var type: RoutineExerciseType
-            public var parameter: RoutineExerciseParameter
+            public var amount: Int
         }
 
         public struct RoutineData: Codable {
@@ -158,8 +158,6 @@ public enum TrainingGenerationPromptUtils {
 
         Description should be about the purpose and goals of the routine.
 
-
-
         The PostRunExerciseType options are:
         \(RoutineExerciseType.allCases.map {
             $0.rawValue
@@ -167,7 +165,7 @@ public enum TrainingGenerationPromptUtils {
         .joined(separator: "\n"))
 
         Important:
-        ALL enums should be the raw value of the enum, not the name of the enum. Ex: "Front Plank" not "frontPlank" and "Post Run" not "postRun"
+        ALL enums should be the raw value of the enum, not the name of the enum. Ex: "Post Run" not "postRun"
         For parameter it should be:
         ```
             "parameter": {

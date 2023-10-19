@@ -21,7 +21,7 @@ struct RoutineStartView: View {
                 ScrollView {
                     ForEach(routine.exercises, id: \.self) { exercise in
                         if let ref = routineExerciseReference[exercise.type] {
-                            Text("\(ref.name) - \(String(describing: exercise.parameter))")
+                            Text("\(ref.name) - \(String(describing: exercise.amount))")
                         }
                     }
                 }
