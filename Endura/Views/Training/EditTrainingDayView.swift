@@ -37,7 +37,7 @@ struct EditTrainingGoalLink<Label: View>: View {
                         get: { goal.postRoutine != nil },
                         set: { newValue in
                             if newValue {
-                                goal.postRoutine = goal.getRoutine(routineType: .postrun)
+                                goal.postRoutine = goal.getRoutine(routineType: .postRun)
                                 activeUser.training.updateTrainingGoal(goal.date, goal)
                             } else {
                                 goal.postRoutine = nil

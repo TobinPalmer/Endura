@@ -89,9 +89,9 @@ public struct TrainingRunGoalData: Hashable {
                 difficulty: difficulty,
                 progress: .init(completed: false, activity: nil)
             )
-        case .postrun:
+        case .postRun:
             return TrainingRoutineGoalData(
-                type: .postrun,
+                type: .postRun,
                 difficulty: difficulty,
                 progress: .init(completed: false, activity: nil)
             )

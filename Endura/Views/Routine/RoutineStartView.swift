@@ -5,8 +5,6 @@ struct RoutineStartView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     private let routineData: TrainingRoutineGoalData
 
-    @State private var progress = 0
-
     @State private var routine: RoutineData?
 
     public init(_ routineData: TrainingRoutineGoalData) {
@@ -29,18 +27,10 @@ struct RoutineStartView: View {
                 }
             }
 
-            ProgressView(value: Double(progress), total: 100)
-                .padding(.vertical, 20)
-
             Button {
                 Task {
                     let postRunRoutine = await TrainingGenerationUtils.generatePostRunRoutine(
-                        activeUser: activeUser,
-                        progress: { progress in
-                            withAnimation {
-                                self.progress = progress
-                            }
-                        }
+                        activeUser: activeUser
                     )
                     if let postRunRoutine = postRunRoutine {
                         DispatchQueue.main.async {

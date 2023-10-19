@@ -98,4 +98,23 @@ public enum TrainingGenerationDataUtils {
         } catch {}
         return []
     }
+
+    public static func decodeRoutineData(_ data: String) -> RoutineData? {
+        do {
+            var cleanedData = data
+            if let start = data.firstIndex(of: "{"),
+               let end = data.lastIndex(of: "}")
+            {
+                cleanedData = "\(data[start ... end])"
+            }
+            print("Cleaned data: \n\n\(cleanedData)\n\n")
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let decodedData = try decoder.decode(RoutineData.self, from: cleanedData.data(using: .utf8)!)
+            return decodedData
+        } catch {
+            Global.log.error("Error decoding routine data: \(error)")
+        }
+        return nil
+    }
 }

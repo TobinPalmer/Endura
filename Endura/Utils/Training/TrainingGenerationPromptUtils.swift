@@ -115,6 +115,71 @@ public enum TrainingGenerationPromptUtils {
         """
     }
 
+    public static func promptForRoutinePlan(_ routineType: RoutineType, athleteInfo: String,
+                                            lastRunInfo: String) -> String
+    {
+        """
+        You are a training ai that is dedicated to help the running athlete recover from a run and improve their strength.
+        Using the given info you must generate a routine plan that best helps them
+
+        The plan type is \(routineType.rawValue)
+        The routine should be about 10-15 minutes long
+
+        Athlete info:
+        \(athleteInfo)
+
+        Run Just Completed:
+        \(lastRunInfo)
+
+        Reference structs for json output
+        ```swift
+        public enum RoutineType: String, Codable {
+            case warmup = "Warm Up"
+            case postRun = "Post Run"
+        }
+
+        public enum RoutineExerciseParameter: Hashable {
+            case time(TimeInterval)
+            case count(Int)
+            case distance(Int)
+        }
+
+        public struct RoutineExercise: Hashable, Codable {
+            public var type: RoutineExerciseType
+            public var parameter: RoutineExerciseParameter
+        }
+
+        public struct RoutineData: Codable {
+            public var type: RoutineType
+            public var description: String
+            public var exercises: [RoutineExercise]
+        }
+        ```
+
+        Description should be about the purpose and goals of the routine.
+
+
+
+        The PostRunExerciseType enum is:
+        ```swift
+        \(postRunExerciseTypesString)
+        ```
+
+        Important:
+        ALL enums should be the raw value of the enum, not the name of the enum. Ex: "Front Plank" not "frontPlank" and "Post Run" not "postRun"
+        For parameter it should be:
+        ```
+            "parameter": {
+                "time": {
+                    "time": "[number](seconds)"
+                }
+            }
+        ```
+
+        Give RoutineData in a parsable json format:
+        """
+    }
+
     public static func outputExamplesForDayTypes() -> [(String, String)] {
         [(
             """
