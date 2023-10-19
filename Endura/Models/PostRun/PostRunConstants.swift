@@ -1,8 +1,8 @@
 import Foundation
 import SwiftUI
 
-public let postRunExerciseReference: [PostRunExerciseType: PostRunExerciseInfo] = [
-    .plank: PostRunExerciseInfo(
+public let routineExerciseReference: [RoutineExerciseType: RoutineExerciseInfo] = [
+    .plank: RoutineExerciseInfo(
         easy: .time(10),
         medium: .time(10),
         hard: .time(30),
@@ -13,7 +13,7 @@ public let postRunExerciseReference: [PostRunExerciseType: PostRunExerciseInfo] 
         icon: Image(systemName: "figure.walk"),
         reference: "https://www.physio-pedia.com/Plank_exercise"
     ),
-    .pushup: PostRunExerciseInfo(
+    .pushup: RoutineExerciseInfo(
         easy: .count(10),
         medium: .count(20),
         hard: .count(30),
@@ -24,7 +24,7 @@ public let postRunExerciseReference: [PostRunExerciseType: PostRunExerciseInfo] 
         icon: Image(systemName: "figure.walk"),
         reference: "https://www.physio-pedia.com/Plank_exercise"
     ),
-    .squat: PostRunExerciseInfo(
+    .squat: RoutineExerciseInfo(
         easy: .count(10),
         medium: .count(20),
         hard: .count(30),
@@ -35,7 +35,7 @@ public let postRunExerciseReference: [PostRunExerciseType: PostRunExerciseInfo] 
         icon: Image(systemName: "figure.walk"),
         reference: "https://www.physio-pedia.com/Plank_exercise"
     ),
-    .lunge: PostRunExerciseInfo(
+    .lunge: RoutineExerciseInfo(
         easy: .count(10),
         medium: .count(20),
         hard: .count(30),

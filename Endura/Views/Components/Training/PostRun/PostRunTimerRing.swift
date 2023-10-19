@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-private final class PostRunTimerRingModel: ObservableObject {
+private final class RoutineTimerRingModel: ObservableObject {
     fileprivate func formatTime(_ time: Double) -> String {
         let minutes = Int(time) / 60 % 60
         let seconds = Int(time) % 60
@@ -33,7 +33,7 @@ private extension Color {
 }
 
 struct PostRunTimerRing: View {
-    @StateObject private var viewModel = PostRunTimerRingModel()
+    @StateObject private var viewModel = RoutineTimerRingModel()
     private var progress: Double {
         time / duration
     }

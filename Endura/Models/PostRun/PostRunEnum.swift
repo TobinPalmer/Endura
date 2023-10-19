@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-public enum PostRunExerciseBenifit: String {
+public enum RoutineExerciseBenefit: String {
     case legs = "Legs"
     case arms = "Arms"
     case core = "Core"
@@ -9,21 +9,21 @@ public enum PostRunExerciseBenifit: String {
     case none
 }
 
-public enum PostRunExerciseParameter: Hashable {
+public enum RoutineExerciseParameter: Hashable {
     case time(TimeInterval)
     case count(Int)
 }
 
-public enum PostRunExerciseType: Hashable {
+public enum RoutineExerciseType: Hashable {
     case plank
     case pushup
     case squat
     case lunge
 }
 
-public struct PostRunExercise: Hashable {
-    var type: PostRunExerciseType
-    var parameter: PostRunExerciseParameter
+public struct RoutineExercise: Hashable {
+    var type: RoutineExerciseType
+    var parameter: RoutineExerciseParameter
 }
 
 public enum RoutineType: String, Codable {

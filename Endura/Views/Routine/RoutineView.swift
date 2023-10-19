@@ -1,16 +1,16 @@
 import Foundation
 import SwiftUI
 
-private var postRunEasyDay: [PostRunExercise] = [
-    PostRunExercise(type: .plank, parameter: .time(3)),
-    PostRunExercise(type: .pushup, parameter: .count(10)),
-    PostRunExercise(type: .squat, parameter: .count(10)),
-    PostRunExercise(type: .lunge, parameter: .count(10)),
+private var postRunEasyDay: [RoutineExercise] = [
+    RoutineExercise(type: .plank, parameter: .time(3)),
+    RoutineExercise(type: .pushup, parameter: .count(10)),
+    RoutineExercise(type: .squat, parameter: .count(10)),
+    RoutineExercise(type: .lunge, parameter: .count(10)),
 ]
 
-private final class PostRunViewModel: ObservableObject {
+private final class RoutineViewModel: ObservableObject {
     private var currentExerciseIndex: Int = 0
-    @Published fileprivate private(set) var currentExercise: PostRunExercise
+    @Published fileprivate private(set) var currentExercise: RoutineExercise
 
     init() {
         currentExercise = postRunEasyDay[currentExerciseIndex]
@@ -24,8 +24,8 @@ private final class PostRunViewModel: ObservableObject {
     }
 }
 
-private final class PostRunExerciseViewModel: ObservableObject {
-    @Published public var exercise: PostRunExercise
+private final class RoutineExerciseViewModel: ObservableObject {
+    @Published public var exercise: RoutineExercise
     @Published public var currentTime: TimeInterval = 0
 
     public var timer: Timer?
@@ -57,23 +57,23 @@ private final class PostRunExerciseViewModel: ObservableObject {
         }
     }
 
-    init(exercise: PostRunExercise) {
+    init(exercise: RoutineExercise) {
         self.exercise = exercise
     }
 }
 
-struct PostRunExerciseView: View {
-    @ObservedObject private var viewModel: PostRunExerciseViewModel
+struct RoutineExerciseView: View {
+    @ObservedObject private var viewModel: RoutineExerciseViewModel
     @Binding private var currentStep: Int
     @State private var finished: Bool = false
 
-    fileprivate init(viewModel: PostRunExerciseViewModel, currentStep: Binding<Int>) {
+    fileprivate init(viewModel: RoutineExerciseViewModel, currentStep: Binding<Int>) {
         _viewModel = ObservedObject(initialValue: viewModel)
         _currentStep = currentStep
     }
 
     public var body: some View {
-        let exerciseReference = postRunExerciseReference[viewModel.exercise.type]
+        let exerciseReference = routineExerciseReference[viewModel.exercise.type]
 
         VStack(spacing: 20) {
             Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
@@ -147,7 +147,7 @@ struct PostRunExerciseView: View {
 }
 
 struct PostRunView: View {
-    @StateObject private var viewModel = PostRunViewModel()
+    @StateObject private var viewModel = RoutineViewModel()
     @State private var currentPage = 0
 
     public var body: some View {
@@ -156,14 +156,14 @@ struct PostRunView: View {
                 .ignoresSafeArea()
 
             var views: [AnyView] = postRunEasyDay.map { exercise in
-                AnyView(PostRunExerciseView(
-                    viewModel: PostRunExerciseViewModel(exercise: exercise),
+                AnyView(RoutineExerciseView(
+                    viewModel: RoutineExerciseViewModel(exercise: exercise),
                     currentStep: $currentPage
                 ))
             }
             let _ = views.append(AnyView(Text("FINISHED")))
 
-            MultiStepForm(views, viewModel: PostRunViewModel(), currentPage: $currentPage)
+            MultiStepForm(views, viewModel: RoutineViewModel(), currentPage: $currentPage)
         }
     }
 }
