@@ -5,7 +5,7 @@ private var postRunEasyDay: [RoutineExercise] = [
     RoutineExercise(type: .frontPlank, parameter: .time(3)),
     RoutineExercise(type: .pushups, parameter: .count(10)),
     RoutineExercise(type: .squats, parameter: .count(10)),
-    RoutineExercise(type: .lunge, parameter: .count(10)),
+    RoutineExercise(type: .forwardLunge, parameter: .count(10)),
 ]
 
 private final class RoutineViewModel: ObservableObject {
@@ -73,49 +73,27 @@ struct RoutineExerciseView: View {
     }
 
     public var body: some View {
-        let exerciseReference = routineExerciseReference[viewModel.exercise.type]
-
-        VStack(spacing: 20) {
-            Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
-            if finished {
-                Text("FINISHED GG")
-            } else {
-                Spacer()
-                    .frame(height: 50)
-
-                Text(exerciseReference?.name ?? "")
-                    .font(.title)
-                    .padding()
-
-                Spacer()
-                    .frame(height: 50)
-
-                switch viewModel.exercise.parameter {
-                case let .count(count):
-                    Text("Do \(count) \(exerciseReference?.name ?? "")")
+        if let exerciseReference = routineExerciseReference[viewModel.exercise.type] {
+            VStack(spacing: 20) {
+                Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
+                if finished {
+                    Text("FINISHED GG")
+                } else {
                     Spacer()
+                        .frame(height: 50)
 
-                    HStack {
-                        Button("Next") {
-                            withAnimation {
-                                if currentStep == postRunEasyDay.count {
-                                    finished = true
-                                } else {
-                                    currentStep += 1
-                                }
-                            }
-                        }
-                        .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
-                    }
-                case let .time(time):
-                    Text("Do \(time) seconds of \(exerciseReference?.name ?? "")")
-                    PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
-                        .environmentObject(viewModel)
-                        .padding(.bottom, 20)
+                    Text(exerciseReference.name)
+                        .font(.title)
+                        .padding()
 
                     Spacer()
+                        .frame(height: 50)
 
-                    if viewModel.currentTime > 0 {
+                    switch viewModel.exercise.parameter {
+                    case let .distance(distance):
+                        Text("Do \(exerciseReference.name) for \(distance) meters")
+                        Spacer()
+
                         HStack {
                             Button("Next") {
                                 withAnimation {
@@ -126,23 +104,61 @@ struct RoutineExerciseView: View {
                                     }
                                 }
                             }
-                            .buttonStyle(EnduraNewButtonStyle(backgroundColor: viewModel
-                                    .currentTime >= time ? .accentColor : .gray))
-                            .disabled(viewModel.currentTime < time)
+                            .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
                         }
-                    } else {
+                    case let .count(count):
+                        Text("Do \(count) \(exerciseReference.name)")
+                        Spacer()
+
                         HStack {
-                            Button("Start Time") {
-                                viewModel.startTimer(duration: time)
+                            Button("Next") {
+                                withAnimation {
+                                    if currentStep == postRunEasyDay.count {
+                                        finished = true
+                                    } else {
+                                        currentStep += 1
+                                    }
+                                }
                             }
                             .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                        }
+                    case let .time(time):
+                        Text("Do \(time) seconds of \(exerciseReference.name)")
+                        PostRunTimerRing(time: $viewModel.currentTime, duration: time, size: 150)
+                            .environmentObject(viewModel)
+                            .padding(.bottom, 20)
+
+                        Spacer()
+
+                        if viewModel.currentTime > 0 {
+                            HStack {
+                                Button("Next") {
+                                    withAnimation {
+                                        if currentStep == postRunEasyDay.count {
+                                            finished = true
+                                        } else {
+                                            currentStep += 1
+                                        }
+                                    }
+                                }
+                                .buttonStyle(EnduraNewButtonStyle(backgroundColor: viewModel
+                                        .currentTime >= time ? .accentColor : .gray))
+                                .disabled(viewModel.currentTime < time)
+                            }
+                        } else {
+                            HStack {
+                                Button("Start Time") {
+                                    viewModel.startTimer(duration: time)
+                                }
+                                .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                            }
                         }
                     }
                 }
             }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .padding()
         }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .padding()
     }
 }
 
