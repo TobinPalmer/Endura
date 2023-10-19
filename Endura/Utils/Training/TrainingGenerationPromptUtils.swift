@@ -139,7 +139,7 @@ public enum TrainingGenerationPromptUtils {
         }
 
         public enum RoutineExerciseParameter: Hashable {
-            case time(TimeInterval)
+            case time(Int)
             case count(Int)
             case distance(Int)
         }
@@ -160,10 +160,11 @@ public enum TrainingGenerationPromptUtils {
 
 
 
-        The PostRunExerciseType enum is:
-        ```swift
-        \(postRunExerciseTypesString)
-        ```
+        The PostRunExerciseType options are:
+        \(RoutineExerciseType.allCases.map {
+            $0.rawValue
+        }
+        .joined(separator: "\n"))
 
         Important:
         ALL enums should be the raw value of the enum, not the name of the enum. Ex: "Front Plank" not "frontPlank" and "Post Run" not "postRun"
