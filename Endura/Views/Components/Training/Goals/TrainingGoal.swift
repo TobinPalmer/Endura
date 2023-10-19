@@ -85,32 +85,34 @@ struct TrainingRoutineGoal: View {
 
     var body: some View {
         VStack {
-            HStack(alignment: .top, spacing: 10) {
+            NavigationLink(destination: RoutineStartView(goal)) {
+                HStack(alignment: .top, spacing: 10) {
 //                Image(systemName: "figure.walk")
 //                    .font(.title)
 //                    .foregroundColor(goal.type.getColor())
 //                    .fontWeight(.bold)
 
-                VStack(alignment: .leading) {
-                    HStack {
-                        if goal.progress.completed {
-                            Image(systemName: "checkmark")
+                    VStack(alignment: .leading) {
+                        HStack {
+                            if goal.progress.completed {
+                                Image(systemName: "checkmark")
+                                    .font(.title3)
+                                    .foregroundColor(.green)
+                            }
+
+                            Text(goal.type.rawValue)
                                 .font(.title3)
-                                .foregroundColor(.green)
+                                .fontColor(.primary)
+                                .fontWeight(.bold)
+
+                            Spacer()
                         }
 
-                        Text(goal.type.rawValue)
-                            .font(.title3)
-                            .fontColor(.primary)
-                            .fontWeight(.bold)
-
-                        Spacer()
+                        Text(goal.difficulty.rawValue)
+                            .multilineTextAlignment(.leading)
+                            .font(.body)
+                            .fontColor(.secondary)
                     }
-
-                    Text(goal.difficulty.rawValue)
-                        .multilineTextAlignment(.leading)
-                        .font(.body)
-                        .fontColor(.secondary)
                 }
             }
             .alignFullWidth()

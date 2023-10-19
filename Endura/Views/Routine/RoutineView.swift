@@ -2,9 +2,9 @@ import Foundation
 import SwiftUI
 
 private var postRunEasyDay: [RoutineExercise] = [
-    RoutineExercise(type: .plank, parameter: .time(3)),
-    RoutineExercise(type: .pushup, parameter: .count(10)),
-    RoutineExercise(type: .squat, parameter: .count(10)),
+    RoutineExercise(type: .frontPlank, parameter: .time(3)),
+    RoutineExercise(type: .pushups, parameter: .count(10)),
+    RoutineExercise(type: .squats, parameter: .count(10)),
     RoutineExercise(type: .lunge, parameter: .count(10)),
 ]
 

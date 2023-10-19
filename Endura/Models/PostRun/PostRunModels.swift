@@ -10,7 +10,7 @@ public struct RoutineExerciseInfo {
     public let benefit: RoutineExerciseBenefit
     public let description: String
     public let exerciseDescription: String
-    public let icon: Image
+    public let icon: Image? = nil
     public let reference: String?
 }
 
