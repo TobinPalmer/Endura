@@ -15,9 +15,13 @@ public struct RoutineExerciseInfo {
 }
 
 public struct RoutineData {
-    var exercises = [RoutineExercise]()
+    public let type: RoutineType
+    public let description: String
+    public let exercises: [RoutineExercise]
 
-    init(_ routineData: [RoutineExercise]) {
-        exercises = routineData
+    init(type: RoutineType, description: String, exercises: [RoutineExercise]) {
+        self.type = type
+        self.description = description
+        self.exercises = exercises
     }
 }

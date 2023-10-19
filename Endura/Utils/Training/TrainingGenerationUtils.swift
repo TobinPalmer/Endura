@@ -132,4 +132,19 @@ import SwiftUICalendar
 
         return [:]
     }
+
+    public static func generatePostRunRoutine(activeUser: ActiveUserModel,
+                                              progress _: @escaping (Int) -> Void) async
+        -> RoutineData?
+    {
+        let athleteInfo = TrainingGenerationDataUtils.encodeAthleteInfo(activeUser.data)
+
+        return RoutineData(
+            type: .postrun,
+            description: "A routine to help you recover from your run",
+            exercises: [
+                RoutineExercise(.frontPlank, .time(30)),
+            ]
+        )
+    }
 }

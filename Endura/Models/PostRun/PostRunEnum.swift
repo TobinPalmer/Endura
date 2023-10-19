@@ -23,6 +23,11 @@ public enum RoutineExerciseParameter: Hashable {
 public struct RoutineExercise: Hashable {
     var type: RoutineExerciseType
     var parameter: RoutineExerciseParameter
+
+    public init(_ type: RoutineExerciseType, _ parameter: RoutineExerciseParameter) {
+        self.type = type
+        self.parameter = parameter
+    }
 }
 
 public enum RoutineType: String, Codable {

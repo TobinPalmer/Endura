@@ -2,10 +2,10 @@ import Foundation
 import SwiftUI
 
 private var postRunEasyDay: [RoutineExercise] = [
-    RoutineExercise(type: .frontPlank, parameter: .time(3)),
-    RoutineExercise(type: .pushups, parameter: .count(10)),
-    RoutineExercise(type: .squats, parameter: .count(10)),
-    RoutineExercise(type: .forwardLunge, parameter: .count(10)),
+    RoutineExercise(.frontPlank, .time(3)),
+    RoutineExercise(.pushups, .count(10)),
+    RoutineExercise(.squats, .count(10)),
+    RoutineExercise(.forwardLunge, .count(10)),
 ]
 
 private final class RoutineViewModel: ObservableObject {
