@@ -15,35 +15,35 @@ struct TrainingGoal: View {
                 TrainingRoutineGoal(preRoutine)
             }
             NavigationLink(destination: TrainingGoalDetails(goal)) {
-                HStack(alignment: .top, spacing: 10) {
-                    Image(systemName: "figure.run")
-                        .font(.title)
-                        .foregroundColor(goal.type.getColor())
-                        .fontWeight(.bold)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Image(systemName: "figure.run")
+                            .font(.title)
+                            .foregroundColor(goal.type.getColor())
+                            .fontWeight(.bold)
 
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text(goal.getTitle())
+                        Text(goal.getTitle())
+                            .font(.title3)
+                            .fontColor(.primary)
+                            .fontWeight(.bold)
+
+                        Spacer()
+
+                        if goal.progress.completed {
+                            Image(systemName: "checkmark")
                                 .font(.title3)
-                                .fontColor(.primary)
-                                .fontWeight(.bold)
-
-                            Spacer()
-
-                            if goal.progress.completed {
-                                Image(systemName: "checkmark")
-                                    .font(.title3)
-                                    .foregroundColor(.green)
-                            }
+                                .foregroundColor(.green)
                         }
-
-                        ColoredBadge(goal.type)
-
-                        Text(goal.description)
-                            .multilineTextAlignment(.leading)
-                            .font(.body)
-                            .fontColor(.secondary)
                     }
+
+                    ColoredBadge(goal.type)
+
+                    Text(goal.description)
+                        .multilineTextAlignment(.leading)
+                        .font(.body)
+                        .fontColor(.secondary)
+
+                    TrainingGoalProgress(goal)
                 }
                 .alignFullWidth()
                 .padding(26)
