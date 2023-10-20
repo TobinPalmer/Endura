@@ -123,7 +123,9 @@ public enum TrainingGenerationPromptUtils {
         Using the given info you must generate a routine plan that best helps them
 
         The plan type is \(routineType.rawValue)
-        The routine should be about 10-15 minutes long
+        The routine should be about 10-15 minutes long, min: 10 exercises, max: 20 exercises
+        It should be a variety of related exercises but barely any stretching
+        For distances they should be in meters and all about the same, about 10 meters as a min
 
         Athlete info:
         \(athleteInfo)
@@ -174,6 +176,8 @@ public enum TrainingGenerationPromptUtils {
                 }
             }
         ```
+
+        For type it should be either "Post Run" or "Warm Up"
 
         Give RoutineData in a parsable json format:
         """
