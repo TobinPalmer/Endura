@@ -12,6 +12,31 @@ public enum RoutineExerciseBenefit: String {
     case upperBody = "Upper Body"
     case stretching = "Stretching"
     case none
+
+    public func getColor() -> Color {
+        switch self {
+        case .legs:
+            return .blue
+        case .arms:
+            return .purple
+        case .core:
+            return .green
+        case .cardio:
+            return .red
+        case .coreAndLegs:
+            return .orange
+        case .glutesAndLegs:
+            return .yellow
+        case .mobilityAndStretching:
+            return .pink
+        case .upperBody:
+            return .gray
+        case .stretching:
+            return .clear
+        case .none:
+            return .clear
+        }
+    }
 }
 
 public enum RoutineExerciseAmountType: String, Hashable, Codable {

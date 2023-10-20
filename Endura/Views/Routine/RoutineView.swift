@@ -82,7 +82,7 @@ struct RoutineExerciseView: View {
                 Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
                     .fontColor(.muted)
                     .fontWeight(.bold)
-                    .padding(.top, 20)
+                    .padding(.top, 10)
                 if finished {
                     Text("FINISHED GG")
                 } else {
@@ -100,6 +100,9 @@ struct RoutineExerciseView: View {
                         .font(.title)
                         .fontColor(.primary)
                         .fontWeight(.bold)
+
+                    ColoredBadge(text: exerciseReference.benefit.rawValue, color: exerciseReference.benefit.getColor())
+                        .padding(.vertical, 10)
 
                     Text("\(exerciseReference.amountType.getAmountString(viewModel.exercise.amount))")
                         .font(.title3)
