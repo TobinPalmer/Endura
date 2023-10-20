@@ -61,7 +61,7 @@ struct PostRunTimerRing: View {
                 .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
                 .rotationEffect(.degrees(-90))
 
-            Text("\(viewModel.formatTime(time))")
+            Text("\(viewModel.formatTime(duration - time))")
                 .font(.system(size: 50, weight: .bold, design: .rounded))
                 .foregroundColor(Color.outlineRed)
         }
