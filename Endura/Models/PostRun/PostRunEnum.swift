@@ -22,9 +22,9 @@ public enum RoutineExerciseAmountType: String, Hashable, Codable {
     public func getAmountString(_ amount: Int) -> String {
         switch self {
         case .time:
-            return "Do for \(amount) seconds"
+            return "Hold for \(amount) seconds"
         case .count:
-            return "Do \(amount) times"
+            return "Repeat \(amount) times"
         case .distance:
             return "Do for \(amount) meters"
         }

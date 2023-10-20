@@ -35,14 +35,18 @@ private final class RoutineExerciseViewModel: ObservableObject {
             timer?.invalidate()
         }
 
-        currentTime = 1
+        withAnimation {
+            currentTime = 1
+        }
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
             guard let self = self else {
                 return
             }
 
-            self.currentTime += 1
+            withAnimation {
+                self.currentTime += 1
+            }
 
             if self.currentTime >= duration {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
@@ -91,6 +95,7 @@ struct RoutineExerciseView: View {
                         .environmentObject(viewModel)
                         .padding(.vertical, 20)
                     }
+
                     Text(exerciseReference.name)
                         .font(.title)
                         .fontColor(.primary)
