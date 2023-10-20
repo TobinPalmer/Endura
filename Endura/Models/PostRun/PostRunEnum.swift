@@ -20,7 +20,7 @@ public enum RoutineExerciseBenefit: String {
         case .arms:
             return .purple
         case .core:
-            return .green
+            return .teal
         case .cardio:
             return .red
         case .coreAndLegs:

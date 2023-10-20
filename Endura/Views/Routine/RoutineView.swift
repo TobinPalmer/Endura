@@ -2,9 +2,9 @@ import Foundation
 import SwiftUI
 
 private var postRunEasyDay: [RoutineExercise] = [
-    RoutineExercise(.frontPlank, 3),
+    RoutineExercise(.frontPlank, 5),
     RoutineExercise(.pushups, 10),
-    RoutineExercise(.squats, 10),
+    RoutineExercise(.toeWalk, 20),
     RoutineExercise(.forwardLunge, 10),
 ]
 
@@ -78,7 +78,7 @@ struct RoutineExerciseView: View {
 
     public var body: some View {
         if let exerciseReference = routineExerciseReference[viewModel.exercise.type] {
-            VStack(spacing: 20) {
+            VStack(spacing: 10) {
                 Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
                     .fontColor(.muted)
                     .fontWeight(.bold)
@@ -86,14 +86,42 @@ struct RoutineExerciseView: View {
                 if finished {
                     Text("FINISHED GG")
                 } else {
+                    Text("\(exerciseReference.amountType.getAmountString(viewModel.exercise.amount))")
+                        .font(.body)
+                        .fontColor(.secondary)
+                        .fontWeight(.bold)
+                        .padding(.top, 20)
+
                     if exerciseReference.amountType == .time {
                         PostRunTimerRing(
                             time: $viewModel.currentTime,
                             duration: Double(viewModel.exercise.amount),
-                            size: 150
+                            size: 200
                         )
                         .environmentObject(viewModel)
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 10)
+                    } else {
+                        ZStack {
+                            Circle()
+                                .stroke(Color.accentColor, lineWidth: 16)
+                                .frame(width: 150, height: 150)
+
+                            VStack {
+                                switch exerciseReference.amountType {
+                                case .count:
+                                    Text("x\(viewModel.exercise.amount)")
+                                        .font(.system(size: 50, weight: .bold, design: .rounded))
+                                        .foregroundColor(.accentColor)
+                                case .distance:
+                                    Text("\(viewModel.exercise.amount)m")
+                                        .font(.system(size: 50, weight: .bold, design: .rounded))
+                                        .foregroundColor(.accentColor)
+                                default:
+                                    EmptyView()
+                                }
+                            }
+                        }
+                        .padding(.vertical, 10)
                     }
 
                     Text(exerciseReference.name)
@@ -101,13 +129,18 @@ struct RoutineExerciseView: View {
                         .fontColor(.primary)
                         .fontWeight(.bold)
 
-                    ColoredBadge(text: exerciseReference.benefit.rawValue, color: exerciseReference.benefit.getColor())
-                        .padding(.vertical, 10)
+                    HStack {
+                        ColoredBadge(
+                            text: exerciseReference.benefit.rawValue,
+                            color: exerciseReference.benefit.getColor()
+                        )
 
-                    Text("\(exerciseReference.amountType.getAmountString(viewModel.exercise.amount))")
-                        .font(.title3)
-                        .fontColor(.secondary)
-                        .fontWeight(.bold)
+//                        Image(systemName: "ruler")
+//                            .fontColor(.muted)
+//                            .fontWeight(.bold)
+
+//                        ColoredBadge(text: exerciseReference.amountType.getAmountString(viewModel.exercise.amount), color: .green)
+                    }
 
                     Text(exerciseReference.description)
                         .multilineTextAlignment(.center)
