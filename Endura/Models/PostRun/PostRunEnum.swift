@@ -15,9 +15,20 @@ public enum RoutineExerciseBenefit: String {
 }
 
 public enum RoutineExerciseAmountType: String, Hashable, Codable {
-    case time = " seconds"
-    case count = " reps"
-    case distance = " meters"
+    case time = "Seconds"
+    case count = "Repetitions"
+    case distance = "Meters"
+
+    public func getAmountString(_ amount: Int) -> String {
+        switch self {
+        case .time:
+            return "Do for \(amount) seconds"
+        case .count:
+            return "Do \(amount) times"
+        case .distance:
+            return "Do for \(amount) meters"
+        }
+    }
 }
 
 public enum RoutineType: String, Codable {

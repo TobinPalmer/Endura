@@ -76,64 +76,53 @@ struct RoutineExerciseView: View {
         if let exerciseReference = routineExerciseReference[viewModel.exercise.type] {
             VStack(spacing: 20) {
                 Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
+                    .fontColor(.muted)
+                    .fontWeight(.bold)
+                    .padding(.top, 20)
                 if finished {
                     Text("FINISHED GG")
                 } else {
-                    Spacer()
-                        .frame(height: 50)
-
-                    Text(exerciseReference.name)
-                        .font(.title)
-                        .padding()
-
-                    Spacer()
-                        .frame(height: 50)
-
-                    switch exerciseReference.amountType {
-                    case .distance:
-                        Text("Do \(exerciseReference.name) for \(viewModel.exercise.amount) meters")
-                        Spacer()
-
-                        HStack {
-                            Button("Next") {
-                                withAnimation {
-                                    if currentStep == postRunEasyDay.count {
-                                        finished = true
-                                    } else {
-                                        currentStep += 1
-                                    }
-                                }
-                            }
-                            .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
-                        }
-                    case .count:
-                        Text("Do \(viewModel.exercise.amount) \(exerciseReference.name)")
-                        Spacer()
-
-                        HStack {
-                            Button("Next") {
-                                withAnimation {
-                                    if currentStep == postRunEasyDay.count {
-                                        finished = true
-                                    } else {
-                                        currentStep += 1
-                                    }
-                                }
-                            }
-                            .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
-                        }
-                    case .time:
-                        Text("Do \(viewModel.exercise.amount) seconds of \(exerciseReference.name)")
+                    if exerciseReference.amountType == .time {
                         PostRunTimerRing(
                             time: $viewModel.currentTime,
                             duration: Double(viewModel.exercise.amount),
                             size: 150
                         )
                         .environmentObject(viewModel)
-                        .padding(.bottom, 20)
+                        .padding(.vertical, 20)
+                    }
+                    Text(exerciseReference.name)
+                        .font(.title)
+                        .fontColor(.primary)
+                        .fontWeight(.bold)
 
-                        Spacer()
+                    Text("\(exerciseReference.amountType.getAmountString(viewModel.exercise.amount))")
+                        .font(.title3)
+                        .fontColor(.secondary)
+                        .fontWeight(.bold)
 
+                    Text(exerciseReference.description)
+                        .multilineTextAlignment(.center)
+                        .font(.body)
+                        .fontColor(.secondary)
+                        .fontWeight(.bold)
+
+                    Spacer()
+
+                    if exerciseReference.amountType != .time {
+                        HStack {
+                            Button("Next") {
+                                withAnimation {
+                                    if currentStep == postRunEasyDay.count {
+                                        finished = true
+                                    } else {
+                                        currentStep += 1
+                                    }
+                                }
+                            }
+                            .buttonStyle(EnduraNewButtonStyle(backgroundColor: .accentColor))
+                        }
+                    } else {
                         if viewModel.currentTime > 0 {
                             HStack {
                                 Button("Next") {
