@@ -37,7 +37,10 @@ struct TrainingGoalList: View {
                 .padding(.top, -10)
                 .padding(.bottom, 10)
             if trainingDay.goals.isEmpty {
-                Text("No goals for \(isToday ? "today" : "this day") yet!")
+                Text(trainingDay
+                    .type == .rest ?
+                    "\(isToday ? "Today" : "This day") is a rest day, no goals for \(isToday ? "today" : "this day")!" :
+                    "No goals for \(isToday ? "today" : "this day") yet!")
                     .font(.body)
                     .fontColor(.secondary)
                     .fontWeight(.bold)
