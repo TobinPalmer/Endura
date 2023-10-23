@@ -30,7 +30,7 @@ public struct RoutineData: Codable {
     public var description: String
     public var exercises: [RoutineExercise]
 
-    init(type: RoutineType, description: String, exercises: [RoutineExercise]) {
+    init(type: RoutineType, description: String = "", exercises: [RoutineExercise]) {
         self.type = type
         self.description = description
         self.exercises = exercises

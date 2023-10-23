@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-private var postRunEasyDay: [RoutineExercise] = [
+public var postRunEasyDay: [RoutineExercise] = [
     RoutineExercise(.frontPlank, 5),
     RoutineExercise(.pushups, 10),
     RoutineExercise(.toeWalk, 20),
@@ -196,16 +196,17 @@ struct RoutineExerciseView: View {
     }
 }
 
-struct PostRunView: View {
+struct RoutineView: View {
     @StateObject private var viewModel = RoutineViewModel()
     @State private var currentPage = 0
+    public var routine: RoutineData
 
     public var body: some View {
         ZStack {
             Color.white
                 .ignoresSafeArea()
 
-            var views: [AnyView] = postRunEasyDay.map { exercise in
+            var views: [AnyView] = routine.exercises.map { exercise in
                 AnyView(RoutineExerciseView(
                     viewModel: RoutineExerciseViewModel(exercise: exercise),
                     currentStep: $currentPage

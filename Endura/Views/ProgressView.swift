@@ -14,7 +14,10 @@ struct ProgressDashboardView: View {
                     Text("Account View")
                 }
 
-                NavigationLink(destination: PostRunView()) {
+                NavigationLink(destination: RoutineView(routine: RoutineData(
+                    type: .postRun,
+                    exercises: postRunEasyDay
+                ))) {
                     Text("Post Run")
                 }
 

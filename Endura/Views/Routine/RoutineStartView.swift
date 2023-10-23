@@ -41,6 +41,14 @@ struct RoutineStartView: View {
             } label: {
                 Text("Generate")
             }
+
+            Spacer()
+
+            if let routine = routine {
+                NavigationLink(destination: RoutineView(routine: routine)) {
+                    Text("Start")
+                }
+            }
         }
     }
 }
