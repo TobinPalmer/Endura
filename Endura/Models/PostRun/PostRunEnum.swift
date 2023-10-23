@@ -16,23 +16,23 @@ public enum RoutineExerciseBenefit: String {
     public func getColor() -> Color {
         switch self {
         case .legs:
-            return .blue
+            return .orange
         case .arms:
-            return .purple
+            return .orange
         case .core:
-            return .teal
+            return .red
         case .cardio:
             return .red
         case .coreAndLegs:
-            return .orange
+            return .pink
         case .glutesAndLegs:
-            return .yellow
+            return .pink
         case .mobilityAndStretching:
             return .pink
         case .upperBody:
-            return .gray
+            return .purple
         case .stretching:
-            return .clear
+            return .green
         case .none:
             return .clear
         }
