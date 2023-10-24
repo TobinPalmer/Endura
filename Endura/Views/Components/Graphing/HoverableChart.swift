@@ -35,8 +35,14 @@ public struct HoverableChart: View {
         self.label = label
         self.valueModifier = valueModifier
 
-        minY = graph.map { $0.1 }.min() ?? 0
-        maxY = graph.map { $0.1 }.max() ?? 1
+        minY = graph.map {
+            $0.1
+        }
+        .min() ?? 0
+        maxY = graph.map {
+            $0.1
+        }
+        .max() ?? 1
     }
 
     public var body: some View {
@@ -44,7 +50,7 @@ public struct HoverableChart: View {
             Text(label)
                 .font(.title3)
                 .padding()
-            let chartPadding = 10.0
+            let chartPadding = 26.0
             Chart {
                 RectangleMark(
                     xStart: .value("Timestamp", workoutStart),

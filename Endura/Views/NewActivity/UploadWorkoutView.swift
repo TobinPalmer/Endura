@@ -36,92 +36,106 @@ struct UploadWorkoutView: View {
     var body: some View {
         VStack {
             ScrollView {
-                if let activityData = viewModel.activityData {
-                    ActivityHeader(uid: activityData.uid, activityData: activityData.getDataWithoutRoute())
-                } else {
-                    ActivityHeader(uid: "", activityData: nil, placeholder: true)
-                }
+                VStack {
+//                    if let activityData = viewModel.activityData {
+//                        ActivityHeader(uid: activityData.uid, activityData: activityData.getDataWithoutRoute())
+//                    } else {
+//                        ActivityHeader(uid: "", activityData: nil, placeholder: true)
+//                    }
 
-                TextField("Title", text: $activityTitle)
-                    .font(.title)
-                    .textFieldStyle(EnduraTextFieldStyle())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 10)
+                    TextField("Title", text: $activityTitle)
+                        .font(.title)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, 10)
 
-                TextField("Description", text: $activityDescription)
-                    .font(.body)
-                    .textFieldStyle(EnduraTextFieldStyle())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 10)
+                    TextField("Description", text: $activityDescription)
+                        .font(.body)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, 10)
 
-                if var activityData = viewModel.activityData {
-                    let activityViewModel = ActivityViewModel(
-                        activityData: activityData.getIndexedGraphData(),
-                        routeLocationData: activityData.getIndexedRouteLocationData(),
-                        interval: activityData.data.graphInterval
-                    )
+                    if var activityData = viewModel.activityData {
+                        let activityViewModel = ActivityViewModel(
+                            activityData: activityData.getIndexedGraphData(),
+                            routeLocationData: activityData.getIndexedRouteLocationData(),
+                            interval: activityData.data.graphInterval
+                        )
 
-                    if !activityData.data.routeData.isEmpty {
-                        VStack {
-                            GeometryReader { geometry in
-                                let map =
-                                    ActivityMap(activityData.data.routeData)
-                                        .frame(height: 300)
-                                        .environmentObject(activityViewModel)
-                                VStack {
-                                    map
-                                }
-                                .onAppear {
-                                    viewModel.mapRef = map
-                                    viewModel.geometryRef = geometry
+                        if !activityData.data.routeData.isEmpty {
+                            VStack {
+                                GeometryReader { geometry in
+                                    let map =
+                                        ActivityMap(activityData.data.routeData)
+                                            .frame(height: 300)
+                                            .environmentObject(activityViewModel)
+                                    VStack {
+                                        map
+                                    }
+                                    .onAppear {
+                                        viewModel.mapRef = map
+                                        viewModel.geometryRef = geometry
+                                    }
                                 }
                             }
+                            .frame(height: 300)
                         }
-                        .frame(height: 300)
-                    }
 
-                    if let activityData = viewModel.activityData {
-                        ActivityGridStats(
-                            activityData: activityData.getDataWithoutRoute(),
-                            topSpace: !activityData.data.routeData.isEmpty
-                        )
-                    } else {}
+                        if let activityData = viewModel.activityData {
+                            ActivityGridStats(
+                                activityData: activityData.getDataWithoutRoute(),
+                                topSpace: !activityData.data.routeData.isEmpty
+                            )
+                        } else {}
 
-                    ActivitySplitGraph(splits: activityData.stats.splits)
+                        DisclosureGroup("Analysis Graphs") {
+                            ActivityGraphsView(activityData).environmentObject(activityViewModel)
+                        }
 
-                    VStack {
-                        ActivityGraphsView(activityData).environmentObject(activityViewModel)
-                    }
+                        DisclosureGroup("Splits") {
+                            ActivitySplitGraph(splits: activityData.stats.splits)
+                        }
 
-                    Button {
-                        activityData.social.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
-
-                        ActivityUtils.setActivityUploaded(for: workout)
-                        isShowingSummary = true
-
-                    } label: {
-                        Text("Upload")
-                    }
-                    .buttonStyle(EnduraButtonStyleOld())
-                } else {
-                    LoadingMap()
-                    if let activityData = viewModel.activityData {
-                        ActivityGridStats(
-                            activityData: activityData.getDataWithoutRoute(),
-                            topSpace: !activityData.data.routeData.isEmpty
-                        )
                     } else {
-                        ActivityGridStats(
-                            activityData: nil,
-                            topSpace: false,
-                            placeholder: true
-                        )
+                        LoadingMap()
+                        if let activityData = viewModel.activityData {
+                            ActivityGridStats(
+                                activityData: activityData.getDataWithoutRoute(),
+                                topSpace: !activityData.data.routeData.isEmpty
+                            )
+                        } else {
+                            ActivityGridStats(
+                                activityData: nil,
+                                topSpace: false,
+                                placeholder: true
+                            )
+                        }
                     }
                 }
+                .enduraPadding()
             }
+            Button {
+                if var activityData = viewModel.activityData {
+                    if activityTitle.isEmpty {
+                        activityData.social.title = ConversionUtils.getDefaultActivityName(time: activityData.time)
+                    } else {
+                        activityData.social.title = activityTitle
+                    }
+                    activityData.social.description = activityDescription
+
+                    ActivityUtils.setActivityUploaded(for: workout)
+                    isShowingSummary = true
+                }
+            } label: {
+                Text("Upload")
+            }
+            .buttonStyle(EnduraNewButtonStyle())
+            .disabled(viewModel.activityData == nil)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
+            .frame(height: 60)
         }
-        .padding()
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
             do {
                 try await updateActivityData(workout)
@@ -129,7 +143,6 @@ struct UploadWorkoutView: View {
                 print("Error getting activity data: \(error)")
             }
         }
-
         .fullScreenCover(isPresented: $isShowingSummary) {
             if let activityData = viewModel.activityData {
                 PostUploadView(
