@@ -49,7 +49,11 @@ public struct HoverableChart: View {
         if !graph.filter({ $0.1 != 0 }).isEmpty {
             Text(label)
                 .font(.title3)
-                .padding()
+                .fontWeight(.bold)
+                .fontColor(.primary)
+                .alignFullWidth()
+                .padding(.top, 6)
+                .padding(.horizontal, 26)
             let chartPadding = 26.0
             Chart {
                 RectangleMark(
@@ -121,7 +125,7 @@ public struct HoverableChart: View {
                             .frame(width: overlayWidth, height: 50)
                             .background(color)
                             .cornerRadius(5)
-                            .offset(x: xPosition, y: -chartSize.height / 2 - 25)
+                            .offset(x: xPosition, y: -chartSize.height / 2)
                     }
                     Color.clear
                         .contentShape(Rectangle())
