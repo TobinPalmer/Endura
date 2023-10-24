@@ -15,11 +15,11 @@ public enum ConversionUtils {
 
         switch hour {
         case 0 ..< 12:
-            title = "Morning Activity"
+            title = "Morning Run"
         case 12 ..< 17:
-            title = "Lunch Activity"
+            title = "Afternoon Run"
         case 17 ..< 24:
-            title = "Evening Activity"
+            title = "Evening Run"
         default:
             title = "Activity"
         }
