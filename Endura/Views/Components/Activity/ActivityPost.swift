@@ -85,15 +85,15 @@ struct ActivityPost: View {
                     Text(activityData.social.title.isEmpty ? "Untitled Activity" : activityData.social.title)
                         .foregroundColor(Color("Text"))
                         .font(.title2)
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fontWeight(.bold)
+                        .alignFullWidth()
 
                     if !activityData.social.description.isEmpty {
                         Text(activityData.social.description)
                             .multilineTextAlignment(.leading)
-                            .font(.system(size: 12))
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.body)
+                            .fontColor(.secondary)
+                            .alignFullWidth()
                     }
                 }
             }

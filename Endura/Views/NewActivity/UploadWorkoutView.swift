@@ -37,15 +37,9 @@ struct UploadWorkoutView: View {
         VStack {
             ScrollView {
                 VStack {
-//                    if let activityData = viewModel.activityData {
-//                        ActivityHeader(uid: activityData.uid, activityData: activityData.getDataWithoutRoute())
-//                    } else {
-//                        ActivityHeader(uid: "", activityData: nil, placeholder: true)
-//                    }
-
                     TextField("Title", text: $activityTitle)
                         .font(.title)
-                        .textFieldStyle(PlainTextFieldStyle())
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, 10)
 
@@ -122,6 +116,8 @@ struct UploadWorkoutView: View {
                         activityData.social.title = activityTitle
                     }
                     activityData.social.description = activityDescription
+
+                    viewModel.activityData = activityData
 
                     ActivityUtils.setActivityUploaded(for: workout)
                     isShowingSummary = true
