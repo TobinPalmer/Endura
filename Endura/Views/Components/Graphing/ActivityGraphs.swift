@@ -22,6 +22,7 @@ struct ActivityGraphsView: View {
                 graph: graphData.pace,
                 color: .blue,
                 label: "Pace",
+                valueSuffix: " /mi",
                 valueModifier: ConversionUtils.convertMpsToMpm
             )
             HoverableChart(
@@ -29,29 +30,37 @@ struct ActivityGraphsView: View {
                 workoutEnd: end,
                 graph: graphData.heartRate,
                 color: .red,
-                label: "Heart Rate"
+                label: "Heart Rate",
+                valueSuffix: " bpm",
+                valueModifier: ConversionUtils.round
             )
             HoverableChart(
                 workoutStart: start,
                 workoutEnd: end,
                 graph: graphData.elevation,
                 color: .gray,
-                label: "Elevation"
+                label: "Elevation",
+                valueSuffix: " ft",
+                valueModifier: ConversionUtils.round
             )
             HoverableChart(
                 workoutStart: start,
                 workoutEnd: end,
                 graph: graphData.cadence,
                 color: .cyan,
-                label: "Cadence"
+                label: "Cadence",
+                valueSuffix: " spm",
+                valueModifier: ConversionUtils.round
             )
-            HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.power, color: .purple, label: "Power")
+            HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.power, color: .purple, label: "Power",
+                           valueSuffix: " W", valueModifier: ConversionUtils.round)
             HoverableChart(
                 workoutStart: start,
                 workoutEnd: end,
                 graph: graphData.strideLength,
                 color: .yellow,
                 label: "Stride Length",
+                valueSuffix: " m",
                 valueModifier: ConversionUtils.round2
             )
             HoverableChart(
@@ -60,6 +69,7 @@ struct ActivityGraphsView: View {
                 graph: graphData.verticalOscillation,
                 color: .pink,
                 label: "Vertical Oscillation",
+                valueSuffix: " cm",
                 valueModifier: ConversionUtils.round2
             )
         }

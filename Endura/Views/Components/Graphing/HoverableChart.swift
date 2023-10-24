@@ -14,6 +14,7 @@ public struct HoverableChart: View {
     private let maxY: Double
     private let color: Color
     private let label: String
+    private let valueSuffix: String
     private let valueModifier: (Double) -> String
     private let workoutStart: Date
     private let workoutEnd: Date
@@ -24,6 +25,7 @@ public struct HoverableChart: View {
         graph: IndexedLineGraphData,
         color: Color,
         label: String,
+        valueSuffix: String = "",
         valueModifier: @escaping (Double) -> String = {
             ConversionUtils.round($0)
         }
@@ -33,6 +35,7 @@ public struct HoverableChart: View {
         self.graph = graph
         self.color = color
         self.label = label
+        self.valueSuffix = valueSuffix
         self.valueModifier = valueModifier
 
         minY = graph.map {
@@ -98,6 +101,7 @@ public struct HoverableChart: View {
                         .foregroundStyle(color)
                 }
             }
+            .padding(.top, 40)
             .frame(width: UIScreen.main.bounds.width - chartPadding * 2, height: 200)
             .chartXAxis(.hidden)
             .chartXScale(domain: workoutStart ... workoutEnd)
@@ -129,7 +133,7 @@ public struct HoverableChart: View {
                             )
                         )
 
-                        Text("\(value != nil ? valueModifier(value!) : "No Data")")
+                        Text("\(value != nil ? valueModifier(value!) + valueSuffix : "No Data")")
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding()
@@ -137,7 +141,7 @@ public struct HoverableChart: View {
                             .frame(width: overlayWidth, height: 50)
                             .background(color)
                             .cornerRadius(5)
-                            .offset(x: xPosition, y: -chartSize.height / 2)
+                            .offset(x: xPosition, y: -chartSize.height / 2 + 20)
                     }
                     Color.clear
                         .contentShape(Rectangle())

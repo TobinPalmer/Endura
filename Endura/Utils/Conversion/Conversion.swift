@@ -2,7 +2,7 @@ import Foundation
 
 public enum ConversionUtils {
     public static func round(_ metersPerSec: Double) -> String {
-        String(metersPerSec.rounded())
+        String(Int(metersPerSec.rounded()))
     }
 
     public static func round2(_ metersPerSec: Double) -> String {
