@@ -18,6 +18,7 @@ import WidgetKit
                 )
             }
             updateWidgetData()
+            updateNotificationData()
             if let currentMonth = monthlyTrainingData[.current] {
                 var workoutsToSchedule: [YearMonthDay: WorkoutGoalData] = [:]
                 for i in 0 ... 1 {
@@ -244,5 +245,17 @@ import WidgetKit
 
             WidgetCenter.shared.reloadAllTimelines()
         }
+    }
+
+    private func updateNotificationData() {
+        NotificationUtils.clearScheduledNotifications()
+        let today = getTrainingDay(.current.addDay(value: 1))
+        let message =
+            "Today is \(today.type.rawValue.lowercased()) day, you have \(today.goals.isEmpty ? "no goals today!" : "\(today.goals.count) goal\(today.goals.count == 1 ? "" : "s") to complete!")"
+        NotificationUtils.sendScheduledNotification(
+            title: "Today's Training",
+            body: message,
+            date: Date().addingTimeInterval(5)
+        )
     }
 }

@@ -25,7 +25,15 @@ public enum NotificationUtils {
         return isAuthorized
     }
 
-    public static func sendNotification(title: String, body: String, date: Date) {
+    public static func clearScheduledNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+
+    public static func sendScheduledNotification(title: String, body: String, date: Date) {
+        if !isAuthorized() {
+            requestPermission()
+        }
+
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -35,6 +43,21 @@ public enum NotificationUtils {
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    public static func sendNotification(title: String, body: String) {
+        if !isAuthorized() {
+            requestPermission()
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = UNNotificationSound.default
+
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
 
         UNUserNotificationCenter.current().add(request)
     }
