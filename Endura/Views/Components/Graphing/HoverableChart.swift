@@ -47,13 +47,13 @@ public struct HoverableChart: View {
 
     public var body: some View {
         if !graph.filter({ $0.1 != 0 }).isEmpty {
-            Text(label)
-                .font(.title3)
-                .fontWeight(.bold)
-                .fontColor(.primary)
-                .alignFullWidth()
-                .padding(.top, 6)
-                .padding(.horizontal, 26)
+//            Text(label)
+//                .font(.title3)
+//                .fontWeight(.bold)
+//                .fontColor(.primary)
+//                .alignFullWidth()
+//                .padding(.top, 6)
+//                .padding(.horizontal, 26)
             let chartPadding = 26.0
             Chart {
                 RectangleMark(
@@ -104,9 +104,21 @@ public struct HoverableChart: View {
             .chartYScale(domain: (minY - (maxY - minY) * 0.1) ... (maxY + (maxY - minY) * 0.1))
             .chartOverlay { (chartProxy: ChartProxy) in
                 ZStack {
+                    let chartSize = chartProxy.plotAreaSize
+                    VStack {
+                        Text(label)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                            .padding(10)
+                            .background(color.opacity(0.2))
+                            .cornerRadius(8)
+                            .offset(y: -chartSize.height / 2 + 20)
+                    }
+                    .alignFullWidth()
+
                     if let analysisPosition = activityViewModel.analysisPosition {
                         let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph)
-                        let chartSize = chartProxy.plotAreaSize
                         let overlayWidth = 150.0
                         let centerOffset = (UIScreen.main.bounds.width - chartPadding * 2) / 2
                         let xPosition = max(
