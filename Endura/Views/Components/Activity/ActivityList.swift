@@ -149,7 +149,9 @@ struct ActivityList: View {
             }
             if let friends = activeUserModel.data?.friends {
                 if activityViewModel.uids != friends {
-                    activityViewModel.uids = friends
+                    var uids = [AuthUtils.getCurrentUID()]
+                    uids.append(contentsOf: friends)
+                    activityViewModel.uids = uids
                     activityViewModel.clearActivities()
                     activityViewModel.loadActivities()
                     return
@@ -162,7 +164,9 @@ struct ActivityList: View {
                 activityViewModel.uids = [singlePerson!]
             } else {
                 if let friends = activeUserModel.data?.friends {
-                    activityViewModel.uids = friends
+                    var uids = [AuthUtils.getCurrentUID()]
+                    uids.append(contentsOf: friends)
+                    activityViewModel.uids = uids
                 }
             }
             activityViewModel.loadActivities()
