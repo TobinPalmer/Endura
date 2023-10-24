@@ -28,8 +28,16 @@ struct ActivityView: View {
 
                         Text(activity.social.title)
                             .font(.title)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .fontWeight(.bold)
+                            .alignFullWidth()
+
+                        if !activity.social.description.isEmpty {
+                            Text(activity.social.description)
+                                .font(.body)
+                                .fontColor(.secondary)
+                                .alignFullWidth()
+                                .padding(.bottom, 10)
+                        }
 
                         if let activityData = activityData {
                             ActivityMap(activityData.data.routeData)
@@ -79,7 +87,7 @@ struct ActivityView: View {
                                     ActivityGraphsView(activityData)
                                 }
                             }
-                            .ignoresSafeArea()
+                            .ignoresSafeArea(edges: .top)
                             .environmentObject(ActivityViewModel(
                                 activityData: activityData.getIndexedGraphData(),
                                 routeLocationData: activityData.getIndexedRouteLocationData(),
