@@ -75,8 +75,6 @@ private struct MapView: UIViewRepresentable {
         averagePace = routeData.reduce(0.0) { pace, data in
             pace + 26.8224 / data.pace
         } / Double(routeData.count)
-
-        print("AVE PACE", averagePace)
     }
 
     fileprivate func colorForPace(_ pace: Double) -> UIColor {

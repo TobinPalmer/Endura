@@ -72,11 +72,6 @@ struct ActivityView: View {
                     VStack {
                         if let activityData = activityData {
                             VStack {
-                                Text(activity.social.title)
-                                    .font(.title)
-                                    .fontWeight(.semibold)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-
                                 ActivityMap(activityData.data.routeData)
                                     .frame(height: 300)
 
@@ -84,6 +79,7 @@ struct ActivityView: View {
                                     ActivityGraphsView(activityData)
                                 }
                             }
+                            .ignoresSafeArea()
                             .environmentObject(ActivityViewModel(
                                 activityData: activityData.getIndexedGraphData(),
                                 routeLocationData: activityData.getIndexedRouteLocationData(),
