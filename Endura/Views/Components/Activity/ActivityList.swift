@@ -12,8 +12,6 @@ import SwiftUI
     @Published private var lastRefresh = Date()
     @Published public var uids: [String]? = nil
 
-    @Published public var isFocused = false
-
     @Published public var newActivities: [String] = []
 
     fileprivate static let loadAmount = 5
@@ -48,7 +46,7 @@ import SwiftUI
             snapshot.documentChanges.forEach { diff in
                 self.handleActivityDocument(diff: diff)
                 if !firstLoad {
-                    if diff.type == .added {
+                    if diff.type == .added && !self.newActivities.contains(diff.document.documentID) {
                         print("New activity!")
                         self.newActivities.append(diff.document.documentID)
                     }
@@ -137,10 +135,11 @@ struct ActivityList: View {
                         { id, activity in
                             ActivityPost(id: id, activity: activity)
                                 .onAppear {
-                                    if activityViewModel.newActivities.contains(id) && activityViewModel.isFocused {
-                                        print("Viewed activity")
-                                        activityViewModel.newActivities.removeAll(where: { $0 == id })
-                                    }
+//                                    print("Is focused: \(activityViewModel.isFocused)")
+//                                    if activityViewModel.newActivities.contains(id) && activityViewModel.isFocused {
+//                                        print("Viewed")
+//                                        activityViewModel.newActivities.removeAll(where: { $0 == id })
+//                                    }
                                     if id == activityViewModel.activities.values
                                         .sorted(by: { $0.1.time > $1.1.time })
                                         .last?.0 && activityViewModel.activities.count >= ActivityListModel
@@ -162,6 +161,9 @@ struct ActivityList: View {
             }
             .padding(.horizontal, fullWidth ? 26 : 8)
             .padding(.vertical, 20)
+        }
+        .onAppear {
+            activityViewModel.newActivities.removeAll()
         }
         .scrollIndicators(fullWidth ? .automatic : .hidden)
         .refreshable {

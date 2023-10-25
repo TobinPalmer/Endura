@@ -44,8 +44,7 @@ struct ContentView: View {
                             Image(systemName: "figure.walk")
                             Text("Activity")
                         }
-                        .badge(!activitiesViewModel.newActivities.isEmpty ? activitiesViewModel.newActivities
-                            .count : 0)
+                        .badge(activitiesViewModel.newActivities.count)
 
                         NavigationStack {
                             TrainingView()
