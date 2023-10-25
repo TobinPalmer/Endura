@@ -62,23 +62,22 @@ public enum ActivityUtils {
         activity: ActivityDataWithRoute,
         image: UIImage? = nil,
         storage: Storage? = nil
-    ) throws {
+    ) async {
         do {
             let documentData = ActivityDocument.getDocument(for: activity, uploadTime: Date())
-            let activityDoc = try Firestore.firestore().collection("activities").addDocument(from: documentData)
-            try activityDoc.collection("data").document("data").setData(from: activity.data)
-
+            let activityDoc = Firestore.firestore().collection("activities").document()
             if let image, let storage {
-                uploadImage(image, for: activityDoc, storage: storage)
+                await uploadImage(image, for: activityDoc.documentID, storage: storage)
             }
+            try activityDoc.setData(from: documentData)
 
         } catch {
-            Global.log.error("Error uploading workout: \(error)")
+            Global.log.error("Error uploading activity: \(error)")
         }
     }
 
-    private static func uploadImage(_ image: UIImage, for activityDoc: DocumentReference, storage: Storage) {
-        let imageRef = storage.reference().child("activities/\(activityDoc.documentID)/map")
+    private static func uploadImage(_ image: UIImage, for activityDoc: String, storage: Storage) async {
+        let imageRef = storage.reference().child("activities/\(activityDoc)/map")
 
         let data = image.pngData()
         let metadata = StorageMetadata()
@@ -89,10 +88,14 @@ public enum ActivityUtils {
             return
         }
 
-        imageRef.putData(data, metadata: metadata) { metadata, error in
-            guard metadata != nil else {
-                Global.log.error("Error uploading image: \(error!)")
-                return
+        await withCheckedContinuation { continuation in
+            imageRef.putData(data, metadata: metadata) { metadata, error in
+                guard metadata != nil else {
+                    Global.log.error("Error uploading image: \(error!)")
+                    return
+                }
+
+                continuation.resume()
             }
         }
     }

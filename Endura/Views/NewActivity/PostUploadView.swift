@@ -107,9 +107,9 @@ struct PostUploadView: View {
                         size: geometryRef.size
                     )
 
-                    try ActivityUtils.uploadActivity(activity: activityData, image: image, storage: storage)
+                    try await ActivityUtils.uploadActivity(activity: activityData, image: image, storage: storage)
                 } else {
-                    try ActivityUtils.uploadActivity(activity: activityData)
+                    try await ActivityUtils.uploadActivity(activity: activityData)
                 }
 
                 activeUser.training.processNewActivity(activityData)
