@@ -69,7 +69,8 @@ public enum ActivityUtils {
             if let image, let storage {
                 await uploadImage(image, for: activityDoc.documentID, storage: storage)
             }
-            try activityDoc.setData(from: documentData)
+            try await activityDoc.setData(from: documentData)
+            try await activityDoc.collection("data").document("data").setData(from: activity.data)
 
         } catch {
             Global.log.error("Error uploading activity: \(error)")
