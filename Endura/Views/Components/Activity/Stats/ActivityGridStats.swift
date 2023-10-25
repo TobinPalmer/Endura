@@ -20,112 +20,116 @@ struct ActivityGridStats: View {
     }
 
     public var body: some View {
-        if topSpace {
-            Spacer(minLength: 10)
-        }
-
-        if placeholder {
-            VStack {
-                ActivityGridSection {
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------------", block: true)
-                        ActivityStatsValueText("----------", block: true)
-                    }
-
-                    ActivityStatsVLine()
-
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------------", block: true)
-                        ActivityStatsValueText("----------", block: true)
-                    }
-                }
-
-                ActivityGridSection {
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------------", block: true)
-                        ActivityStatsValueText("----------", block: true)
-                    }
-
-                    ActivityStatsVLine()
-
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------------", block: true)
-                        ActivityStatsValueText("----------", block: true)
-                    }
-                }
-
-                ActivityGridSection {
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------------", block: true)
-                        ActivityStatsValueText("----------", block: true)
-                    }
-
-                    ActivityStatsVLine()
-
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("-------------", block: true)
-                        ActivityStatsValueText("----------", block: true)
-                    }
-                }
-
-                if bottomSpace {
-                    Spacer(minLength: 10)
-                }
+        VStack {
+            if topSpace {
+                Spacer(minLength: 10)
             }
-        } else if let activityData = activityData {
-            VStack {
-                ActivityGridSection {
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("Distance")
-                        ActivityStatsValueText(
-                            "\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2)) miles"
-                        )
-                    }
 
-                    ActivityStatsVLine()
+            if placeholder {
+                VStack {
+                    ActivityGridSection {
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsValueText("----------", block: true)
+                        }
 
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("Duration")
-                        ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
-                    }
-                }
-
-                ActivityGridSection {
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("Pace")
-                        ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
-                    }
-
-                    ActivityStatsVLine()
-
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("Calories")
-                        ActivityStatsValueText(
-                            "\(activityData.stats.calories.truncate(places: 0).removeTrailingZeros()) cal"
-                        )
-                    }
-                }
-
-                ActivityGridSection {
-                    ActivityStatsSection {
-                        ActivityStatsDiscriptionText("Elapsed Time")
-                        ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.totalDuration))")
-                    }
-
-                    if let averageHeartRate = activityData.stats.averageHeartRate, averageHeartRate > 0 {
                         ActivityStatsVLine()
-                    }
 
-                    ActivityStatsSection {
-                        if let averageHeartRate = activityData.stats.averageHeartRate, averageHeartRate > 0 {
-                            ActivityStatsDiscriptionText("Average Heart Rate")
-                            ActivityStatsValueText("\(ConversionUtils.round(averageHeartRate)) bpm")
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsValueText("----------", block: true)
                         }
                     }
-                }
 
-                if bottomSpace {
-                    Spacer(minLength: 10)
+                    ActivityGridSection {
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsValueText("----------", block: true)
+                        }
+
+                        ActivityStatsVLine()
+
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsValueText("----------", block: true)
+                        }
+                    }
+
+                    ActivityGridSection {
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsValueText("----------", block: true)
+                        }
+
+                        ActivityStatsVLine()
+
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsValueText("----------", block: true)
+                        }
+                    }
+
+                    if bottomSpace {
+                        Spacer(minLength: 10)
+                    }
+                }
+            } else if let activityData = activityData {
+                VStack {
+                    ActivityGridSection {
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("Distance")
+                            ActivityStatsValueText(
+                                "\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2)) miles"
+                            )
+                        }
+
+                        ActivityStatsVLine()
+
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("Duration")
+                            ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
+                        }
+                    }
+
+                    ActivityGridSection {
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("Pace")
+                            ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
+                        }
+
+                        ActivityStatsVLine()
+
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("Calories")
+                            ActivityStatsValueText(
+                                "\(activityData.stats.calories.truncate(places: 0).removeTrailingZeros()) cal"
+                            )
+                        }
+                    }
+
+                    ActivityGridSection {
+                        ActivityStatsSection {
+                            ActivityStatsDiscriptionText("Elapsed Time")
+                            ActivityStatsValueText(
+                                "\(FormattingUtils.secondsToFormattedTime(activityData.totalDuration))"
+                            )
+                        }
+
+                        if let averageHeartRate = activityData.stats.averageHeartRate, averageHeartRate > 0 {
+                            ActivityStatsVLine()
+                        }
+
+                        ActivityStatsSection {
+                            if let averageHeartRate = activityData.stats.averageHeartRate, averageHeartRate > 0 {
+                                ActivityStatsDiscriptionText("Average Heart Rate")
+                                ActivityStatsValueText("\(ConversionUtils.round(averageHeartRate)) bpm")
+                            }
+                        }
+                    }
+
+                    if bottomSpace {
+                        Spacer(minLength: 10)
+                    }
                 }
             }
         }

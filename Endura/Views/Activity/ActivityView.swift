@@ -26,10 +26,10 @@ struct ActivityView: View {
                     VStack {
                         ActivityHeader(uid: activity.uid, activityData: activity)
 
-                        Text(activity.social.title)
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .alignFullWidth()
+//                        Text(activity.social.title)
+//                            .font(.title)
+//                            .fontWeight(.bold)
+//                            .alignFullWidth()
 
                         if !activity.social.description.isEmpty {
                             Text(activity.social.description)
@@ -59,18 +59,18 @@ struct ActivityView: View {
                             topSpace: !(activityData?.data.routeData.isEmpty ?? false)
                         )
 
+                        Button("View Analysis") {
+                            analysisView = true
+                        }
+                        .buttonStyle(EnduraNewButtonStyle())
+                        .padding(.top, 16)
+
                         DisclosureGroup("Splits") {
                             ActivitySplitGraph(splits: activity.stats.splits)
                                 .padding(.vertical, 16)
                         }
                         .padding(16)
-                        .background(Color("SecondaryBackground"))
-                        .cornerRadius(16)
-
-                        Button("View Analysis") {
-                            analysisView = true
-                        }
-                        .buttonStyle(EnduraNewButtonStyle())
+                        .enduraDefaultBox()
                     }
                     .enduraPadding()
                 }
@@ -106,6 +106,7 @@ struct ActivityView: View {
                     }
                 }
             }
+            .navigationBarTitle(activity.social.title, displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
