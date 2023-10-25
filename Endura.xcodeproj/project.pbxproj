@@ -53,6 +53,7 @@
 		17CC617439A463D6F2F6C8C3 /* CacheUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC62ABEA2C9CDFBDB7B8A6 /* CacheUtils.swift */; };
 		17CC61CBBAC693AFFBCF3C21 /* NotificationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC657C04F1EFB9941F99AE /* NotificationsModel.swift */; };
 		17CC61E475691FB9E083105B /* TrainingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6582E0365BB8164BB3CA /* TrainingUtils.swift */; };
+		17CC62287283A9D7A2D643EA /* AchievementsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC622B7E127E042F87EBC5 /* AchievementsList.swift */; };
 		17CC62525FBABFECB60433BE /* WatchWorkoutUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC62ED08C4CAC79CC916C8 /* WatchWorkoutUtils.swift */; };
 		17CC62FFC55BCB9A6AEA355C /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC69B387F52E1CA55F3716 /* ProgressView.swift */; };
 		17CC6326C5CF7E40C890EDDE /* UserEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC699671ABFD1A9BA5BFF3 /* UserEnums.swift */; };
@@ -88,6 +89,7 @@
 		17CC6983F4112553B14E96DD /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E5C876813CE440700AC /* ActivityViewModel.swift */; };
 		17CC698D69D7848BB549C593 /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC620E713369BF3ECEA030 /* PersistanceController.swift */; };
 		17CC69AE9149E6DD0A1E05E2 /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D5590AE22C3209DD958 /* ActivityList.swift */; };
+		17CC69BC28FC3CB06CB00616 /* AchievementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC696D75B3E4749DCC157E /* AchievementCard.swift */; };
 		17CC6A29EB3D7F50A0FB38F2 /* TrainingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC656E8B60587CA8E876DE /* TrainingModels.swift */; };
 		17CC6A938AB08A2BA26ADCEC /* TrainingEndGoalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC604B09DF1EA018671F97 /* TrainingEndGoalModels.swift */; };
 		17CC6AE1DF133F22BD24F48A /* TrainingEndGoalSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6AF88D4E195AD3344490 /* TrainingEndGoalSetupView.swift */; };
@@ -265,6 +267,7 @@
 		17CC61ACCE3B3E8BC74F6F90 /* TrainingGenerationDataUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGenerationDataUtils.swift; sourceTree = "<group>"; };
 		17CC620E713369BF3ECEA030 /* PersistanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 		17CC621472800F2D778E7D01 /* ActivityComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityComment.swift; sourceTree = "<group>"; };
+		17CC622B7E127E042F87EBC5 /* AchievementsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsList.swift; sourceTree = "<group>"; };
 		17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStepForm.swift; sourceTree = "<group>"; };
 		17CC62ABEA2C9CDFBDB7B8A6 /* CacheUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUtils.swift; sourceTree = "<group>"; };
 		17CC62ED08C4CAC79CC916C8 /* WatchWorkoutUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchWorkoutUtils.swift; sourceTree = "<group>"; };
@@ -296,6 +299,7 @@
 		17CC6843280A704676A963ED /* AuthUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		17CC687F745C8A603F40147E /* ActivityModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityModels.swift; sourceTree = "<group>"; };
 		17CC68FD129A61DF48BD0D4F /* Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatting.swift; sourceTree = "<group>"; };
+		17CC696D75B3E4749DCC157E /* AchievementCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementCard.swift; sourceTree = "<group>"; };
 		17CC699671ABFD1A9BA5BFF3 /* UserEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserEnums.swift; sourceTree = "<group>"; };
 		17CC69B387F52E1CA55F3716 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		17CC69CB0BDEB03BE9A8D23C /* AccountSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
@@ -617,6 +621,7 @@
 				69698739EB42C07DC09B31E9 /* PostRun */,
 				17CC6B1E1118A1DD11F1BE07 /* TrainingInputs.swift */,
 				17CC6D53B28DA634D0733F1C /* Goals */,
+				17CC64436265DF12709A3757 /* Achievements */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -646,6 +651,15 @@
 				17CC6B1555ECC86F1858E844 /* FindUsersView.swift */,
 			);
 			path = Users;
+			sourceTree = "<group>";
+		};
+		17CC64436265DF12709A3757 /* Achievements */ = {
+			isa = PBXGroup;
+			children = (
+				17CC622B7E127E042F87EBC5 /* AchievementsList.swift */,
+				17CC696D75B3E4749DCC157E /* AchievementCard.swift */,
+			);
+			path = Achievements;
 			sourceTree = "<group>";
 		};
 		17CC64521EE838B40D02B3D3 /* Cache */ = {
@@ -1432,6 +1446,8 @@
 				17CC692E027657DB0772EEBB /* TrainingGenerationModels.swift in Sources */,
 				17CC62525FBABFECB60433BE /* WatchWorkoutUtils.swift in Sources */,
 				17CC606DC69842E0B4488BF2 /* TrainingGoalProgress.swift in Sources */,
+				17CC62287283A9D7A2D643EA /* AchievementsList.swift in Sources */,
+				17CC69BC28FC3CB06CB00616 /* AchievementCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

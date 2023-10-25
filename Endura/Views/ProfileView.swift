@@ -81,7 +81,7 @@ struct ProfileView: View {
                         DailySummaryGraph()
                     }
                 case .achievements:
-                    Text("Achievements")
+                    AchievementsList()
                 }
 
                 Spacer()
