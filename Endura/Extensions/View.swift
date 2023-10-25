@@ -45,7 +45,7 @@ public extension View {
     }
 
     func enduraPadding() -> some View {
-        padding(.horizontal, 26)
+        padding(.horizontal, 24)
             .padding(.vertical, 20)
     }
 

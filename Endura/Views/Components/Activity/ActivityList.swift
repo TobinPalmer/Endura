@@ -159,7 +159,7 @@ struct ActivityList: View {
                     Text("No activities")
                 }
             }
-            .padding(.horizontal, fullWidth ? 26 : 8)
+            .padding(.horizontal, fullWidth ? 12 : 8)
             .padding(.vertical, 20)
         }
         .onAppear {

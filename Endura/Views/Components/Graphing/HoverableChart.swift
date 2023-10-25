@@ -57,7 +57,7 @@ public struct HoverableChart: View {
 //                .alignFullWidth()
 //                .padding(.top, 6)
 //                .padding(.horizontal, 26)
-            let chartPadding = 26.0
+            let chartPadding = 24.0
             Chart {
                 RectangleMark(
                     xStart: .value("Timestamp", workoutStart),
