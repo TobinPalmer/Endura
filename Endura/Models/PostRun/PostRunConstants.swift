@@ -1001,3 +1001,42 @@ public let routineExerciseReference: [RoutineExerciseType: RoutineExerciseInfo] 
         reference: "https://www.verywellfit.com/groin-stretch-2696353"
     ),
 ]
+
+public let defaultUserPostRuns: [RoutineDifficulty: RoutineData] = [
+    .easy: RoutineData(
+        type: .postRun,
+        description: "An easy post-run routine to help you cool down and recover.",
+        exercises: [
+            RoutineExercise(.hamstringStretch, .easy),
+            RoutineExercise(.quadricepsStretch, .easy),
+        ]
+    ),
+    .medium: RoutineData(
+        type: .postRun,
+        description: "A medium-intensity post-run routine for recovery and strength.",
+        exercises: [
+            RoutineExercise(.hamstringStretch, .medium),
+            RoutineExercise(.quadricepsStretch, .medium),
+            RoutineExercise(.calfStretch, .medium),
+            RoutineExercise(.hipFlexorStretch, .medium),
+        ]
+    ),
+    .hard: RoutineData(
+        type: .postRun,
+        description: "A hard post-run routine for recovery and strength.",
+        exercises: [
+            RoutineExercise(.hamstringStretch, .hard),
+            RoutineExercise(.quadricepsStretch, .hard),
+            RoutineExercise(.calfStretch, .hard),
+            RoutineExercise(.hipFlexorStretch, .hard),
+            RoutineExercise(.butterflyStretch, .hard),
+            RoutineExercise(.groinStretch, .hard),
+            RoutineExercise(.lowerBackStretch, .hard),
+            RoutineExercise(.tricepsStretch, .hard),
+            RoutineExercise(.shoulderStretch, .hard),
+            RoutineExercise(.neckStretch, .hard),
+            RoutineExercise(.chestStretch, .hard),
+            RoutineExercise(.backStretch, .hard),
+        ]
+    ),
+]

@@ -23,6 +23,21 @@ public struct RoutineExercise: Hashable, Codable {
         self.type = type
         self.amount = amount
     }
+
+    public init(_ type: RoutineExerciseType, _ difficulty: RoutineDifficulty) {
+        self.type = type
+        let info = routineExerciseReference[type]!
+        switch difficulty {
+        case .easy:
+            amount = info.easy
+        case .medium:
+            amount = info.medium
+        case .hard:
+            amount = info.hard
+        case .none:
+            amount = 0
+        }
+    }
 }
 
 public struct RoutineData: Codable {
