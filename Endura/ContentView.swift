@@ -9,6 +9,8 @@ struct ContentView: View {
     @ObservedObject private var IO = Inject.observer
     @State private var activeUserModel: ActiveUserModel?
 
+    @StateObject private var activitiesViewModel = ActivityListModel()
+
     @State private var isLogoutButtonHidden = false
 
     var body: some View {
@@ -36,11 +38,14 @@ struct ContentView: View {
 
                         NavigationStack {
                             ActivitiesView()
+                                .environmentObject(activitiesViewModel)
                         }
                         .tabItem {
                             Image(systemName: "figure.walk")
                             Text("Activity")
                         }
+                        .badge(!activitiesViewModel.newActivities.isEmpty ? activitiesViewModel.newActivities
+                            .count : 0)
 
                         NavigationStack {
                             TrainingView()

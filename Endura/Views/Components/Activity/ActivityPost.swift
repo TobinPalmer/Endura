@@ -8,7 +8,6 @@ private final class ActivityPostModel: ObservableObject {
     @Published fileprivate var degrees: Double = 0
 
     fileprivate init(liked: Bool) {
-        Global.log.info("ActivityPostModel init with liked: \(liked)")
         isLiked = liked
     }
 

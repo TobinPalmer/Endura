@@ -6,11 +6,15 @@ import HealthKit
 import Inject
 import SwiftUI
 
-@MainActor private final class ActivityListModel: ObservableObject {
+@MainActor public final class ActivityListModel: ObservableObject {
     @Published fileprivate var activities: [String: (String, ActivityData)] = [:]
     @Published var lastDocument: DocumentSnapshot? = nil
     @Published private var lastRefresh = Date()
     @Published public var uids: [String]? = nil
+
+    @Published public var isFocused = false
+
+    @Published public var newActivities: [String] = []
 
     fileprivate static let loadAmount = 5
 
@@ -21,8 +25,7 @@ import SwiftUI
 
     fileprivate func loadActivities() {
         var query = Firestore.firestore().collection("activities")
-            .order(by: "uploadTime").order(by: "time", descending: true)
-            .whereField("uploadTime", isLessThan: lastRefresh)
+            .order(by: "time", descending: true)
             .whereField("uid", in: uids ?? [])
             .limit(to: ActivityListModel.loadAmount)
 
@@ -34,6 +37,8 @@ import SwiftUI
             query :
             query.start(afterDocument: lastDocument!)
 
+        var firstLoad = true
+
         query.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
                 Global.log.error("Error fetching documents: \(error!)")
@@ -42,46 +47,54 @@ import SwiftUI
 
             snapshot.documentChanges.forEach { diff in
                 self.handleActivityDocument(diff: diff)
+                if !firstLoad {
+                    if diff.type == .added {
+                        print("New activity!")
+                        self.newActivities.append(diff.document.documentID)
+                    }
+                }
             }
+
+            firstLoad = false
 
             self.lastDocument = snapshot.documents.last
         }
     }
 
-    fileprivate func loadNewActivities() {
-        var query = Firestore.firestore().collection("activities")
-            .order(by: "uploadTime")
-            .order(by: "time", descending: true)
-            .whereField("uploadTime", isGreaterThan: lastRefresh)
-            .whereField("uploadTime", isLessThan: Date())
-            .whereField("uid", in: uids ?? [])
-
-        if uids != [AuthUtils.getCurrentUID()] {
-            query = query.whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
-        }
-
-        lastRefresh = Date()
-
-        var listener: ListenerRegistration? = nil
-
-        listener = query.addSnapshotListener { querySnapshot, error in
-            guard let snapshot = querySnapshot else {
-                Global.log.error("Error fetching documents: \(error!)")
-                return
-            }
-
-            if snapshot.documentChanges.isEmpty {
-                if let listener = listener {
-                    listener.remove()
-                }
-                return
-            }
-
-            snapshot.documentChanges.forEach { diff in
-                self.handleActivityDocument(diff: diff)
-            }
-        }
-    }
+//    fileprivate func loadNewActivities() {
+//        var query = Firestore.firestore().collection("activities")
+//            .order(by: "uploadTime")
+//            .order(by: "time", descending: true)
+//            .whereField("uploadTime", isGreaterThan: lastRefresh)
+//            .whereField("uploadTime", isLessThan: Date())
+//            .whereField("uid", in: uids ?? [])
+//
+//        if uids != [AuthUtils.getCurrentUID()] {
+//            query = query.whereField("visibility", isEqualTo: ActivityVisibility.friends.rawValue)
+//        }
+//
+//        lastRefresh = Date()
+//
+//        var listener: ListenerRegistration? = nil
+//
+//        listener = query.addSnapshotListener { querySnapshot, error in
+//            guard let snapshot = querySnapshot else {
+//                Global.log.error("Error fetching documents: \(error!)")
+//                return
+//            }
+//
+//            if snapshot.documentChanges.isEmpty {
+//                if let listener = listener {
+//                    listener.remove()
+//                }
+//                return
+//            }
+//
+//            snapshot.documentChanges.forEach { diff in
+//                self.handleActivityDocument(diff: diff)
+//            }
+//        }
+//    }
 
     private func handleActivityDocument(diff: DocumentChange) {
         do {
@@ -106,7 +119,7 @@ import SwiftUI
 
 struct ActivityList: View {
     @EnvironmentObject var activeUserModel: ActiveUserModel
-    @StateObject fileprivate var activityViewModel = ActivityListModel()
+    @EnvironmentObject var activityViewModel: ActivityListModel
 
     public var singlePerson: String? = nil
     public var fullWidth: Bool = true
@@ -124,12 +137,21 @@ struct ActivityList: View {
                         { id, activity in
                             ActivityPost(id: id, activity: activity)
                                 .onAppear {
+                                    if activityViewModel.newActivities.contains(id) && activityViewModel.isFocused {
+                                        print("Viewed activity")
+                                        activityViewModel.newActivities.removeAll(where: { $0 == id })
+                                    }
                                     if id == activityViewModel.activities.values
                                         .sorted(by: { $0.1.time > $1.1.time })
                                         .last?.0 && activityViewModel.activities.count >= ActivityListModel
                                         .loadAmount
                                     {
                                         activityViewModel.loadActivities()
+                                    }
+                                }
+                                .onDisappear {
+                                    if activityViewModel.newActivities.contains(id) {
+                                        activityViewModel.newActivities.removeAll(where: { $0 == id })
                                     }
                                 }
                         }
@@ -143,21 +165,21 @@ struct ActivityList: View {
         }
         .scrollIndicators(fullWidth ? .automatic : .hidden)
         .refreshable {
-            if singlePerson != nil {
-                activityViewModel.loadNewActivities()
-                return
-            }
-            if let friends = activeUserModel.data?.friends {
-                if activityViewModel.uids != friends {
-                    var uids = [AuthUtils.getCurrentUID()]
-                    uids.append(contentsOf: friends)
-                    activityViewModel.uids = uids
-                    activityViewModel.clearActivities()
-                    activityViewModel.loadActivities()
-                    return
-                }
-            }
-            activityViewModel.loadNewActivities()
+//                if singlePerson != nil {
+//                    activityViewModel.loadNewActivities()
+//                    return
+//                }
+//                if let friends = activeUserModel.data?.friends {
+//                    if activityViewModel.uids != friends {
+//                        var uids = [AuthUtils.getCurrentUID()]
+//                        uids.append(contentsOf: friends)
+//                        activityViewModel.uids = uids
+//                        activityViewModel.clearActivities()
+//                        activityViewModel.loadActivities()
+//                        return
+//                    }
+//                }
+//                activityViewModel.loadNewActivities()
         }
         .onAppear {
             if singlePerson != nil {

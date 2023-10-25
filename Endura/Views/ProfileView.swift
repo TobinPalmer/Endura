@@ -68,6 +68,7 @@ struct ProfileView: View {
                 switch viewModel.currentPage {
                 case .activities:
                     ActivityList(singlePerson: AuthUtils.getCurrentUID(), fullWidth: false)
+                        .environmentObject(ActivityListModel())
                 case .progress:
                     VStack {
                         EndGoalProgressCard()
