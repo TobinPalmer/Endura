@@ -63,8 +63,23 @@ struct TrainingCalender: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(trainingDay.type.getColor(), lineWidth: selectedDate == date ? 2 : 0)
                         )
-                    Text("\(date.day)")
-                        .foregroundColor(trainingDay.type.getColor())
+                    VStack {
+                        Text("\(date.day)")
+                            .foregroundColor(trainingDay.type.getColor())
+                        VStack {
+                            if date.getDate() < YearMonthDay.current.getDate() {
+                                if !trainingDay.goals.isEmpty,
+                                   trainingDay.goals.allSatisfy({ $0.progress.completed })
+                                {
+                                    Image(systemName: "checkmark.circle")
+                                }
+                            } else if date == .current {
+                                Image(systemName: "circle")
+                            }
+                        }
+                        .font(.body)
+                        .foregroundColor(.accentColor)
+                    }
                 }
                 .padding(5)
                 .opacity(date.isFocusYearMonth! ? 1 : 0.5)
