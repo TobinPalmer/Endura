@@ -14,16 +14,22 @@ struct RoutineStartView: View {
 
     public var body: some View {
         VStack {
-            Text("Post Run Starting view")
+            VStack(alignment: .leading) {
+                Text("Today's \(routineData.type.rawValue)")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .fontColor(.primary)
 
-            Text(routine.description)
-                .padding(.bottom, 10)
+                ColoredBadge(routineData.difficulty)
+
+                Text(routine.description)
+                    .fontColor(.secondary)
+                    .padding(.vertical, 10)
+            }
+            .frame(maxWidth: .infinity)
+
             ScrollView {
-                ForEach(routine.exercises, id: \.self) { exercise in
-                    if let ref = routineExerciseReference[exercise.type] {
-                        Text("\(ref.name) - \(String(describing: exercise.amount))")
-                    }
-                }
+                RoutineExercisesList(routine.exercises)
             }
 
             Button {
@@ -44,8 +50,10 @@ struct RoutineStartView: View {
             Spacer()
 
             NavigationLink(destination: RoutineView(routine: routine)) {
-                Text("Start")
+                Button("Start") {}
+                    .buttonStyle(EnduraNewButtonStyle())
             }
         }
+        .enduraPadding()
     }
 }
