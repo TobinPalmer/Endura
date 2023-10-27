@@ -4,6 +4,8 @@ import SwiftUI
 struct EndGoalProgressCard: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
 
+    @State private var deleteAlert: Bool = false
+
     var body: some View {
         VStack {
             if let endTrainingGoal = activeUser.training.endTrainingGoal {
@@ -89,17 +91,36 @@ struct EndGoalProgressCard: View {
                     Text(
                         "A training goal can help you stay motivated and on track with your training to achieve your goals!"
                     )
-                    .font(.body)
+                    .font(.system(size: 16))
                     .fontColor(.secondary)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 12)
                     NavigationLink(destination: TrainingEndGoalSetupView()) {
                         Text("Setup Training Goal")
                     }
                 }
+                .padding(.vertical, 10)
             }
         }
         .frame(maxWidth: .infinity)
+        .frame(height: 160)
         .enduraDefaultBox()
+        .contextMenu {
+            Button {
+                deleteAlert = true
+            } label: {
+                Label("Remove Training Goal", systemImage: "trash")
+            }
+        }
+        .alert(isPresented: $deleteAlert) {
+            Alert(
+                title: Text("Remove Training Goal"),
+                message: Text("Are you sure you want to remove your training goal?"),
+                primaryButton: .destructive(Text("Remove")) {
+                    activeUser.training.endTrainingGoal = nil
+                },
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
