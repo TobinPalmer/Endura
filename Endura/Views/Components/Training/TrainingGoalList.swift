@@ -49,9 +49,10 @@ struct TrainingGoalList: View {
                     .padding(.vertical, 5)
             } else {
                 VStack {
-                    ForEach(trainingDay.goals, id: \.self) { goal in
-                        TrainingGoal(goal)
-                    }
+//                    ForEach(trainingDay.goals, id: \.self) { goal in
+//                        TrainingGoal(goal)
+//                    }
+                    TrainingGoal2(trainingDay.goals)
                 }
             }
         }
