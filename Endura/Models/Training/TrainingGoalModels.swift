@@ -73,7 +73,7 @@ public struct TrainingRunGoalData: Hashable {
         var difficulty = RoutineDifficulty.none
         switch type {
         case .none:
-            return nil
+            difficulty = .easy
         case .easy:
             difficulty = .easy
         case .normal:
