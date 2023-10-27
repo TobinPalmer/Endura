@@ -10,6 +10,24 @@ public enum FormattingUtils {
         return formattedString
     }
 
+    public static func secondsToFormattedTimeColon(_ seconds: Double) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        let formattedString = formatter.string(from: TimeInterval(seconds))!
+
+        let regex = try! NSRegularExpression(pattern: "^0+:", options: [])
+        let range = NSRange(location: 0, length: formattedString.count)
+        let formattedString2 = regex.stringByReplacingMatches(
+            in: formattedString,
+            options: [],
+            range: range,
+            withTemplate: ""
+        )
+        return formattedString2
+    }
+
     public static func fullFormattedDay(_ date: YearMonthDay) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, MMM d"

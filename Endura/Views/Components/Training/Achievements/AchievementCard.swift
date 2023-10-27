@@ -2,6 +2,14 @@ import Foundation
 import SwiftUI
 
 struct AchievementCard: View {
+    private let time: Double
+    private let title: String
+
+    init(time: Double, title: String) {
+        self.time = time
+        self.title = title
+    }
+
     var body: some View {
         ZStack {
             Circle()
@@ -9,11 +17,11 @@ struct AchievementCard: View {
             Circle()
                 .strokeBorder(Color(hex: "FFBF03"), lineWidth: 6)
             VStack(spacing: 6) {
-                Text("19:16")
+                Text(FormattingUtils.secondsToFormattedTimeColon(time))
                     .font(.title2)
                     .fontWeight(.bold)
                     .fontColor(.primary)
-                Text("5k Run")
+                Text(title)
                     .font(.title3)
                     .fontWeight(.bold)
                     .fontColor(.secondary)
