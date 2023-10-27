@@ -37,6 +37,31 @@ public enum RoutineExerciseBenefit: String {
             return .clear
         }
     }
+
+    public func getIcon() -> String {
+        switch self {
+        case .legs:
+            return "figure.strengthtraining.functional"
+        case .arms:
+            return "figure.martial.arts"
+        case .core:
+            return "figure.core.training"
+        case .cardio:
+            return "figure.run"
+        case .coreAndLegs:
+            return "figure.rower"
+        case .glutesAndLegs:
+            return "figure.cross.training"
+        case .mobilityAndStretching:
+            return "figure.walk"
+        case .upperBody:
+            return "figure.martial.arts"
+        case .stretching:
+            return "figure.pilates"
+        case .none:
+            return "figure.cooldown"
+        }
+    }
 }
 
 public enum RoutineExerciseAmountType: String, Hashable, Codable {
