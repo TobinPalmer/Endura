@@ -29,32 +29,21 @@ struct RoutineStartView: View {
                 RoutineExercisesList(routine.exercises)
             }
 
-            Button {
-                Task {
-                    let postRunRoutine = await TrainingGenerationUtils.generatePostRunRoutine(
-                        activeUser: activeUser
-                    )
-                    if let postRunRoutine = postRunRoutine {
-                        DispatchQueue.main.async {
-                            self.routine = postRunRoutine
-                        }
-                    }
-                }
-            } label: {
-                Text("Customize")
+            NavigationLink(destination: GenerateRoutineView($routine)) {
+                Text("Generate New Routine")
             }
             .buttonStyle(EnduraNewButtonStyle(
-                backgroundColor: Color("TextMuted").opacity(0.5),
-                color: Color("Text").opacity(0.8)
+                backgroundColor: Color("TextMuted").opacity(0.3),
+                color: Color("Text").opacity(0.6)
             ))
             .padding(.top, 6)
 
             Spacer()
 
             NavigationLink(destination: RoutineView(routine: routine)) {
-                Button("Start") {}
-                    .buttonStyle(EnduraNewButtonStyle())
+                Text("Start")
             }
+            .buttonStyle(EnduraNewButtonStyle())
         }
         .enduraPadding()
     }

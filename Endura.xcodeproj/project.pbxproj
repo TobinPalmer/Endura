@@ -116,6 +116,7 @@
 		17CC6F4B78384077758D0334 /* Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FAD8A0AC457723ACD1F /* Conversion.swift */; };
 		17CC6F4DE24D08B1CDEE48A2 /* SummaryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6456ADDCD3B3619C2871 /* SummaryModels.swift */; };
 		17CC6F542EDA27F51A70EB97 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6843280A704676A963ED /* AuthUtils.swift */; };
+		17CC6F7F668C7FB4E845BB0D /* GenerateRoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6649E2ECB02CE0E5FE3F /* GenerateRoutineView.swift */; };
 		17CC6F99C6B477ABB1414BA4 /* ActiveUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61971638850704C3759E /* ActiveUserModel.swift */; };
 		17CC6F9EBF6E6177129EF05A /* TrainingGoalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6F3AC8B1DE5044FFAC30 /* TrainingGoalModels.swift */; };
 		6969804B969F900F229CC66D /* LoadingMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969817BEB50BC11806CE62F /* LoadingMap.swift */; };
@@ -289,6 +290,7 @@
 		17CC65A60DFFB4D56871D345 /* EditTrainingRunWorkout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTrainingRunWorkout.swift; sourceTree = "<group>"; };
 		17CC65DD44DDB6608744B554 /* AddTrainingGoalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTrainingGoalView.swift; sourceTree = "<group>"; };
 		17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringArrayValueTransformer.swift; sourceTree = "<group>"; };
+		17CC6649E2ECB02CE0E5FE3F /* GenerateRoutineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateRoutineView.swift; sourceTree = "<group>"; };
 		17CC666255DBC8045DFCBCF2 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		17CC66685EBC6CD75C2599F5 /* SettingsDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDataModel.swift; sourceTree = "<group>"; };
 		17CC669D0E842FCC44BD3788 /* TrainingSetupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingSetupView.swift; sourceTree = "<group>"; };
@@ -1098,6 +1100,7 @@
 				696989ED5389F93B7188EEB1 /* RoutineFinishedView.swift */,
 				69698D1905FD03E65E2F831E /* RoutineStartView.swift */,
 				17CC6CFB587B260C9A3F9C38 /* RoutineExercisesList.swift */,
+				17CC6649E2ECB02CE0E5FE3F /* GenerateRoutineView.swift */,
 			);
 			path = Routine;
 			sourceTree = "<group>";
@@ -1452,6 +1455,7 @@
 				17CC62287283A9D7A2D643EA /* AchievementsList.swift in Sources */,
 				17CC69BC28FC3CB06CB00616 /* AchievementCard.swift in Sources */,
 				17CC6A18AA44E752B7F93E86 /* RoutineExercisesList.swift in Sources */,
+				17CC6F7F668C7FB4E845BB0D /* GenerateRoutineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
