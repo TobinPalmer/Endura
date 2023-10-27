@@ -1007,11 +1007,15 @@ public let defaultUserPostRuns: [RoutineDifficulty: RoutineData] = [
         type: .postRun,
         description: "An easy post-run routine to help you cool down and recover.",
         exercises: [
+            RoutineExercise(.pushups, 5),
+            RoutineExercise(.squats, 5),
             RoutineExercise(.forwardLunge, 5),
             RoutineExercise(.forwardLungeWithTwist, 5),
             RoutineExercise(.sideLunge, 5),
             RoutineExercise(.backAndToTheSideLunge, 5),
             RoutineExercise(.backwardLunge, 5),
+            RoutineExercise(.sideJumpJacks, 20),
+            RoutineExercise(.sideSlide, 20),
             RoutineExercise(.forwardWalk, 30),
             RoutineExercise(.backwardWalk, 30),
             RoutineExercise(.toesInWalk, 30),
@@ -1020,6 +1024,10 @@ public let defaultUserPostRuns: [RoutineDifficulty: RoutineData] = [
             RoutineExercise(.insideOfFootWalk, 30),
             RoutineExercise(.toeWalk, 30),
             RoutineExercise(.heelWalk, 30),
+            RoutineExercise(.frontPlank, 10),
+            RoutineExercise(.sidePlank, 10),
+            RoutineExercise(.backPlank, 10),
+            RoutineExercise(.otherSidePlank, 10),
         ]
     ),
     .medium: RoutineData(
