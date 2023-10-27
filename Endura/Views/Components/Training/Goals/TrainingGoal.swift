@@ -87,11 +87,6 @@ struct TrainingRoutineGoal: View {
         VStack {
             NavigationLink(destination: RoutineStartView(goal)) {
                 HStack(alignment: .top, spacing: 10) {
-//                Image(systemName: "figure.walk")
-//                    .font(.title)
-//                    .foregroundColor(goal.type.getColor())
-//                    .fontWeight(.bold)
-
                     VStack(alignment: .leading) {
                         HStack {
                             if goal.progress.completed {
