@@ -82,7 +82,7 @@ struct TrainingGoalDetails: View {
                 )
                 .alignFullWidth()
 
-                Text("This is the description of the goal.")
+                Text(goal.description)
                     .font(.body)
                     .fontColor(.secondary)
                     .padding(.top, 5)
