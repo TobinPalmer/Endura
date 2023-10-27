@@ -38,7 +38,10 @@ struct TimeInput: View {
     @State var minutes: Int = 0
     @State var seconds: Int = 0
 
-    init(time: Binding<Double>) {
+    private let displayHours: Bool
+
+    init(time: Binding<Double>, hours: Bool = false) {
+        displayHours = hours
         _time = time
         _hours = State(initialValue: Int(time.wrappedValue / 3600))
         _minutes = State(initialValue: Int(time.wrappedValue / 60) % 60)
