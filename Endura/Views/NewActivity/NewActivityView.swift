@@ -82,24 +82,23 @@ struct NewActivityView: View {
                         ZStack {
                             Image(systemName: "nosign")
                                 .font(.system(size: 150))
-                                .foregroundColor(Color("Text"))
+                                .fontColor(.primary)
                                 .zIndex(1)
 
-                            Image(systemName: "figure.walk")
-                                .font(.system(size: 100))
-                                .foregroundColor(Color("TextMuted"))
+                            Image(systemName: "figure.run")
+                                .font(.system(size: 80))
+                                .fontColor(.muted)
                         }
 
-                        VStack {
-                            Text("No activities found.")
-                                .foregroundColor(Color("TextMuted"))
+                        VStack(spacing: 6) {
+                            Text("No activities found")
                                 .font(.title2)
+                                .fontColor(.primary)
+                                .fontWeight(.bold)
 
-                            Text("Check the Apple Health app to see if you have you have any workouts.")
-                                .foregroundColor(Color("TextMuted"))
-                                .font(.subheadline)
+                            Text("Record a workout on your Apple Watch to see it here!")
+                                .fontColor(.secondary)
                                 .multilineTextAlignment(.center)
-                                .padding(.top, 5)
                         }
                         .padding(.horizontal, 26)
                     }
@@ -141,11 +140,13 @@ struct NewActivityView: View {
                 }
                 .environment(\.editMode, .constant(selectionMode ? EditMode.active : EditMode.inactive))
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(selectionMode ? "Cancel" : "Select") {
-                            withAnimation {
-                                selectionMode.toggle()
-                                selectedActivities = []
+                    if !sortedDates.isEmpty {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(selectionMode ? "Cancel" : "Select") {
+                                withAnimation {
+                                    selectionMode.toggle()
+                                    selectedActivities = []
+                                }
                             }
                         }
                     }
