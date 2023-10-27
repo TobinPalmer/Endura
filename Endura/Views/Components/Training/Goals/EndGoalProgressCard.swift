@@ -7,7 +7,7 @@ struct EndGoalProgressCard: View {
     var body: some View {
         VStack {
             if let endTrainingGoal = activeUser.training.endTrainingGoal {
-                HStack(spacing: 20) {
+                HStack(spacing: 10) {
                     let progressRingSize = 100
                     if endTrainingGoal.completed {
                         ZStack {
@@ -99,5 +99,7 @@ struct EndGoalProgressCard: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity)
+        .enduraDefaultBox()
     }
 }
