@@ -25,19 +25,18 @@ public extension View {
     }
 
     func newShadow() -> some View {
-        shadow(color: Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.08), radius: 10, x: 0, y: 4)
-            .shadow(color: Color(red: 0.05, green: 0.1, blue: 0.29).opacity(0.1), radius: 0.5, x: 0, y: 0)
+        shadow(color: Color("TextMuted").opacity(0.2), radius: 4, x: 0, y: 0)
+            .shadow(color: Color("TextMuted").opacity(0.06), radius: 10, x: 0, y: 0)
     }
 
     func enduraDefaultBox() -> some View {
         background(.white)
             .cornerRadius(16)
-            //            .shadow(color: .black.opacity(0.02), radius: 5, x: 0, y: 0)
-            //            .newShadow()
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.1), lineWidth: 1.5)
-            )
+            .newShadow()
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 16)
+//                    .stroke(Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.1), lineWidth: 1.5)
+//            )
     }
 
     func alignFullWidth(_ alignment: Alignment = .leading) -> some View {
