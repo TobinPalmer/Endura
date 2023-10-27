@@ -10,13 +10,13 @@ private struct RoutineGenerationInfo {
 struct GenerateRoutineView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     @Binding public var routineData: RoutineData
-    @State private var routine: RoutineData
 
     @State private var generationInfo: RoutineGenerationInfo = .init()
 
+    @State private var loading: Task<Void, Never>? = nil
+
     public init(_ routineData: Binding<RoutineData>) {
         _routineData = routineData
-        _routine = State(initialValue: routineData.wrappedValue)
     }
 
     var body: some View {
@@ -105,24 +105,43 @@ struct GenerateRoutineView: View {
                     .padding(.bottom, 20)
             }
 
-            Button {
-                Task {
-                    let postRunRoutine = await TrainingGenerationUtils.generatePostRunRoutine(
-                        activeUser: activeUser
-                    )
-                    if let postRunRoutine = postRunRoutine {
-                        DispatchQueue.main.async {
-                            self.routine = postRunRoutine
-                        }
+            if loading != nil {
+                Button {
+                    loading?.cancel()
+                    loading = nil
+                } label: {
+                    HStack {
+                        ProgressView()
+                        Text("Generating, Click to Cancel")
+                            .padding(.leading, 10)
                     }
                 }
-            } label: {
-                HStack {
-                    Image(systemName: "sparkles")
-                    Text("Generate")
+                .buttonStyle(EnduraNewButtonStyle())
+            } else {
+                Button {
+                    loading = Task { () in
+                        let postRunRoutine = await TrainingGenerationUtils.generatePostRunRoutine(
+                            activeUser: activeUser
+                        )
+                        if loading != nil {
+                            loading = nil
+                        } else {
+                            return
+                        }
+                        if let postRunRoutine = postRunRoutine {
+                            DispatchQueue.main.async {
+                                self.routineData = postRunRoutine
+                            }
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "sparkles")
+                        Text("Generate")
+                    }
                 }
+                .buttonStyle(EnduraNewButtonStyle())
             }
-            .buttonStyle(EnduraNewButtonStyle())
         }
         .enduraPadding()
     }
