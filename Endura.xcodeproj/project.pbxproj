@@ -113,6 +113,7 @@
 		17CC6ECAF92DDC8FB82BA9B0 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6D870BA8F7FE33770E38 /* UIView.swift */; };
 		17CC6EE5F11BB76AD09EDBBF /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6507B9EB6FEDAE6EB719 /* Array.swift */; };
 		17CC6F2D2274313C2825BE5B /* TrainingCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC66D4EBE24BD79F3FA0F7 /* TrainingCalendar.swift */; };
+		17CC6F33B4102DFA33FBFD5C /* RoutineEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6E07D1BD3D2AF0C62FC5 /* RoutineEnums.swift */; };
 		17CC6F4B78384077758D0334 /* Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FAD8A0AC457723ACD1F /* Conversion.swift */; };
 		17CC6F4DE24D08B1CDEE48A2 /* SummaryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6456ADDCD3B3619C2871 /* SummaryModels.swift */; };
 		17CC6F542EDA27F51A70EB97 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6843280A704676A963ED /* AuthUtils.swift */; };
@@ -324,6 +325,7 @@
 		17CC6D870BA8F7FE33770E38 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		17CC6D93D86A82B085AB91BD /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		17CC6DE5BC05129FC3E4498F /* TrainingDocumentModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingDocumentModels.swift; sourceTree = "<group>"; };
+		17CC6E07D1BD3D2AF0C62FC5 /* RoutineEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutineEnums.swift; sourceTree = "<group>"; };
 		17CC6E5C876813CE440700AC /* ActivityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
 		17CC6E97C0F64CD107601DBF /* EditRoutineTrainingGoalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRoutineTrainingGoalView.swift; sourceTree = "<group>"; };
 		17CC6EB7C291EB3598A671B0 /* TrainingGenerationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGenerationUtils.swift; sourceTree = "<group>"; };
@@ -766,6 +768,14 @@
 			path = Activities;
 			sourceTree = "<group>";
 		};
+		17CC6BE9787166F1ADC4D0F4 /* Routine */ = {
+			isa = PBXGroup;
+			children = (
+				17CC6E07D1BD3D2AF0C62FC5 /* RoutineEnums.swift */,
+			);
+			path = Routine;
+			sourceTree = "<group>";
+		};
 		17CC6C78A4FBDBC025182646 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
@@ -827,6 +837,7 @@
 				17CC604B09DF1EA018671F97 /* TrainingEndGoalModels.swift */,
 				17CC6DE5BC05129FC3E4498F /* TrainingDocumentModels.swift */,
 				17CC60BE2DDB6999B41BCF11 /* Generation */,
+				17CC6BE9787166F1ADC4D0F4 /* Routine */,
 			);
 			path = Training;
 			sourceTree = "<group>";
@@ -1456,6 +1467,7 @@
 				17CC69BC28FC3CB06CB00616 /* AchievementCard.swift in Sources */,
 				17CC6A18AA44E752B7F93E86 /* RoutineExercisesList.swift in Sources */,
 				17CC6F7F668C7FB4E845BB0D /* GenerateRoutineView.swift in Sources */,
+				17CC6F33B4102DFA33FBFD5C /* RoutineEnums.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
