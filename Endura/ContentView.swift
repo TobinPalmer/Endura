@@ -13,6 +13,8 @@ struct ContentView: View {
 
     @State private var isLogoutButtonHidden = false
 
+    @State private var newActivityView = false
+
     var body: some View {
         if navigation.currentView == .LOGIN {
             NavigationStack {
@@ -27,52 +29,85 @@ struct ContentView: View {
         } else {
             VStack {
                 if let activeUserModel = activeUserModel {
-                    TabView {
-                        NavigationStack {
-                            DashboardView()
-                        }
-                        .tabItem {
-                            Image(systemName: "house")
-                            Text("Home")
-                        }
+                    ZStack {
+                        TabView {
+                            NavigationStack {
+                                DashboardView()
+                            }
+                            .tabItem {
+                                Image(systemName: "house")
+                                Text("Home")
+                            }
 
-                        NavigationStack {
-                            ActivitiesView()
-                                .environmentObject(activitiesViewModel)
-                        }
-                        .tabItem {
-                            Image(systemName: "figure.walk")
-                            Text("Activity")
-                        }
-                        .badge(activitiesViewModel.newActivities.count)
+                            NavigationStack {
+                                ActivitiesView()
+                                    .environmentObject(activitiesViewModel)
+                            }
+                            .tabItem {
+                                Image(systemName: "figure.walk")
+                                Text("Activity")
+                            }
+                            .badge(activitiesViewModel.newActivities.count)
 
-                        NavigationStack {
-                            TrainingView()
-                        }
-                        .tabItem {
-                            Image(systemName: "calendar")
-                            Text("Training")
-                        }
+//                            NavigationStack {
+//                                NewActivityView()
+//                            }
+//                                .tabItem {
+//                                    Image(systemName: "plus")
+//                                    Text("New")
+//                                }
 
-                        NavigationStack {
-                            ProgressDashboardView()
-                        }
-                        .tabItem {
-                            Image(systemName: "chart.bar")
-                            Text("Progress")
-                        }
+                            NavigationStack {
+                                TrainingView()
+                            }
+                            .tabItem {
+                                Image(systemName: "calendar")
+                                Text("Training")
+                            }
 
-                        NavigationStack {
-                            ProfileView()
+//                        NavigationStack {
+//                            ProgressDashboardView()
+//                        }
+//                        .tabItem {
+//                            Image(systemName: "chart.bar")
+//                            Text("Progress")
+//                        }
+
+                            NavigationStack {
+                                ProfileView()
+                            }
+                            .tabItem {
+                                Image(systemName: "person")
+                                Text("Profile")
+                            }
                         }
-                        .tabItem {
-                            Image(systemName: "person")
-                            Text("Profile")
+                        .environmentObject(activeUserModel)
+                        .environmentObject(NotificationsModel(lastRead: activeUserModel.data?
+                                .lastNotificationsRead))
+                        .enableInjection()
+                        VStack {
+                            Spacer()
+//                            Image(systemName: "plus.circle.fill")
+//                                .font(.system(size: 70))
+//                                .foregroundColor(.accentColor)
+//                                .offset(y: 10)
+//                                .background {
+//                                    Circle()
+//                                        .fill(Color.white)
+//                                        .padding(10)
+//                                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 0)
+//                                        .offset(y: 10)
+//                                }
+//                                .onTapGesture {
+//                                    newActivityView = true
+//                                }
+                        }
+                        .sheet(isPresented: $newActivityView) {
+                            NavigationStack {
+                                NewActivityView()
+                            }
                         }
                     }
-                    .environmentObject(activeUserModel)
-                    .environmentObject(NotificationsModel(lastRead: activeUserModel.data?.lastNotificationsRead))
-                    .enableInjection()
                 } else {
                     VStack {
                         ProgressView()
