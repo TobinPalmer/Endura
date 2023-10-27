@@ -22,11 +22,18 @@ public struct EnduraButtonStyleOld:
 
 struct EnduraNewButtonStyle: ButtonStyle {
     private let backgroundColor: Color
+    private let color: Color
     private let width: CGFloat
     private let height: CGFloat
 
-    init(backgroundColor: Color = Color.accentColor, maxWidth: CGFloat = .infinity, maxHeight: CGFloat = 30) {
+    init(
+        backgroundColor: Color = Color.accentColor,
+        color: Color = Color.white,
+        maxWidth: CGFloat = .infinity,
+        maxHeight: CGFloat = 30
+    ) {
         self.backgroundColor = backgroundColor
+        self.color = color
         width = maxWidth
         height = maxHeight
     }
@@ -36,7 +43,7 @@ struct EnduraNewButtonStyle: ButtonStyle {
             .frame(maxWidth: width, maxHeight: height)
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
-            .foregroundColor(.white)
+            .foregroundColor(color)
             .fontWeight(.bold)
             .background(configuration.isPressed ? backgroundColor.opacity(0.8) : backgroundColor)
             .cornerRadius(6)

@@ -14,19 +14,16 @@ struct RoutineStartView: View {
 
     public var body: some View {
         VStack {
-            VStack(alignment: .leading) {
-                Text("Today's \(routineData.type.rawValue)")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .fontColor(.primary)
+            Text("Today's \(routineData.type.rawValue)")
+                .font(.title)
+                .fontWeight(.bold)
+                .fontColor(.primary)
 
-                ColoredBadge(routineData.difficulty)
+            ColoredBadge(routineData.difficulty)
 
-                Text(routine.description)
-                    .fontColor(.secondary)
-                    .padding(.vertical, 10)
-            }
-            .frame(maxWidth: .infinity)
+            Text(routine.description)
+                .fontColor(.secondary)
+                .padding(.vertical, 10)
 
             ScrollView {
                 RoutineExercisesList(routine.exercises)
@@ -44,8 +41,13 @@ struct RoutineStartView: View {
                     }
                 }
             } label: {
-                Text("Generate")
+                Text("Customize")
             }
+            .buttonStyle(EnduraNewButtonStyle(
+                backgroundColor: Color("TextMuted").opacity(0.5),
+                color: Color("Text").opacity(0.8)
+            ))
+            .padding(.top, 6)
 
             Spacer()
 
