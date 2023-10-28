@@ -38,14 +38,9 @@ struct GenerateTrainingGoalsView: View {
             switch generationType {
             case .goal:
                 if let endGoal = activeUser.training.endTrainingGoal {
-                    Text("""
-                    This will generate the next \(endGoal
-                        .daysLeft()) days to help you reach your end goal by \(FormattingUtils
-                        .dateToFormattedDay(endGoal.date)).
-                    Your current end goal is getting \(FormattingUtils
-                        .formatMiles(endGoal.distance)) miles in \(FormattingUtils
-                        .secondsToFormattedTimeColon(endGoal.time)).
-                    """)
+                    Text(
+                        "This will generate the next \(endGoal.daysLeft()) days to help you reach your end goal by \(FormattingUtils.dateToFormattedDay(endGoal.date)). Your current end goal is getting \(FormattingUtils.formatMiles(endGoal.distance)) miles in \(FormattingUtils.secondsToFormattedTimeColon(endGoal.time))."
+                    )
                     .font(.body)
                     .fontWeight(.bold)
                     .fontColor(.secondary)
@@ -86,7 +81,7 @@ struct GenerateTrainingGoalsView: View {
                 )
                 .font(.body)
                 .fontWeight(.bold)
-                .fontColor(.primary)
+                .fontColor(.secondary)
                 .alignFullWidth()
                 TextField("Custom", text: $inputTextNotes)
                     .textFieldStyle(.roundedBorder)
@@ -117,8 +112,10 @@ struct GenerateTrainingGoalsView: View {
             } else {
                 Button {
                     generationTask = Task {
-                        let trainingData = await TrainingGenerationUtils.generateTrainingGoalsForEndGoal(
+                        let trainingData = await TrainingGenerationUtils.generateTrainingGoals(
                             activeUser: activeUser,
+                            generationType: generationType,
+                            infoText: inputTextNotes,
                             progress: { progress in
                                 withAnimation {
                                     self.progress = progress

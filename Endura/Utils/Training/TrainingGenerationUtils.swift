@@ -71,8 +71,10 @@ import SwiftUICalendar
         return nil
     }
 
-    public static func generateTrainingGoalsForEndGoal(activeUser: ActiveUserModel,
-                                                       progress: @escaping (Int) -> Void) async
+    public static func generateTrainingGoals(activeUser: ActiveUserModel,
+                                             generationType _: TrainingGenerationType,
+                                             infoText _: String = "",
+                                             progress: @escaping (Int) -> Void) async
         -> [YearMonth: MonthlyTrainingData]?
     {
         guard let goal = activeUser.training.endTrainingGoal else {
