@@ -55,10 +55,24 @@ struct TrainingGoalList: View {
                     .padding(.vertical, 5)
             } else {
                 VStack {
-//                    ForEach(trainingDay.goals, id: \.self) { goal in
-//                        TrainingGoal(goal)
-//                    }
-                    TrainingGoal2(trainingDay.goals)
+                    if trainingDay.type == .rest {
+                        VStack {
+                            Text("Rest Day")
+                                .font(.title3)
+                                .foregroundColor(.blue.opacity(0.8))
+                                .fontWeight(.bold)
+                            Text("No goals for today, enjoy your rest day!")
+                                .font(.body)
+                                .fontColor(.secondary)
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 20)
+                        }
+                    } else {
+                        ForEach(trainingDay.goals, id: \.self) { goal in
+                            TrainingGoal(goal)
+                        }
+                    }
                 }
             }
         }
