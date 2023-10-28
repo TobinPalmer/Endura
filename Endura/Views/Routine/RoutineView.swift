@@ -139,7 +139,7 @@ struct RoutineExerciseView: View {
 //                            .fontColor(.muted)
 //                            .fontWeight(.bold)
 
-//                        ColoredBadge(text: exerciseReference.amountType.getAmountString(viewModel.exercise.amount), color: .green)
+//                        ColoredBadge(text: exerciseReference.amountType.getAmountString(viewModel.exercise.amount), color: Color("EnduraGreen"))
                     }
 
                     Text(exerciseReference.description)

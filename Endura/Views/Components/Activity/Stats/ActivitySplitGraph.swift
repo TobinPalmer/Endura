@@ -40,7 +40,7 @@ struct ActivitySplitGraph: View {
 
                             Rectangle()
                                 .frame(maxWidth: width)
-                                .foregroundColor(.green)
+                                .foregroundColor(Color("EnduraBlue"))
                         }
                     }
                 }

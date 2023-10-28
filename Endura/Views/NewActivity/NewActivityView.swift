@@ -118,7 +118,8 @@ struct NewActivityView: View {
                                         )
                                     } icon: {
                                         if ActivityUtils.isActivityUploaded(activity) {
-                                            Image(systemName: "checkmark").font(.title2).foregroundColor(.green)
+                                            Image(systemName: "checkmark").font(.title2)
+                                                .foregroundColor(Color("EnduraBlue"))
                                         } else {
                                             Image(systemName: uploadsViewModel
                                                 .activityToIcon(activityName: workoutType))

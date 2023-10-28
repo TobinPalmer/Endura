@@ -80,7 +80,7 @@ struct GenerateRoutineView: View {
                             } label: {
                                 let selected = generationInfo.hurtingParts.contains(bodyPart)
                                 RoundedRectangle(cornerRadius: 6)
-                                    .fill(selected ? Color.orange : Color.clear)
+                                    .fill(selected ? Color("EnduraOrange") : Color.clear)
                                     .frame(height: 50)
                                     .overlay {
                                         Text(bodyPart.rawValue)

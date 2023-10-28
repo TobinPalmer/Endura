@@ -53,6 +53,6 @@ struct SignupView: View {
 
     var body: some View {
         MultiStepForm(formSteps, viewModel: signupFormInfo, currentPage: $currentStep)
-        //      .background(Color.red)
+        //      .background( Color("EnduraRed"))
     }
 }

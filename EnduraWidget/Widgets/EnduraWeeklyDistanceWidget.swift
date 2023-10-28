@@ -105,7 +105,7 @@ struct EnduraWeeklyDistanceWidgetView: View {
                             Circle()
                                 .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
                                 .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
-                                .foregroundColor(.red)
+                                .foregroundColor(Color("EnduraRed"))
 
                             Circle()
                                 .trim(

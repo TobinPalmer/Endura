@@ -4,7 +4,7 @@ import SwiftUI
 struct NotificationCountView: View {
     @Binding var value: Int
     @State var foreground: Color = .white
-    @State var background: Color = .red
+    @State var background: Color = .init("EnduraRed")
 
     private let size = 18.0
     private let x = 24.0

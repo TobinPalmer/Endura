@@ -16,13 +16,13 @@ public enum RoutineExerciseBenefit: String {
     public func getColor() -> Color {
         switch self {
         case .legs:
-            return .orange
+            return Color("EnduraOrange")
         case .arms:
-            return .orange
+            return Color("EnduraOrange")
         case .core:
-            return .red
+            return Color("EnduraRed")
         case .cardio:
-            return .red
+            return Color("EnduraRed")
         case .coreAndLegs:
             return .pink
         case .glutesAndLegs:
@@ -32,7 +32,7 @@ public enum RoutineExerciseBenefit: String {
         case .upperBody:
             return .purple
         case .stretching:
-            return .green
+            return Color("EnduraGreen")
         case .none:
             return .clear
         }
@@ -95,11 +95,11 @@ public enum RoutineDifficulty: String, Codable {
     public func getColor() -> Color {
         switch self {
         case .easy:
-            return .green
+            return Color("EnduraGreen")
         case .medium:
-            return .yellow
+            return Color("EnduraYellow")
         case .hard:
-            return .red
+            return Color("EnduraRed")
         case .none:
             return .clear
         }

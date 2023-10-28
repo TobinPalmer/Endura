@@ -20,7 +20,7 @@ struct ActivityGraphsView: View {
                 workoutStart: start,
                 workoutEnd: end,
                 graph: graphData.pace,
-                color: .blue,
+                color: Color("EnduraBlue"),
                 label: "Pace",
                 valueSuffix: " /mi",
                 valueModifier: ConversionUtils.convertMpsToMpm
@@ -29,7 +29,7 @@ struct ActivityGraphsView: View {
                 workoutStart: start,
                 workoutEnd: end,
                 graph: graphData.heartRate,
-                color: .red,
+                color: Color("EnduraRed"),
                 label: "Heart Rate",
                 valueSuffix: " bpm",
                 valueModifier: ConversionUtils.round
@@ -58,7 +58,7 @@ struct ActivityGraphsView: View {
                 workoutStart: start,
                 workoutEnd: end,
                 graph: graphData.strideLength,
-                color: .yellow,
+                color: Color("EnduraYellow"),
                 label: "Stride Length",
                 valueSuffix: " m",
                 valueModifier: ConversionUtils.round2

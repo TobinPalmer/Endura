@@ -85,7 +85,7 @@ public struct HoverableChart: View {
                             x: .value("Timestamp", point.0),
                             y: .value("Value", point.1)
                         )
-                        .foregroundStyle(.red)
+                        .foregroundStyle(Color("EnduraRed"))
                     }
                 }
 

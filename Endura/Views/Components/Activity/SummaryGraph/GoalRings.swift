@@ -11,7 +11,7 @@ public enum GoalRingType {
 
 struct GoalRing: View {
     @StateObject private var viewModel = GoalRingModel()
-    private let colors: [Color] = [Color.red, Color.blue]
+    private let colors: [Color] = [Color("EnduraRed"), Color("EnduraBlue")]
     private let type: GoalRingType
 
     private var goal: String {

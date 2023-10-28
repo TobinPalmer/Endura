@@ -74,10 +74,10 @@ struct TrainingCalender: View {
                                     .allSatisfy({ $0.progress.workoutCompleted }) || trainingDay.type == .rest
                                 {
                                     Image(systemName: "checkmark")
-                                        .foregroundColor(.green)
+                                        .foregroundColor(Color("EnduraBlue"))
                                 } else if !trainingDay.goals.isEmpty {
                                     Image(systemName: "xmark")
-                                        .foregroundColor(.red)
+                                        .foregroundColor(Color("EnduraRed"))
                                 }
                             } else if date == .current {
                                 Image(systemName: "star.fill")

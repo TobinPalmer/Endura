@@ -53,7 +53,7 @@ struct TrainingGoalList: View {
                         VStack {
                             Text("Rest Day")
                                 .font(.title3)
-                                .foregroundColor(.blue.opacity(0.8))
+                                .foregroundColor(Color("EnduraBlue").opacity(0.8))
                                 .fontWeight(.bold)
                             Text("No goals for today, enjoy your rest day!")
                                 .font(.body)

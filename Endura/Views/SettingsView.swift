@@ -124,7 +124,7 @@ struct SettingsView: View {
                         AuthUtils.logout()
                     }) {
                         Text("Logout")
-                            .foregroundColor(.red)
+                            .foregroundColor(Color("EnduraRed"))
                     }
                 }
             }

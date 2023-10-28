@@ -11,15 +11,15 @@ public enum Feeling: String, CaseIterable {
     public func getColor() -> Color {
         switch self {
         case .reallyGood:
-            return .green.darker()
+            return Color("EnduraGreen").darker()
         case .good:
-            return .green
+            return Color("EnduraGreen")
         case .okay:
-            return .yellow
+            return Color("EnduraYellow")
         case .bad:
-            return .red
+            return Color("EnduraRed")
         case .reallyBad:
-            return .red.darker()
+            return Color("EnduraRed").darker()
         }
     }
 }

@@ -44,7 +44,7 @@ struct EnduraWidgetAttributes: ActivityAttributes {
 //                Text(context.state.emoji)
 //            }
 //            .widgetURL(URL(string: "http://www.apple.com"))
-//            .keylineTint(Color.red)
+//            .keylineTint( Color("EnduraRed"))
 //        }
 //    }
 // }

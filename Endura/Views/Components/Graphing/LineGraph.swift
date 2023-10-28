@@ -5,11 +5,11 @@ public protocol LineGraphStyle {
 }
 
 struct PaceLineGraphStyle: LineGraphStyle {
-    public let color: Color = .blue
+    public let color: Color = .init("EnduraBlue")
 }
 
 struct HeartRateLineGraphStyle: LineGraphStyle {
-    public let color: Color = .red
+    public let color: Color = .init("EnduraRed")
 }
 
 struct ElevationLineGraphStyle: LineGraphStyle {

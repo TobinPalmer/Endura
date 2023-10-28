@@ -18,13 +18,13 @@ public enum TrainingRunType: String, Codable {
     public func getColor() -> Color {
         switch self {
         case .easy:
-            return .green
+            return Color("EnduraGreen")
         case .normal:
-            return .yellow
+            return Color("EnduraYellow")
         case .long:
-            return .orange
+            return Color("EnduraOrange")
         case .workout:
-            return .red
+            return Color("EnduraRed")
         case .none:
             return .gray
         }
@@ -50,15 +50,15 @@ public enum TrainingDayType: String, Codable {
         case .none:
             return .gray
         case .rest:
-            return .blue
+            return Color("EnduraBlue")
         case .easy:
-            return .green
+            return Color("EnduraGreen")
         case .medium:
-            return .yellow
+            return Color("EnduraYellow")
         case .long:
-            return .orange
+            return Color("EnduraOrange")
         case .workout:
-            return .red
+            return Color("EnduraRed")
         }
     }
 

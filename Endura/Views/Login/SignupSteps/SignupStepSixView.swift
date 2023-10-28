@@ -7,13 +7,13 @@ private final class SignupStepSixViewModel: ObservableObject {
     fileprivate final func stateToColor(state: RunningScheduleType) -> Color {
         switch state {
         case .FREE:
-            return .green
+            return Color("EnduraGreen")
         case .BUSY:
-            return .red
+            return Color("EnduraRed")
         case .MAYBE:
-            return .orange
+            return Color("EnduraOrange")
         case .PROBABLY:
-            return .yellow
+            return Color("EnduraYellow")
         case .PROBABLY_NOT:
             return .gray
         }

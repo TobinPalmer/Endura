@@ -72,7 +72,7 @@ struct TrainingGoalDetails: View {
                     if goal.progress.workoutCompleted {
                         Image(systemName: "checkmark")
                             .font(.title)
-                            .foregroundColor(.green)
+                            .foregroundColor(Color("EnduraBlue"))
                     }
                 }
 

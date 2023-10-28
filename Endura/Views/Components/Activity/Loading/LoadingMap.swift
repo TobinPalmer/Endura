@@ -15,8 +15,8 @@ struct LoadingMap: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .frame(height: height)
-            .foregroundColor(Color.red)
-            .border(.red)
+            .foregroundColor(Color("EnduraRed"))
+            .border(Color("EnduraRed"))
         }
     }
 }
