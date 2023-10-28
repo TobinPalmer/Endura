@@ -44,6 +44,9 @@ public enum WorkoutGoalData: Codable, Hashable {
         case let .time(time):
             return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .time(time, .seconds))))
         case let .pacer(distance, time):
+            guard distance > 0 && time > 0 else {
+                return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .open)))
+            }
             return WorkoutPlan(.pacer(PacerWorkout(
                 activity: .running,
                 distance: Measurement(value: distance, unit: UnitLength.miles),
