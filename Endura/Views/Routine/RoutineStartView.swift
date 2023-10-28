@@ -9,7 +9,11 @@ struct RoutineStartView: View {
 
     public init(_ data: TrainingRoutineGoalData) {
         routineData = data
-        routine = defaultUserPostRuns[routineData.difficulty]!
+        if routineData.type == .postRun {
+            routine = defaultUserPostRuns[routineData.difficulty]!
+        } else {
+            routine = defaultUserWarmups[routineData.difficulty]!
+        }
     }
 
     public var body: some View {
