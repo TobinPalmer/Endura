@@ -21,9 +21,9 @@ public struct TrainingGoal: View {
                 Spacer()
 
                 if goal.progress.allCompleted() {
-                    Image(systemName: "checkmark")
-                        .font(.title2)
-                        .foregroundColor(.green)
+                    Image(systemName: "checkmark.circle")
+                        .font(.title)
+                        .foregroundColor(.accentColor)
                 }
             }
             .padding(.bottom, 1)
@@ -40,13 +40,21 @@ public struct TrainingGoal: View {
             VStack {
                 if let preRoutine = goal.preRoutine {
                     NavigationLink(destination: RoutineStartView(preRoutine)) {
-                        goalListItem(text: "Warmup", icon: "figure.cooldown")
+                        goalListItem(text: "Warmup", icon: "figure.cooldown", done: goal.progress.preRoutineCompleted)
                     }
                 }
-                goalListItem(text: "Run", icon: "figure.run")
+                goalListItem(
+                    text: "\(FormattingUtils.formatMiles(goal.getDistance())) Mile Run",
+                    icon: "figure.run",
+                    done: goal.progress.workoutCompleted
+                )
                 if let postRoutine = goal.postRoutine {
                     NavigationLink(destination: RoutineStartView(postRoutine)) {
-                        goalListItem(text: "Post run", icon: "figure.strengthtraining.functional")
+                        goalListItem(
+                            text: "Post run",
+                            icon: "figure.strengthtraining.functional",
+                            done: goal.progress.postRoutineCompleted
+                        )
                     }
                 }
             }
@@ -54,15 +62,41 @@ public struct TrainingGoal: View {
         .padding(20)
         .enduraDefaultBox()
         .contextMenu {
+            if goal.preRoutine != nil {
+                Button(action: {
+                    var goal = goal
+                    goal.progress.preRoutineCompleted.toggle()
+                    activeUser.training.updateTrainingGoal(goal.date, goal)
+                }) {
+                    if goal.progress.preRoutineCompleted {
+                        Label("Warmup Completed", systemImage: "checkmark")
+                    } else {
+                        Text("Warmup Completed")
+                    }
+                }
+            }
             Button(action: {
                 var goal = goal
                 goal.progress.workoutCompleted.toggle()
                 activeUser.training.updateTrainingGoal(goal.date, goal)
             }) {
                 if goal.progress.workoutCompleted {
-                    Label("Completed", systemImage: "checkmark")
+                    Label("Run Completed", systemImage: "checkmark")
                 } else {
-                    Text("Mark as Complete")
+                    Text("Run Completed")
+                }
+            }
+            if goal.postRoutine != nil {
+                Button(action: {
+                    var goal = goal
+                    goal.progress.postRoutineCompleted.toggle()
+                    activeUser.training.updateTrainingGoal(goal.date, goal)
+                }) {
+                    if goal.progress.postRoutineCompleted {
+                        Label("Post Run Completed", systemImage: "checkmark")
+                    } else {
+                        Text("Post Run Completed")
+                    }
                 }
             }
             Divider()
@@ -74,7 +108,7 @@ public struct TrainingGoal: View {
         }
     }
 
-    private func goalListItem(text: String, icon: String) -> some View {
+    private func goalListItem(text: String, icon: String, done: Bool = false) -> some View {
         HStack {
             Image(systemName: icon)
                 .font(.title3)
@@ -86,14 +120,20 @@ public struct TrainingGoal: View {
 
             Spacer()
 
-            Button("Start") {}
-                .font(.system(size: 15))
-                .fontWeight(.semibold)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(Color.accentColor)
-                .foregroundColor(.white)
-                .cornerRadius(50)
+            if done {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.title3)
+                    .foregroundColor(.accentColor)
+            } else {
+                Button("Start") {}
+                    .font(.system(size: 15))
+                    .fontWeight(.semibold)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.accentColor)
+                    .foregroundColor(.white)
+                    .cornerRadius(50)
+            }
         }
         .frame(height: 40)
     }
