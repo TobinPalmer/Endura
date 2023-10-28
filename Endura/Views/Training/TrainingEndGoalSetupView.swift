@@ -4,14 +4,18 @@ import SwiftUICalendar
 
 struct TrainingEndGoalSetupView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
-    @State private var endGoal: TrainingEndGoalData = .init(
-        date: .current,
-        startDate: .current.addDay(value: 7),
-        distance: 1,
-        time: 8,
-        currentTime: 9,
-        completed: false
-    )
+    @State private var endGoal: TrainingEndGoalData
+
+    public init(_ endGoal: TrainingEndGoalData? = nil) {
+        _endGoal = State(initialValue: endGoal ?? .init(
+            date: .current,
+            startDate: .current.addDay(value: 7),
+            distance: 1,
+            time: 8,
+            currentTime: 9,
+            completed: false
+        ))
+    }
 
     var body: some View {
         ZStack {
