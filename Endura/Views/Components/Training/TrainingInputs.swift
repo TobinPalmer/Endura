@@ -4,31 +4,43 @@ import SwiftUI
 struct DistanceInput: View {
     @Binding var distance: Double
 
+    @State private var popup = false
+
     var body: some View {
-        HStack {
-            Button(action: {
-                distance -= 1
-            }) {
-                Image(systemName: "minus")
-            }
-            TextField("Distance", value: Binding(
-                get: { distance },
-                set: { newValue in
-                    distance = Double(newValue)
-                }
-            ), format: .number)
-                .multilineTextAlignment(.center)
-                .keyboardType(.decimalPad)
-                .fontColor(.primary)
-            Button(action: {
-                distance += 1
-            }) {
-                Image(systemName: "plus")
-            }
+        Button {
+            popup = true
+        } label: {
+            Text(FormattingUtils.formatMiles(distance))
+                .font(.title3)
+                .fontWeight(.bold)
         }
-        .font(.largeTitle)
-        .fontWeight(.bold)
-        .padding(26)
+        .popover(isPresented: $popup) {
+            HStack {
+                Button(action: {
+                    distance -= 1
+                }) {
+                    Image(systemName: "minus")
+                }
+                TextField("Distance", value: Binding(
+                    get: { distance },
+                    set: { newValue in
+                        distance = Double(newValue)
+                    }
+                ), format: .number)
+                    .multilineTextAlignment(.center)
+                    .keyboardType(.decimalPad)
+                    .fontColor(.primary)
+                Button(action: {
+                    distance += 1
+                }) {
+                    Image(systemName: "plus")
+                }
+            }
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .padding(16)
+            .presentationCompactAdaptation(.popover)
+        }
     }
 }
 
