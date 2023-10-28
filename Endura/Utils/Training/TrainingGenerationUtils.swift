@@ -123,6 +123,8 @@ import SwiftUICalendar
             )
         }
 
+        progress(10)
+
         if let outputs = await TrainingGenerationUtils.generateMultiOutputWithTrainingAI(
             inputs: inputs,
             context: context,
@@ -133,6 +135,7 @@ import SwiftUICalendar
                 generatedDailyData.append(contentsOf: TrainingGenerationDataUtils.decodeDailyTrainingData($0))
             }
 
+            progress(80)
             var monthlyData: [YearMonth: MonthlyTrainingData] = [:]
             for day in generatedDailyData {
                 let date = day.date
@@ -146,6 +149,7 @@ import SwiftUICalendar
                 }
                 monthlyData[yearMonth]!.days.updateValue(day, forKey: day.date)
             }
+            progress(100)
             return monthlyData
         }
 

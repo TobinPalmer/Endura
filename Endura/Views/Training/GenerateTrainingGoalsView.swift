@@ -10,6 +10,7 @@ public struct TrainingGenerationCustomOptions {
 
 struct GenerateTrainingGoalsView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
+    @Environment(\.dismiss) private var dismiss
 
     @State private var generationType = TrainingGenerationType.goal
     @State private var endGoalNotes = ""
@@ -120,6 +121,7 @@ struct GenerateTrainingGoalsView: View {
 
             if progress > 0 {
                 ProgressView(value: Double(progress), total: 100)
+                    .animation(.easeInOut(duration: 5))
                     .padding(.top, 10)
             }
 
@@ -139,6 +141,7 @@ struct GenerateTrainingGoalsView: View {
             } else {
                 Button {
                     generationTask = Task {
+                        progress = 0
                         let trainingData = await TrainingGenerationUtils.generateTrainingGoals(
                             activeUser: activeUser,
                             generationType: generationType,
@@ -150,18 +153,16 @@ struct GenerateTrainingGoalsView: View {
                                 }
                             }
                         )
-                        if generationTask != nil {
-                            generationTask = nil
-                            progress = 100
-                        } else {
-                            progress = 0
-                            return
-                        }
                         if let trainingData = trainingData {
                             DispatchQueue.main.async {
                                 for month in trainingData {
+                                    print("Generated \(month.key) with \(month.value.days.count) days")
                                     activeUser.training.monthlyTrainingData.updateValue(month.value, forKey: month.key)
                                     activeUser.training.saveTrainingMonth(month.key)
+                                    if generationTask != nil {
+                                        generationTask = nil
+                                        dismiss()
+                                    }
                                 }
                             }
                         }
