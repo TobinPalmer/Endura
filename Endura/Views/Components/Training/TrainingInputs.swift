@@ -40,6 +40,8 @@ struct TimeInput: View {
 
     private let displayHours: Bool
 
+    @State private var popup = false
+
     init(time: Binding<Double>, hours: Bool = false) {
         displayHours = hours
         _time = time
@@ -49,61 +51,71 @@ struct TimeInput: View {
     }
 
     var body: some View {
-        HStack(spacing: 0) {
-            let width = CGFloat(90)
-            Picker("Hours", selection: Binding(
-                get: { Int(time / 3600) },
-                set: { newValue in
-                    time = time + Double(-hours * 3600 + newValue * 3600)
-                    hours = newValue
-                }
-            )) {
-                ForEach(0 ..< 24) { index in
-                    Text("\(index)h")
-                        .tag(index)
-                }
-            }
-            .frame(width: width)
-            .pickerStyle(WheelPickerStyle())
-            .clipShape(.rect.offset(x: -16))
-            .padding(.trailing, -16)
-            Picker("Minutes", selection: Binding(
-                get: { Int(time / 60) % 60 },
-                set: { newValue in
-                    time = time + Double(-minutes * 60 + newValue * 60)
-                    minutes = newValue
-                }
-            )) {
-                ForEach(0 ..< 60) { index in
-                    Text("\(index)m")
-                        .tag(index)
-                }
-            }
-            .frame(width: width)
-            .pickerStyle(WheelPickerStyle())
-            .clipShape(.rect.offset(x: -16))
-            .padding(.trailing, -16)
-            .clipShape(.rect.offset(x: 16))
-            .padding(.leading, -16)
-            Picker("Seconds", selection: Binding(
-                get: { Int(time) % 60 },
-                set: { newValue in
-                    time = time + Double(-seconds + newValue)
-                    seconds = newValue
-                }
-            )) {
-                ForEach(0 ..< 60) { index in
-                    Text("\(index)s")
-                        .tag(index)
-                }
-            }
-            .frame(width: width)
-            .pickerStyle(WheelPickerStyle())
-            .clipShape(.rect.offset(x: 16))
-            .padding(.leading, -16)
+        Button {
+            popup = true
+        } label: {
+            Text(FormattingUtils.secondsToFormattedTime(time))
+                .font(.title3)
+                .fontWeight(.bold)
         }
-        .frame(maxWidth: .infinity, maxHeight: 100)
-        .padding(.top, 8)
+        .popover(isPresented: $popup) {
+            HStack(spacing: 0) {
+                let width = CGFloat(90)
+                Picker("Hours", selection: Binding(
+                    get: { Int(time / 3600) },
+                    set: { newValue in
+                        time = time + Double(-hours * 3600 + newValue * 3600)
+                        hours = newValue
+                    }
+                )) {
+                    ForEach(0 ..< 24) { index in
+                        Text("\(index)h")
+                            .tag(index)
+                    }
+                }
+                .frame(width: width)
+                .pickerStyle(WheelPickerStyle())
+                .clipShape(.rect.offset(x: -16))
+                .padding(.trailing, -16)
+                Picker("Minutes", selection: Binding(
+                    get: { Int(time / 60) % 60 },
+                    set: { newValue in
+                        time = time + Double(-minutes * 60 + newValue * 60)
+                        minutes = newValue
+                    }
+                )) {
+                    ForEach(0 ..< 60) { index in
+                        Text("\(index)m")
+                            .tag(index)
+                    }
+                }
+                .frame(width: width)
+                .pickerStyle(WheelPickerStyle())
+                .clipShape(.rect.offset(x: -16))
+                .padding(.trailing, -16)
+                .clipShape(.rect.offset(x: 16))
+                .padding(.leading, -16)
+                Picker("Seconds", selection: Binding(
+                    get: { Int(time) % 60 },
+                    set: { newValue in
+                        time = time + Double(-seconds + newValue)
+                        seconds = newValue
+                    }
+                )) {
+                    ForEach(0 ..< 60) { index in
+                        Text("\(index)s")
+                            .tag(index)
+                    }
+                }
+                .frame(width: width)
+                .pickerStyle(WheelPickerStyle())
+                .clipShape(.rect.offset(x: 16))
+                .padding(.leading, -16)
+            }
+            .frame(maxWidth: .infinity, maxHeight: 100)
+            .padding(16)
+            .presentationCompactAdaptation(.popover)
+        }
     }
 }
 

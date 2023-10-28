@@ -51,7 +51,7 @@ struct TrainingEndGoalSetupView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(26)
-                    .enduraDefaultBox()
+//                        .enduraDefaultBox()
 
                     VStack(alignment: .leading, spacing: 2) {
                         Label("Distance", systemImage: "figure.walk")
@@ -62,7 +62,7 @@ struct TrainingEndGoalSetupView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(26)
-                    .enduraDefaultBox()
+//                        .enduraDefaultBox()
 
                     VStack(alignment: .leading, spacing: 2) {
                         Label("Time", systemImage: "stopwatch")
@@ -75,7 +75,7 @@ struct TrainingEndGoalSetupView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(26)
-                    .enduraDefaultBox()
+//                        .enduraDefaultBox()
 
                     Button {
                         print("Set Goal")
