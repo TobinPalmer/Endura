@@ -12,20 +12,21 @@ public struct TrainingGoal: View {
     public var body: some View {
         VStack {
             HStack {
-                Text(String(describing: goal.getTitle()))
-                    .font(.title3)
+                Text("\(goal.type.rawValue) Day")
+                    .font(.title2)
                     .fontWeight(.bold)
-                    .fontColor(.primary)
+                    .foregroundColor(goal.type.getColor())
                     .alignFullWidth()
 
                 Spacer()
 
                 if goal.progress.allCompleted() {
                     Image(systemName: "checkmark")
-                        .font(.title3)
+                        .font(.title2)
                         .foregroundColor(.green)
                 }
             }
+            .padding(.bottom, 1)
 
             Text(String(describing: goal.description))
                 .font(.body)
@@ -50,7 +51,7 @@ public struct TrainingGoal: View {
                 }
             }
         }
-        .padding(16)
+        .padding(20)
         .enduraDefaultBox()
         .contextMenu {
             Button(action: {
