@@ -7,7 +7,7 @@ struct ActivityPostStats: View {
     private let pace: Double
 
     public init(activityData: ActivityData) {
-        distance = activityData.distance
+        distance = ConversionUtils.metersToMiles(activityData.distance)
         duration = activityData.duration
         pace = activityData.pace
     }
@@ -24,26 +24,51 @@ struct ActivityPostStats: View {
 
     public var body: some View {
         HStack {
-            ActivityStatsSection {
-                ActivityStatsDiscriptionText("Distance")
-                ActivityStatsValueText(
-                    "\(ConversionUtils.metersToMiles(distance).rounded(toPlaces: 2)) miles"
+            VStack(spacing: 4) {
+                HStack {
+//                    Image(systemName: "ruler")
+                    Text("Distance")
+                }
+                .font(.caption)
+                .fontColor(.muted)
+                .fontWeight(.bold)
+                Text(
+                    "\(FormattingUtils.formatMiles(distance)) mi"
                 )
+                .fontWeight(.semibold)
+                .fontColor(.primary)
             }
 
             ActivityStatsVLine()
 
-            ActivityStatsSection {
-                ActivityStatsDiscriptionText("Duration")
-                ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(duration))")
+            VStack(spacing: 4) {
+                HStack {
+//                    Image(systemName: "timer")
+                    Text("Duration")
+                }
+                .font(.caption)
+                .fontColor(.muted)
+                .fontWeight(.bold)
+                Text("\(FormattingUtils.secondsToFormattedTime(duration))")
+                    .fontWeight(.semibold)
+                    .fontColor(.primary)
             }
 
             ActivityStatsVLine()
 
-            ActivityStatsSection {
-                ActivityStatsDiscriptionText("Pace")
-                ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(pace)) min/mile")
+            VStack(spacing: 4) {
+                HStack {
+//                    Image(systemName: "speedometer")
+                    Text("Pace")
+                }
+                .font(.caption)
+                .fontColor(.muted)
+                .fontWeight(.bold)
+                Text("\(ConversionUtils.convertMpsToMpm(pace)) min/mi")
+                    .fontWeight(.semibold)
+                    .fontColor(.primary)
             }
         }
+        .padding(.bottom, 4)
     }
 }

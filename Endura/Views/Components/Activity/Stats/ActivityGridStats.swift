@@ -29,42 +29,42 @@ struct ActivityGridStats: View {
                 VStack {
                     ActivityGridSection {
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsDescriptionText("-------------", block: true)
                             ActivityStatsValueText("----------", block: true)
                         }
 
                         ActivityStatsVLine()
 
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsDescriptionText("-------------", block: true)
                             ActivityStatsValueText("----------", block: true)
                         }
                     }
 
                     ActivityGridSection {
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsDescriptionText("-------------", block: true)
                             ActivityStatsValueText("----------", block: true)
                         }
 
                         ActivityStatsVLine()
 
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsDescriptionText("-------------", block: true)
                             ActivityStatsValueText("----------", block: true)
                         }
                     }
 
                     ActivityGridSection {
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsDescriptionText("-------------", block: true)
                             ActivityStatsValueText("----------", block: true)
                         }
 
                         ActivityStatsVLine()
 
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("-------------", block: true)
+                            ActivityStatsDescriptionText("-------------", block: true)
                             ActivityStatsValueText("----------", block: true)
                         }
                     }
@@ -77,7 +77,7 @@ struct ActivityGridStats: View {
                 VStack {
                     ActivityGridSection {
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("Distance")
+                            ActivityStatsDescriptionText("Distance")
                             ActivityStatsValueText(
                                 "\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2)) miles"
                             )
@@ -86,21 +86,21 @@ struct ActivityGridStats: View {
                         ActivityStatsVLine()
 
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("Duration")
+                            ActivityStatsDescriptionText("Duration")
                             ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
                         }
                     }
 
                     ActivityGridSection {
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("Pace")
+                            ActivityStatsDescriptionText("Pace")
                             ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
                         }
 
                         ActivityStatsVLine()
 
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("Calories")
+                            ActivityStatsDescriptionText("Calories")
                             ActivityStatsValueText(
                                 "\(activityData.stats.calories.truncate(places: 0).removeTrailingZeros()) cal"
                             )
@@ -109,7 +109,7 @@ struct ActivityGridStats: View {
 
                     ActivityGridSection {
                         ActivityStatsSection {
-                            ActivityStatsDiscriptionText("Elapsed Time")
+                            ActivityStatsDescriptionText("Elapsed Time")
                             ActivityStatsValueText(
                                 "\(FormattingUtils.secondsToFormattedTime(activityData.totalDuration))"
                             )
@@ -121,7 +121,7 @@ struct ActivityGridStats: View {
 
                         ActivityStatsSection {
                             if let averageHeartRate = activityData.stats.averageHeartRate, averageHeartRate > 0 {
-                                ActivityStatsDiscriptionText("Average Heart Rate")
+                                ActivityStatsDescriptionText("Average Heart Rate")
                                 ActivityStatsValueText("\(ConversionUtils.round(averageHeartRate)) bpm")
                             }
                         }

@@ -10,7 +10,7 @@ struct ActivityStatsVLine: View {
     }
 }
 
-struct ActivityStatsDiscriptionText: View {
+struct ActivityStatsDescriptionText: View {
     private let text: String
     private let block: Bool
 
