@@ -18,7 +18,10 @@ struct TrainingView: View {
             ScrollView {
                 VStack(spacing: 20.0) {
                     TrainingCalender(controller: controller, selectedDate: $viewModel.selectedDate)
+                        .padding(.horizontal, 12)
+                        .padding(.top, 8)
                     TrainingGoalList(selectedDate: $viewModel.selectedDate)
+                        .padding(.horizontal, 26)
                     NavigationLink(
                         destination: AddTrainingGoalView(viewModel.selectedDate)
                     ) {
@@ -37,10 +40,12 @@ struct TrainingView: View {
                             }
                         }
                     }
+                    .padding(.horizontal, 26)
+                    .padding(.bottom, 20)
                 }
-                .padding(26)
             }
         }
+        .navigationBarTitle(FormattingUtils.fullFormattedDay(viewModel.selectedDate), displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink(

@@ -57,33 +57,40 @@ struct TrainingCalender: View {
 //                            Circle()
 //                                .stroke(trainingDay.type.getColor(), lineWidth: selectedDate == date ? 2 : 0)
 //                        )
-                    RoundedRectangle(cornerRadius: 10)
+//                        RoundedRectangle(cornerRadius: 10)
+                    Circle()
                         .fill(trainingDay.type.getColor().opacity(0.2))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 10)
+                            //                                RoundedRectangle(cornerRadius: 10)
+                            Circle()
                                 .stroke(trainingDay.type.getColor(), lineWidth: selectedDate == date ? 2 : 0)
                         )
                     VStack {
                         Text("\(date.day)")
                             .foregroundColor(trainingDay.type.getColor())
                         VStack {
-                            if date.getDate() < YearMonthDay.current.getDate() {
-                                if !trainingDay.goals.isEmpty,
-                                   trainingDay.goals.allSatisfy({ $0.progress.completed })
+                            if date.getDate() < YearMonthDay.current.getDate(), trainingDay.type != .none {
+                                if !trainingDay.goals.isEmpty && trainingDay.goals
+                                    .allSatisfy({ $0.progress.completed }) || trainingDay.type == .rest
                                 {
-                                    Image(systemName: "checkmark.circle")
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.green)
+                                } else if !trainingDay.goals.isEmpty {
+                                    Image(systemName: "xmark")
+                                        .foregroundColor(.red)
                                 }
                             } else if date == .current {
-                                Image(systemName: "circle")
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.accentColor)
                             }
                         }
-                        .font(.body)
-                        .foregroundColor(.accentColor)
+                        .font(.system(size: 14))
                     }
                 }
                 .padding(5)
                 .opacity(date.isFocusYearMonth! ? 1 : 0.5)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                //                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .frame(width: 50, height: 50, alignment: .center)
                 .onTapGesture {
                     selectedDate = date
                 }
@@ -93,5 +100,7 @@ struct TrainingCalender: View {
             }
         }
         .frame(maxWidth: .infinity, minHeight: 400, maxHeight: 400)
+        .padding(20)
+        .enduraDefaultBox()
     }
 }
