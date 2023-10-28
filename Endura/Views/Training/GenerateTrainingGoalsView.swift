@@ -1,13 +1,23 @@
 import Foundation
 import SwiftUI
+import SwiftUICalendar
+
+public struct TrainingGenerationCustomOptions {
+    public var easyPace: Double = 510
+    public var endDate: YearMonthDay
+    public var notes: String
+}
 
 struct GenerateTrainingGoalsView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
 
     @State private var generationType = TrainingGenerationType.goal
-    @State private var inputTextNotes = ""
+    @State private var endGoalNotes = ""
 
-    @State private var customEasyPace = 510.0
+    @State private var customOptions = TrainingGenerationCustomOptions(
+        endDate: .current.addDay(value: 7),
+        notes: ""
+    )
 
     @State private var output = ""
 
@@ -57,7 +67,7 @@ struct GenerateTrainingGoalsView: View {
                         .fontColor(.primary)
                         .alignFullWidth()
 
-                    TextField("Notes", text: $inputTextNotes)
+                    TextField("Notes", text: $endGoalNotes)
                         .textFieldStyle(.roundedBorder)
                 } else {
                     Text("No training goal")
@@ -68,13 +78,30 @@ struct GenerateTrainingGoalsView: View {
             case .custom:
                 Text("Custom")
 
+                Text("What is the date you want to end your training?")
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .fontColor(.primary)
+                    .alignFullWidth()
+
+                DatePicker(
+                    selection: Binding<Date>(
+                        get: { customOptions.endDate.getDate() },
+                        set: { customOptions.endDate = $0.toYearMonthDay() }
+                    ),
+                    in: Date()...,
+                    displayedComponents: [.date]
+                ) {
+                    Label("Completion Date", systemImage: "calendar")
+                }
+
                 Text("What is pace (per mile) do you want to run at for easy runs?")
                     .font(.body)
                     .fontWeight(.bold)
                     .fontColor(.primary)
                     .alignFullWidth()
 
-                TimeInput(time: $customEasyPace, hours: false)
+                TimeInput(time: $customOptions.easyPace, hours: false)
 
                 Text(
                     "Enter what you want your training to be like. For example, \"I want to run 3-4 miles every day and improve core strength\""
@@ -83,7 +110,7 @@ struct GenerateTrainingGoalsView: View {
                 .fontWeight(.bold)
                 .fontColor(.secondary)
                 .alignFullWidth()
-                TextField("Custom", text: $inputTextNotes)
+                TextField("Custom", text: $customOptions.notes)
                     .textFieldStyle(.roundedBorder)
             }
 
@@ -115,7 +142,8 @@ struct GenerateTrainingGoalsView: View {
                         let trainingData = await TrainingGenerationUtils.generateTrainingGoals(
                             activeUser: activeUser,
                             generationType: generationType,
-                            infoText: inputTextNotes,
+                            infoText: generationType == .goal ? endGoalNotes : customOptions.notes,
+                            customOptions: customOptions,
                             progress: { progress in
                                 withAnimation {
                                     self.progress = progress

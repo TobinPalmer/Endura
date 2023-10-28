@@ -29,7 +29,7 @@ public enum TrainingGenerationPromptUtils {
         For the output format every [type](description?) means that the full []() should be replaced with a value that fits the optional description and is the right type.
         """
 
-    public static func basicContext(athleteInfo: String, goal: String, trainingInfo: String) -> String {
+    public static func basicContextForEndGoal(athleteInfo: String, goal: String, trainingInfo: String) -> String {
         """
             You are a training ai that is dedicated to help the running athlete reach their goals.
             Using the given info you must generate a training plan that will get them ideally to succeed with their goal by the date specified.
@@ -39,6 +39,23 @@ public enum TrainingGenerationPromptUtils {
 
             Goal info:
             \(goal)
+
+            Training info:
+            (The start of the week is monday, so 0 is monday and 6 is sunday, the athlete is unavailable on the days specified as false)
+            \(trainingInfo)
+        """
+    }
+
+    public static func basicContextForCustom(athleteInfo: String, infoText: String, trainingInfo: String) -> String {
+        """
+            You are a training ai that is dedicated to help the running athlete reach their goals.
+            Using the given info you must generate a training plan that will get them ideally to succeed with their goal by the date specified.
+
+            Athlete info:
+            \(athleteInfo)
+
+            Goal Info (this is the athletes words on what they want their training to be like):
+            "\(infoText)"
 
             Training info:
             (The start of the week is monday, so 0 is monday and 6 is sunday, the athlete is unavailable on the days specified as false)

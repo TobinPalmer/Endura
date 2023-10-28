@@ -72,33 +72,50 @@ import SwiftUICalendar
     }
 
     public static func generateTrainingGoals(activeUser: ActiveUserModel,
-                                             generationType _: TrainingGenerationType,
-                                             infoText _: String = "",
+                                             generationType: TrainingGenerationType,
+                                             infoText: String = "",
+                                             customOptions: TrainingGenerationCustomOptions? = nil,
                                              progress: @escaping (Int) -> Void) async
         -> [YearMonth: MonthlyTrainingData]?
     {
-        guard let goal = activeUser.training.endTrainingGoal else {
-            Global.log.error("No end goal found")
-            return nil
-        }
         let athleteInfo = TrainingGenerationDataUtils.encodeAthleteInfo(activeUser.data)
-        let endGoal = TrainingGenerationDataUtils.encodeEndTrainingGoal(
-            activeUser.training.endTrainingGoal!
-        )
         let settings = TrainingGenerationDataUtils.encodeTrainingSettings(
             activeUser.settings.data.training,
             activeUser.training.endTrainingGoal!
         )
 
-        let context = TrainingGenerationPromptUtils.basicContext(
-            athleteInfo: athleteInfo,
-            goal: endGoal,
-            trainingInfo: settings
-        ) + TrainingGenerationPromptUtils.contextForDailyTrainingData()
+        var context = ""
+        var goalDate = YearMonthDay.current.addDay(value: 7)
+        if generationType == .goal {
+            guard let goal = activeUser.training.endTrainingGoal else {
+                Global.log.error("No end goal found")
+                return nil
+            }
+            let endGoal = TrainingGenerationDataUtils.encodeEndTrainingGoal(
+                activeUser.training.endTrainingGoal!
+            )
+            goalDate = goal.date
+            context = TrainingGenerationPromptUtils.basicContextForEndGoal(
+                athleteInfo: athleteInfo,
+                goal: endGoal,
+                trainingInfo: settings
+            ) + TrainingGenerationPromptUtils.contextForDailyTrainingData()
+        } else {
+            guard let customOptions = customOptions else {
+                Global.log.error("No custom options found")
+                return nil
+            }
+            goalDate = customOptions.endDate
+            context = TrainingGenerationPromptUtils.basicContextForCustom(
+                athleteInfo: athleteInfo,
+                infoText: infoText,
+                trainingInfo: settings
+            ) + TrainingGenerationPromptUtils.contextForDailyTrainingData()
+        }
 
         let inputs = TrainingGenerationPromptUtils.getDaysInWeeksBetween(
             .current,
-            goal.date
+            goalDate
         ).map {
             TrainingGenerationPromptUtils.promptForDailyTrainingData(
                 $0[0].toCache(),
