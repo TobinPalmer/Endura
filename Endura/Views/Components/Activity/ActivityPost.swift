@@ -131,18 +131,16 @@ struct ActivityPost: View {
                 Button {
                     showingComments.toggle()
                 } label: {
-                    let commentsBinding = Binding<Int>(
-                        get: { activityData.social.comments.count },
-                        set: { _ in }
-                    )
                     Image(systemName: "message")
                         .font(.title)
+                        .foregroundColor(.accentColor)
                         .overlay(
-                            NotificationCountView(value: commentsBinding)
-                                .offset(x: 10, y: 3)
+                            NotificationCountView(value: Binding<Int>(
+                                get: { activityData.social.comments.count },
+                                set: { _ in }
+                            ))
                         )
                 }
-                .buttonStyle(EnduraCircleButtonStyle(backgroundColor: .clear, shadowColor: Color(.systemGray4)))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .sheet(isPresented: $showingComments) {

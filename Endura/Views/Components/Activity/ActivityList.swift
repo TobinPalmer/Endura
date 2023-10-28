@@ -160,7 +160,7 @@ struct ActivityList: View {
                 }
             }
             .padding(.horizontal, fullWidth ? 12 : 8)
-            .padding(.vertical, 20)
+            .padding(.vertical, 10)
         }
         .onAppear {
             activityViewModel.newActivities.removeAll()
