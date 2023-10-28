@@ -45,7 +45,7 @@ struct TrainingView: View {
                 }
             }
         }
-        .navigationBarTitle(FormattingUtils.fullFormattedDay(viewModel.selectedDate), displayMode: .inline)
+        .navigationBarTitle(FormattingUtils.dateToFormattedDay(viewModel.selectedDate), displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 NavigationLink(

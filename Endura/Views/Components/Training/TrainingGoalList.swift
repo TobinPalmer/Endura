@@ -26,16 +26,22 @@ struct TrainingGoalList: View {
                         .fontWeight(.bold)
                 }
                 Spacer()
-                Button(action: {
-                    editSheet = true
-                }) {
-                    Text("Edit")
+                if trainingDay.goals[safe: 0]?.progress.completed ?? false {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundColor(.accentColor)
                 }
+//                Button(action: {
+//                    editSheet = true
+//                }) {
+//                    Text("Edit")
+//                }
             }
-            ColoredBadge(trainingDay.type)
-                .alignFullWidth()
-                .padding(.top, -10)
-                .padding(.bottom, 10)
+//            ColoredBadge(trainingDay.type)
+//                .alignFullWidth()
+//                .padding(.top, -10)
+//                .padding(.bottom, 10)
             if trainingDay.goals.isEmpty {
                 Text(trainingDay
                     .type == .rest ?
