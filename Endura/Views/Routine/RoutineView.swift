@@ -71,15 +71,18 @@ struct RoutineExerciseView: View {
     @Binding private var currentStep: Int
     @State private var finished: Bool = false
 
-    fileprivate init(viewModel: RoutineExerciseViewModel, currentStep: Binding<Int>) {
+    private let totalSteps: Int
+
+    fileprivate init(viewModel: RoutineExerciseViewModel, currentStep: Binding<Int>, totalSteps: Int) {
         _viewModel = ObservedObject(initialValue: viewModel)
         _currentStep = currentStep
+        self.totalSteps = totalSteps
     }
 
     public var body: some View {
         if let exerciseReference = routineExerciseReference[viewModel.exercise.type] {
             VStack(spacing: 10) {
-                Text("Step \(currentStep + 1) of \(postRunEasyDay.count)")
+                Text("Step \(currentStep + 1) of \(totalSteps)")
                     .fontColor(.muted)
                     .fontWeight(.bold)
                     .padding(.top, 10)
@@ -168,7 +171,7 @@ struct RoutineExerciseView: View {
                             HStack {
                                 Button("Next") {
                                     withAnimation {
-                                        if currentStep == postRunEasyDay.count {
+                                        if currentStep == totalSteps {
                                             finished = true
                                         } else {
                                             currentStep += 1
@@ -209,7 +212,8 @@ struct RoutineView: View {
             var views: [AnyView] = routine.exercises.map { exercise in
                 AnyView(RoutineExerciseView(
                     viewModel: RoutineExerciseViewModel(exercise: exercise),
-                    currentStep: $currentPage
+                    currentStep: $currentPage,
+                    totalSteps: routine.exercises.count
                 ))
             }
             let _ = views.append(AnyView(Text("FINISHED")))
