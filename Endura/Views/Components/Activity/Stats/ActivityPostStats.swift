@@ -24,6 +24,8 @@ struct ActivityPostStats: View {
 
     public var body: some View {
         HStack {
+            Spacer()
+
             VStack(spacing: 4) {
                 HStack {
 //                    Image(systemName: "ruler")
@@ -35,11 +37,15 @@ struct ActivityPostStats: View {
                 Text(
                     "\(FormattingUtils.formatMiles(distance)) mi"
                 )
-                .fontWeight(.semibold)
+                //                .fontWeight(.semibold)
                 .fontColor(.primary)
             }
 
+            Spacer()
+
             ActivityStatsVLine()
+
+            Spacer()
 
             VStack(spacing: 4) {
                 HStack {
@@ -50,11 +56,15 @@ struct ActivityPostStats: View {
                 .fontColor(.muted)
                 .fontWeight(.bold)
                 Text("\(FormattingUtils.secondsToFormattedTime(duration))")
-                    .fontWeight(.semibold)
+                    //                    .fontWeight(.semibold)
                     .fontColor(.primary)
             }
 
+            Spacer()
+
             ActivityStatsVLine()
+
+            Spacer()
 
             VStack(spacing: 4) {
                 HStack {
@@ -65,10 +75,13 @@ struct ActivityPostStats: View {
                 .fontColor(.muted)
                 .fontWeight(.bold)
                 Text("\(ConversionUtils.convertMpsToMpm(pace)) min/mi")
-                    .fontWeight(.semibold)
+                    //                    .fontWeight(.semibold)
                     .fontColor(.primary)
             }
+
+            Spacer()
         }
+        .frame(maxWidth: .infinity)
         .padding(.bottom, 4)
     }
 }
