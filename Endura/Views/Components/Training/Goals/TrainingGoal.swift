@@ -10,139 +10,70 @@ private struct TrainingGoalSingleGoal: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading) {
-            // Warmup
-            if let preRoutine = goal.preRoutine {
-                HStack {
-                    Image(systemName: "figure.flexibility")
-                        .font(.title)
-                        .foregroundColor(preRoutine.difficulty.getColor())
-                        .fontWeight(.bold)
-                        .padding(.trailing, 5)
-
-                    Text(String(describing: preRoutine.type.rawValue))
-                        //            .foregroundColor(preRoutine.difficulty.getColor())
-                        .alignFullWidth()
-
-                    ColoredBadge(preRoutine.difficulty)
-                }
-                .background(Color(UIColor.systemBackground))
-                .contextMenu {
-                    Button(action: {
-                        var goal = goal
-                        goal.progress.workoutCompleted.toggle()
-
-                        activeUser.training.updateTrainingGoal(goal.date, goal)
-                    }) {
-                        if goal.progress.workoutCompleted {
-                            Label("Completed", systemImage: "checkmark")
-                        } else {
-                            Text("Mark as Complete")
-                        }
-                    }
-                    Divider()
-                    Button(role: .destructive, action: {
-                        activeUser.training.removeTrainingGoal(goal.date, goal)
-                    }) {
-                        Label("Remove", systemImage: "trash")
-                    }
-                }
-
-                TrainingGoalHorizontalDivider()
-            }
-
-            // Main goal section
+        VStack {
             HStack {
-                // Icon
-                Image(systemName: "figure.run")
-                    .font(.title)
-                    .foregroundColor(goal.type.getColor())
+                Text(String(describing: goal.getTitle()))
+                    .font(.title3)
                     .fontWeight(.bold)
-                    .padding(.trailing, 5)
+                    .fontColor(.primary)
+                    .alignFullWidth()
 
-                // Title + Desc
-                VStack {
-                    HStack {
-                        Text(String(describing: goal.getTitle()))
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .fontColor(.primary)
-                            .alignFullWidth()
-                    }
+                Spacer()
 
-                    // Stats
-                    ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
-
-                    ColoredBadge(goal.type)
-
-                    Text(String(describing: goal.description))
-                        .font(.body)
-                        .fontColor(.secondary)
-                        .alignFullWidth()
-                }
-            }
-            .background(Color(UIColor.systemBackground))
-            .contextMenu {
-                Button(action: {
-                    var goal = goal
-                    goal.progress.workoutCompleted.toggle()
-
-                    activeUser.training.updateTrainingGoal(goal.date, goal)
-                }) {
-                    if goal.progress.workoutCompleted {
-                        Label("Completed", systemImage: "checkmark")
-                    } else {
-                        Text("Mark as Complete")
-                    }
-                }
-                Divider()
-                Button(role: .destructive, action: {
-                    activeUser.training.removeTrainingGoal(goal.date, goal)
-                }) {
-                    Label("Remove", systemImage: "trash")
+                if goal.progress.allCompleted() {
+                    Image(systemName: "checkmark")
+                        .font(.title3)
+                        .foregroundColor(.green)
                 }
             }
 
-            // Postrun
-            if let postRoutine = goal.postRoutine {
-                TrainingGoalHorizontalDivider()
+            Text(String(describing: goal.description))
+                .font(.body)
+                .fontColor(.secondary)
+                .alignFullWidth()
 
-                HStack {
-                    Image(systemName: "figure.core.training")
-                        .font(.title)
-                        .foregroundColor(postRoutine.difficulty.getColor())
-                        .fontWeight(.bold)
-                        .padding(.trailing, 5)
+            ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
 
-                    Text(String(describing: postRoutine.type.rawValue))
-                        //            .foregroundColor(postRoutine.difficulty.getColor())
-                        .alignFullWidth()
+            Divider()
 
-                    ColoredBadge(postRoutine.difficulty)
-                }
-                .background(Color(UIColor.systemBackground))
-                .contextMenu {
-                    Button(action: {
-                        var goal = goal
-                        goal.progress.workoutCompleted.toggle()
-
-                        activeUser.training.updateTrainingGoal(goal.date, goal)
-                    }) {
-                        if goal.progress.workoutCompleted {
-                            Label("Completed", systemImage: "checkmark")
-                        } else {
-                            Text("Mark as Complete")
-                        }
+            VStack {
+                if let preRoutine = goal.preRoutine {
+                    NavigationLink(destination: RoutineStartView(preRoutine)) {
+                        goalListItem(text: "Warmup", icon: "figure.cooldown")
                     }
-                    Divider()
-                    Button(role: .destructive, action: {
-                        activeUser.training.removeTrainingGoal(goal.date, goal)
-                    }) {
-                        Label("Remove", systemImage: "trash")
+                }
+                goalListItem(text: "Run", icon: "figure.run")
+                if let postRoutine = goal.postRoutine {
+                    NavigationLink(destination: RoutineStartView(postRoutine)) {
+                        goalListItem(text: "Post run", icon: "figure.strengthtraining.functional")
                     }
                 }
             }
         }
+    }
+
+    private func goalListItem(text: String, icon: String) -> some View {
+        HStack {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(.accentColor)
+
+            Text(text)
+                .font(.body)
+                .fontColor(.secondary)
+
+            Spacer()
+
+            Button("Start") {}
+                .font(.system(size: 15))
+                .fontWeight(.semibold)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(Color.accentColor)
+                .foregroundColor(.white)
+                .cornerRadius(50)
+        }
+        .frame(height: 40)
     }
 }
 

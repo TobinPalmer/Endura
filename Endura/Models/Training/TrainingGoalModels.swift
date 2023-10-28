@@ -8,6 +8,10 @@ public struct TrainingGoalProgressData: Codable, Hashable {
     public var postRoutineCompleted: Bool = false
     public var workoutCompleted: Bool = false
     public var activity: String? = nil
+
+    public func allCompleted() -> Bool {
+        preRoutineCompleted && postRoutineCompleted && workoutCompleted
+    }
 }
 
 public struct TrainingRoutineGoalData: Codable, Hashable {
