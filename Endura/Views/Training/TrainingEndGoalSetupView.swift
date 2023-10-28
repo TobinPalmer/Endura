@@ -5,6 +5,7 @@ import SwiftUICalendar
 struct TrainingEndGoalSetupView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
     @State private var endGoal: TrainingEndGoalData
+    @Environment(\.dismiss) private var dismiss
 
     public init(_ endGoal: TrainingEndGoalData? = nil) {
         _endGoal = State(initialValue: endGoal ?? .init(
@@ -16,6 +17,8 @@ struct TrainingEndGoalSetupView: View {
             completed: false
         ))
     }
+
+    @State private var verifySaveAlert = false
 
     var body: some View {
         ZStack {
@@ -77,8 +80,10 @@ struct TrainingEndGoalSetupView: View {
                     .padding(26)
 //                        .enduraDefaultBox()
 
+                    Spacer()
+
                     Button {
-                        print("Set Goal")
+                        verifySaveAlert = true
                     } label: {
                         Text("Save")
                     }
@@ -88,6 +93,17 @@ struct TrainingEndGoalSetupView: View {
             }
             .navigationBarTitle("Setup your Training Goal")
             .enduraPadding()
+            .alert(isPresented: $verifySaveAlert) {
+                Alert(
+                    title: Text("Are you sure?"),
+                    message: Text("This will change your current training goal."),
+                    primaryButton: .cancel(),
+                    secondaryButton: .destructive(Text("Save"), action: {
+                        activeUser.training.endTrainingGoal = endGoal
+                        dismiss()
+                    })
+                )
+            }
         }
     }
 }
