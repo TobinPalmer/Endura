@@ -12,9 +12,10 @@ struct GenerateTrainingGoalsView: View {
     @State private var output = ""
 
     @State private var progress = 0
+    @State private var generationTask: Task<Void, Never>? = nil
 
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             Text("Training Goal Generation")
                 .font(.title)
                 .fontWeight(.bold)
@@ -26,7 +27,6 @@ struct GenerateTrainingGoalsView: View {
                 .fontWeight(.bold)
                 .fontColor(.secondary)
                 .alignFullWidth()
-                .padding(.vertical, 8)
 
             Picker("Generate for goal", selection: $generationType) {
                 ForEach(TrainingGenerationType.allCases, id: \.self) { type in
@@ -39,13 +39,16 @@ struct GenerateTrainingGoalsView: View {
             case .goal:
                 if let endGoal = activeUser.training.endTrainingGoal {
                     Text("""
-                    This will generate the next \(endGoal.daysLeft()) days of training for your end goal
-                    of getting \(FormattingUtils.formatMiles(endGoal.distance)) miles in
-                    \(FormattingUtils.secondsToFormattedTimeColon(endGoal.time))
+                    This will generate the next \(endGoal
+                        .daysLeft()) days to help you reach your end goal by \(FormattingUtils
+                        .dateToFormattedDay(endGoal.date)).
+                    Your current end goal is getting \(FormattingUtils
+                        .formatMiles(endGoal.distance)) miles in \(FormattingUtils
+                        .secondsToFormattedTimeColon(endGoal.time)).
                     """)
                     .font(.body)
                     .fontWeight(.bold)
-                    .fontColor(.primary)
+                    .fontColor(.secondary)
                     .alignFullWidth()
 
                     Text("You can change your end goal in the profile tab.")
@@ -93,35 +96,59 @@ struct GenerateTrainingGoalsView: View {
 
             Spacer()
 
-            ProgressView(value: Double(progress), total: 100)
-                .padding(.vertical, 20)
+            if progress > 0 {
+                ProgressView(value: Double(progress), total: 100)
+                    .padding(.top, 10)
+            }
 
-            Button {
-                Task {
-                    let trainingData = await TrainingGenerationUtils.generateTrainingGoalsForEndGoal(
-                        activeUser: activeUser,
-                        progress: { progress in
-                            withAnimation {
-                                self.progress = progress
+            if generationTask != nil {
+                Button {
+                    generationTask?.cancel()
+                    generationTask = nil
+                    progress = 0
+                } label: {
+                    HStack {
+                        ProgressView()
+                        Text("Generating, Click to Cancel")
+                            .padding(.leading, 10)
+                    }
+                }
+                .buttonStyle(EnduraNewButtonStyle())
+            } else {
+                Button {
+                    generationTask = Task {
+                        let trainingData = await TrainingGenerationUtils.generateTrainingGoalsForEndGoal(
+                            activeUser: activeUser,
+                            progress: { progress in
+                                withAnimation {
+                                    self.progress = progress
+                                }
                             }
+                        )
+                        if generationTask != nil {
+                            generationTask = nil
+                            progress = 100
+                        } else {
+                            progress = 0
+                            return
                         }
-                    )
-                    if let trainingData = trainingData {
-                        DispatchQueue.main.async {
-                            for month in trainingData {
-                                activeUser.training.monthlyTrainingData.updateValue(month.value, forKey: month.key)
-                                activeUser.training.saveTrainingMonth(month.key)
+                        if let trainingData = trainingData {
+                            DispatchQueue.main.async {
+                                for month in trainingData {
+                                    activeUser.training.monthlyTrainingData.updateValue(month.value, forKey: month.key)
+                                    activeUser.training.saveTrainingMonth(month.key)
+                                }
                             }
                         }
                     }
+                } label: {
+                    HStack {
+                        Image(systemName: "sparkles")
+                        Text("Generate")
+                    }
                 }
-            } label: {
-                HStack {
-                    Image(systemName: "sparkles")
-                    Text("Generate")
-                }
+                .buttonStyle(EnduraNewButtonStyle())
             }
-            .buttonStyle(EnduraNewButtonStyle())
         }
         .enduraPadding()
     }
