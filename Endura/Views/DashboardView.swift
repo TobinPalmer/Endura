@@ -16,9 +16,14 @@ struct DashboardView: View {
                 .ignoresSafeArea()
 
             VStack {
-                Color.accentColor
-                    .ignoresSafeArea()
-                    .frame(height: 200)
+                let color = activeUserModel.training.getTrainingDay(.current).type.getColor()
+                LinearGradient(
+                    gradient: Gradient(colors: [color, color.opacity(0.7), color.opacity(0.3), Color("Background")]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+                .frame(height: 300)
                 Spacer()
             }
 
@@ -28,7 +33,8 @@ struct DashboardView: View {
                         .alignFullWidth()
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundColor(Color("TextLight"))
+                        //                        .foregroundColor(Color("TextLight"))
+                        .fontColor(.primary)
                         .padding(.vertical, 6)
 
                     DailySummaryGraph()
