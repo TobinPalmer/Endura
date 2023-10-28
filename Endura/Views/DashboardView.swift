@@ -58,9 +58,7 @@ struct DashboardView: View {
                         Image(systemName: "bell")
                             .fontWeight(.bold)
                             .foregroundColor(Color("TextLight"))
-                            .overlay(
-                                NotificationCountView(value: $notificationsModel.unreadCount)
-                            )
+                            .overlay(NotificationCountView(value: $notificationsModel.unreadCount))
                     }
                 }
             }

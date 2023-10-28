@@ -7,6 +7,8 @@ import Inject
 import SwiftUI
 
 struct ActivitiesView: View {
+    @EnvironmentObject var notificationsModel: NotificationsModel
+
     var body: some View {
         ZStack {
             Color("Background")
@@ -27,11 +29,11 @@ struct ActivitiesView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: NotificationsView()) {
                     Image(systemName: "bell")
-                        .overlay(
-                            NotificationCountView(value: .constant(50))
-                        )
                         //                            .foregroundColor(Color("TextLight"))
                         .fontWeight(.bold)
+                        .overlay(
+                            NotificationCountView(value: $notificationsModel.unreadCount)
+                        )
                 }
             }
             ToolbarItem(placement: .navigationBarLeading) {

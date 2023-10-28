@@ -6,9 +6,9 @@ struct NotificationCountView: View {
     @State var foreground: Color = .white
     @State var background: Color = .red
 
-    private let size = 8.0
-    private let x = 28.0
-    private let y = 9.0
+    private let size = 18.0
+    private let x = 24.0
+    private let y = 4.0
 
     var body: some View {
         ZStack {
