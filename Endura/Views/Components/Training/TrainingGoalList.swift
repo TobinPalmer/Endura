@@ -26,7 +26,7 @@ struct TrainingGoalList: View {
                         .fontWeight(.bold)
                 }
                 Spacer()
-                if trainingDay.goals[safe: 0]?.progress.completed ?? false {
+                if trainingDay.goals[safe: 0]?.progress.workoutCompleted ?? false {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.title3)
                         .fontWeight(.bold)

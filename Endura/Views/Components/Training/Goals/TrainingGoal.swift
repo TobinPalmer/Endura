@@ -29,7 +29,7 @@ struct TrainingGoal: View {
 
                         Spacer()
 
-                        if goal.progress.completed {
+                        if goal.progress.workoutCompleted {
                             Image(systemName: "checkmark")
                                 .font(.title3)
                                 .foregroundColor(.green)
@@ -52,10 +52,10 @@ struct TrainingGoal: View {
             .contextMenu {
                 Button(action: {
                     var goal = goal
-                    goal.progress.completed.toggle()
+                    goal.progress.workoutCompleted.toggle()
                     activeUser.training.updateTrainingGoal(goal.date, goal)
                 }) {
-                    if goal.progress.completed {
+                    if goal.progress.workoutCompleted {
                         Label("Completed", systemImage: "checkmark")
                     } else {
                         Text("Mark as Complete")
@@ -119,11 +119,11 @@ private struct TrainingGoalSingleGoal: View {
                 .contextMenu {
                     Button(action: {
                         var goal = goal
-                        goal.progress.completed.toggle()
+                        goal.progress.workoutCompleted.toggle()
 
                         activeUser.training.updateTrainingGoal(goal.date, goal)
                     }) {
-                        if goal.progress.completed {
+                        if goal.progress.workoutCompleted {
                             Label("Completed", systemImage: "checkmark")
                         } else {
                             Text("Mark as Complete")
@@ -136,9 +136,9 @@ private struct TrainingGoalSingleGoal: View {
                         Label("Remove", systemImage: "trash")
                     }
                 }
-            }
 
-            TrainingGoalHorizontalDivider()
+                TrainingGoalHorizontalDivider()
+            }
 
             // Main goal section
             HStack {
@@ -187,11 +187,11 @@ private struct TrainingGoalSingleGoal: View {
             .contextMenu {
                 Button(action: {
                     var goal = goal
-                    goal.progress.completed.toggle()
+                    goal.progress.workoutCompleted.toggle()
 
                     activeUser.training.updateTrainingGoal(goal.date, goal)
                 }) {
-                    if goal.progress.completed {
+                    if goal.progress.workoutCompleted {
                         Label("Completed", systemImage: "checkmark")
                     } else {
                         Text("Mark as Complete")
@@ -205,10 +205,10 @@ private struct TrainingGoalSingleGoal: View {
                 }
             }
 
-            TrainingGoalHorizontalDivider()
-
             // Postrun
             if let postRoutine = goal.postRoutine {
+                TrainingGoalHorizontalDivider()
+
                 HStack {
                     Image(systemName: "figure.core.training")
                         .font(.title)
@@ -226,11 +226,11 @@ private struct TrainingGoalSingleGoal: View {
                 .contextMenu {
                     Button(action: {
                         var goal = goal
-                        goal.progress.completed.toggle()
+                        goal.progress.workoutCompleted.toggle()
 
                         activeUser.training.updateTrainingGoal(goal.date, goal)
                     }) {
-                        if goal.progress.completed {
+                        if goal.progress.workoutCompleted {
                             Label("Completed", systemImage: "checkmark")
                         } else {
                             Text("Mark as Complete")
@@ -344,7 +344,7 @@ struct TrainingRoutineGoal: View {
                 HStack(alignment: .top, spacing: 10) {
                     VStack(alignment: .leading) {
                         HStack {
-                            if goal.progress.completed {
+                            if goal.progress.workoutCompleted {
                                 Image(systemName: "checkmark")
                                     .font(.title3)
                                     .foregroundColor(.green)

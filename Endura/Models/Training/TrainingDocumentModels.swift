@@ -62,7 +62,7 @@ public struct TrainingRunGoalDataDocument: Codable, Hashable {
             preRoutine: preRoutine,
             workout: workout,
             postRoutine: postRoutine,
-            progress: progress ?? .init(completed: false, activity: nil)
+            progress: progress ?? .init(workoutCompleted: false, activity: nil)
         )
     }
 

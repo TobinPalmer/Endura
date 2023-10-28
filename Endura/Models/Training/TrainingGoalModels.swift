@@ -4,14 +4,16 @@ import SwiftUICalendar
 import WorkoutKit
 
 public struct TrainingGoalProgressData: Codable, Hashable {
-    public var completed: Bool
-    public var activity: String?
+    public var preRoutineCompleted: Bool = false
+    public var postRoutineCompleted: Bool = false
+    public var workoutCompleted: Bool = false
+    public var activity: String? = nil
 }
 
 public struct TrainingRoutineGoalData: Codable, Hashable {
     public var type: RoutineType
     public var difficulty: RoutineDifficulty
-    public var progress: TrainingGoalProgressData = .init(completed: false, activity: nil)
+    public var progress: TrainingGoalProgressData = .init()
 }
 
 public struct TrainingRunGoalData: Hashable {
@@ -22,7 +24,7 @@ public struct TrainingRunGoalData: Hashable {
     public var preRoutine: TrainingRoutineGoalData?
     public var workout: WorkoutGoalData = .distance(distance: 0)
     public var postRoutine: TrainingRoutineGoalData?
-    public var progress: TrainingGoalProgressData = .init(completed: false, activity: nil)
+    public var progress: TrainingGoalProgressData = .init()
 
     public func getDistance() -> Double {
         switch workout {
@@ -87,13 +89,13 @@ public struct TrainingRunGoalData: Hashable {
             return TrainingRoutineGoalData(
                 type: .warmup,
                 difficulty: difficulty,
-                progress: .init(completed: false, activity: nil)
+                progress: .init()
             )
         case .postRun:
             return TrainingRoutineGoalData(
                 type: .postRun,
                 difficulty: difficulty,
-                progress: .init(completed: false, activity: nil)
+                progress: .init()
             )
         }
     }

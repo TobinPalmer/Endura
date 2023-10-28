@@ -72,7 +72,7 @@ private final class EnduraWidgetEntryViewModel: ObservableObject {
             }
 
             for goal in trainingDay.goals {
-                if goal.progress?.completed ?? false {
+                if goal.progress?.workoutCompleted ?? false {
                     totalGoalsComplete += 1
                 }
             }

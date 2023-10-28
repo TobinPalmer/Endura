@@ -170,7 +170,7 @@ extension TrainingRunGoalData {
         case let .custom(data):
             cache.workoutType = "custom"
         }
-        cache.progressCompleted = progress.completed
+        cache.progressCompleted = progress.workoutCompleted
         cache.progressActivity = progress.activity
     }
 
@@ -180,7 +180,7 @@ extension TrainingRunGoalData {
             type: TrainingRunType(rawValue: cache.type ?? "none") ?? .none,
             workout: WorkoutGoalData.fromCache(cache),
             progress: TrainingGoalProgressData(
-                completed: cache.progressCompleted,
+                workoutCompleted: cache.progressCompleted,
                 activity: cache.progressActivity
             )
         )

@@ -71,7 +71,7 @@ struct TrainingCalender: View {
                         VStack {
                             if date.getDate() < YearMonthDay.current.getDate(), trainingDay.type != .none {
                                 if !trainingDay.goals.isEmpty && trainingDay.goals
-                                    .allSatisfy({ $0.progress.completed }) || trainingDay.type == .rest
+                                    .allSatisfy({ $0.progress.workoutCompleted }) || trainingDay.type == .rest
                                 {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.green)

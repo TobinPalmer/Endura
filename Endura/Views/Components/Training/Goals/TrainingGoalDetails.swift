@@ -69,7 +69,7 @@ struct TrainingGoalDetails: View {
 
                     Spacer()
 
-                    if goal.progress.completed {
+                    if goal.progress.workoutCompleted {
                         Image(systemName: "checkmark")
                             .font(.title)
                             .foregroundColor(.green)
