@@ -32,11 +32,11 @@ struct TrainingGoalList: View {
                         .fontWeight(.bold)
                         .foregroundColor(.accentColor)
                 }
-//                Button(action: {
-//                    editSheet = true
-//                }) {
-//                    Text("Edit")
-//                }
+                Button(action: {
+                    editSheet = true
+                }) {
+                    Text("Edit")
+                }
             }
 //            ColoredBadge(trainingDay.type)
 //                .alignFullWidth()

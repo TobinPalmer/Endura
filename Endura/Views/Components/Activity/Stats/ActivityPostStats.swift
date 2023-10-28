@@ -2,10 +2,24 @@ import Foundation
 import SwiftUI
 
 struct ActivityPostStats: View {
-    private let activityData: ActivityData
+    private let distance: Double
+    private let duration: Double
+    private let pace: Double
 
     public init(activityData: ActivityData) {
-        self.activityData = activityData
+        distance = activityData.distance
+        duration = activityData.duration
+        pace = activityData.pace
+    }
+
+    public init(distance: Double, duration: Double) {
+        self.distance = distance
+        self.duration = duration
+        if distance == 0 || duration == 0 {
+            pace = 0
+        } else {
+            pace = duration / distance
+        }
     }
 
     public var body: some View {
@@ -13,7 +27,7 @@ struct ActivityPostStats: View {
             ActivityStatsSection {
                 ActivityStatsDiscriptionText("Distance")
                 ActivityStatsValueText(
-                    "\(ConversionUtils.metersToMiles(activityData.distance).rounded(toPlaces: 2)) miles"
+                    "\(ConversionUtils.metersToMiles(distance).rounded(toPlaces: 2)) miles"
                 )
             }
 
@@ -21,14 +35,14 @@ struct ActivityPostStats: View {
 
             ActivityStatsSection {
                 ActivityStatsDiscriptionText("Duration")
-                ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(activityData.duration))")
+                ActivityStatsValueText("\(FormattingUtils.secondsToFormattedTime(duration))")
             }
 
             ActivityStatsVLine()
 
             ActivityStatsSection {
                 ActivityStatsDiscriptionText("Pace")
-                ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(activityData.pace)) min/mile")
+                ActivityStatsValueText("\(ConversionUtils.convertMpsToMpm(pace)) min/mile")
             }
         }
     }
