@@ -36,6 +36,7 @@ struct InjectedContentView: View {
 
     var body: some View {
         ContentView()
+            .accentColor(Color("EnduraBlue"))
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
             .environmentObject(NavigationModel.instance).environmentObject(UsersCacheModel())
     }
