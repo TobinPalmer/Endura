@@ -14,7 +14,6 @@ struct WidgetTrainingGoal: View {
                 Text("\(goal.type.rawValue) Day")
                     .font(.title3)
                     .fontWeight(.bold)
-                    //                    .foregroundColor(goal.type.getColor())
                     .foregroundColor(.white)
                     .alignFullWidth()
 
@@ -32,37 +31,27 @@ struct WidgetTrainingGoal: View {
                 .foregroundColor(.white)
                 .alignFullWidth()
 
-            HStack {
-                Spacer()
-                VStack {
-                    Text("Distance")
-                        .font(.system(size: 12))
-                        .fontColor(.secondary)
-                    Text("\(FormattingUtils.formatMiles(goal.getDistance()))")
-                        .font(.system(size: 14))
-                        .fontColor(.primary)
+            Grid(verticalSpacing: 2) {
+                GridRow {
+                    Image(systemName: "ruler")
+                    Spacer()
+                    Image(systemName: "timer")
                 }
-                Spacer()
-                VStack {
-                    Text("Time")
-                        .font(.system(size: 12))
-                        .fontColor(.secondary)
+                .font(.system(size: 15))
+                .fontWeight(.bold)
+                GridRow {
+                    Text("\(FormattingUtils.formatMiles(goal.getDistance())) mi")
+                    Spacer()
                     Text("\(FormattingUtils.secondsToFormattedTime(goal.getTime()))")
-                        .font(.system(size: 14))
-                        .fontColor(.primary)
                 }
-                Spacer()
-                VStack {
-                    Text("Pace")
-                        .font(.system(size: 12))
-                        .fontColor(.secondary)
-                    let pace = goal.getDistance() * 1609.34 / goal.getTime()
-                    Text("\(ConversionUtils.convertMpsToMpm(pace))")
-                        .font(.system(size: 14))
-                        .fontColor(.primary)
-                }
-                Spacer()
+                .font(.system(size: 15))
             }
+            .frame(height: 40, alignment: .bottom)
+            .foregroundColor(.white)
+            .padding(.top, 6)
+            .padding(.horizontal, 10)
         }
+        .fontWeight(.semibold)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
