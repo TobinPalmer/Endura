@@ -24,6 +24,12 @@ public struct TrainingGoal: View {
                     Image(systemName: "checkmark.circle")
                         .font(.title)
                         .foregroundColor(.accentColor)
+                } else {
+                    NavigationLink(destination: EditTrainingRunGoalView(goal)) {
+                        Image(systemName: "pencil.circle")
+                            .font(.title)
+                            .foregroundColor(.accentColor)
+                    }
                 }
             }
             .padding(.bottom, 1)

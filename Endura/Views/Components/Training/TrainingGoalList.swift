@@ -26,11 +26,11 @@ struct TrainingGoalList: View {
                         .fontWeight(.bold)
                 }
                 Spacer()
-                Button(action: {
-                    editSheet = true
-                }) {
-                    Text("Edit")
-                }
+//                Button(action: {
+//                    editSheet = true
+//                }) {
+//                    Text("Edit")
+//                }
             }
 //            ColoredBadge(trainingDay.type)
 //                .alignFullWidth()

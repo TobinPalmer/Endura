@@ -21,52 +21,62 @@ struct EditTrainingGoalLink<Label: View>: View {
         }
         .sheet(isPresented: $showEditGoal) {
             NavigationView {
-                VStack {
-                    Toggle("Warmup", isOn: Binding(
-                        get: { goal.preRoutine != nil },
-                        set: { newValue in
-                            if newValue {
-                                goal.preRoutine = goal.getRoutine(routineType: .warmup)
-                                activeUser.training.updateTrainingGoal(goal.date, goal)
-                            } else {
-                                goal.preRoutine = nil
+                EditTrainingRunGoalView(goal)
+                    .toolbar {
+                        ToolbarItem(placement: .primaryAction) {
+                            Button("Done") {
+                                showEditGoal = false
                             }
-                        }
-                    ))
-                    Toggle("Postrun", isOn: Binding(
-                        get: { goal.postRoutine != nil },
-                        set: { newValue in
-                            if newValue {
-                                goal.postRoutine = goal.getRoutine(routineType: .postRun)
-                                activeUser.training.updateTrainingGoal(goal.date, goal)
-                            } else {
-                                goal.postRoutine = nil
-                            }
-                        }
-                    ))
-                    EditTrainingRunWorkout(goal: Binding(
-                        get: { goal.workout },
-                        set: { newValue in
-                            activeUser.training.updateTrainingGoal(
-                                goal.date,
-                                TrainingRunGoalData(
-                                    date: goal.date,
-                                    type: goal.type,
-                                    workout: newValue
-                                )
-                            )
-                        }
-                    ))
-                }
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button("Done") {
-                            showEditGoal = false
                         }
                     }
-                }
             }
             .presentationDetents(goal.workout.isCustomWorkout() ? [.large] : [.medium])
+        }
+    }
+}
+
+struct EditTrainingRunGoalView: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
+    @State var goal: TrainingRunGoalData
+
+    public init(_ goal: TrainingRunGoalData) {
+        _goal = State(initialValue: goal)
+    }
+
+    var body: some View {
+        VStack {
+            Toggle("Warmup", isOn: Binding(
+                get: { goal.preRoutine != nil },
+                set: { newValue in
+                    if newValue {
+                        goal.preRoutine = goal.getRoutine(routineType: .warmup)
+                    } else {
+                        goal.preRoutine = nil
+                    }
+                }
+            ))
+            Toggle("Postrun", isOn: Binding(
+                get: { goal.postRoutine != nil },
+                set: { newValue in
+                    if newValue {
+                        goal.postRoutine = goal.getRoutine(routineType: .postRun)
+                    } else {
+                        goal.postRoutine = nil
+                    }
+                }
+            ))
+            EditTrainingRunWorkout(goal: Binding(
+                get: { goal.workout },
+                set: { newValue in
+                    goal.workout = newValue
+                }
+            ))
+        }
+        .onChange(of: goal) { _ in
+            activeUser.training.updateTrainingGoal(
+                goal.date,
+                goal
+            )
         }
     }
 }
