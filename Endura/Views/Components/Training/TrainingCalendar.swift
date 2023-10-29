@@ -68,23 +68,36 @@ struct TrainingCalender: View {
                     VStack {
                         Text("\(date.day)")
                             .foregroundColor(trainingDay.type.getColor())
-                        VStack {
+                    }
+                    .overlay {
+                        ZStack {
                             if date.getDate() < YearMonthDay.current.getDate(), trainingDay.type != .none {
                                 if !trainingDay.goals.isEmpty && trainingDay.goals
                                     .allSatisfy({ $0.progress.workoutCompleted }) || trainingDay.type == .rest
                                 {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(Color("EnduraBlue"))
+                                    Circle()
+                                        .fill(Color("Background"))
+                                        .frame(width: 15, height: 15)
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundColor(Color("EnduraGreen"))
                                 } else if !trainingDay.goals.isEmpty {
-                                    Image(systemName: "xmark")
+                                    Circle()
+                                        .fill(Color("Background"))
+                                        .frame(width: 15, height: 15)
+                                    Image(systemName: "xmark.circle.fill")
                                         .foregroundColor(Color("EnduraRed"))
                                 }
                             } else if date == .current {
-                                Image(systemName: "star.fill")
-                                    .foregroundColor(.accentColor)
+                                Circle()
+                                    .fill(Color("Background"))
+                                    .frame(width: 15, height: 15)
+                                Image(systemName: "star.circle.fill")
+                                    .foregroundColor(.yellow)
                             }
                         }
-                        .font(.system(size: 14))
+                        .font(.system(size: 16))
+                        .frame(width: 16, height: 16, alignment: .topTrailing)
+                        .offset(x: 16, y: -16)
                     }
                 }
                 .padding(5)
