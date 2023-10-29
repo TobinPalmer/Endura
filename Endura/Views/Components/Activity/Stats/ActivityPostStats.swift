@@ -18,7 +18,7 @@ struct ActivityPostStats: View {
         if distance == 0 || duration == 0 {
             pace = 0
         } else {
-            pace = duration / distance
+            pace = distance * 1609.34 / duration
         }
     }
 
