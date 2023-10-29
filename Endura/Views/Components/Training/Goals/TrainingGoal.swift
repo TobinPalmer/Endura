@@ -35,8 +35,6 @@ public struct TrainingGoal: View {
 
             ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
 
-            Divider()
-
             VStack {
                 if let preRoutine = goal.preRoutine {
                     NavigationLink(destination: RoutineStartView(preRoutine)) {
