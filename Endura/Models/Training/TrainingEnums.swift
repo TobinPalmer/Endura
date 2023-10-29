@@ -8,7 +8,7 @@ public enum TrainingGoalType: String, Codable {
     case postRun = "Post Run"
 }
 
-public enum TrainingRunType: String, Codable {
+public enum TrainingRunType: String, Codable, CaseIterable {
     case none = "None"
     case easy = "Easy"
     case normal = "Medium"
@@ -27,6 +27,21 @@ public enum TrainingRunType: String, Codable {
             return Color("EnduraRed")
         case .none:
             return .gray
+        }
+    }
+
+    public func toTrainingDayType() -> TrainingDayType {
+        switch self {
+        case .none:
+            return .none
+        case .easy:
+            return .easy
+        case .normal:
+            return .medium
+        case .long:
+            return .long
+        case .workout:
+            return .workout
         }
     }
 }

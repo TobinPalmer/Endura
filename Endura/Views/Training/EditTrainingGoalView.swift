@@ -37,6 +37,7 @@ struct EditTrainingGoalLink<Label: View>: View {
 
 struct EditTrainingRunGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
+    @Environment(\.dismiss) var dismiss
     @State var goal: TrainingRunGoalData
 
     public init(_ goal: TrainingRunGoalData) {
@@ -45,6 +46,12 @@ struct EditTrainingRunGoalView: View {
 
     var body: some View {
         VStack {
+            Picker("Type", selection: $goal.type) {
+                ForEach(TrainingRunType.allCases, id: \.self) { type in
+                    Text(type.rawValue).tag(type)
+                }
+            }
+            TextField("Description", text: $goal.description)
             Toggle("Warmup", isOn: Binding(
                 get: { goal.preRoutine != nil },
                 set: { newValue in
@@ -71,13 +78,22 @@ struct EditTrainingRunGoalView: View {
                     goal.workout = newValue
                 }
             ))
+            Spacer()
+            Button {
+                activeUser.training.updateTrainingGoal(
+                    goal.date,
+                    goal
+                )
+                var trainingDay = activeUser.training.getTrainingDay(goal.date)
+                trainingDay.type = goal.type.toTrainingDayType()
+                activeUser.training.updateTrainingDay(goal.date, trainingDay)
+                dismiss()
+            } label: {
+                Text("Save")
+            }
+            .buttonStyle(EnduraNewButtonStyle())
         }
-        .onChange(of: goal) { _ in
-            activeUser.training.updateTrainingGoal(
-                goal.date,
-                goal
-            )
-        }
+        .enduraPadding()
     }
 }
 
