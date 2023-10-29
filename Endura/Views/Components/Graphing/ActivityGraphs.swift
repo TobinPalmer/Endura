@@ -23,7 +23,8 @@ struct ActivityGraphsView: View {
                 color: Color("EnduraBlue"),
                 label: "Pace",
                 valueSuffix: " /mi",
-                valueModifier: ConversionUtils.convertMpsToMpm
+                valueModifier: ConversionUtils.convertMpsToMpm,
+                average: activityData.pace
             )
             HoverableChart(
                 workoutStart: start,
@@ -32,7 +33,8 @@ struct ActivityGraphsView: View {
                 color: Color("EnduraRed"),
                 label: "Heart Rate",
                 valueSuffix: " bpm",
-                valueModifier: ConversionUtils.round
+                valueModifier: ConversionUtils.round,
+                average: activityData.stats.averageHeartRate
             )
             HoverableChart(
                 workoutStart: start,
@@ -53,7 +55,8 @@ struct ActivityGraphsView: View {
                 valueModifier: ConversionUtils.round
             )
             HoverableChart(workoutStart: start, workoutEnd: end, graph: graphData.power, color: .purple, label: "Power",
-                           valueSuffix: " W", valueModifier: ConversionUtils.round)
+                           valueSuffix: " W", valueModifier: ConversionUtils.round,
+                           average: activityData.stats.averagePower)
             HoverableChart(
                 workoutStart: start,
                 workoutEnd: end,

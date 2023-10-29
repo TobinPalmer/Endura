@@ -18,6 +18,7 @@ public struct HoverableChart: View {
     private let valueModifier: (Double) -> String
     private let workoutStart: Date
     private let workoutEnd: Date
+    private let average: Double
 
     public init(
         workoutStart: Date,
@@ -28,7 +29,8 @@ public struct HoverableChart: View {
         valueSuffix: String = "",
         valueModifier: @escaping (Double) -> String = {
             ConversionUtils.round($0)
-        }
+        },
+        average: Double? = nil
     ) {
         self.workoutStart = workoutStart
         self.workoutEnd = workoutEnd
@@ -46,6 +48,11 @@ public struct HoverableChart: View {
             $0.1
         }
         .max() ?? 1
+
+        self.average = average ?? graph.map {
+            $0.1
+        }
+        .reduce(0, +) / Double(graph.count)
     }
 
     public var body: some View {
@@ -109,17 +116,17 @@ public struct HoverableChart: View {
             .chartOverlay { (chartProxy: ChartProxy) in
                 ZStack {
                     let chartSize = chartProxy.plotAreaSize
-                    VStack {
+                    HStack {
                         Text(label)
-                            .font(.title3)
                             .fontWeight(.bold)
+                            .foregroundColor(color)
                             .fontColor(.primary)
-                            .padding(10)
-                            .background(color.opacity(0.2))
-                            .cornerRadius(8)
-                            .offset(y: -chartSize.height / 2 + 20)
+                        Spacer()
+                        Text("Average: \(valueModifier(average) + valueSuffix)")
+                            .fontWeight(.bold)
+                            .foregroundColor(color)
                     }
-                    .alignFullWidth()
+                    .offset(y: -chartSize.height / 2 + 10)
 
                     if let analysisPosition = activityViewModel.analysisPosition {
                         let value = activityViewModel.getAnalysisValue(for: analysisPosition, graph: graph)
