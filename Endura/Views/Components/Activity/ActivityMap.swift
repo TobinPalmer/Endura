@@ -4,6 +4,17 @@ import HealthKit
 import MapKit
 import SwiftUI
 
+public extension View {
+    func takeScreenshot(origin: CGPoint, size: CGSize) -> UIImage {
+        let window = UIWindow(frame: CGRect(origin: origin, size: size))
+        let hosting = UIHostingController(rootView: self)
+        hosting.view.frame = window.frame
+        window.addSubview(hosting.view)
+        window.makeKeyAndVisible()
+        return hosting.view.renderedImage
+    }
+}
+
 private struct ColoredPolyline: Identifiable {
     var id = UUID()
     var color: UIColor

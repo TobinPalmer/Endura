@@ -8,15 +8,6 @@ public enum EnduraFontColor {
 }
 
 public extension View {
-    func takeScreenshot(origin: CGPoint, size: CGSize) -> UIImage {
-        let window = UIWindow(frame: CGRect(origin: origin, size: size))
-        let hosting = UIHostingController(rootView: self)
-        hosting.view.frame = window.frame
-        window.addSubview(hosting.view)
-        window.makeKeyAndVisible()
-        return hosting.view.renderedImage
-    }
-
     func shadowDefault(disabled: Bool = false) -> some View {
         let color = Color(red: 0.2, green: 0.2, blue: 0.28).opacity(0.2)
 

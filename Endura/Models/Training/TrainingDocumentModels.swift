@@ -80,4 +80,34 @@ public struct TrainingRunGoalDataDocument: Codable, Hashable {
             return "Custom Workout"
         }
     }
+
+    public func getDistance() -> Double {
+        switch workout {
+        case .open:
+            return 0
+        case let .distance(distance):
+            return distance
+        case .time:
+            return 0
+        case let .pacer(distance, _):
+            return distance
+        case let .custom(data):
+            return data.getDistance()
+        }
+    }
+
+    public func getTime() -> Double {
+        switch workout {
+        case .open:
+            return 0
+        case .distance:
+            return 0
+        case let .time(time):
+            return time
+        case let .pacer(_, time):
+            return time
+        case let .custom(data):
+            return data.getTime()
+        }
+    }
 }

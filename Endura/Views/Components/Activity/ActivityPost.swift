@@ -98,7 +98,11 @@ struct ActivityPost: View {
             }
 
             NavigationLink(destination: ActivityView(id: id, activity: activityData)) {
-                ActivityPostStats(activityData: activityData)
+                ActivityPostStats(
+                    distance: ConversionUtils.metersToMiles(activityData.distance),
+                    duration: activityData.duration,
+                    pace: activityData.pace
+                )
             }
 
             NavigationLink(destination: ActivityView(id: id, activity: activityData)) {

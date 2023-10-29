@@ -55,12 +55,32 @@ struct EnduraUpcomingGoalsWidgetView: View {
                 .foregroundColor(.gray)
         } else {
             let goal = viewModel.trainingDay.goals[0]
-            VStack(alignment: .leading) {
-                Text(goal.getTitle())
-                    .font(.headline)
-                    .fontWeight(.bold)
-                Text(goal.description)
-                    .font(.subheadline)
+            HStack {
+                VStack {
+                    HStack {
+                        Text("\(goal.type.rawValue) Day")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(goal.type.getColor())
+                            .alignFullWidth()
+
+                        Spacer()
+
+                        if goal.progress?.allCompleted() ?? false {
+                            Image(systemName: "checkmark.circle")
+                                .font(.title)
+                                .foregroundColor(.accentColor)
+                        }
+                    }
+                    .padding(.bottom, 1)
+
+                    Text(String(describing: goal.description))
+                        .font(.body)
+                        .fontColor(.secondary)
+                        .alignFullWidth()
+
+                    ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
+                }
             }
         }
     }

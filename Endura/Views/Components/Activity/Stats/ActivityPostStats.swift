@@ -6,19 +6,23 @@ struct ActivityPostStats: View {
     private let duration: Double
     private let pace: Double
 
-    public init(activityData: ActivityData) {
-        distance = ConversionUtils.metersToMiles(activityData.distance)
-        duration = activityData.duration
-        pace = activityData.pace
-    }
+//    public init(activityData: ActivityData) {
+//        distance = ConversionUtils.metersToMiles(activityData.distance)
+//        duration = activityData.duration
+//        pace = activityData.pace
+//    }
 
-    public init(distance: Double, duration: Double) {
+    public init(distance: Double, duration: Double, pace: Double? = nil) {
         self.distance = distance
         self.duration = duration
-        if distance == 0 || duration == 0 {
-            pace = 0
+        if let pace = pace {
+            self.pace = pace
         } else {
-            pace = distance * 1609.34 / duration
+            if distance == 0 || duration == 0 {
+                self.pace = 0
+            } else {
+                self.pace = distance * 1609.34 / duration
+            }
         }
     }
 
