@@ -3,9 +3,11 @@ import SwiftUI
 
 struct WidgetTrainingGoal: View {
     private let goal: TrainingRunGoalDataDocument
+    private let big: Bool
 
-    public init(_ goal: TrainingRunGoalDataDocument) {
+    public init(_ goal: TrainingRunGoalDataDocument, big: Bool = false) {
         self.goal = goal
+        self.big = big
     }
 
     var body: some View {
@@ -36,6 +38,10 @@ struct WidgetTrainingGoal: View {
                     Image(systemName: "ruler")
                     Spacer()
                     Image(systemName: "timer")
+                    if big {
+                        Spacer()
+                        Image(systemName: "speedometer")
+                    }
                 }
                 .font(.system(size: 15))
                 .fontWeight(.bold)
@@ -43,13 +49,18 @@ struct WidgetTrainingGoal: View {
                     Text("\(FormattingUtils.formatMiles(goal.getDistance())) mi")
                     Spacer()
                     Text("\(FormattingUtils.secondsToFormattedTime(goal.getTime()))")
+                    if big {
+                        Spacer()
+                        Text("\(ConversionUtils.convertMpsToMpm(goal.getDistance() * 1609.34 / goal.getTime())) /mi")
+                    }
                 }
                 .font(.system(size: 15))
             }
             .frame(height: 40, alignment: .bottom)
             .foregroundColor(.white)
             .padding(.top, 6)
-            .padding(.horizontal, 10)
+            .padding(.leading, 10)
+            .padding(.trailing, big ? 0 : 10)
         }
         .fontWeight(.semibold)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

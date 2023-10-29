@@ -55,11 +55,19 @@ struct EnduraUpcomingGoalsWidgetView: View {
                 .foregroundColor(.gray)
         } else {
             let goal = viewModel.trainingDay.goals[0]
-            VStack {
-                HStack {
-                    WidgetTrainingGoal(goal)
-//                        WidgetTrainingGoalProgress(goal)
-//                            .frame(width: geometry.size.width / 2)
+            GeometryReader { geometry in
+                VStack {
+                    HStack {
+                        let big = geometry.size.width > 170
+                        if big {
+                            WidgetTrainingGoal(goal, big: true)
+                                .frame(width: 3 * geometry.size.width / 5)
+                            WidgetTrainingGoalProgress(goal)
+                                .frame(width: 2 * geometry.size.width / 5)
+                        } else {
+                            WidgetTrainingGoal(goal)
+                        }
+                    }
                 }
             }
             .containerBackground(LinearGradient(
