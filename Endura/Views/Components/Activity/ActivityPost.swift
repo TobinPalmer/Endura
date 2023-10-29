@@ -124,11 +124,13 @@ struct ActivityPost: View {
                         .rotationEffect(.degrees(viewModel.degrees))
                 }
 
-                Text(activityData.social.likes.count.description)
-                    .animation(.none, value: activityData.social.likes.contains(AuthUtils.getCurrentUID()))
-
                 ActivityLikesList(activityData.social.likes)
                     .animation(.none, value: activityData.social.likes.contains(AuthUtils.getCurrentUID()))
+
+//                Text(activityData.social.likes.count > 0 ? activityData.social.likes.count == 1 ? "1 like" :
+//                "\(activityData.social.likes.count) likes" : "No likes yet")
+//                    .animation(.none, value: activityData.social.likes.contains(AuthUtils.getCurrentUID()))
+//                    .fontColor(.muted)
 
                 Spacer()
 
