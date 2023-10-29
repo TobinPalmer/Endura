@@ -41,6 +41,7 @@ public struct EnduraWeeklyDistanceWidget: Widget {
         { entry in
             EnduraWeeklyDistanceWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
+                .accentColor(Color("EnduraBlue"))
         }
         .supportedFamilies([.systemMedium])
     }
@@ -98,34 +99,43 @@ struct EnduraWeeklyDistanceWidgetView: View {
         VStack {
             if let userDefaults = viewModel.userDefaults {
                 HStack {
-                    VStack {
-                        ZStack {
-                            let progressRingSize = 100
-
-                            Circle()
-                                .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
-                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
-                                .foregroundColor(Color("EnduraRed"))
-
-                            Circle()
-                                .trim(
-                                    from: 0,
-                                    to: CGFloat(viewModel.totalGoalsComplete / viewModel.trainingDay.goals.count)
-                                )
-                                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
-                                .rotationEffect(.degrees(-90))
-
-                            VStack {
-                                Text(
-                                    "\(FormattingUtils.formatMiles(ConversionUtils.metersToMiles(viewModel.totalDistance))) mi"
-                                )
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.primary)
-                            }
-                        }
-                    }
+//                    VStack {
+//                        ZStack {
+//                            let progressRingSize = 80
+//
+                    ////                            Circle()
+                    ////                                .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
+                    ////                                .frame(width: CGFloat(progressRingSize), height:
+                    // CGFloat(progressRingSize))
+                    ////                                .foregroundColor(Color("EnduraRed"))
+                    ////
+                    ////                            Circle()
+                    ////                                .trim(
+                    ////                                    from: 0,
+                    ////                                    to: CGFloat(viewModel.totalGoalsComplete /
+                    // viewModel.trainingDay.goals.count)
+                    ////                                )
+                    ////                                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8,
+                    // lineCap: .round))
+                    ////                                .frame(width: CGFloat(progressRingSize), height:
+                    // CGFloat(progressRingSize))
+                    ////                                .rotationEffect(.degrees(-90))
+//                            Circle()
+//                                .stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
+//                                .frame(width: CGFloat(progressRingSize), height: CGFloat(progressRingSize))
+//
+//                            VStack {
+//                                Text(
+//                                    "\(FormattingUtils.formatMiles(ConversionUtils.metersToMiles(viewModel.totalDistance)))
+//                                    mi"
+//                                )
+//                                    .font(.title3)
+//                                    .fontWeight(.bold)
+//                                    .foregroundColor(.accentColor)
+                    ////                                    .foregroundColor(.primary)
+//                            }
+//                        }
+//                    }
                     VStack {
                         Chart {
                             ForEach(WeekDay.eachDay(), id: \.self) { day in
