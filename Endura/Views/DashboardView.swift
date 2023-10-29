@@ -18,7 +18,13 @@ struct DashboardView: View {
             VStack {
                 let color = activeUserModel.training.getTrainingDay(.current).type.getColor()
                 LinearGradient(
-                    gradient: Gradient(colors: [color, color.opacity(0.7), color.opacity(0.3), Color("Background")]),
+                    gradient: Gradient(colors: [
+                        color,
+                        color.opacity(0.9),
+                        color.opacity(0.7),
+                        color.opacity(0.3),
+                        Color("Background"),
+                    ]),
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -33,8 +39,7 @@ struct DashboardView: View {
                         .alignFullWidth()
                         .font(.title)
                         .fontWeight(.bold)
-                        //                        .foregroundColor(Color("TextLight"))
-                        .fontColor(.primary)
+                        .foregroundColor(Color("TextLight"))
                         .padding(.vertical, 6)
 
                     DailySummaryGraph()
@@ -46,7 +51,7 @@ struct DashboardView: View {
                 }
                 .enduraPadding()
             }
-            .toolbarBackground(Color.accentColor)
+            .toolbarBackground(activeUserModel.training.getTrainingDay(.current).type.getColor())
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     UserProfileLink(AuthUtils.getCurrentUID()) {
@@ -55,6 +60,7 @@ struct DashboardView: View {
                             Text("Hi, \(activeUserModel.data.name)")
                                 .font(.body)
                                 .foregroundColor(Color("TextLight"))
+                                .foregroundColor(.black)
                                 .fontWeight(.bold)
                         }
                     }
