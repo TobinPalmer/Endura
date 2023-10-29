@@ -8,7 +8,17 @@ private struct IdentifiableDate: Identifiable, Hashable {
 }
 
 @MainActor final class UploadsViewModel: ObservableObject {
-    @Published fileprivate final var uploads: [HKWorkout?] = []
+    @Published fileprivate final var uploads: [HKWorkout?] = [] {
+        didSet {
+            groupedUploads = Dictionary(grouping: uploads.compactMap {
+                $0
+            }) { workout in
+                Calendar.current.startOfDay(for: workout.startDate)
+            }
+        }
+    }
+
+    @Published fileprivate final var groupedUploads: [Date: [HKWorkout]] = [:]
     private var offset: Int = 0
 
     fileprivate final func activityToIcon(activityName: String) -> String {
@@ -50,9 +60,7 @@ private struct IdentifiableDate: Identifiable, Hashable {
 
 struct NewActivityView: View {
     @EnvironmentObject private var navigation: NavigationModel
-    @ObservedObject private var uploadsViewModel = UploadsViewModel()
-    @State private var totalItemsLoaded: Int = 0
-    @State private var activityEndDatesToUUIDs: [Date: UUID] = [:]
+    @StateObject private var uploadsViewModel = UploadsViewModel()
     @State private var isAuthorized = HealthKitUtils.isAuthorized()
 
     @State private var selectionMode = false
@@ -70,14 +78,7 @@ struct NewActivityView: View {
                     }
                 }
             } else {
-                let groupedActivities = Dictionary(grouping: uploadsViewModel.uploads.compactMap {
-                    $0
-                }) { workout in
-                    Calendar.current.startOfDay(for: workout.startDate)
-                }
-                let sortedDates = groupedActivities.keys.sorted(by: >)
-
-                if sortedDates.isEmpty {
+                if uploadsViewModel.uploads.isEmpty {
                     VStack {
                         ZStack {
                             Image(systemName: "nosign")
@@ -105,30 +106,33 @@ struct NewActivityView: View {
                 }
 
                 List(selection: $selectedActivities) {
-                    ForEach(sortedDates, id: \.self) { date in
+                    let sortedKeys = uploadsViewModel.groupedUploads.keys.sorted(by: >)
+                    ForEach(sortedKeys, id: \.self) { date in
                         Section(header: Text("\(date.formatted(date: .abbreviated, time: .omitted))")) {
-                            ForEach(groupedActivities[date]!, id: \.self) { activity in
-                                NavigationLink(destination: UploadWorkoutView(workout: activity)) {
-                                    let workoutType = activity.workoutActivityType.name
-                                    let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0)
-                                        .rounded(toPlaces: 2).removeTrailingZeros()
-                                    Label {
-                                        Text(
-                                            "\(activity.startDate.formatted(date: .omitted, time: .shortened)) • \(workoutDistance) mi"
-                                        )
-                                    } icon: {
-                                        if ActivityUtils.isActivityUploaded(activity) {
-                                            Image(systemName: "checkmark").font(.title2)
-                                                .foregroundColor(Color("EnduraBlue"))
-                                        } else {
-                                            Image(systemName: uploadsViewModel
-                                                .activityToIcon(activityName: workoutType))
-                                                .font(.title2)
+                            if let activities = uploadsViewModel.groupedUploads[date] {
+                                ForEach(activities, id: \.self) { activity in
+                                    NavigationLink(destination: UploadWorkoutView(workout: activity)) {
+                                        let workoutType = activity.workoutActivityType.name
+                                        let workoutDistance = (activity.totalDistance?.doubleValue(for: .mile()) ?? 0.0)
+                                            .rounded(toPlaces: 2).removeTrailingZeros()
+                                        Label {
+                                            Text(
+                                                "\(activity.startDate.formatted(date: .omitted, time: .shortened)) • \(workoutDistance) mi"
+                                            )
+                                        } icon: {
+                                            if ActivityUtils.isActivityUploaded(activity) {
+                                                Image(systemName: "checkmark").font(.title2)
+                                                    .foregroundColor(Color("EnduraBlue"))
+                                            } else {
+                                                Image(systemName: uploadsViewModel
+                                                    .activityToIcon(activityName: workoutType))
+                                                    .font(.title2)
+                                            }
                                         }
+                                        .frame(height: 30)
+                                        .selectionDisabled(ActivityUtils.isActivityUploaded(activity))
+                                        .tag(activity)
                                     }
-                                    .frame(height: 30)
-                                    .selectionDisabled(ActivityUtils.isActivityUploaded(activity))
-                                    .tag(activity)
                                 }
                             }
                         }
@@ -141,7 +145,7 @@ struct NewActivityView: View {
                 }
                 .environment(\.editMode, .constant(selectionMode ? EditMode.active : EditMode.inactive))
                 .toolbar {
-                    if !sortedDates.isEmpty {
+                    if !uploadsViewModel.uploads.isEmpty {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(selectionMode ? "Cancel" : "Select") {
                                 withAnimation {
