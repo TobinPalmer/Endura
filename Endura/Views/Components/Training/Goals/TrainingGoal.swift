@@ -47,11 +47,14 @@ public struct TrainingGoal: View {
                         goalListItem(text: "Warmup", icon: "figure.cooldown", done: goal.progress.preRoutineCompleted)
                     }
                 }
-                goalListItem(
-                    text: "\(FormattingUtils.formatMiles(goal.getDistance())) Mile Run",
-                    icon: "figure.run",
-                    done: goal.progress.workoutCompleted
-                )
+                NavigationLink(destination: NewActivityView()) {
+                    goalListItem(
+                        text: "\(FormattingUtils.formatMiles(goal.getDistance())) Mile Run",
+                        icon: "figure.run",
+                        done: goal.progress.workoutCompleted,
+                        buttonText: "Upload"
+                    )
+                }
                 if let postRoutine = goal.postRoutine {
                     NavigationLink(destination: RoutineStartView(postRoutine)) {
                         goalListItem(
@@ -112,7 +115,9 @@ public struct TrainingGoal: View {
         }
     }
 
-    private func goalListItem(text: String, icon: String, done: Bool = false) -> some View {
+    private func goalListItem(text: String, icon: String, done: Bool = false,
+                              buttonText: String = "Start") -> some View
+    {
         HStack {
             Image(systemName: icon)
                 .font(.title3)
@@ -129,7 +134,7 @@ public struct TrainingGoal: View {
                     .font(.title3)
                     .foregroundColor(.accentColor)
             } else {
-                Button("Start") {}
+                Button(buttonText) {}
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
                     .padding(.horizontal, 10)
