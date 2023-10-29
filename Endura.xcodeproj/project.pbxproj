@@ -61,6 +61,7 @@
 		17CC639B45064F0D1F3F838B /* GenerateTrainingGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6C17600DD07630F1814F /* GenerateTrainingGoalsView.swift */; };
 		17CC63F9D54BDE639775ACAB /* NotificationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FDB47061EA0B1158098 /* NotificationModels.swift */; };
 		17CC640A19D58CF7163C099B /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6FE8496937628D610F98 /* UserProfileView.swift */; };
+		17CC643651DB73A6A441F0AF /* WidgetTrainingGoalProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC620E7D05986B15556CDD /* WidgetTrainingGoalProgress.swift */; };
 		17CC644E71F8B897D238BF31 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6160EE1B3F2ADF1C06FC /* UIImage.swift */; };
 		17CC652A7B3A0CCDD3138626 /* TrainingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC607A7A216D39B0646F45 /* TrainingModel.swift */; };
 		17CC65422EFDFE367D62382B /* TrainingGenerationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6EB7C291EB3598A671B0 /* TrainingGenerationUtils.swift */; };
@@ -76,6 +77,7 @@
 		17CC66DA549275F54C6BBA1F /* EndGoalProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6ED5BEE3D8AA0EE162FF /* EndGoalProgressCard.swift */; };
 		17CC66E5CDE0BA19486FCD50 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC64CF9FA32EE591326705 /* UIColor.swift */; };
 		17CC66F086AC1EB09DDB9931 /* TrainingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC670D9381F63D1FC6D822 /* TrainingGoal.swift */; };
+		17CC66F0BB59CEB9693B4CC2 /* WidgetTrainingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6556A8CCB4D649EB2DA1 /* WidgetTrainingGoal.swift */; };
 		17CC67136F8CC4FD83EE6FD7 /* TrainingGoalList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6BA3109219CA4E553FAE /* TrainingGoalList.swift */; };
 		17CC6808B77F9B20555D7E2A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC659A1576329D2B4CB4F2 /* ActivityView.swift */; };
 		17CC68161A37E41AE1DB565F /* StringArrayValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC65FD633C033679AD7474 /* StringArrayValueTransformer.swift */; };
@@ -199,6 +201,8 @@
 		E99881D52AEE8649003EE8DE /* ActivityPostStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69698D01B022430326F64D83 /* ActivityPostStats.swift */; };
 		E99881D62AEE86C0003EE8DE /* ActivityStatsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696986316AB6F45157A56439 /* ActivityStatsComponents.swift */; };
 		E99881D72AEE881B003EE8DE /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC61A4C68A0172243AB286 /* View.swift */; };
+		E99881D82AEE8DD9003EE8DE /* WidgetTrainingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC6556A8CCB4D649EB2DA1 /* WidgetTrainingGoal.swift */; };
+		E99881D92AEE8DDB003EE8DE /* WidgetTrainingGoalProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CC620E7D05986B15556CDD /* WidgetTrainingGoalProgress.swift */; };
 		E9A307482AC3B28000AB32BF /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = E9A307472AC3B28000AB32BF /* GoogleGenerativeAI */; };
 		E9C8EEF12AB62578007DA21B /* bear.riv in Resources */ = {isa = PBXBuildFile; fileRef = E9C8EEF02AB62556007DA21B /* bear.riv */; };
 		E9C8EEF32AB626FB007DA21B /* pointandclick.riv in Resources */ = {isa = PBXBuildFile; fileRef = E9C8EEF22AB626DE007DA21B /* pointandclick.riv */; };
@@ -275,6 +279,7 @@
 		17CC61A4C68A0172243AB286 /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		17CC61ACCE3B3E8BC74F6F90 /* TrainingGenerationDataUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGenerationDataUtils.swift; sourceTree = "<group>"; };
 		17CC620E713369BF3ECEA030 /* PersistanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
+		17CC620E7D05986B15556CDD /* WidgetTrainingGoalProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetTrainingGoalProgress.swift; sourceTree = "<group>"; };
 		17CC621472800F2D778E7D01 /* ActivityComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityComment.swift; sourceTree = "<group>"; };
 		17CC622B7E127E042F87EBC5 /* AchievementsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsList.swift; sourceTree = "<group>"; };
 		17CC62666B8BA87C3ECFDB19 /* MultiStepForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStepForm.swift; sourceTree = "<group>"; };
@@ -289,6 +294,7 @@
 		17CC6504FE6D511CFE9C0CD2 /* TrainingGoalDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingGoalDetails.swift; sourceTree = "<group>"; };
 		17CC6507B9EB6FEDAE6EB719 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		17CC65111606C9904DB57056 /* UsersCacheModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCacheModel.swift; sourceTree = "<group>"; };
+		17CC6556A8CCB4D649EB2DA1 /* WidgetTrainingGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetTrainingGoal.swift; sourceTree = "<group>"; };
 		17CC656E8B60587CA8E876DE /* TrainingModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
 		17CC657C04F1EFB9941F99AE /* NotificationsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsModel.swift; sourceTree = "<group>"; };
 		17CC6582E0365BB8164BB3CA /* TrainingUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingUtils.swift; sourceTree = "<group>"; };
@@ -657,6 +663,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		17CC62C3AB9900A884E0801C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				17CC6556A8CCB4D649EB2DA1 /* WidgetTrainingGoal.swift */,
+				17CC620E7D05986B15556CDD /* WidgetTrainingGoalProgress.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		17CC636CA05F136BDFF8A042 /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -903,6 +918,7 @@
 				696988C2FD9F190AF547B0A3 /* EnduraWidget.swift */,
 				6969858CA13A7E8F8675A392 /* EnduraUpcomingGoalsWidget.swift */,
 				696986D2ACB05943AE86AB0E /* EnduraWeeklyDistanceWidget.swift */,
+				17CC62C3AB9900A884E0801C /* Components */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -1477,6 +1493,8 @@
 				17CC6F7F668C7FB4E845BB0D /* GenerateRoutineView.swift in Sources */,
 				17CC6F33B4102DFA33FBFD5C /* RoutineEnums.swift in Sources */,
 				17CC6A2500BC20442CDFA4DE /* TrainingGenerationEnums.swift in Sources */,
+				17CC66F0BB59CEB9693B4CC2 /* WidgetTrainingGoal.swift in Sources */,
+				17CC643651DB73A6A441F0AF /* WidgetTrainingGoalProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1507,6 +1525,7 @@
 				E9303B902AD782420077BCC7 /* WorkoutModels.swift in Sources */,
 				02BF59C42AD3AD9600F0AF99 /* Conversion.swift in Sources */,
 				E99881D52AEE8649003EE8DE /* ActivityPostStats.swift in Sources */,
+				E99881D92AEE8DDB003EE8DE /* WidgetTrainingGoalProgress.swift in Sources */,
 				0234D9892AD87F3F003058A5 /* EnduraWeeklyDistanceWidget.swift in Sources */,
 				02E09A6B2ACD18C200681FE6 /* EnduraWidgetBundle.swift in Sources */,
 				02BF59C32AD3ACE100F0AF99 /* Date.swift in Sources */,
@@ -1519,6 +1538,7 @@
 				E9303B8B2AD781130077BCC7 /* SummaryModels.swift in Sources */,
 				E9303B8A2AD780FB0077BCC7 /* TrainingDocumentModels.swift in Sources */,
 				69698FE98A80A63144E5DD97 /* EnduraWidget.swift in Sources */,
+				E99881D82AEE8DD9003EE8DE /* WidgetTrainingGoal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

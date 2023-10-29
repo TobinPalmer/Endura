@@ -38,9 +38,9 @@ public struct EnduraUpcomingGoalsWidget: Widget {
                                provider: WidgetProvider())
         { entry in
             EnduraUpcomingGoalsWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+//                .containerBackground(.fill.tertiary, for: .widget)
         }
-        .supportedFamilies([.systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 
@@ -55,33 +55,18 @@ struct EnduraUpcomingGoalsWidgetView: View {
                 .foregroundColor(.gray)
         } else {
             let goal = viewModel.trainingDay.goals[0]
-            HStack {
-                VStack {
-                    HStack {
-                        Text("\(goal.type.rawValue) Day")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(goal.type.getColor())
-                            .alignFullWidth()
-
-                        Spacer()
-
-                        if goal.progress?.allCompleted() ?? false {
-                            Image(systemName: "checkmark.circle")
-                                .font(.title)
-                                .foregroundColor(.accentColor)
-                        }
-                    }
-                    .padding(.bottom, 1)
-
-                    Text(String(describing: goal.description))
-                        .font(.body)
-                        .fontColor(.secondary)
-                        .alignFullWidth()
-
-                    ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
+            VStack {
+                HStack {
+                    WidgetTrainingGoal(goal)
+//                        WidgetTrainingGoalProgress(goal)
+//                            .frame(width: geometry.size.width / 2)
                 }
             }
+            .containerBackground(LinearGradient(
+                gradient: Gradient(colors: [goal.type.getColor().opacity(0.7), goal.type.getColor()]),
+                startPoint: .topTrailing,
+                endPoint: .bottomLeading
+            ), for: .widget)
         }
     }
 }
