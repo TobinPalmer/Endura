@@ -40,15 +40,16 @@ struct LoginView: View {
         ZStack {
             Color("Background")
                 .edgesIgnoringSafeArea(.all)
-            VStack(alignment: .center, spacing: 20) {
+            VStack(alignment: .center, spacing: 10) {
                 Image("EnduraLogo")
                     .resizable()
                     .frame(width: 100, height: 100)
+                    .cornerRadius(16)
 
                 Spacer()
                     .frame(height: 3)
 
-                Text("Welcome back!")
+                Text("Welcome to Endura!")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color("Text"))
@@ -63,7 +64,7 @@ struct LoginView: View {
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .keyboardType(.emailAddress)
-                            .textFieldStyle(EnduraTextFieldStyle())
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
 
                     VStack {
@@ -72,7 +73,7 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
 
                         SecureField("Password", text: $viewModel.password)
-                            .textFieldStyle(EnduraTextFieldStyle())
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
 
                     Spacer()
@@ -85,7 +86,7 @@ struct LoginView: View {
                         Text("Sign in")
                             .foregroundColor(.white)
                     }
-                    .buttonStyle(EnduraButtonStyle())
+                    .buttonStyle(EnduraNewButtonStyle())
 //            .disabled(!viewModel.validateInput())
 //            .padding(.horizontal, 24)
 //            .padding(.vertical, 16)
