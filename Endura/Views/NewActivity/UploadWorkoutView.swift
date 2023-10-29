@@ -1,3 +1,4 @@
+import FirebaseStorage
 import Foundation
 import HealthKit
 import MapKit
@@ -18,10 +19,14 @@ import SwiftUI
 }
 
 struct UploadWorkoutView: View {
+    @EnvironmentObject private var activeUser: ActiveUserModel
     @StateObject fileprivate var viewModel = UploadWorkoutViewModel()
+    @Environment(\.dismiss) private var dismiss
     @State private var isShowingSummary = false
     @State var activityTitle: String = ""
     @State var activityDescription: String = ""
+
+    @State private var uploading = false
 
     @MainActor func updateActivityData(_ workout: HKWorkout) async throws {
         viewModel.activityData = try await viewModel.getActivityData(workout)
@@ -116,14 +121,49 @@ struct UploadWorkoutView: View {
                         activityData.social.title = activityTitle
                     }
                     activityData.social.description = activityDescription
+                    activityData.visibility = activeUser.settings.data.defaultActivityVisibility
 
                     viewModel.activityData = activityData
 
-                    ActivityUtils.setActivityUploaded(for: workout)
-                    isShowingSummary = true
+                    uploading = true
+                    Task {
+                        let storage = Storage.storage()
+
+                        do {
+                            if let mapRef = viewModel.mapRef, let geometryRef = viewModel.geometryRef {
+                                let image = mapRef.takeScreenshot(
+                                    origin: geometryRef.frame(in: .global).origin,
+                                    size: geometryRef.size
+                                )
+
+                                try await ActivityUtils.uploadActivity(
+                                    activity: activityData,
+                                    image: image,
+                                    storage: storage
+                                )
+                            } else {
+                                try await ActivityUtils.uploadActivity(activity: activityData)
+                            }
+
+                            activeUser.training.processNewActivity(activityData)
+
+                            ActivityUtils.setActivityUploaded(for: workout)
+                            dismiss()
+                        } catch {
+                            Global.log.error("Error uploading activity: \(error)")
+                        }
+                    }
+//                    isShowingSummary = true
                 }
             } label: {
-                Text("Upload")
+                if uploading {
+                    HStack(spacing: 10) {
+                        ProgressView()
+                        Text("Uploading...")
+                    }
+                } else {
+                    Text("Upload")
+                }
             }
             .buttonStyle(EnduraNewButtonStyle())
             .disabled(viewModel.activityData == nil)
