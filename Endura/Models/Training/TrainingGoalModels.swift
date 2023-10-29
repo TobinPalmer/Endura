@@ -12,6 +12,18 @@ public struct TrainingGoalProgressData: Codable, Hashable {
     public func allCompleted() -> Bool {
         preRoutineCompleted && postRoutineCompleted && workoutCompleted
     }
+
+    public func getNext() -> String {
+        if !preRoutineCompleted {
+            return "Warmup"
+        } else if !workoutCompleted {
+            return "Run"
+        } else if !postRoutineCompleted {
+            return "Post Run"
+        } else {
+            return "Done"
+        }
+    }
 }
 
 public struct TrainingRoutineGoalData: Codable, Hashable {
