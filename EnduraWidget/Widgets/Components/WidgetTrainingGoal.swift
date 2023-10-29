@@ -14,6 +14,7 @@ struct WidgetTrainingGoal: View {
         VStack(spacing: 2) {
             HStack {
                 Text("\(goal.type.rawValue) Day")
+                    .minimumScaleFactor(0.5)
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -29,6 +30,7 @@ struct WidgetTrainingGoal: View {
             }
 
             Text(String(describing: goal.description))
+                .minimumScaleFactor(0.5)
                 .font(.system(size: 14))
                 .foregroundColor(.white)
                 .alignFullWidth()
