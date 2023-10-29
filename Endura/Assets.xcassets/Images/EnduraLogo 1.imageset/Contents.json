@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "dashboard.png",
+      "filename" : "enduralogo.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "dashboard 1.png",
+      "filename" : "enduralogo 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "dashboard 2.png",
+      "filename" : "enduralogo 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
