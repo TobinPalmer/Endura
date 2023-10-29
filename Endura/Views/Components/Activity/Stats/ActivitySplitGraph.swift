@@ -23,28 +23,32 @@ struct ActivitySplitGraph: View {
                             if split.distance.removeTrailingZeros() == "1" {
                                 Text("\(index + 1)")
                             } else {
-                                Text("\(split.distance.removeTrailingZeros()) mi")
+                                Text("\(split.distance.rounded(toPlaces: 1).removeTrailingZeros())")
                             }
                         }
+                        .fontColor(.muted)
 
                         GridRow {
                             Text("\(FormattingUtils.secondsToFormattedTime(split.pace))")
+                                .fontColor(.primary)
                         }
 
                         ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(width: width, height: 20)
+                            RoundedRectangle(cornerRadius: 16)
+                                .frame(width: width, height: 10)
                                 .foregroundColor(.clear)
 
                             let width = min(width, width * CGFloat(fastestSplit.pace / split.pace))
 
-                            Rectangle()
+                            RoundedRectangle(cornerRadius: 16)
                                 .frame(maxWidth: width)
+                                .frame(height: 10)
                                 .foregroundColor(Color("EnduraBlue"))
                         }
                     }
                 }
             }
         }
+        .frame(maxWidth: .infinity)
     }
 }

@@ -59,18 +59,17 @@ struct ActivityView: View {
                             topSpace: !(activityData?.data.routeData.isEmpty ?? false)
                         )
 
+                        DisclosureGroup("View Splits (\(activity.stats.splits.count))") {
+                            ActivitySplitGraph(splits: activity.stats.splits)
+                                .padding(.top, 4)
+                        }
+                        .fontColor(.secondary)
+
                         Button("View Analysis") {
                             analysisView = true
                         }
                         .buttonStyle(EnduraNewButtonStyle())
-                        .padding(.top, 16)
-
-                        DisclosureGroup("Splits") {
-                            ActivitySplitGraph(splits: activity.stats.splits)
-                                .padding(.vertical, 16)
-                        }
-                        .padding(16)
-                        .enduraDefaultBox()
+                        .padding(.vertical, 12)
                     }
                     .enduraPadding()
                 }
