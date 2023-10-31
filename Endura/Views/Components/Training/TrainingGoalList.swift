@@ -50,11 +50,11 @@ struct TrainingGoalList: View {
             } else {
                 VStack {
                     if trainingDay.type == .rest {
-                        VStack {
+                        VStack(spacing: 4) {
                             Text("Rest Day")
                                 .font(.title3)
                                 .foregroundColor(Color("EnduraBlue").opacity(0.8))
-//                                .fontWeight(.semibold)
+                                .fontWeight(.bold)
                             Text("No goals for today, enjoy your rest day!")
                                 .font(.body)
                                 .fontColor(.secondary)
@@ -62,6 +62,7 @@ struct TrainingGoalList: View {
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 20)
                         }
+                        .padding(.vertical, 6)
                     } else {
                         ForEach(trainingDay.goals, id: \.self) { goal in
                             TrainingGoal(goal)
