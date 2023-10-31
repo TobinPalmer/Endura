@@ -86,6 +86,8 @@ struct EndGoalProgressCard: View {
                 if endGoal == nil {
                     NavigationLink(destination: TrainingEndGoalSetupView(endTrainingGoal)) {
                         content
+                            .frame(maxWidth: .infinity)
+                            .enduraDefaultBox()
                     }
                 } else {
                     content
@@ -108,11 +110,11 @@ struct EndGoalProgressCard: View {
                     }
                 }
                 .padding(.vertical, 10)
+                .enduraDefaultBox()
             }
         }
         .frame(maxWidth: .infinity)
         .frame(height: 160)
-        .enduraDefaultBox()
         .contextMenu {
             Button {
                 deleteAlert = true
