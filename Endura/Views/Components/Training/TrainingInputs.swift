@@ -15,29 +15,69 @@ struct DistanceInput: View {
                 .fontWeight(.bold)
         }
         .popover(isPresented: $popup) {
-            HStack {
-                Button(action: {
-                    distance -= 1
-                }) {
-                    Image(systemName: "minus")
-                }
-                TextField("Distance", value: Binding(
-                    get: { distance },
+//            HStack {
+//                Button(action: {
+//                    distance -= 1
+//                }) {
+//                    Image(systemName: "minus")
+//                }
+//                TextField("Distance", value: Binding(
+//                    get: { distance },
+//                    set: { newValue in
+//                        distance = Double(newValue)
+//                    }
+//                ), format: .number)
+//                    .multilineTextAlignment(.center)
+//                    .keyboardType(.decimalPad)
+//                    .fontColor(.primary)
+//                Button(action: {
+//                    distance += 1
+//                }) {
+//                    Image(systemName: "plus")
+//                }
+//            }
+//            .font(.largeTitle)
+//            .fontWeight(.bold)
+//            .padding(16)
+//            .presentationCompactAdaptation(.popover)
+            HStack(spacing: 0) {
+                let width = CGFloat(90)
+                Picker("", selection: Binding(
+                    get: {
+                        Int(distance)
+                    },
                     set: { newValue in
-                        distance = Double(newValue)
+                        distance = Double(newValue) + distance.truncatingRemainder(dividingBy: 1)
                     }
-                ), format: .number)
-                    .multilineTextAlignment(.center)
-                    .keyboardType(.decimalPad)
-                    .fontColor(.primary)
-                Button(action: {
-                    distance += 1
-                }) {
-                    Image(systemName: "plus")
+                )) {
+                    ForEach(0 ..< 100) { index in
+                        Text("\(index)")
+                            .tag(index)
+                    }
                 }
+                .frame(width: width)
+                .pickerStyle(WheelPickerStyle())
+                .clipShape(.rect.offset(x: -16))
+                .padding(.trailing, -16)
+                Picker("", selection: Binding(
+                    get: {
+                        Int((distance.truncatingRemainder(dividingBy: 1) * 10.0).rounded())
+                    },
+                    set: { newValue in
+                        distance = Double(Int(distance)) + Double(newValue) / 10.0
+                    }
+                )) {
+                    ForEach(0 ..< 10) { index in
+                        Text("\(index)")
+                            .tag(index)
+                    }
+                }
+                .frame(width: width)
+                .pickerStyle(WheelPickerStyle())
+                .clipShape(.rect.offset(x: 16))
+                .padding(.leading, -16)
             }
-            .font(.largeTitle)
-            .fontWeight(.bold)
+            .frame(maxWidth: .infinity, maxHeight: 100)
             .padding(16)
             .presentationCompactAdaptation(.popover)
         }
