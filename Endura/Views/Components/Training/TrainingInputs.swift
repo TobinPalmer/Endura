@@ -11,7 +11,7 @@ struct DistanceInput: View {
         Button {
             popup = true
         } label: {
-            Text(FormattingUtils.formatMiles(distance))
+            Text("\(FormattingUtils.formatMiles(distance)) \(distanceType.getUnit())")
                 .font(.title3)
                 .fontWeight(.bold)
         }

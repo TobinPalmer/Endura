@@ -22,25 +22,12 @@ struct TrainingEndGoalSetupView: View {
 
     var body: some View {
         ZStack {
-            Color("Background")
-                .ignoresSafeArea()
+//            Color("Background")
+//                .ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: 20) {
-//                    VStack {
-//                        Text("Set a goal!")
-//                            .font(.title2)
-//                            .fontWeight(.bold)
-//                            .fontColor(.primary)
-//                            .padding(.bottom, 8)
-//
-//                        Text("Set a goal for yourself to work towards!")
-//                            .font(.caption)
-//                            .fontColor(.secondary)
-//                            .padding(.bottom, 16)
-//                    }
-
-                    VStack(alignment: .leading, spacing: 2) {
+            VStack {
+                List {
+                    Section(header: Text(""), footer: Text("The date you want to complete your goal by.")) {
                         DatePicker(
                             selection: Binding<Date>(
                                 get: { endGoal.date.getDate() },
@@ -52,47 +39,47 @@ struct TrainingEndGoalSetupView: View {
                             Label("Completion Date", systemImage: "calendar")
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(26)
-//                        .enduraDefaultBox()
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        Label("Distance", systemImage: "figure.walk")
+                    Section {
+                        HStack {
+                            Label("Distance", systemImage: "ruler")
 
-                        DistanceInput(
-                            distance: $endGoal.distance
-                        )
+                            Spacer()
+
+                            DistanceInput(
+                                distance: $endGoal.distance
+                            )
+                        }
+
+                        HStack {
+                            Label("Time", systemImage: "stopwatch")
+
+                            Spacer()
+
+                            TimeInput(
+                                time: $endGoal.time
+                            )
+                        }
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(26)
-//                        .enduraDefaultBox()
 
-                    VStack(alignment: .leading, spacing: 2) {
-                        Label("Time", systemImage: "stopwatch")
-
-                        Text("\(FormattingUtils.secondsToFormattedTime(endGoal.time))")
-
-                        TimeInput(
-                            time: $endGoal.time
-                        )
+                    Section {
+                        Text("What your goal will look like:")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .fontColor(.primary)
+                        EndGoalProgressCard(endGoal: endGoal)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(26)
-//                        .enduraDefaultBox()
-
-                    Spacer()
-
-                    Button {
-                        verifySaveAlert = true
-                    } label: {
-                        Text("Save")
-                    }
-                    .buttonStyle(EnduraNewButtonStyle())
-                    .padding(.vertical, 20)
                 }
+                Button {
+                    verifySaveAlert = true
+                } label: {
+                    Text("Save")
+                }
+                .buttonStyle(EnduraNewButtonStyle())
+                .padding(.vertical, 8)
+                .padding(.horizontal, 24)
             }
             .navigationBarTitle("Setup your Training Goal")
-            .enduraPadding()
             .alert(isPresented: $verifySaveAlert) {
                 Alert(
                     title: Text("Are you sure?"),

@@ -3,12 +3,13 @@ import SwiftUI
 
 struct EndGoalProgressCard: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
+    public var endGoal: TrainingEndGoalData?
 
     @State private var deleteAlert: Bool = false
 
     var body: some View {
         VStack {
-            if let endTrainingGoal = activeUser.training.endTrainingGoal {
+            if let endTrainingGoal = endGoal ?? activeUser.training.endTrainingGoal {
                 NavigationLink(destination: TrainingEndGoalSetupView(endTrainingGoal)) {
                     HStack(spacing: 10) {
                         let progressRingSize = 100
