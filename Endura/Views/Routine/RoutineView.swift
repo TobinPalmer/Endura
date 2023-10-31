@@ -105,10 +105,24 @@ struct RoutineExerciseView: View {
                     }
                 } else {
                     VStack(spacing: 10) {
-                        Text("Step \(currentStep + 1) of \(totalSteps)")
-                            .fontColor(.muted)
-                            .fontWeight(.bold)
-                            .padding(.top, 10)
+                        HStack {
+                            Spacer()
+                            Spacer()
+                            Text("Step \(currentStep + 1) of \(totalSteps)")
+                                .fontColor(.muted)
+                                .fontWeight(.bold)
+                            Spacer()
+                            NavigationLink(destination: RoutineView(routine: RoutineData(
+                                type: .postRun,
+                                exercises: postRunEasyDay
+                            ), done: $finished)) {
+                                Image(systemName: "list.bullet")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .fontColor(.muted)
+                            }
+                        }
+                        .padding(.top, 10)
                         Spacer()
                         Text("\(exerciseReference.amountType.getAmountString(viewModel.exercise.amount))")
                             .font(.body)
