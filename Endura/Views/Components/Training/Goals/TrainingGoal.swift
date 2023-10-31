@@ -43,7 +43,7 @@ public struct TrainingGoal: View {
 
             VStack {
                 if let preRoutine = goal.preRoutine {
-                    NavigationLink(destination: RoutineStartView(preRoutine)) {
+                    NavigationLink(destination: RoutineStartView(preRoutine, date: goal.date)) {
                         goalListItem(text: "Warmup", icon: "figure.cooldown", done: goal.progress.preRoutineCompleted)
                     }
                 }
@@ -56,7 +56,7 @@ public struct TrainingGoal: View {
                     )
                 }
                 if let postRoutine = goal.postRoutine {
-                    NavigationLink(destination: RoutineStartView(postRoutine)) {
+                    NavigationLink(destination: RoutineStartView(postRoutine, date: goal.date)) {
                         goalListItem(
                             text: "Post run",
                             icon: "figure.strengthtraining.functional",

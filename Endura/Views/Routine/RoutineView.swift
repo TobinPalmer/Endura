@@ -10,6 +10,7 @@ public var postRunEasyDay: [RoutineExercise] = [
 
 private final class RoutineViewModel: ObservableObject {
     private var currentExerciseIndex: Int = 0
+    @Published public var done: Bool = false
     @Published fileprivate private(set) var currentExercise: RoutineExercise
 
     init() {
@@ -67,7 +68,9 @@ private final class RoutineExerciseViewModel: ObservableObject {
 }
 
 struct RoutineExerciseView: View {
+    @EnvironmentObject private var routineViewModel: RoutineViewModel
     @ObservedObject private var viewModel: RoutineExerciseViewModel
+    @Environment(\.dismiss) private var dismiss
     @Binding private var currentStep: Int
     @State private var finished: Bool = false
 
@@ -83,6 +86,23 @@ struct RoutineExerciseView: View {
         if let exerciseReference = routineExerciseReference[viewModel.exercise.type] {
             VStack {
                 if finished {
+                    VStack {
+                        Text("Finished")
+                            .fontColor(.muted)
+                            .fontWeight(.bold)
+                            .padding(.top, 10)
+                        Spacer()
+                        Text("Great job!")
+                            .font(.title)
+                            .fontColor(.primary)
+                            .fontWeight(.bold)
+                        Spacer()
+                        Button("Done") {
+                            routineViewModel.done = true
+                            dismiss()
+                        }
+                        .buttonStyle(EnduraNewButtonStyle())
+                    }
                 } else {
                     VStack(spacing: 10) {
                         Text("Step \(currentStep + 1) of \(totalSteps)")
@@ -191,7 +211,7 @@ struct RoutineExerciseView: View {
                         HStack {
                             Button("Next") {
                                 withAnimation {
-                                    if currentStep == postRunEasyDay.count {
+                                    if currentStep == totalSteps {
                                         finished = true
                                     } else {
                                         currentStep += 1
@@ -214,7 +234,7 @@ struct RoutineExerciseView: View {
                                 }
                                 .buttonStyle(EnduraNewButtonStyle(backgroundColor: viewModel
                                         .currentTime >= Double(viewModel.exercise.amount) ? .accentColor : .gray))
-                                .disabled(viewModel.currentTime < Double(viewModel.exercise.amount))
+                                .disabled(viewModel.currentTime < Double(viewModel.exercise.amount) * 2 / 3)
                             }
                         } else {
                             HStack {
@@ -237,6 +257,7 @@ struct RoutineView: View {
     @StateObject private var viewModel = RoutineViewModel()
     @State private var currentPage = 0
     public var routine: RoutineData
+    @Binding public var done: Bool
 
     public var body: some View {
         ZStack {
@@ -252,7 +273,12 @@ struct RoutineView: View {
             }
             let _ = views.append(AnyView(Text("FINISHED")))
 
-            MultiStepForm(views, viewModel: RoutineViewModel(), currentPage: $currentPage)
+            MultiStepForm(views, viewModel: viewModel, currentPage: $currentPage)
+        }
+        .onChange(of: viewModel.done) { newValue in
+            if newValue {
+                done = true
+            }
         }
     }
 }

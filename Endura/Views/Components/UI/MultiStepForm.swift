@@ -51,6 +51,7 @@ struct MultiStepForm<T>: View where T: ObservableObject {
                         }
                     }
                 }
+                .environmentObject(viewModel)
             }
         }
         .navigationBarBackButtonHidden(true)
