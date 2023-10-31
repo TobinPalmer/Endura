@@ -94,10 +94,10 @@ struct UserProfileView: View {
                 .frame(maxWidth: 300)
 
                 Text("This profile is private, friend this user to see more.")
-                    .font(.title3)
+                    .font(.body)
                     .fontColor(.secondary)
                     .multilineTextAlignment(.center)
-                    .padding(.top, 20)
+                    .padding(.top, 10)
 
                 Spacer()
             } else {
