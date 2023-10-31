@@ -27,16 +27,9 @@ struct GenerateTrainingGoalsView: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            Text("Training Goal Generation")
-                .font(.title)
-                .fontWeight(.bold)
-                .fontColor(.primary)
-                .alignFullWidth()
-
             Text("This will generate training goals for you based on your end goal or a custom request.")
                 .font(.body)
-                .fontWeight(.bold)
-                .fontColor(.secondary)
+                .fontColor(.primary)
                 .alignFullWidth()
 
             Picker("Generate for goal", selection: $generationType) {
@@ -45,30 +38,42 @@ struct GenerateTrainingGoalsView: View {
                 }
             }
             .pickerStyle(.segmented)
+            .padding(.vertical, 8)
+
+            Divider()
+                .padding(.bottom, 10)
 
             switch generationType {
             case .goal:
                 if let endGoal = activeUser.training.endTrainingGoal {
-                    Text(
-                        "This will generate the next \(endGoal.daysLeft()) days to help you reach your end goal by \(FormattingUtils.dateToFormattedDay(endGoal.date)). Your current end goal is getting \(FormattingUtils.formatMiles(endGoal.distance)) miles in \(FormattingUtils.secondsToFormattedTimeColon(endGoal.time))."
-                    )
-                    .font(.body)
-                    .fontWeight(.bold)
-                    .fontColor(.secondary)
-                    .alignFullWidth()
+//                    Text(
+//                        "This will generate the next \(endGoal.daysLeft()) days to help you reach your end goal by
+//                        \(FormattingUtils.dateToFormattedDay(endGoal.date)). Your current end goal is getting
+//                        \(FormattingUtils.formatMiles(endGoal.distance)) miles in
+//                        \(FormattingUtils.secondsToFormattedTimeColon(endGoal.time))."
+//                    )
+//                        .font(.body)
+//                        .fontColor(.secondary)
+//                        .alignFullWidth()
 
-                    Text("You can change your end goal in the profile tab.")
-                        .font(.caption)
-                        .fontColor(.secondary)
+                    Text("This will generate a training plan to help you reach your end goal.")
+                        .font(.body)
+                        .fontColor(.primary)
                         .alignFullWidth()
+                    EndGoalProgressCard()
+//                    Text("You can change your end goal in the profile tab.")
+//                        .font(.caption)
+//                        .fontColor(.secondary)
+//                        .alignFullWidth()
 
                     Text("Enter any notes or further requests you have for your training.")
                         .font(.body)
-                        .fontWeight(.bold)
                         .fontColor(.primary)
                         .alignFullWidth()
+                        .padding(.top, 10)
 
-                    TextField("Notes", text: $endGoalNotes)
+                    TextField("Notes or training requests...", text: $endGoalNotes, axis: .vertical)
+                        .lineLimit(4 ... 6)
                         .textFieldStyle(.roundedBorder)
                 } else {
                     Text("No training goal")
@@ -77,11 +82,8 @@ struct GenerateTrainingGoalsView: View {
                     }
                 }
             case .custom:
-                Text("Custom")
-
                 Text("What is the date you want to end your training?")
                     .font(.body)
-                    .fontWeight(.bold)
                     .fontColor(.primary)
                     .alignFullWidth()
 
@@ -98,7 +100,6 @@ struct GenerateTrainingGoalsView: View {
 
                 Text("What is pace (per mile) do you want to run at for easy runs?")
                     .font(.body)
-                    .fontWeight(.bold)
                     .fontColor(.primary)
                     .alignFullWidth()
 
@@ -108,7 +109,6 @@ struct GenerateTrainingGoalsView: View {
                     "Enter what you want your training to be like. For example, \"I want to run 3-4 miles every day and improve core strength\""
                 )
                 .font(.body)
-                .fontWeight(.bold)
                 .fontColor(.secondary)
                 .alignFullWidth()
                 TextField("Custom", text: $customOptions.notes)
@@ -177,5 +177,6 @@ struct GenerateTrainingGoalsView: View {
             }
         }
         .enduraPadding()
+        .navigationBarTitle("Generate Training Goals", displayMode: .inline)
     }
 }
