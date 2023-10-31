@@ -9,6 +9,7 @@ private struct RoutineGenerationInfo {
 
 struct GenerateRoutineView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
+    @Environment(\.dismiss) private var dismiss
     @Binding public var routineData: RoutineData
 
     @State private var generationInfo: RoutineGenerationInfo = .init()
@@ -131,6 +132,7 @@ struct GenerateRoutineView: View {
                         if let postRunRoutine = postRunRoutine {
                             DispatchQueue.main.async {
                                 self.routineData = postRunRoutine
+                                dismiss()
                             }
                         }
                     }
