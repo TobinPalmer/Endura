@@ -8,7 +8,7 @@ public struct TrainingEndGoalData: Cacheable {
     public var time: Double
     public var currentTime: Double
     public var pace: Double {
-        time / distance
+        distance / time
     }
 
     public var completed: Bool

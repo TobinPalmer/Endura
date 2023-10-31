@@ -60,22 +60,43 @@ struct EndGoalProgressCard: View {
                             .fontColor(.primary)
                         HStack {
                             VStack(alignment: .leading) {
-                                Text("Current")
-                                    .font(.caption)
-                                    .fontColor(.muted)
-                                Text("\(FormattingUtils.secondsToFormattedTime(endTrainingGoal.currentTime))")
-                                    .fontWeight(.bold)
-                                    .fontColor(.secondary)
-                            }
-                            VStack(alignment: .leading) {
                                 Text("Goal")
                                     .font(.caption)
                                     .fontColor(.muted)
                                 Text("\(FormattingUtils.secondsToFormattedTime(endTrainingGoal.time))")
                                     .fontWeight(.bold)
-                                    .fontColor(.secondary)
+                                    .foregroundColor(Color("EnduraGreen"))
+                            }
+                            VStack(alignment: .leading) {
+                                Text("Goal Pace")
+                                    .font(.caption)
+                                    .fontColor(.muted)
+                                Text("\(ConversionUtils.convertMpsToMpm(endTrainingGoal.pace * 1609.344)) /mi")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color("EnduraGreen"))
                             }
                             .padding(.leading, 6)
+                        }
+                        .padding(.leading, 6)
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("Current")
+                                    .font(.caption)
+                                    .fontColor(.muted)
+                                Text("\(FormattingUtils.secondsToFormattedTime(endTrainingGoal.currentTime))")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color("EnduraYellow"))
+//                                    .fontColor(.secondary)
+                            }
+//                            VStack(alignment: .leading) {
+//                                Text("Current Pace")
+//                                    .font(.caption)
+//                                    .fontColor(.muted)
+//                                Text("\(ConversionUtils.convertMpsToMpm(endTrainingGoal.distance * 1609.344 /
+//                                endTrainingGoal.currentTime)) /mi")
+//                                    .fontWeight(.bold)
+//                                    .fontColor(.secondary)
+//                            }
                         }
                         .padding(.leading, 6)
                         Spacer()
