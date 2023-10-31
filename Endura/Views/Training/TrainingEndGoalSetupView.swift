@@ -27,7 +27,7 @@ struct TrainingEndGoalSetupView: View {
 
             VStack {
                 List {
-                    Section(header: Text(""), footer: Text("The date you want to complete your goal by.")) {
+                    Section(footer: Text("The date you want to complete your goal by.")) {
                         DatePicker(
                             selection: Binding<Date>(
                                 get: { endGoal.date.getDate() },
@@ -40,7 +40,7 @@ struct TrainingEndGoalSetupView: View {
                         }
                     }
 
-                    Section {
+                    Section(footer: Text("This is your current running goal.")) {
                         HStack {
                             Label("Distance", systemImage: "ruler")
 
@@ -62,11 +62,21 @@ struct TrainingEndGoalSetupView: View {
                         }
                     }
 
-                    Section {
-                        Text("What your goal will look like:")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .fontColor(.primary)
+                    Section(
+                        footer: Text("The current time you can run the distance in, if you are unsure leave this as 0.")
+                    ) {
+                        HStack {
+                            Label("Current Time", systemImage: "stopwatch")
+
+                            Spacer()
+
+                            TimeInput(
+                                time: $endGoal.currentTime
+                            )
+                        }
+                    }
+
+                    Section(header: Text("Goal Preview")) {
                         EndGoalProgressCard(endGoal: endGoal)
                     }
                 }
