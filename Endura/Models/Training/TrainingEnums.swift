@@ -2,6 +2,27 @@ import Foundation
 import SwiftUI
 import SwiftUICalendar
 
+public enum DistanceType: Double, Codable, CaseIterable {
+    case miles = 1609.34
+    case kilometers = 1000
+    case meters = 1
+
+    public func getUnit() -> String {
+        switch self {
+        case .miles:
+            return "mi"
+        case .kilometers:
+            return "km"
+        case .meters:
+            return "m"
+        }
+    }
+
+    public func convertUnit(value: Double, to: DistanceType) -> Double {
+        value * to.rawValue / rawValue
+    }
+}
+
 public enum TrainingGoalType: String, Codable {
     case warmup = "Warmup"
     case running = "Running"

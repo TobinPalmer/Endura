@@ -3,6 +3,7 @@ import SwiftUI
 
 struct DistanceInput: View {
     @Binding var distance: Double
+    @State var distanceType: DistanceType = .miles
 
     @State private var popup = false
 
@@ -68,7 +69,7 @@ struct DistanceInput: View {
                     }
                 )) {
                     ForEach(0 ..< 10) { index in
-                        Text("\(index)")
+                        Text("\(Int(distance)).\(index)")
                             .tag(index)
                     }
                 }
@@ -76,6 +77,24 @@ struct DistanceInput: View {
                 .pickerStyle(WheelPickerStyle())
                 .clipShape(.rect.offset(x: 16))
                 .padding(.leading, -16)
+                Picker("", selection: Binding(
+                    get: {
+                        distanceType
+                    },
+                    set: { newValue in
+                        distance = distanceType.convertUnit(value: distance, to: newValue)
+                        distanceType = newValue
+                    }
+                )) {
+                    Text("mi")
+                        .tag(DistanceType.miles)
+                    Text("km")
+                        .tag(DistanceType.kilometers)
+                    Text("m")
+                        .tag(DistanceType.meters)
+                }
+                .frame(width: width)
+                .pickerStyle(WheelPickerStyle())
             }
             .frame(maxWidth: .infinity, maxHeight: 100)
             .padding(16)
