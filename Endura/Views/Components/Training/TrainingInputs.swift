@@ -69,7 +69,7 @@ struct DistanceInput: View {
                     }
                 )) {
                     ForEach(0 ..< 10) { index in
-                        Text("\(Int(distance)).\(index)")
+                        Text(".\(index)")
                             .tag(index)
                     }
                 }
