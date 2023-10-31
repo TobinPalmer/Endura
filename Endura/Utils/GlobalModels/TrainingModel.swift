@@ -211,10 +211,12 @@ import WidgetKit
     }
 
     public func processNewActivity(_ activity: ActivityDataWithRoute) {
-        updateSummaryData(for: activity.time.toYearMonthDay(), with: activity)
+        let day = activity.time.toYearMonthDay()
+        updateSummaryData(for: day, with: activity)
 
-        var trainingDay = getTrainingDay(activity.time.toYearMonthDay())
+        var trainingDay = getTrainingDay(day)
         trainingDay.goals = TrainingUtils.updateTrainingGoals(trainingDay.goals, activity)
+        setTrainingDay(day, trainingDay)
     }
 
     public func updateSummaryData(for date: YearMonthDay, with activity: ActivityDataWithRoute) {

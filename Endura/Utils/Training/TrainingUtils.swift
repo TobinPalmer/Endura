@@ -51,9 +51,20 @@ public enum TrainingUtils {
 
     public static func updateTrainingGoals(
         _ goals: [TrainingRunGoalData],
-        _: ActivityDataWithRoute
+        _ newActivity: ActivityDataWithRoute
     ) -> [TrainingRunGoalData] {
-        let updatedGoals = goals
+        guard !goals.isEmpty else {
+            return []
+        }
+        let distanceTolerance = 0.9
+        var updatedGoals = goals
+
+        if (goals[0].getDistance() - ConversionUtils.metersToMiles(newActivity.distance))
+            .magnitude < distanceTolerance
+        {
+            updatedGoals[0].progress.workoutCompleted = true
+        }
+
         return updatedGoals
     }
 }
