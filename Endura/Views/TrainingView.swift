@@ -39,9 +39,35 @@ struct TrainingView: View {
                                     .fontColor(.muted)
                             }
                         }
+                        .padding(.horizontal, 26)
+                        .padding(.bottom, 20)
                     }
+                    TrainingGoalList(selectedDate: Binding(get: {
+                        viewModel.selectedDate.addDay(value: 1)
+                    }, set: { newValue in
+                        viewModel.selectedDate = newValue.addDay(value: -1)
+                    }))
                     .padding(.horizontal, 26)
-                    .padding(.bottom, 20)
+                    NavigationLink(
+                        destination: AddTrainingGoalView(viewModel.selectedDate.addDay(value: 1))
+                    ) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color("TextMuted"), style: StrokeStyle(lineWidth: 2, dash: [5]))
+                                .frame(height: 50)
+                            HStack {
+                                Image(systemName: "plus")
+                                    .fontWeight(.bold)
+                                    .fontColor(.muted)
+
+                                Text("Add Goal")
+                                    .fontWeight(.bold)
+                                    .fontColor(.muted)
+                            }
+                        }
+                        .padding(.horizontal, 26)
+                        .padding(.bottom, 20)
+                    }
                 }
             }
         }
