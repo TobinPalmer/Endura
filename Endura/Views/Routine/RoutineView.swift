@@ -81,75 +81,109 @@ struct RoutineExerciseView: View {
 
     public var body: some View {
         if let exerciseReference = routineExerciseReference[viewModel.exercise.type] {
-            VStack(spacing: 10) {
-                Text("Step \(currentStep + 1) of \(totalSteps)")
-                    .fontColor(.muted)
-                    .fontWeight(.bold)
-                    .padding(.top, 10)
+            VStack {
                 if finished {
-                    Text("FINISHED GG")
                 } else {
-                    Text("\(exerciseReference.amountType.getAmountString(viewModel.exercise.amount))")
-                        .font(.body)
-                        .fontColor(.secondary)
-                        .fontWeight(.bold)
-                        .padding(.top, 20)
+                    VStack(spacing: 10) {
+                        Text("Step \(currentStep + 1) of \(totalSteps)")
+                            .fontColor(.muted)
+                            .fontWeight(.bold)
+                            .padding(.top, 10)
+                        Spacer()
+                        Text("\(exerciseReference.amountType.getAmountString(viewModel.exercise.amount))")
+                            .font(.body)
+                            .fontColor(.secondary)
+                            .fontWeight(.bold)
+                            .padding(.top, 20)
 
-                    if exerciseReference.amountType == .time {
-                        PostRunTimerRing(
-                            time: $viewModel.currentTime,
-                            duration: Double(viewModel.exercise.amount),
-                            size: 200
-                        )
-                        .environmentObject(viewModel)
-                        .padding(.vertical, 10)
-                    } else {
-                        ZStack {
-                            Circle()
-                                .stroke(Color.accentColor, lineWidth: 16)
-                                .frame(width: 150, height: 150)
+                        if exerciseReference.amountType == .time {
+                            PostRunTimerRing(
+                                time: $viewModel.currentTime,
+                                duration: Double(viewModel.exercise.amount),
+                                size: 200
+                            )
+                            .environmentObject(viewModel)
+                            .padding(.vertical, 10)
+                        } else {
+                            ZStack {
+                                Circle()
+                                    .stroke(Color.accentColor, lineWidth: 16)
+                                    .frame(width: 150, height: 150)
 
-                            VStack {
-                                switch exerciseReference.amountType {
-                                case .count:
-                                    Text("x\(viewModel.exercise.amount)")
-                                        .font(.system(size: 50, weight: .bold, design: .rounded))
-                                        .foregroundColor(.accentColor)
-                                case .distance:
-                                    Text("\(viewModel.exercise.amount)m")
-                                        .font(.system(size: 50, weight: .bold, design: .rounded))
-                                        .foregroundColor(.accentColor)
-                                default:
-                                    EmptyView()
+                                VStack {
+                                    switch exerciseReference.amountType {
+                                    case .count:
+                                        Text("x\(viewModel.exercise.amount)")
+                                            .font(.system(size: 50, weight: .bold, design: .rounded))
+                                            .foregroundColor(.accentColor)
+                                    case .distance:
+                                        Text("\(viewModel.exercise.amount)m")
+                                            .font(.system(size: 50, weight: .bold, design: .rounded))
+                                            .foregroundColor(.accentColor)
+                                    default:
+                                        EmptyView()
+                                    }
                                 }
                             }
+                            .padding(.vertical, 10)
                         }
-                        .padding(.vertical, 10)
-                    }
 
-                    Text(exerciseReference.name)
-                        .font(.title)
-                        .fontColor(.primary)
+                        Text(exerciseReference.name)
+                            .font(.title)
+                            .fontColor(.primary)
+                            .fontWeight(.bold)
+
+                        let color = exerciseReference.benefit.getColor()
+                        HStack {
+                            Image(systemName: exerciseReference.benefit.getIcon())
+                            Text(exerciseReference.benefit.rawValue)
+                        }
                         .fontWeight(.bold)
+                        .foregroundColor(color)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 2)
+                        .frame(height: 30)
+                        .background {
+                            RoundedRectangle(cornerRadius: 100)
+                                .fill(color.opacity(0.2))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 100)
+                                        .stroke(color, lineWidth: 1)
+                                )
+                        }
 
-                    HStack {
-                        ColoredBadge(
-                            text: exerciseReference.benefit.rawValue,
-                            color: exerciseReference.benefit.getColor()
-                        )
+                        ScrollView {
+                            VStack {
+                                Text(exerciseReference.description)
+                                    .minimumScaleFactor(0.5)
+                                    .multilineTextAlignment(.center)
+                                    .font(.body)
+                                    .fontColor(.secondary)
+                                    .padding(.bottom, 10)
 
-//                        Image(systemName: "ruler")
-//                            .fontColor(.muted)
-//                            .fontWeight(.bold)
-
-//                        ColoredBadge(text: exerciseReference.amountType.getAmountString(viewModel.exercise.amount), color: Color("EnduraGreen"))
+                                DisclosureGroup {
+                                    Text(exerciseReference.exerciseDescription)
+                                        .minimumScaleFactor(0.5)
+                                        .multilineTextAlignment(.center)
+                                        .font(.system(size: 16))
+                                        .fontColor(.secondary)
+                                        .padding(.vertical, 6)
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "info.circle")
+                                        Text("How To Do")
+                                    }
+                                    .fontWeight(.bold)
+                                    .font(.body)
+                                    .fontColor(.primary)
+                                }
+                                .padding(10)
+                                .enduraDefaultBox()
+                            }
+                            .lineSpacing(5)
+                            .padding(.vertical, 10)
+                        }
                     }
-
-                    Text(exerciseReference.description)
-                        .multilineTextAlignment(.center)
-                        .font(.body)
-                        .fontColor(.secondary)
-                        .fontWeight(.bold)
 
                     Spacer()
 
@@ -193,8 +227,8 @@ struct RoutineExerciseView: View {
                     }
                 }
             }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .padding()
+            .frame(maxHeight: .infinity, alignment: .top)
+            .enduraPadding()
         }
     }
 }
