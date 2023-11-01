@@ -9,9 +9,9 @@ struct SignupFinishedView: View {
 
     public var body: some View {
         VStack {
-            Text("Welcome, \(formInfo.schedule.description)")
+            Text("Welcome, \(formInfo.email)")
 
-            NavigationLink(destination: DashboardView()) {
+            NavigationLink(destination: LoginView()) {
                 Text("Continue")
             }
         }

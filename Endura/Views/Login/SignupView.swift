@@ -10,7 +10,7 @@ public final class SignupFormInfo: ObservableObject {
     @Published public var password: String = ""
     @Published public var birthday: Date = .init(timeIntervalSince1970: 946_717_200) // 2000-01-01
     @Published public var gender: UserGender = .OTHER
-    @Published public var weight: Double = 100
+    @Published public var weight: Double = 150
     @Published public var schedule: [RunningSchedule] = (1 ... 7).map { day in
         RunningSchedule(day: day, type: .FREE)
     }
@@ -39,11 +39,12 @@ struct SignupView: View {
     var formSteps: [AnyView] {
         var steps = [
             AnyView(SignupStepOneView(viewModel: signupFormInfo, currentStep: $currentStep)),
-            AnyView(SignupStepTwoView(viewModel: signupFormInfo, currentStep: $currentStep)),
+//            AnyView(SignupStepTwoView(viewModel: signupFormInfo, currentStep: $currentStep)),
             AnyView(SignupStepFourView(viewModel: signupFormInfo, currentStep: $currentStep)),
-            AnyView(SignupStepFiveView(viewModel: signupFormInfo, currentStep: $currentStep)),
+//      AnyView(SignupStepFiveView(viewModel: signupFormInfo, currentStep: $currentStep)),
             AnyView(SignupStepSixView(viewModel: signupFormInfo, currentStep: $currentStep)),
-            AnyView(SignupStepSevenView(viewModel: signupFormInfo, currentStep: $currentStep)),
+            AnyView(SignupFinishedView()),
+//      AnyView(SignupStepSevenView(viewModel: signupFormInfo, currentStep: $currentStep)),
         ]
         if !HealthKitUtils.isAuthorized() {
             steps.insert(AnyView(SignupStepThreeView(viewModel: signupFormInfo, currentStep: $currentStep)), at: 2)

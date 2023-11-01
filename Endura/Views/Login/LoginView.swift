@@ -121,6 +121,7 @@ struct LoginView: View {
             }
             .padding(40)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .navigationBarBackButtonHidden(true)
         }
     }
 }

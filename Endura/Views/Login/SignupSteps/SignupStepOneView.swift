@@ -15,12 +15,6 @@ struct SignupStepOneView: View {
             Color("Background").edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
-                Image(systemName: "person.text.rectangle.fill")
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                    .aspectRatio(contentMode: .fill)
-                    .foregroundColor(Color.accentColor)
-
                 Text("Tell us about yourself")
                     .multilineTextAlignment(.center)
                     .font(.largeTitle)
@@ -35,7 +29,7 @@ struct SignupStepOneView: View {
 
                     TextField("", text: $viewModel.firstName)
                         .disableAutocorrection(true)
-                        .textFieldStyle(EnduraTextFieldStyle())
+                        .textFieldStyle(.roundedBorder)
                 }
 
                 VStack(spacing: 7) {
@@ -46,7 +40,29 @@ struct SignupStepOneView: View {
 
                     TextField("", text: $viewModel.lastName)
                         .disableAutocorrection(true)
-                        .textFieldStyle(EnduraTextFieldStyle())
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                VStack(spacing: 7) {
+                    Text("Email")
+                        .foregroundColor(Color("TextMuted"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.caption)
+
+                    TextField("", text: $viewModel.email)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                VStack(spacing: 7) {
+                    Text("Password")
+                        .foregroundColor(Color("TextMuted"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.caption)
+
+                    TextField("", text: $viewModel.password)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(.roundedBorder)
                 }
 
                 Spacer()

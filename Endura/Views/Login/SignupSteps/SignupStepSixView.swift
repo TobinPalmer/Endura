@@ -37,43 +37,46 @@ struct SignupStepSixView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
-                VStack {
-                    HStack {
-                        VStack {
-                            ForEach(1 ... 7, id: \.self) { index in
-                                Button("\(ConversionUtils.numberToDayOfWeek(day: index))") {
-                                    showingDate = index
-                                }
-                                .fixedSize()
-                                .buttonStyle(EnduraButtonStyleOld(backgroundColor: stepViewModel
-                                        .stateToColor(state: viewModel.schedule[index - 1].type)))
-                                .padding(.vertical, 3)
-                            }
+                ForEach(0 ..< 7) { day in
+                    Toggle("\(WeekDay(rawValue: day)!.getShortName())", isOn: Binding(
+                        get: {
+                            viewModel.schedule[day].type == .FREE
+                        },
+                        set: { newValue in
+                            viewModel.schedule[day].type = newValue ? .FREE : .BUSY
                         }
-
-                        VStack {}
-                    }
+                    ))
                 }
 
+                Spacer()
+
                 HStack {
-                    Button("Back") {
+                    Button {
                         withAnimation {
                             currentStep -= 1
                         }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.title)
+                            .foregroundColor(Color("Text"))
                     }
-                    .buttonStyle(EnduraButtonStyleOld())
+                    .buttonStyle(EnduraNewButtonStyle(maxWidth: 50, maxHeight: 30))
 
                     Button("Next") {
                         withAnimation {
                             currentStep += 1
                         }
                     }
-                    .buttonStyle(EnduraButtonStyleOld(backgroundColor: (viewModel.firstName.isEmpty || viewModel
-                            .lastName.isEmpty) ? .gray : .accentColor))
-//            .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
+                    .frame(maxWidth: .infinity)
+                    .buttonStyle(EnduraNewButtonStyle(
+                        backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
+                            .isEmpty) ? .gray : .accentColor,
+                        maxHeight: 30
+                    ))
                 }
             }
-            .padding(40)
         }
+        .padding([.horizontal, .top], 40)
+        .padding(.bottom, 10)
     }
 }

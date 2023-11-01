@@ -5,6 +5,8 @@ struct SignupStepFourView: View {
     @ObservedObject private var viewModel: SignupFormInfo
     @Binding private var currentStep: Int
 
+    @State private var weightPopup = false
+
     init(viewModel: SignupFormInfo, currentStep: Binding<Int>) {
         _viewModel = ObservedObject(initialValue: viewModel)
         _currentStep = currentStep
@@ -37,7 +39,7 @@ struct SignupStepFourView: View {
                     return min ... max
                 }
 
-                VStack(spacing: 7) {
+                VStack(spacing: 0) {
                     Text("Birthday")
                         .foregroundColor(Color("TextMuted"))
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -50,10 +52,9 @@ struct SignupStepFourView: View {
                         displayedComponents: .date
                     )
                     .datePickerStyle(GraphicalDatePickerStyle())
-                    .frame(maxHeight: 400)
                 }
 
-                VStack(spacing: 7) {
+                HStack(spacing: 7) {
                     Text("Gender")
                         .foregroundColor(Color("TextMuted"))
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -64,7 +65,37 @@ struct SignupStepFourView: View {
                         Text("Male").tag(UserGender.MALE)
                         Text("Female").tag(UserGender.FEMALE)
                     }
-                    .pickerStyle(.inline)
+                    .pickerStyle(.menu)
+                }
+
+                HStack(spacing: 7) {
+                    Text("Weight")
+                        .foregroundColor(Color("TextMuted"))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.caption)
+
+                    Button {
+                        weightPopup = true
+                    } label: {
+                        Text("\(viewModel.weight.removeTrailingZeros()) lbs")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                    }
+                    .popover(isPresented: $weightPopup) {
+                        Picker("Weight", selection: Binding(
+                            get: { viewModel.weight },
+                            set: { viewModel.weight = $0 }
+                        )) {
+                            ForEach(50 ..< 400) { index in
+                                Text("\(Double(index).removeTrailingZeros()) lbs")
+                                    .foregroundColor(Color("Text"))
+                                    .font(.title3)
+                                    .tag(Double(index))
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .presentationCompactAdaptation(.popover)
+                    }
                 }
 
                 Spacer()

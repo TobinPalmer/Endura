@@ -15,12 +15,6 @@ struct SignupStepFiveView: View {
             Color("Background").edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
-                Image(systemName: "person.text.rectangle.fill")
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                    .aspectRatio(contentMode: .fill)
-                    .foregroundColor(Color.accentColor)
-
                 Text("Tell us about yourself")
                     .multilineTextAlignment(.center)
                     .font(.largeTitle)
