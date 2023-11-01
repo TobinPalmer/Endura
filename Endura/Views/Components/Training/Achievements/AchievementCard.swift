@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
-enum CommodityColor {
+enum MedalColors {
     case gold
     case silver
     case platinum
@@ -82,11 +82,11 @@ struct AchievementCard: View {
                     .foregroundColor(.white)
             }
             .frame(width: 150, height: 150)
-            .background(CommodityColor.gold.linearGradient)
+            .background(MedalColors.gold.linearGradient)
             .clipShape(Circle())
             Circle()
                 // Gold outline
-                .stroke(CommodityColor.gold.colors[0], lineWidth: 4)
+                .stroke(MedalColors.gold.colors[0], lineWidth: 4)
                 .frame(width: 145, height: 145)
         }
         .padding(4)
