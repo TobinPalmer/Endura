@@ -49,10 +49,25 @@ struct EnduraUpcomingGoalsWidgetView: View {
     private let viewModel = EnduraUpcomingGoalsWidgetViewModel()
 
     public var body: some View {
-        if viewModel.trainingDay.goals.isEmpty {
+        if viewModel.trainingDay.type == .rest {
+            Text("Today is a rest day, no goals for today!")
+                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+                .fontWeight(.bold)
+                .containerBackground(LinearGradient(
+                    gradient: Gradient(colors: [Color("EnduraBlue").opacity(0.7), Color("EnduraBlue")]),
+                    startPoint: .topTrailing,
+                    endPoint: .bottomLeading
+                ), for: .widget)
+        } else if viewModel.trainingDay.goals.isEmpty {
             Text("No upcoming goals, click here to add one")
                 .multilineTextAlignment(.center)
-                .foregroundColor(.gray)
+                .foregroundColor(.white)
+                .containerBackground(LinearGradient(
+                    gradient: Gradient(colors: [.gray.opacity(0.7), .gray]),
+                    startPoint: .topTrailing,
+                    endPoint: .bottomLeading
+                ), for: .widget)
         } else {
             let goal = viewModel.trainingDay.goals[0]
             GeometryReader { geometry in
