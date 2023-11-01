@@ -41,6 +41,13 @@ public struct TrainingGoal: View {
 
             ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
 
+            switch goal.workout {
+            case let .custom(workout):
+                CustomWorkoutStats(workout)
+            default:
+                EmptyView()
+            }
+
             VStack {
                 if let preRoutine = goal.preRoutine {
                     NavigationLink(destination: RoutineStartView(preRoutine, date: goal.date)) {
