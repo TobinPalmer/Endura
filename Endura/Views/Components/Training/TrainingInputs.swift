@@ -217,15 +217,46 @@ struct EditCustomWorkout: View {
                     ForEach(0 ..< block.steps.count, id: \.self) { stepIndex in
                         let step = block.steps[stepIndex]
                         DisclosureGroup {
-                            Picker("Goal", selection: Binding(
-                                get: { step.goal },
+                            Picker("Type", selection: Binding(
+                                get: {
+                                    step.type
+                                },
                                 set: { newValue in
-                                    data.blocks[blockIndex].steps[stepIndex].goal = newValue
+                                    data.blocks[blockIndex].steps[stepIndex].type = newValue
                                 }
                             )) {
-                                Text("Open").tag(CustomWorkoutStepGoal.open)
-                                Text("Distance").tag(CustomWorkoutStepGoal.distance(distance: 0))
-                                Text("Time").tag(CustomWorkoutStepGoal.time(time: 0))
+                                Text("Work").tag(CustomWorkoutStepType.work)
+                                Text("Rest").tag(CustomWorkoutStepType.recovery)
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .padding(.bottom, 16)
+                            Picker("Goal", selection: Binding(
+                                get: {
+                                    switch step.goal {
+                                    case .open:
+                                        0
+                                    case .distance:
+                                        1
+                                    case .time:
+                                        2
+                                    }
+                                },
+                                set: { newValue in
+                                    switch newValue {
+                                    case 0:
+                                        data.blocks[blockIndex].steps[stepIndex].goal = .open
+                                    case 1:
+                                        data.blocks[blockIndex].steps[stepIndex].goal = .distance(distance: 0)
+                                    case 2:
+                                        data.blocks[blockIndex].steps[stepIndex].goal = .time(time: 0)
+                                    default:
+                                        break
+                                    }
+                                }
+                            )) {
+                                Text("Open").tag(0)
+                                Text("Distance").tag(1)
+                                Text("Time").tag(2)
                             }
                             switch step.goal {
                             case .open:
