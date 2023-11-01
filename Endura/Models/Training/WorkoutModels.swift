@@ -183,8 +183,8 @@ public enum CustomWorkoutStepGoal: Codable, Hashable {
 }
 
 public enum CustomWorkoutStepType: String, Codable, Hashable {
-    case work
-    case recovery
+    case work = "Run"
+    case recovery = "Recover"
 
     public func getStepPurpose() -> IntervalStep.Purpose {
         switch self {

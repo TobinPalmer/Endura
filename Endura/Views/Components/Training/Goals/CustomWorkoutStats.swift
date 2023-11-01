@@ -16,11 +16,11 @@ struct CustomWorkoutStats: View {
                         VStack {
                             switch step.goal {
                             case .open:
-                                Text("Open")
+                                Text("\(step.type.rawValue) Open")
                             case let .distance(distance):
-                                Text("\(FormattingUtils.formatMiles(distance)) miles")
+                                Text("\(step.type.rawValue) \(FormattingUtils.formatMiles(distance)) miles")
                             case let .time(time):
-                                Text("\(FormattingUtils.secondsToFormattedTime(time))")
+                                Text("\(step.type.rawValue) \(FormattingUtils.secondsToFormattedTime(time))")
                             }
                         }
                         .padding(.leading, 10)
