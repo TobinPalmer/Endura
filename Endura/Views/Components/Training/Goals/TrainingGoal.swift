@@ -54,7 +54,9 @@ public struct TrainingGoal: View {
                 }
                 NavigationLink(destination: NewActivityView()) {
                     goalListItem(
-                        text: "\(FormattingUtils.formatMiles(goal.getDistance())) Mile Run",
+                        text: goal.workout
+                            .isCustomWorkout() ? "Workout" :
+                            "\(FormattingUtils.formatMiles(goal.getDistance())) Mile Run",
                         icon: "figure.run",
                         done: goal.progress.workoutCompleted,
                         buttonText: "Upload"
