@@ -40,7 +40,10 @@ struct EditTrainingRunGoalView: View {
     @Environment(\.dismiss) var dismiss
     @State var goal: TrainingRunGoalData
 
-    public init(_ goal: TrainingRunGoalData) {
+    public init(_ goal: TrainingRunGoalData, workoutGoal: WorkoutGoalData? = nil) {
+        var goal = goal
+        goal.workout = workoutGoal ?? goal.workout
+        print("Goal: \(goal) - \(goal.workout)")
         _goal = State(initialValue: goal)
     }
 

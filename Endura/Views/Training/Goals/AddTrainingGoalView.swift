@@ -4,9 +4,12 @@ import SwiftUICalendar
 
 struct AddTrainingGoalView: View {
     @EnvironmentObject private var activeUser: ActiveUserModel
+    @Environment(\.dismiss) private var dismiss
     public var selectedDate: YearMonthDay
 
-    @State public var workoutGoal: WorkoutGoalData = .open
+    @State public var goal: TrainingRunGoalData = .init(
+        date: YearMonthDay.current
+    )
 
     init(_ selectedDate: YearMonthDay) {
         self.selectedDate = selectedDate
@@ -32,33 +35,47 @@ struct AddTrainingGoalView: View {
                     }
 
                     VStack(spacing: 16) {
-                        ForEach(WorkoutGoalData.allCases, id: \.self) { goal in
-                            NavigationLink(destination: VStack {
-                                EditTrainingRunWorkout(goal: Binding(
-                                    get: { workoutGoal },
-                                    set: { workoutGoal = $0 }
-                                ))
-                                .onAppear {
-                                    workoutGoal = goal
-                                }
-                                Button("Save") {
-                                    activeUser.training.updateTrainingGoal(
-                                        selectedDate,
-                                        TrainingRunGoalData(
-                                            date: selectedDate,
-                                            workout: workoutGoal
-                                        )
-                                    )
-                                    print("Save")
-                                }
-                                .buttonStyle(EnduraNewButtonStyle())
-                            }) {
+                        ForEach(WorkoutGoalData.allCases, id: \.self) { workoutGoal in
+                            NavigationLink(destination: EditTrainingRunGoalView(goal, workoutGoal: workoutGoal)) {
                                 AddTrainingGoalTypeCard(
-                                    icon: goal.getWorkoutIcon(),
-                                    title: goal.getWorkoutName(),
-                                    description: goal.getWorkoutDescription()
+                                    icon: workoutGoal.getWorkoutIcon(),
+                                    title: workoutGoal.getWorkoutName(),
+                                    description: workoutGoal.getWorkoutDescription()
                                 )
                             }
+//                            VStack {
+//                                EditTrainingRunWorkout(goal: Binding(
+//                                    get: { workoutGoal },
+//                                    set: { workoutGoal = $0 }
+//                                ))
+//                                    .onAppear {
+//                                        workoutGoal = goal
+//                                    }
+//                                Button("Save") {
+//                                    print("Goal: \(workoutGoal) - \(selectedDate)")
+//                                    activeUser.training.updateTrainingGoal(
+//                                        selectedDate,
+//                                        TrainingRunGoalData(
+//                                            date: selectedDate,
+//                                            workout: workoutGoal
+//                                        )
+//                                    )
+//                                    activeUser.training.updateTrainingDayType(
+//                                        selectedDate,
+//                                        workoutGoal
+//                                    )
+//                                    print("Save")
+//                                    dismiss()
+//                                }
+//                                    .buttonStyle(EnduraNewButtonStyle())
+//                            }
+//                            ) {
+//                                AddTrainingGoalTypeCard(
+//                                    icon: goal.getWorkoutIcon(),
+//                                    title: goal.getWorkoutName(),
+//                                    description: goal.getWorkoutDescription()
+//                                )
+//                            }
                         }
                     }
                 }

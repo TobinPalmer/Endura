@@ -40,6 +40,9 @@ public enum WorkoutGoalData: Codable, Hashable {
         case .open:
             return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .open)))
         case let .distance(distance):
+            guard distance > 0 else {
+                return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .open)))
+            }
             return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .distance(distance, .miles))))
         case let .time(time):
             return WorkoutPlan(.goal(SingleGoalWorkout(activity: .running, goal: .time(time, .seconds))))
