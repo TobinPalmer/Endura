@@ -98,37 +98,6 @@ struct LoginView: View {
                 }
                 .padding(40)
 
-                HStack {
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 70, height: 1)
-                        .background(Color(red: 0.93, green: 0.95, blue: 0.97))
-
-                    Text("or do it via other accounts")
-                        .font(Font.custom("Inter", size: 10))
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 0.48, green: 0.48, blue: 0.62))
-
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 70, height: 1)
-                        .background(Color(red: 0.93, green: 0.95, blue: 0.97))
-                }
-
-                HStack(alignment: .center, spacing: 16) {
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(width: 68, height: 53.31818)
-                            .background(.white)
-                            .cornerRadius(12)
-                            .shadowDefault()
-
-                        Image("GoogleLogo")
-                            .frame(width: 23.18182, height: 23.18182)
-                    }
-                }
-
                 HStack(spacing: 0) {
                     Text("Don’t have an account? ")
                         .font(
