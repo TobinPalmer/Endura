@@ -2,10 +2,10 @@ import Foundation
 import SwiftUICalendar
 
 public enum FormattingUtils {
-    public static func secondsToFormattedTime(_ seconds: Double) -> String {
+    public static func secondsToFormattedTime(_ seconds: Double, _ short: Bool = true) -> String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.unitsStyle = .abbreviated
+        formatter.unitsStyle = short ? .abbreviated : .full
         let formattedString = formatter.string(from: TimeInterval(seconds))!
         return formattedString
     }
