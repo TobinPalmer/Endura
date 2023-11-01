@@ -9,25 +9,64 @@ struct CustomWorkoutStats: View {
     }
 
     var body: some View {
-        VStack {
-            ForEach(workout.blocks, id: \.self) { block in
-                VStack {
-                    ForEach(block.steps, id: \.self) { step in
-                        VStack {
-                            switch step.goal {
-                            case .open:
-                                Text("\(step.type.rawValue) Open")
-                            case let .distance(distance):
-                                Text("\(step.type.rawValue) \(FormattingUtils.formatMiles(distance)) miles")
-                            case let .time(time):
-                                Text("\(step.type.rawValue) \(FormattingUtils.secondsToFormattedTime(time))")
+        VStack(alignment: .leading) {
+//            Text("Custom Workout Plan")
+//                .font(.body)
+//                .fontWeight(.bold)
+//                .fontColor(.primary)
+            ScrollView([.horizontal], showsIndicators: false) {
+                HStack {
+                    ForEach(workout.blocks, id: \.self) { block in
+                        ForEach(0 ..< block.iterations, id: \.self) { _ in
+                            ForEach(block.steps, id: \.self) { step in
+                                if step != block.steps.first {
+                                    Image(systemName: "arrow.right")
+                                        .font(.body)
+                                        .fontColor(.primary)
+                                }
+                                VStack {
+                                    switch step.goal {
+                                    case .open:
+//                                Image(systemName: "circle")
+                                        Text("\(step.type.rawValue)")
+                                        Text("Open")
+                                            .font(.body)
+                                            .fontColor(.primary)
+                                            .fontWeight(.regular)
+                                    case let .distance(distance):
+//                                Image(systemName: "figure.run")
+                                        Text("\(step.type.rawValue)")
+                                        Text("\(FormattingUtils.formatMiles(distance)) miles")
+                                            .font(.body)
+                                            .fontColor(.primary)
+                                            .fontWeight(.regular)
+                                    case let .time(time):
+//                                Image(systemName: "clock")
+                                        Text("\(step.type.rawValue)")
+                                        Text("\(FormattingUtils.secondsToFormattedTime(time))")
+                                            .font(.body)
+                                            .fontColor(.primary)
+                                            .fontWeight(.regular)
+                                    }
+                                }
+                                .font(.caption)
+                                .fontColor(.muted)
+                                .fontWeight(.bold)
+                                .padding(.leading, 10)
+                                .fontColor(.primary)
                             }
                         }
-                        .padding(.leading, 10)
-                        .fontColor(.secondary)
                     }
+                    Image(systemName: "arrow.right")
+                        .font(.body)
+                        .fontColor(.primary)
+                    Text("Done!")
+                        .font(.body)
+                        .fontColor(.primary)
+                        .fontWeight(.bold)
                 }
             }
         }
+        .frame(maxWidth: .infinity)
     }
 }

@@ -39,13 +39,11 @@ public struct TrainingGoal: View {
                 .fontColor(.secondary)
                 .alignFullWidth()
 
-            ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
-
             switch goal.workout {
             case let .custom(workout):
                 CustomWorkoutStats(workout)
             default:
-                EmptyView()
+                ActivityPostStats(distance: goal.getDistance(), duration: goal.getTime())
             }
 
             VStack {
