@@ -7,12 +7,14 @@ struct AddTrainingGoalView: View {
     @Environment(\.dismiss) private var dismiss
     public var selectedDate: YearMonthDay
 
-    @State public var goal: TrainingRunGoalData = .init(
-        date: YearMonthDay.current
-    )
+    @State public var goal: TrainingRunGoalData
 
     init(_ selectedDate: YearMonthDay) {
         self.selectedDate = selectedDate
+        _goal = State(initialValue: TrainingRunGoalData(
+            date: selectedDate,
+            workout: .open
+        ))
     }
 
     var body: some View {
