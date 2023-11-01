@@ -43,40 +43,58 @@ struct DistanceInput: View {
 //            .presentationCompactAdaptation(.popover)
             HStack(spacing: 0) {
                 let width = CGFloat(90)
-                Picker("", selection: Binding(
-                    get: {
-                        Int(distance)
-                    },
-                    set: { newValue in
-                        distance = Double(newValue) + distance.truncatingRemainder(dividingBy: 1)
+                if distanceType == .meters {
+                    Picker("", selection: Binding(
+                        get: {
+                            Int(distance)
+                        },
+                        set: { newValue in
+                            distance = Double(newValue)
+                        }
+                    )) {
+                        ForEach(0 ..< 100) { index in
+                            Text("\(index * 100)")
+                                .tag(index * 100)
+                        }
                     }
-                )) {
-                    ForEach(0 ..< 100) { index in
-                        Text("\(index)")
-                            .tag(index)
+                    .frame(width: width)
+                    .pickerStyle(WheelPickerStyle())
+                } else {
+                    Picker("", selection: Binding(
+                        get: {
+                            Int(distance)
+                        },
+                        set: { newValue in
+                            distance = Double(newValue) + distance.truncatingRemainder(dividingBy: 1)
+                        }
+                    )) {
+                        ForEach(0 ..< 100) { index in
+                            Text("\(index)")
+                                .tag(index)
+                        }
                     }
+                    .frame(width: width)
+                    .pickerStyle(WheelPickerStyle())
+                    .clipShape(.rect.offset(x: -16))
+                    .padding(.trailing, -16)
+                    Picker("", selection: Binding(
+                        get: {
+                            Int((distance.truncatingRemainder(dividingBy: 1) * 10.0).rounded())
+                        },
+                        set: { newValue in
+                            distance = Double(Int(distance)) + Double(newValue) / 10.0
+                        }
+                    )) {
+                        ForEach(0 ..< 10) { index in
+                            Text(".\(index)")
+                                .tag(index)
+                        }
+                    }
+                    .frame(width: width)
+                    .pickerStyle(WheelPickerStyle())
+                    .clipShape(.rect.offset(x: 16))
+                    .padding(.leading, -16)
                 }
-                .frame(width: width)
-                .pickerStyle(WheelPickerStyle())
-                .clipShape(.rect.offset(x: -16))
-                .padding(.trailing, -16)
-                Picker("", selection: Binding(
-                    get: {
-                        Int((distance.truncatingRemainder(dividingBy: 1) * 10.0).rounded())
-                    },
-                    set: { newValue in
-                        distance = Double(Int(distance)) + Double(newValue) / 10.0
-                    }
-                )) {
-                    ForEach(0 ..< 10) { index in
-                        Text(".\(index)")
-                            .tag(index)
-                    }
-                }
-                .frame(width: width)
-                .pickerStyle(WheelPickerStyle())
-                .clipShape(.rect.offset(x: 16))
-                .padding(.leading, -16)
                 Picker("", selection: Binding(
                     get: {
                         distanceType
