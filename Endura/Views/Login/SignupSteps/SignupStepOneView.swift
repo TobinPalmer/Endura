@@ -67,15 +67,18 @@ struct SignupStepOneView: View {
 
                 Spacer()
 
+                let check = viewModel.firstName.isEmpty || viewModel.lastName.isEmpty || viewModel.email
+                    .isEmpty || viewModel
+                    .password.isEmpty
+
                 Button("Next") {
                     withAnimation {
                         currentStep += 1
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .buttonStyle(EnduraNewButtonStyle(backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
-                        .isEmpty) ? .gray : .accentColor))
-//                .disabled(viewModel.firstName.isEmpty || viewModel.lastName.isEmpty)
+                .buttonStyle(EnduraNewButtonStyle(backgroundColor: check ? .gray : .accentColor))
+                .disabled(check)
             }
             .padding([.horizontal, .top], 40)
             .padding(.bottom, 10)

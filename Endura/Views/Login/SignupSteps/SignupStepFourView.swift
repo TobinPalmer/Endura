@@ -17,22 +17,6 @@ struct SignupStepFourView: View {
             Color("Background").edgesIgnoringSafeArea(.all)
 
             VStack(alignment: .center, spacing: 20) {
-//        Image(systemName: "person.crop.circle.fill")
-//          .resizable()
-//          .frame(width: 150, height: 150)
-//          .aspectRatio(contentMode: .fill)
-//          .foregroundColor(Color.accentColor)
-//
-//        Text("Give permissions")
-//          .font(.largeTitle)
-//          .fontWeight(.bold)
-//          .foregroundColor(Color("Text"))
-//
-//        Text("We need permissions to access your health data so that you can upload workouts from your watch.")
-//          .font(.caption)
-//          .fontWeight(.bold)
-//          .foregroundColor(Color("TextMuted"))
-
                 var birthdayRange: ClosedRange<Date> {
                     let min = Calendar.current.date(byAdding: .year, value: -100, to: Date())!
                     let max = Calendar.current.date(byAdding: .year, value: -8, to: Date())!
@@ -119,8 +103,7 @@ struct SignupStepFourView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(EnduraNewButtonStyle(
-                        backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
-                            .isEmpty) ? .gray : .accentColor,
+                        backgroundColor: .accentColor,
                         maxHeight: 30
                     ))
                 }

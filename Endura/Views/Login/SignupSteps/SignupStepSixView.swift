@@ -69,8 +69,7 @@ struct SignupStepSixView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(EnduraNewButtonStyle(
-                        backgroundColor: (viewModel.firstName.isEmpty || viewModel.lastName
-                            .isEmpty) ? .gray : .accentColor,
+                        backgroundColor: .accentColor,
                         maxHeight: 30
                     ))
                 }
