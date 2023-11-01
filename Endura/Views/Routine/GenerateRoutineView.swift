@@ -29,7 +29,7 @@ struct GenerateRoutineView: View {
                     .fontColor(.primary)
                     .alignFullWidth()
 
-                Text("\(Int(generationInfo.feeling))")
+                Text("\(Int(generationInfo.feeling + 1))")
                     .font(.title3)
                     .fontWeight(.bold)
                     .padding(.top, 10)

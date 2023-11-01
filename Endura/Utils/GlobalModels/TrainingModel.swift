@@ -241,7 +241,7 @@ import WidgetKit
             }
 
             userDefaults.set(
-                getTrainingDay(.current).getDocument().toJSON(),
+                getTrainingDay(.current.addDay(value: 7)).getDocument().toJSON(),
                 forKey: "trainingDay"
             )
 
@@ -258,6 +258,12 @@ import WidgetKit
             title: "Today's Training",
             body: message,
             date: Date().addingTimeInterval(5)
+        )
+
+        NotificationUtils.sendScheduledNotification(
+            title: "New Like!",
+            body: "Tobin Palmer liked your 2.21 mile run!",
+            date: Date().addingTimeInterval(10)
         )
     }
 }
