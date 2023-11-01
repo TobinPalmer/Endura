@@ -48,55 +48,60 @@ struct EditTrainingRunGoalView: View {
     }
 
     var body: some View {
-        VStack {
-            Picker("Type", selection: $goal.type) {
-                ForEach(TrainingRunType.allCases, id: \.self) { type in
-                    Text(type.rawValue).tag(type)
-                }
-            }
-            TextField("Description", text: $goal.description)
-            Toggle("Warmup", isOn: Binding(
-                get: { goal.preRoutine != nil },
-                set: { newValue in
-                    if newValue {
-                        goal.preRoutine = goal.getRoutine(routineType: .warmup)
-                    } else {
-                        goal.preRoutine = nil
+        ZStack {
+            Color("Background")
+                .ignoresSafeArea()
+
+            VStack {
+                Picker("Type", selection: $goal.type) {
+                    ForEach(TrainingRunType.allCases, id: \.self) { type in
+                        Text(type.rawValue).tag(type)
                     }
                 }
-            ))
-            Toggle("Postrun", isOn: Binding(
-                get: { goal.postRoutine != nil },
-                set: { newValue in
-                    if newValue {
-                        goal.postRoutine = goal.getRoutine(routineType: .postRun)
-                    } else {
-                        goal.postRoutine = nil
+                TextField("Description", text: $goal.description)
+                Toggle("Warmup", isOn: Binding(
+                    get: { goal.preRoutine != nil },
+                    set: { newValue in
+                        if newValue {
+                            goal.preRoutine = goal.getRoutine(routineType: .warmup)
+                        } else {
+                            goal.preRoutine = nil
+                        }
                     }
+                ))
+                Toggle("Postrun", isOn: Binding(
+                    get: { goal.postRoutine != nil },
+                    set: { newValue in
+                        if newValue {
+                            goal.postRoutine = goal.getRoutine(routineType: .postRun)
+                        } else {
+                            goal.postRoutine = nil
+                        }
+                    }
+                ))
+                EditTrainingRunWorkout(goal: Binding(
+                    get: { goal.workout },
+                    set: { newValue in
+                        goal.workout = newValue
+                    }
+                ))
+                Spacer()
+                Button {
+                    activeUser.training.updateTrainingGoal(
+                        goal.date,
+                        goal
+                    )
+                    var trainingDay = activeUser.training.getTrainingDay(goal.date)
+                    trainingDay.type = goal.type.toTrainingDayType()
+                    activeUser.training.updateTrainingDay(goal.date, trainingDay)
+                    dismiss()
+                } label: {
+                    Text("Save")
                 }
-            ))
-            EditTrainingRunWorkout(goal: Binding(
-                get: { goal.workout },
-                set: { newValue in
-                    goal.workout = newValue
-                }
-            ))
-            Spacer()
-            Button {
-                activeUser.training.updateTrainingGoal(
-                    goal.date,
-                    goal
-                )
-                var trainingDay = activeUser.training.getTrainingDay(goal.date)
-                trainingDay.type = goal.type.toTrainingDayType()
-                activeUser.training.updateTrainingDay(goal.date, trainingDay)
-                dismiss()
-            } label: {
-                Text("Save")
+                .buttonStyle(EnduraNewButtonStyle())
             }
-            .buttonStyle(EnduraNewButtonStyle())
+            .enduraPadding()
         }
-        .enduraPadding()
     }
 }
 

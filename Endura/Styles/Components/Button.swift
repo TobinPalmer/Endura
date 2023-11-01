@@ -50,6 +50,32 @@ struct EnduraNewButtonStyle: ButtonStyle {
     }
 }
 
+struct EnduraAddButtonStyle: ButtonStyle {
+    private let width: CGFloat
+    private let height: CGFloat
+
+    init(
+        maxWidth: CGFloat = .infinity,
+        maxHeight: CGFloat = 30
+    ) {
+        width = maxWidth
+        height = maxHeight
+    }
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: width, maxHeight: height)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .fontColor(.muted)
+            .fontWeight(.bold)
+            .background {
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(Color("TextMuted"), style: StrokeStyle(lineWidth: 1, dash: [5]))
+            }
+    }
+}
+
 struct EnduraButtonStyle: ButtonStyle {
     private let backgroundColor: Color
     private let disabled: Bool
@@ -86,14 +112,17 @@ struct EnduraCircleButtonStyle: ButtonStyle {
     }
 
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding(8)
-            .background(backgroundColor)
-            .cornerRadius(500)
-            .overlay(
-                RoundedRectangle(cornerRadius: 500)
-                    .stroke(Color("Border"), lineWidth: 1)
-            )
-            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+        HStack {
+            Image(systemName: "plus")
+            configuration.label
+        }
+        .padding(8)
+        .background(backgroundColor)
+        .cornerRadius(500)
+        .overlay(
+            RoundedRectangle(cornerRadius: 500)
+                .stroke(Color("Border"), lineWidth: 1)
+        )
+        .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }

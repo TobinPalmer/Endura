@@ -55,6 +55,5 @@ struct EditTrainingRunWorkout: View {
                 ))
             }
         }
-        .enduraPadding()
     }
 }

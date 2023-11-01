@@ -201,28 +201,22 @@ struct EditCustomWorkout: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 16) {
             ForEach(0 ..< data.blocks.count, id: \.self) { blockIndex in
                 let block = data.blocks[blockIndex]
-                VStack {
-                    HStack {
-                        Text("Block \(blockIndex + 1)")
-
-                        Spacer()
-
-                        Stepper(value: Binding(
-                            get: { data.blocks[blockIndex].iterations },
-                            set: { newValue in
-                                data.blocks[blockIndex].iterations = newValue
-                            }
-                        ), in: 1 ... 50) {
-                            Text("x\(data.blocks[blockIndex].iterations)")
+                DisclosureGroup {
+                    Stepper(value: Binding(
+                        get: { data.blocks[blockIndex].iterations },
+                        set: { newValue in
+                            data.blocks[blockIndex].iterations = newValue
                         }
+                    ), in: 1 ... 50) {
+                        Text("Repeat \(block.iterations) times")
                     }
 
                     ForEach(0 ..< block.steps.count, id: \.self) { stepIndex in
                         let step = block.steps[stepIndex]
-                        VStack {
+                        DisclosureGroup {
                             Picker("Goal", selection: Binding(
                                 get: { step.goal },
                                 set: { newValue in
@@ -237,7 +231,7 @@ struct EditCustomWorkout: View {
                             case .open:
                                 Text("Open")
                             case let .distance(distance):
-                                Text("Distance: \(distance)")
+                                Text("Distance: \(FormattingUtils.formatMiles(distance))")
                                 DistanceInput(distance: Binding(
                                     get: { distance },
                                     set: { newValue in
@@ -245,13 +239,22 @@ struct EditCustomWorkout: View {
                                     }
                                 ))
                             case let .time(time):
-                                Text("Time: \(time)")
+                                Text("Time: \(FormattingUtils.secondsToFormattedTime(time))")
                                 TimeInput(time: Binding(
                                     get: { time },
                                     set: { newValue in
                                         data.blocks[blockIndex].steps[stepIndex].goal = .time(time: newValue)
                                     }
                                 ))
+                            }
+                        } label: {
+                            switch step.goal {
+                            case .open:
+                                Text("Open")
+                            case let .distance(distance):
+                                Text("Distance: \(distance)")
+                            case let .time(time):
+                                Text("Time: \(time)")
                             }
                         }
                         .padding(16)
@@ -261,14 +264,32 @@ struct EditCustomWorkout: View {
                     Button("Add Step") {
                         data.blocks[blockIndex].steps.append(CustomWorkoutStepData(type: .work, goal: .open))
                     }
+                    .buttonStyle(EnduraAddButtonStyle())
+                } label: {
+                    Text("Block \(blockIndex + 1) \(block.iterations > 1 ? " - repeat x\(block.iterations)" : "")")
                 }
                 .padding(16)
                 .enduraDefaultBox()
+//                    HStack {
+//                        Text("Block \(blockIndex + 1)")
+//
+//                        Spacer()
+//
+//                        Stepper(value: Binding(
+//                            get: { data.blocks[blockIndex].iterations },
+//                            set: { newValue in
+//                                data.blocks[blockIndex].iterations = newValue
+//                            }
+//                        ), in: 1...50) {
+//                            Text("x\(data.blocks[blockIndex].iterations)")
+//                        }
+//                    }
             }
 
             Button("Add Block") {
                 data.blocks.append(CustomWorkoutBlockData(steps: [], iterations: 1))
             }
+            .buttonStyle(EnduraAddButtonStyle())
         }
         .onChange(of: data) { _, newValue in
             workoutData = newValue
