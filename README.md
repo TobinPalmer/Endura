@@ -14,16 +14,7 @@ Endura is a mobile fitness app that helps both new and advanced runners achieve 
 
 When one of us joined the cross-country team last summer, we realized that maintaining a consistent training plan was a challenge, and understanding what makes a good training plan was even harder. To address this, we had an idea – create an app that simplifies running and helps athletes reach their fitness goals. Our solution included daily training schedules to guide runners safely towards their objectives. We also integrated warm-up and post-run routines, a part of training we learned about at school, crucial for peak performance and injury prevention. Drawing inspiration from the motivation offered by social media and other fitness apps, we incorporated social features such as likes and comments. Our ultimate goal was to make running accessible, enjoyable, and effective for everyone.
 
-[Tobin Wakatime Badge]: https://wakatime.com/badge/user/6a864549-6180-46a1-8054-3bbf436bea8f/project/7ca6a4c3-b0ef-462d-a431-caeefce6485f.svg
-
-[Tobin Wakatime Stats]: https://wakatime.com/badge/user/6a864549-6180-46a1-8054-3bbf436bea8f/project/7ca6a4c3-b0ef-462d-a431-caeefce6485f
-
-[Brandon Wakatime Badge]: https://wakatime.com/badge/user/d5c163fb-076b-4106-865a-b93e97f1f252/project/59d68b84-c19d-4557-9920-fd40b57d7d82.svg
-
-[Brandon Wakatime Stats]: https://wakatime.com/badge/user/d5c163fb-076b-4106-865a-b93e97f1f252/project/59d68b84-c19d-4557-9920-fd40b57d7d82
 ## Stats
-
-<!-- Todo: find a better color -->
 
 | Tobin                                                     | Brandon                                                       |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
@@ -57,3 +48,13 @@ Also, less technical, but still a big challenge was styling the app. Learning Sw
 - ### [HealthKitUtils.swift]()
 
   This file contains all of the functions that interact with the HealthKit API. It is responsible for fetching the user's health data, such as their weight, height, and running workouts. It also contains functions thats analyze the running workouts and process them to be uploaded to firebase.
+
+<!-- Variables -->
+
+[Tobin Wakatime Badge]: https://wakatime.com/badge/user/6a864549-6180-46a1-8054-3bbf436bea8f/project/7ca6a4c3-b0ef-462d-a431-caeefce6485f.svg
+
+[Tobin Wakatime Stats]: https://wakatime.com/badge/user/6a864549-6180-46a1-8054-3bbf436bea8f/project/7ca6a4c3-b0ef-462d-a431-caeefce6485f
+
+[Brandon Wakatime Badge]: https://wakatime.com/badge/user/d5c163fb-076b-4106-865a-b93e97f1f252/project/59d68b84-c19d-4557-9920-fd40b57d7d82.svg
+
+[Brandon Wakatime Stats]: https://wakatime.com/badge/user/d5c163fb-076b-4106-865a-b93e97f1f252/project/59d68b84-c19d-4557-9920-fd40b57d7d82
