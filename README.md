@@ -28,8 +28,8 @@ When one of us joined the cross-country team last summer, we realized that maint
 | Tobin                                                     | Brandon                                                       |
 | --------------------------------------------------------- | ------------------------------------------------------------- |
 | [![wakatime][Tobin Wakatime Badge]][Tobin Wakatime Stats] | [![wakatime][Brandon Wakatime Badge]][Brandon Wakatime Stats] |
-| <span style="color:#60C14C">21,738 Lines Added</span>     | <span style="color:#60C14C">26,243 Lines Added</span>         |
-| <span style="color:#C32F1C">12,279 Lines Removed</span>   | <span style="color:#C32F1C">17,277 Lines Removed</span>       |
+| 21,738 Lines Added                                        | 26,243 Lines Added                                            |
+| 12,279 Lines Removed                                      | 17,277 Lines Removed                                          |
 | 317 Commits                                               | 408 Commits                                                   |
 
 - 15,000+ lines of code
