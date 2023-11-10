@@ -173,13 +173,6 @@ import SwiftUICalendar
             return TrainingGenerationDataUtils.decodeRoutineData(output)
         }
 
-//        return RoutineData(
-//            type: .postrun,
-//            description: "A routine to help you recover from your run",
-//            exercises: [
-//                RoutineExercise(.frontPlank, .time(30)),
-//            ]
-//        )
         return nil
     }
 }

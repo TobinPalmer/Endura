@@ -1,8 +1,8 @@
 
 <p align="center">
-  <img width=auto height=150px alt=EnduraLogo src="./assets/Endura-Logo.png">
+ <img width=auto height=150px alt=EnduraLogo src="./assets/Endura-Logo.png">
 </p>
-<h1 align="center">Endura</h1>
+ <h1 align="center">Endura</h1>
 
 ---
 
@@ -37,17 +37,29 @@ Another issue we faced was simply running out of time. Since we were learning so
 
 Also, less technical, but still a big challenge was styling the app. Learning SwiftUI was hard and since we didn’t have much experience styling with it until later in the year, we held off styling the app until later. We probably only started actually styling the app with a little over a week left in the competition. Putting in around 5 hours every day after school and even more on the final weekend we managed to somehow style the entire app and even get a few last minute features working well. That being said, we learned a lot about planning and designing a large scale app.
 
-## Creation Process
-
-| June                | July | August | September | October | November |
-| ------------------- | ---- | ------ | --------- | ------- | -------- |
-| - Came up with idea |      |        |           |         |          |
-
 ## Important Files
 
-- ### [HealthKitUtils.swift]()
+These are some files that are very important or complicated. They contain some of the most important functions and data structures that allow Endura to work.
 
-  This file contains all of the functions that interact with the HealthKit API. It is responsible for fetching the user's health data, such as their weight, height, and running workouts. It also contains functions thats analyze the running workouts and process them to be uploaded to firebase.
+- ### [HealthKitUtils.swift](Endura/Utils/HealthKit/HealthKitUtils.swift)
+
+  HealthKitUtils contains all of the functions that interact with the HealthKit API. It is responsible for fetching the user's health data, such as their weight, height, and running workouts. It also contains functions thats analyze the running workouts and process them to be uploaded to firebase.
+
+- ### [CacheUtils](Endura/Utils/)
+
+ CacheUtils handles caching and fetching files using Core Data. This allows our app to be functional offline, without any wifi or data. This also improves the speed of the app by caching data that is used often so that data can be fetched from the firebase asynchronously.
+
+- ### [UsersCacheModel](Endura/Utils/Users/UsersCacheModel.swift)
+
+ UsersCacheModel contains util functions that fetch and cache the user's data. It also contains functions that fetch and cache the user's friends' data. This file is used throughout the app to access the user's data. It handles the fetching from cache and async fetching from the database. It also handles syncing the updated data with the database.
+
+- ### [TrainingGenerationUtils](/Endura/Utils/Training/TrainingGenerationUtils.swift)
+
+ TrainingGenerationUtils contains the functions that generate the training plans for the user. It takes in the user's fitness level, goals, and preferences and generates a training plan that will help them achieve their goals. It also contains functions that generate the daily goals for each day of the training plan.
+
+- ### [ActiveUserModel](Endura/Utils/GlobalModels/ActiveUserModel.swift)
+
+ ActiveUserModel is the environment object that handles the data for the active user. It contains the user's data, such as their name, email, and profile picture. It also contains the user's training plan and daily goals. This file is used throughout the app to access the user's data. It handles the fetching from cache and async fetching from the database. It also handles syncing the updated data with the database.
 
 <!-- Variables -->
 
