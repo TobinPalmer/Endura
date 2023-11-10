@@ -43,7 +43,7 @@ These are some files that are very important or complicated. They contain some o
 
 - ### [HealthKitUtils.swift](Endura/Utils/HealthKit/HealthKitUtils.swift)
 
-  HealthKitUtils contains all of the functions that interact with the HealthKit API. It is responsible for fetching the user's health data, such as their weight, height, and running workouts. It also contains functions thats analyze the running workouts and process them to be uploaded to firebase.
+ HealthKitUtils contains all of the functions that interact with the HealthKit API. It is responsible for fetching the user's health data, such as their weight, height, and running workouts. It also contains functions thats analyze the running workouts and process them to be uploaded to firebase.
 
 - ### [CacheUtils](Endura/Utils/)
 
