@@ -140,8 +140,8 @@ import SwiftUICalendar
                 }
                 return generatedDailyData.append(contentsOf: TrainingGenerationDataUtils.decodeDailyTrainingData(
                     $0,
-                    pace,
-                    dist
+                    pace: pace,
+                    goalDist: dist
                 ))
             }
             print("\n\n\n\n")

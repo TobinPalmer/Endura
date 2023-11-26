@@ -28,21 +28,54 @@ struct EditTrainingRunWorkout: View {
                     }
                 ))
             case let .pacer(distance, time):
-                Text("Distance: \(distance)")
-                TimeInput(time: Binding(
-                    get: { time },
-                    set: { newValue in
-                        goal = .pacer(distance: distance, time: newValue)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Time: ")
+
+                        Spacer()
+
+                        TimeInput(time: Binding(
+                            get: { time },
+                            set: { newValue in
+                                goal = .pacer(distance: distance, time: newValue)
+                            }
+                        ))
                     }
-                ))
-                Text("Time: \(time)")
-                DistanceInput(distance: Binding(
-                    get: { distance },
-                    set: { newValue in
-                        goal = .pacer(distance: newValue, time: time)
+                    .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
+
+                    HStack {
+                        Text("Distance: ")
+
+                        Spacer()
+
+                        DistanceInput(distance: Binding(
+                            get: { distance },
+                            set: { newValue in
+                                goal = .pacer(distance: newValue, time: time)
+                            }
+                        ))
                     }
-                ))
-                Text("Pace: \(distance / time)")
+                    .frame(maxWidth: .infinity, maxHeight: 20, alignment: .leading)
+
+                    Spacer()
+                        .frame(height: 20)
+
+                    Spacer()
+                        .frame(height: 20)
+
+                    HStack {
+                        Text("Pace: ")
+
+                        Spacer()
+
+                        let pace = distance / time
+                        Text("\(ConversionUtils.convertMpsToMpm(pace * 1609.344)) / mi")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                .frame(width: UIScreen.main.bounds.width - 20)
+                .border(.red)
+
             case let .custom(data):
                 Text("Custom Workout")
                 EditCustomWorkout(data: Binding(
@@ -55,5 +88,6 @@ struct EditTrainingRunWorkout: View {
                 ))
             }
         }
+        .frame(width: UIScreen.main.bounds.width - 20)
     }
 }

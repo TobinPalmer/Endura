@@ -78,7 +78,9 @@ public enum TrainingGenerationDataUtils {
         return [:]
     }
 
-    public static func decodeDailyTrainingData(_ data: String, _ pace: Double, _: Double) -> [DailyTrainingData] {
+    public static func decodeDailyTrainingData(_ data: String, pace: Double,
+                                               goalDist _: Double) -> [DailyTrainingData]
+    {
         do {
             var cleanedData = data
             if let start = data.firstIndex(of: "{"),
@@ -110,13 +112,19 @@ public enum TrainingGenerationDataUtils {
                 switch dayData.goals[0].workout {
                 case let .pacer(distance, _):
                     var calculatedPace = pace
+                    var dist = distance
+
+                    if distance > 26 {
+                        dist = 26
+                    }
+
                     switch dayData.type {
                     case .easy:
-                        calculatedPace = pace + 120
+                        calculatedPace = pace + calculateEasyPaceFromDistance(dist)
                     case .medium:
-                        calculatedPace = pace + 110
+                        calculatedPace = pace + calculateEasyPaceFromDistance(dist) - 5
                     case .long:
-                        calculatedPace = pace + 100
+                        calculatedPace = pace + calculateEasyPaceFromDistance(dist) - 5
                     case .workout:
                         calculatedPace = pace
                     case .none,
@@ -136,6 +144,13 @@ public enum TrainingGenerationDataUtils {
             }
         } catch {}
         return []
+    }
+
+    /// Returns the amount that should be added to race pace in order to get easy pace
+    private static func calculateEasyPaceFromDistance(_ distance: Double) -> Double {
+        let res = 0.513043 * pow(distance, 2) - 17.0522 * distance + 166
+        Global.log.info("Distance: \(distance)  res = \(res)")
+        return res
     }
 
     public static func decodeRoutineData(_ data: String) -> RoutineData? {

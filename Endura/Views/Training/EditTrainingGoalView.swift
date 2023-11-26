@@ -53,12 +53,26 @@ struct EditTrainingRunGoalView: View {
                 .ignoresSafeArea()
 
             VStack {
-                Picker("Type", selection: $goal.type) {
-                    ForEach(TrainingRunType.allCases, id: \.self) { type in
-                        Text(type.rawValue).tag(type)
+                HStack {
+                    Text("Workout Type")
+                    Spacer()
+                    Picker("Type", selection: $goal.type) {
+                        ForEach(TrainingRunType.allCases, id: \.self) { type in
+                            Text(type.rawValue).tag(type)
+                        }
                     }
                 }
                 TextField("Description", text: $goal.description)
+                    .frame(height: 48)
+                    .padding(5)
+                    .padding(.horizontal, 10)
+                    .cornerRadius(5)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color("BorderLight"), lineWidth: 1.0)
+                    )
+                    .background(.white)
+
                 Toggle("Warmup", isOn: Binding(
                     get: { goal.preRoutine != nil },
                     set: { newValue in
