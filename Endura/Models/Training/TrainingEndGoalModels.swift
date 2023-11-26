@@ -14,7 +14,7 @@ public struct TrainingEndGoalData: Cacheable {
     public var completed: Bool
 
     public func daysLeft() -> Int {
-        Int(YearMonthDay.current.getDate().distance(to: date.getDate()) / (60 * 60 * 24))
+        max(Int(YearMonthDay.current.getDate().distance(to: date.getDate()) / (60 * 60 * 24)), 0)
     }
 
     public func getProgress() -> Double {
