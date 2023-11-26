@@ -3,8 +3,7 @@ import GoogleGenerativeAI
 import SwiftUICalendar
 
 @MainActor public enum TrainingGenerationUtils {
-    private static let api = GenerativeLanguage(apiKey: ProcessInfo.processInfo
-        .environment["PALM_API_KEY"]!)
+    private static let api = GenerativeLanguage(apiKey: "AIzaSyDOdxt6TaUhDYTKdAM3FqwDcBdPhGRWssM")
 
     public static func generateTrainingPlanForEndGoal(_ endGoal: TrainingEndGoalData) -> [TrainingRunGoalData] {
         let startDate = endGoal.startDate
@@ -130,10 +129,22 @@ import SwiftUICalendar
             context: context,
             progress: progress
         ) {
+            print("\n\n\n\n")
             var generatedDailyData: [DailyTrainingData] = []
             outputs.forEach {
-                generatedDailyData.append(contentsOf: TrainingGenerationDataUtils.decodeDailyTrainingData($0))
+                var pace = 480.0
+                var dist = 3.0
+                if let endGoal = activeUser.training.endTrainingGoal {
+                    pace = endGoal.time / endGoal.distance
+                    dist = endGoal.distance
+                }
+                return generatedDailyData.append(contentsOf: TrainingGenerationDataUtils.decodeDailyTrainingData(
+                    $0,
+                    pace,
+                    dist
+                ))
             }
+            print("\n\n\n\n")
 
             progress(80)
             var monthlyData: [YearMonth: MonthlyTrainingData] = [:]

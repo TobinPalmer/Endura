@@ -78,7 +78,7 @@ public enum TrainingGenerationDataUtils {
         return [:]
     }
 
-    public static func decodeDailyTrainingData(_ data: String) -> [DailyTrainingData] {
+    public static func decodeDailyTrainingData(_ data: String, _ pace: Double, _: Double) -> [DailyTrainingData] {
         do {
             var cleanedData = data
             if let start = data.firstIndex(of: "{"),
@@ -92,8 +92,47 @@ public enum TrainingGenerationDataUtils {
                 [String: DailyTrainingDataDocument].self,
                 from: cleanedData.data(using: .utf8)!
             )
+//            print("goal pace", goalPace)
+//            let mps = goalPace.rounded(toPlaces: 3)
+//            let metersPerMile = 1609.34
+//            let secondsPerMinute = 60.0
+//            let pace = 1 / (mps / (metersPerMile / secondsPerMinute))
+//            let pace2 = 1 / ((mps * 1609.34) / (metersPerMile / secondsPerMinute))
+//            print("pace", pace)
+//            print("pace2", pace2)
+//            print("pace formatted", ConversionUtils.convertMpsToMpm(goalPace * 1609.34))
+
             return decodedData.map {
-                DailyTrainingData.fromDocument($0.value)
+                var dayData = DailyTrainingData.fromDocument($0.value)
+                if dayData.goals.isEmpty {
+                    return dayData
+                }
+                switch dayData.goals[0].workout {
+                case let .pacer(distance, _):
+                    var calculatedPace = pace
+                    switch dayData.type {
+                    case .easy:
+                        calculatedPace = pace + 120
+                    case .medium:
+                        calculatedPace = pace + 110
+                    case .long:
+                        calculatedPace = pace + 100
+                    case .workout:
+                        calculatedPace = pace
+                    case .none,
+                         .rest:
+                        break
+                    }
+                    calculatedPace = (calculatedPace / 5).rounded() * 5
+                    print("Pace: \(calculatedPace), Distance: \(distance), Time: \(distance * calculatedPace)")
+                    dayData.goals[0].workout = .pacer(distance: distance, time: distance * calculatedPace)
+                case .custom,
+                     .distance,
+                     .open,
+                     .time:
+                    break
+                }
+                return dayData
             }
         } catch {}
         return []

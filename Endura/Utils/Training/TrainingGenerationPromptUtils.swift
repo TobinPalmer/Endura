@@ -5,19 +5,16 @@ public enum TrainingGenerationPromptUtils {
     private static let generalDailyRules =
         """
             - Each week should typically have at least 1 long run, 1 workout, and 1 rest day.
+            - ONLY 1 rest day a week, and it should be on the day they are unavailable.
             - Rest days should only every be after long runs or workouts but do not have to be after both.
             - No rest days should be after easy or medium runs.
             - Workouts and long runs should never be back to back.
-            - On days the athlete is unavailable they should ALWAYS have a rest day.
-            - The only rest days the athlete should have are on days they are unavailable, no other rest days should be given.
         """
 
     private static let generalWorkoutRules =
         """
             - Easy and medium days can be more distance than the goal distance but the pace should always be slower.
-            - They should never run their goal pace besides workouts.
-            - Tempo runs should not be goal pace but 30 seconds slower than goal pace.
-            - Long runs should never be more than 1.5x the goal distance.
+            - Long runs should never be more than 2.5x the goal distance.
             - Easy runs should be easy pace.
             - Medium runs should be medium pace.
             - Workouts should be at goal pace or slightly faster.
@@ -72,6 +69,7 @@ public enum TrainingGenerationPromptUtils {
         Formatting Rules:
         \(formattingRules)
 
+        ONLY 1 rest day per week!
 
         Give the training day type for each [yyyy-mm-dd] inputted as the below format.
 
