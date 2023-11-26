@@ -47,7 +47,7 @@ struct ContentView: View {
                                 Image(systemName: "figure.walk")
                                 Text("Activity")
                             }
-                            .badge(activitiesViewModel.newActivities.count)
+//                            .badge(activitiesViewModel.newActivities.count)
 
 //                            NavigationStack {
 //                                NewActivityView()
