@@ -1717,7 +1717,7 @@
 					"-Xlinker",
 					"-interposable",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.enduraapp.EnduraApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.enduraapp.Endura;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

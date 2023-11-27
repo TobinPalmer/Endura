@@ -129,7 +129,6 @@ import SwiftUICalendar
             context: context,
             progress: progress
         ) {
-            print("\n\n\n\n")
             var generatedDailyData: [DailyTrainingData] = []
             outputs.forEach {
                 var pace = 480.0
@@ -144,7 +143,6 @@ import SwiftUICalendar
                     goalDist: dist
                 ))
             }
-            print("\n\n\n\n")
 
             progress(80)
             var monthlyData: [YearMonth: MonthlyTrainingData] = [:]
