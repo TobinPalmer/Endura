@@ -68,34 +68,34 @@ struct SettingsView: View {
                         Label("Notifications", systemImage: "bell")
                     }
 
-                    NavigationLink(destination: List {
-                        Section(
-                            header: Text("Availability"),
-                            footer: Text("This will be used to determine what are the options for your training plan.")
-                        ) {
-                            let options = VStack {
-                                Text("Busy").tag(TrainingDayAvailability.busy)
-                                Text("Free").tag(TrainingDayAvailability.free)
-                            }
-
-                            Picker(selection: .constant(TrainingDayAvailability.free), label: Text("Monday"), content: {
-                                options
-                            })
-                            .pickerStyle(.menu)
-
-                            Picker(
-                                selection: .constant(TrainingDayAvailability.free),
-                                label: Text("Tuesday"),
-                                content: {
-                                    options
-                                }
-                            )
-                            .pickerStyle(.menu)
-                        }
-                    }
-                    .navigationBarTitle("Training")) {
-                        Label("Training", systemImage: "calendar")
-                    }
+//                    NavigationLink(destination: List {
+//                        Section(
+//                            header: Text("Availability"),
+//                            footer: Text("This will be used to determine what are the options for your training plan.")
+//                        ) {
+//                            let options = VStack {
+//                                Text("Busy").tag(TrainingDayAvailability.busy)
+//                                Text("Free").tag(TrainingDayAvailability.free)
+//                            }
+//
+//                            Picker(selection: .constant(TrainingDayAvailability.free), label: Text("Monday"), content: {
+//                                options
+//                            })
+//                            .pickerStyle(.menu)
+//
+//                            Picker(
+//                                selection: .constant(TrainingDayAvailability.free),
+//                                label: Text("Tuesday"),
+//                                content: {
+//                                    options
+//                                }
+//                            )
+//                            .pickerStyle(.menu)
+//                        }
+//                    }
+//                    .navigationBarTitle("Training")) {
+//                        Label("Training", systemImage: "calendar")
+//                    }
 
                     NavigationLink(destination: VStack {
                         List {

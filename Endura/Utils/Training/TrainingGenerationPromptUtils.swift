@@ -69,7 +69,7 @@ public enum TrainingGenerationPromptUtils {
         Formatting Rules:
         \(formattingRules)
 
-        ONLY 1 rest day per week!
+        ONLY 1 rest day per week, make it the last day of the week.
 
         Give the training day type for each [yyyy-mm-dd] inputted as the below format.
 
@@ -104,6 +104,8 @@ public enum TrainingGenerationPromptUtils {
         """
         Important Extra Reference:
         \(extraReference)
+
+        The last day should be a rest day.
 
         For these all of these days: \(days) return a raw json that follows this format (note: \(formattingRules)):
         {

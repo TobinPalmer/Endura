@@ -140,6 +140,9 @@ public enum TrainingGenerationDataUtils {
                      .time:
                     break
                 }
+                dayData.goals[0].postRoutine = dayData.goals[0].getRoutine(routineType: .postRun)
+                dayData.goals[0].progress.workoutCompleted = true
+                dayData.goals[0].progress.postRoutineCompleted = true
                 return dayData
             }
         } catch {}

@@ -252,18 +252,10 @@ import WidgetKit
     private func updateNotificationData() {
         NotificationUtils.clearScheduledNotifications()
         let today = getTrainingDay(.current.addDay(value: 1))
-        let message =
-            "Today is \(today.type.rawValue.lowercased()) day, you have \(today.goals.isEmpty ? "no goals today!" : "\(today.goals.count) goal\(today.goals.count == 1 ? "" : "s") to complete!")"
-        NotificationUtils.sendScheduledNotification(
-            title: "Today's Training",
-            body: message,
-            date: Date().addingTimeInterval(5)
-        )
-
-        NotificationUtils.sendScheduledNotification(
-            title: "New Like!",
-            body: "Tobin Palmer liked your 2.21 mile run!",
-            date: Date().addingTimeInterval(10)
-        )
+//        let message = "Today is \(today.type.rawValue.lowercased()) day, you have \(today.goals.isEmpty ? "no goals
+//        today!" : "\(today.goals.count) goal\(today.goals.count == 1 ? "" : "s") to complete!")"
+//        NotificationUtils.sendScheduledNotification( title: "Today's Training", body: message, date:
+//        Date().addingTimeInterval(5) ) NotificationUtils.sendScheduledNotification( title: "New Like!", body: "Tobin
+//        Palmer liked your 2.21 mile run!", date: Date().addingTimeInterval(10) )
     }
 }

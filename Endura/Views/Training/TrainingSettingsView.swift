@@ -37,15 +37,15 @@ struct TrainingSettingsView: View {
                     ))
                 }
             }
-            Section(header: Text("Routines"), footer: Text("Edit your pre-run or post-run routines")) {
-                NavigationLink(
-                    destination: Text("Edit Routines")
-                ) {
-                    Text("Routines")
-                        .badge(4)
-                        .badgeProminence(.increased)
-                }
-            }
+//            Section(header: Text("Routines"), footer: Text("Edit your pre-run or post-run routines")) {
+//                NavigationLink(
+//                    destination: Text("Edit Routines")
+//                ) {
+//                    Text("Routines")
+//                        .badge(4)
+//                        .badgeProminence(.increased)
+//                }
+//            }
         }
         .alert(Text("You must have at least 4 days available for training"), isPresented: $showingBadAlert) {
             Button("OK", role: .cancel) {}
