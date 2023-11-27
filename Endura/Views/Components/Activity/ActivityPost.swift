@@ -151,22 +151,20 @@ struct ActivityPost: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .sheet(isPresented: $showingComments) {
                 ZStack(alignment: .topLeading) {
-                    Button(action: {
-                        showingComments.toggle()
-                    }) {
-                        HStack(spacing: 5) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .medium))
-                            Text("Done")
-                        }
-                        .foregroundColor(.accentColor)
-                        .font(.system(size: 16))
-                        .padding(5)
-                    }
-                    .zIndex(1)
+//            Button(action: {
+//              showingComments.toggle()
+//            }) {
+//              HStack(spacing: 5) {
+//                Image(systemName: "chevron.left")
+//                  .font(.system(size: 20, weight: .medium))
+//                Text("Done")
+//              }
+//                .foregroundColor(.accentColor)
+//                .font(.system(size: 16))
+//                .padding(5)
+//            }
+//              .zIndex(1)
                     VStack {
-                        ActivityMapImage(id)
-
                         Spacer(minLength: 0)
                             .frame(height: 10)
 
@@ -181,6 +179,7 @@ struct ActivityPost: View {
                             ActivityLikesList(activityData.social.likes, noLink: true, reverse: true)
                                 .padding(.trailing, 10)
                         }
+                        .enduraPadding()
                     }
                 }
 
@@ -205,8 +204,10 @@ struct ActivityPost: View {
                         ActivityUtils.addComment(id: id, comment: comment)
                     }) {
                         Image(systemName: "paperplane")
+                            .fontWeight(.bold)
                     }
                 }
+                .padding(.horizontal, 20)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Button(action: {
