@@ -11,18 +11,18 @@ struct DailySummaryGraph: View {
     var body: some View {
         ZStack {
             VStack {
-                HStack {
-                    Spacer()
-                    Picker(
-                        selection: .constant(YearMonthDay.current),
-                        label: Text("Day")
-                    ) {
-                        Text("This Week")
-                        Text("Last Week")
-                        Text("This Month")
-                        Text("Last Month")
-                    }
-                }
+//                HStack {
+//                    Spacer()
+//                    Picker(
+//                        selection: .constant(YearMonthDay.current),
+//                        label: Text("Day")
+//                    ) {
+//                        Text("This Week")
+//                        Text("Last Week")
+//                        Text("This Month")
+//                        Text("Last Month")
+//                    }
+//                }
                 Chart {
                     ForEach(WeekDay.eachDay(), id: \.self) { day in
                         let miles = activeUserModel.training.getTrainingDay(day).summary.getMiles()

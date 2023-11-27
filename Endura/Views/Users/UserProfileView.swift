@@ -18,10 +18,14 @@ struct UserProfileLink<Content: View>: View {
         if noLink {
             content
         } else {
-            NavigationLink(destination: UserProfileView(uid)) {
+            if uid == AuthUtils.getCurrentUID() {
                 content
+            } else {
+                NavigationLink(destination: UserProfileView(uid)) {
+                    content
+                }
+                .buttonStyle(PlainButtonStyle())
             }
-            .buttonStyle(PlainButtonStyle())
         }
     }
 }
@@ -65,39 +69,41 @@ struct UserProfileView: View {
                     .font(.body)
                     .fontColor(.secondary)
 
-                VStack {
-                    if let activeUser = activeUser.data {
-                        if activeUser.friends.contains(uid) {
-                            Button("Friends") {}
+                if let activeUser = activeUser.data {
+                    if !activeUser.friends.contains(uid) {
+                        VStack {
+                            if activeUser.friends.contains(uid) {
+                                Button("Friends") {}
+                                    .buttonStyle(EnduraNewButtonStyle())
+                                    .font(.title3)
+                                    .foregroundColor(.secondary)
+                                    .disabled(true)
+                            } else {
+                                Button("Send Friend Request") {
+                                    Task {
+                                        NotificationsModel.sendNotification(
+                                            to: uid,
+                                            data: NotificationData(
+                                                type: .friendRequest,
+                                                uid: activeUser.uid,
+                                                timestamp: Date()
+                                            )
+                                        )
+                                    }
+                                }
                                 .buttonStyle(EnduraNewButtonStyle())
                                 .font(.title3)
-                                .foregroundColor(.secondary)
-                                .disabled(true)
-                        } else {
-                            Button("Send Friend Request") {
-                                Task {
-                                    NotificationsModel.sendNotification(
-                                        to: uid,
-                                        data: NotificationData(
-                                            type: .friendRequest,
-                                            uid: activeUser.uid,
-                                            timestamp: Date()
-                                        )
-                                    )
-                                }
                             }
-                            .buttonStyle(EnduraNewButtonStyle())
-                            .font(.title3)
                         }
+                        .frame(maxWidth: 300)
+
+                        Text("This profile is private, friend this user to see more.")
+                            .font(.body)
+                            .fontColor(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 10)
                     }
                 }
-                .frame(maxWidth: 300)
-
-                Text("This profile is private, friend this user to see more.")
-                    .font(.body)
-                    .fontColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 10)
 
                 Spacer()
             } else {

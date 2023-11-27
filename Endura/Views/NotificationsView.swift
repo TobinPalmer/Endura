@@ -18,7 +18,13 @@ struct NotificationsView: View {
             Color("Background")
                 .ignoresSafeArea()
             VStack {
-                Text("Notifications")
+                if notificationsModel.notifications.isEmpty {
+                    Text("No new notifications!")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .fontColor(.muted)
+                        .padding(.top, 20)
+                }
                 ScrollView {
                     LazyVStack {
                         ForEach(notificationsModel.notifications, id: \.timestamp) { notification in

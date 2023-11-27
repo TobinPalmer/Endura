@@ -30,6 +30,7 @@ struct UploadWorkoutView: View {
 
     @MainActor func updateActivityData(_ workout: HKWorkout) async throws {
         viewModel.activityData = try await viewModel.getActivityData(workout)
+        activityTitle = ConversionUtils.getDefaultActivityName(time: viewModel.activityData?.time ?? Date())
     }
 
     private var workout: HKWorkout
@@ -162,11 +163,15 @@ struct UploadWorkoutView: View {
                         Text("Uploading...")
                     }
                 } else {
-                    Text("Upload")
+                    if ActivityUtils.isActivityUploaded(workout) {
+                        Text("Already Uploaded!")
+                    } else {
+                        Text("Upload")
+                    }
                 }
             }
             .buttonStyle(EnduraNewButtonStyle())
-            .disabled(viewModel.activityData == nil)
+            .disabled(viewModel.activityData == nil || ActivityUtils.isActivityUploaded(workout))
             .padding(.horizontal, 16)
             .padding(.bottom, 8)
             .frame(height: 60)
