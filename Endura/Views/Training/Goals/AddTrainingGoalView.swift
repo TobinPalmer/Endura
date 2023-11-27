@@ -45,6 +45,7 @@ struct AddTrainingGoalView: View {
                                     description: workoutGoal.getWorkoutDescription()
                                 )
                             }
+
 //                            VStack {
 //                                EditTrainingRunWorkout(goal: Binding(
 //                                    get: { workoutGoal },
@@ -78,6 +79,17 @@ struct AddTrainingGoalView: View {
 //                                    description: goal.getWorkoutDescription()
 //                                )
 //                            }
+                        }
+                        Button {
+                            activeUser.training.updateTrainingDay(
+                                selectedDate,
+                                DailyTrainingData(
+                                    date: selectedDate,
+                                    type: .rest
+                                )
+                            )
+                        } label: {
+                            Text("Make Rest Day")
                         }
                     }
                 }
